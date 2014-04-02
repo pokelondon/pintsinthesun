@@ -2,13 +2,23 @@
  * Config and app loader
  */
 requirejs.config({
-    "baseUrl": "assets/js/lib",
-    "paths": {
-      "app": "../app"
+    'baseUrl': 'assets/js/lib',
+    'paths': {
+        'app': '../app',
+        'OSMBuildings': 'osmbuildings/OSMBuildings-Leaflet',
+        'leaflet': 'http://cdn.leafletjs.com/leaflet-0.7/leaflet'
     },
     "shim": {
-        "$": ["jquery"],
-        "_": ["underscore"]
+        'OSMBuildings': {
+            exports: 'OSMBuildings',
+            deps: ['leaflet']
+        },
+        'jquery': {
+            exports: '$'
+        },
+        'underscore': {
+            exports: '_'
+        }
     }
 });
 

@@ -1,9 +1,30 @@
+@font-face {
+  font-family: 'ClearSans-Bold';
+  src: url('../fonts/clearsans/EOT/ClearSans-Bold.eot');
+  src: url('../fonts/clearsans/EOT/ClearSans-Bold.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/clearsans/WOFF/ClearSans-Bold.woff') format('woff'),
+       url('../fonts/clearsans/TTF/ClearSans-Bold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'ClearSans-Light';
+  src: url('../fonts/clearsans/EOT/ClearSans-Light.eot');
+  src: url('../fonts/clearsans/EOT/ClearSans-Light.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/clearsans/WOFF/ClearSans-Light.woff') format('woff'),
+       url('../fonts/clearsans/TTF/ClearSans-Light.ttf') format('truetype');
+}
 body {
     margin: 0;
     padding: 0;
+    font-family: 'ClearSans-Light';
+}
+h1,
+h2,
+h3,
+h4 {
+    font-family: 'ClearSans-Bold';
 }
 #map {
     width: 100%;
-    height: 800px;
+    height: 400px;
 }
 

@@ -59,7 +59,7 @@ function distLatLon(lat1, lon1, lat2, lon2) {
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    window.map = new L.Map('map')
+    window.map = new L.Map('map');
 
     function centreMap() {
         var centre = {lat: 51.524312, lng: -0.076432};
