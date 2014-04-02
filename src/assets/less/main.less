@@ -1,0 +1,64 @@
+@import 'bootstrap/bootstrap.less';
+@import 'bootstrap/mixins.less';
+
+@import '_flex_mixins.less';
+@import '_type.less';
+
+.Map {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 150px;
+}
+.Toolbar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 150px;
+    background: #434A54;
+    color: #fff;
+}
+.Toolbar-row {
+    .flex-display();
+    .flex-direction(row);
+    vertical-align: middle;
+}
+.Toolbar-row--pad {
+    padding: 10px 10px;
+}
+.Clock-input {
+    .flex(9);
+}
+.Clock-display {
+    .flex(1);
+    text-align: center;
+    min-width: 70px;
+}
+.Tool-button {
+    .flex(1);
+    padding: 40px 10px;
+    background: #DA4453;
+    font-size: 14px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #fff;
+}
+.Tool-button:hover {
+    background: #ED5565;
+}
+.Tool-button--green {
+    background: #37BC9B;
+}
+.Tool-button--green:hover {
+    background: #48CFAD;
+}
+.Tool-button--yellow {
+    background: #F6BB42;
+}
+.Tool-button--yellow:hover {
+    background: #FFCE54;
+}
+
