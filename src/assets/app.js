@@ -59,7 +59,7 @@ function distLatLon(lat1, lon1, lat2, lon2) {
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    var map = new L.Map('map')
+    window.map = new L.Map('map')
 
     function centreMap() {
         var centre = {lat: 51.524312, lng: -0.076432};
@@ -69,6 +69,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         try {
             map.setView(cachedCentre, zoom);
+
+            var polyline = L.polyline([cachedCentre, centre]).addTo(map);
         } catch(e) {
             map.setView(centre, zoom);
         }
@@ -93,60 +95,79 @@ document.addEventListener('DOMContentLoaded', function() {
     setupBuildings();
 
     // Raster base layer
-    //var baseLayer = L.tileLayer(cloudmadeUrl, {attribution: cloudmadeAttribution}).addTo(map);
-    var rp = [];
-    window.rp = rp;
-    var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL, {
-            clipTiles: true,
-            unique: function (feature) {
-                return feature.id;
-            }
-        }, {
-            style: style,
-            filter: function(feature, layer) {
-                // Roads only
-                return feature.properties.highway != null;
-            },
-            onEachFeature: function (feature, layer) {
-                if (layer instanceof L.Point) {
-                    return;
-                }
-                if (!feature.properties) {
-                    return;
-                }
-                var c;
-                var gc = false;
+    window.baseLayer = L.tileLayer(cloudmadeUrl, {attribution: cloudmadeAttribution}).addTo(map);
 
-                if('LineString' === feature.geometry.type) {
-                    c = feature.geometry.coordinates;
-                } else if ('GeometryCollection' === feature.geometry.type){
-                    c = feature.geometry.geometries[0].coordinates;
-                } else {
-                    return;
-                }
-                for (var i = 1; i < c.length; i++) {
-                    var ll0 = c[i - 1];
-                    var ll1 = c[i];
-                    if (true) {
-                        var part = {};
-                        part.d = distLatLon(ll0[1], ll0[0], ll1[1], ll1[0]);
-                        part.b = bearing(ll0[1], ll0[0], ll1[1], ll1[0]);
-                        rp.push(part);
+    function getRoads() {
+        var tilesLoaded = 0;
+        var tiles = _(window.baseLayer._tiles).map(function(item) {
+            // Find coordinates from currently loaded tiles
+            var res = item.src.replace(/.*org\/(.*)\.png/, '$1').split('/');
+            res[res.length -1] = res[res.length -1].replace('.png', '');
+            return res;
+        });
+
+        tileData = [];
+        _(tiles).each(function(d) {
+            if (d.length >= 9) {
+                var url = 'http://tile.openstreetmap.us/vectiles-highroad/' + d[6] + '/' + d[7] + '/' + d[8] + '.json';
+                $.ajax({
+                    url: url,
+                    async: true,
+                    success: function(result, textStatus, request) {
+                        tilesLoaded ++;
+                        tileData = tileData.concat(result.features);
+                        console.log((100 * tilesLoaded / tiles.length) + '%');
+                        if (tilesLoaded == tiles.length) {
+                            console.log('Complete');
+                            processData(tileData);
+                        }
                     }
-                }
-                var b = bearing(c[0][0], c[0][1], c[c.length-1][0], c[c.length-1][1]);
-                var angleLimit = 20;
+                });
+            }
+        });
+    }
+    map.on('moveend', function(evt) {
+        getRoads();
+    });
+
+    function processData(data) {
+        var vert = [];
+        var horiz = [];
+        data.filter(function(d) {
+            return d.properties.highway != null
+        }).forEach(function(d) {
+            var coor = (d.geometry.type == 'LineString' ? d.geometry.coordinates : d.geometry.coordinates[0]);
+            for (var i = 1; i < coor.length; i++) {
+                var ll0 = coor[i - 1];
+                var ll1 = coor[i];
+                var b = bearing(ll0[1], ll0[0], ll1[1], ll1[0]);
+                var part = [{lng: ll0[0], lat: ll0[1]}, {lng: ll1[0], lat: ll1[1]}];
+
+                var angleLimit = 10;
                 if(b > (90 - angleLimit) && b < (90 + angleLimit)) {
-                    layer.setStyle(style1);
+                    vert.push(part);
                 }else if(b > (0 - angleLimit) && b < (0 + angleLimit)) {
-                    layer.setStyle(style2);
+                    horiz.push(part);
                 }
             }
-        }
-    );
-    map.addLayer(geojsonTileLayer);
+        });
+
+        setTimeout(function() {
+            window.polylines = window.polylines || [];
+            for (var i = 1; i < polylines.length; i++) {
+                map.removeLayer(polylines[i]);
+            }
+            horiz.forEach(function(d) {
+                window.polylines.push(L.polyline(d, {color: 'blue'}).addTo(map));
+            });
+            vert.forEach(function(d) {
+                window.polylines.push(L.polyline(d, {color: 'red'}).addTo(map));
+            });
+        }, 1000);
+    }
 
     getPubs(function(data) {
+
         _(data.response.venues).each(function(item) {
             var content = item.name;
             var m = L.marker([item.location.lat, item.location.lng])
@@ -174,13 +195,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 function getPubs(callback) {
+    var centre = map.getCenter();
+    var url = 'https://api.foursquare.com/v2/venues/search\?client_id\=FNJEOV4QV4YBMJ4J5EQNKQTCQXOQBCUSIIYIZAXWMKLY5XPN\&client_secret\=NEKCZ4IFX4SOJEPDY2E1ZIV4NTAYZ3GWQHWKKPSQF3KOZKCS\&v\=1396279715756\&ll\=' + centre.lat + '%2C' + centre.lng + '\&radius\=500\&intent\=browse\&limit\=50\&categoryId\=4bf58dd8d48988d11b941735%2C4bf58dd8d48988d116941735'
     request = new XMLHttpRequest();
-    request.open('GET', 'data.json', true);
+    request.open('GET', url, true);
     request.onload = function() {
         if (request.status >= 200 && request.status < 400){
             // Success!
             data = JSON.parse(request.responseText);
             callback(data);
+            window.pubs = data.response.venues;
         } else {
             console.error('Error from teh server', request.status);
         }
