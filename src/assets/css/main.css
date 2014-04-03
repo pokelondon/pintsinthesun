@@ -1530,7 +1530,7 @@ p + p {
 .Modal-container {
   position: fixed;
   z-index: 1001;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0);
   top: 0;
   left: 0;
   bottom: 0;
@@ -1543,8 +1543,8 @@ p + p {
   opacity: 0;
   -webkit-transform: scale(0.9);
   transform: scale(0.9);
-  -webkit-transition: -webkit-transform 0.2s, opacity 0.2s, visibility 0s 0.2s;
-  transition: transform 0.2s, opacity 0.2s, visibility 0s 0.2s;
+  -webkit-transition: -webkit-transform 0.2s, opacity 0.2s, visibility 0s 0.2s, background 0.2s;
+  transition: transform 0.2s, opacity 0.2s, visibility 0s 0.2s, background 0.2s;
 }
 .Modal-container.is-open {
   visibility: visible;
@@ -1553,6 +1553,7 @@ p + p {
   transform: scale(1);
   -webkit-transition: -webkit-transform 0.4s, opacity 0.4s;
   transition: transform 0.4s, opacity 0.4s;
+  background: rgba(0, 0, 0, 0.5);
 }
 .Modal {
   background: #fff;
