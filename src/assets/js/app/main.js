@@ -16,7 +16,7 @@ define([
             iconRetinaUrl: 'assets/img/pint-icon@2x.png',
             iconSize: [30, 54],
             iconAnchor: [15, 54],
-            popupAnchor: [-3, -76],
+            popupAnchor: [0, -60],
             shadowUrl: 'assets/img/pint-icon-shadow.png',
             shadowRetinaUrl: 'assets/img/pint-icon-shadow@2x.png',
             shadowSize: [49, 27],
@@ -90,12 +90,12 @@ define([
                 var osmb = new OSMBuildings(map).loadData();
                 var m = moment();
                 m.hour(11).minute(0).second(0);
-                var duration = moment.duration(7, 'hours').asSeconds();
+                var duration = moment.duration(8, 'hours').asSeconds();
                 var $time = $('.js-slider-time');
                 var $clock = $('.js-clock');
 
                 function setClock(mObj) {
-                    $clock.text(mObj.format("h:mm a"));
+                    $clock.text(mObj.format("H:mm a"));
                     osmb.setDate(mObj.toDate());
                 }
 

@@ -15,7 +15,6 @@
     .linear-gradient-left(@greyDark, @greyDark, 0%, darken(@greyDark, 10), 100%);
     display: inline-block;
     vertical-align: middle;
-    border-radius: 3px;
     position: relative;
     max-width: 100%;
     -webkit-transform: transform3d(0, 0, 0);
@@ -38,7 +37,7 @@
 .Slider-thumb {
     position: absolute;
     right: 0;
-    background: rgba(255,255,255,.1);
+    background: rgba(255,255,255,.05);
     border-radius: 50px;
     display: block;
     width: 40px;
@@ -46,7 +45,21 @@
     margin-right: -20px;
     top: 0;
     bottom: 0;
+    &:after {
+        top: 0;
+        left: 0;
+        margin: 10px;
+        border-radius: 20px;
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: @yellow;
+        content: " ";
+        box-shadow: @yellow 0 0 20px;
+    }
     &.is-active {
-        background: rgba(255,255,255,.5);
+        &:after {
+            box-shadow: @yellow 0 0 5px;
+        }
     }
 }

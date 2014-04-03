@@ -1368,7 +1368,6 @@ hr {
   background-image: linear-gradient(left, #434a54 0%, #2c3138 100%);
   display: inline-block;
   vertical-align: middle;
-  border-radius: 3px;
   position: relative;
   max-width: 100%;
   -webkit-transform: transform3d(0, 0, 0);
@@ -1399,7 +1398,7 @@ hr {
 .Slider-thumb {
   position: absolute;
   right: 0;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 50px;
   display: block;
   width: 40px;
@@ -1408,8 +1407,20 @@ hr {
   top: 0;
   bottom: 0;
 }
-.Slider-thumb.is-active {
-  background: rgba(255, 255, 255, 0.5);
+.Slider-thumb:after {
+  top: 0;
+  left: 0;
+  margin: 10px;
+  border-radius: 20px;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: #f6bb42;
+  content: " ";
+  box-shadow: #f6bb42 0 0 20px;
+}
+.Slider-thumb.is-active:after {
+  box-shadow: #f6bb42 0 0 5px;
 }
 @font-face {
   font-family: 'ClearSans-Bold';
@@ -1446,5 +1457,14 @@ a:hover {
   left: 0;
   right: 0;
   bottom: 100px;
+}
+.leaflet-popup-content {
+  font-family: ClearSans-Light;
+  font-size: 15px;
+  margin: 6px 25px 6px 10px;
+  line-height: 1em;
+}
+.leaflet-container a.leaflet-popup-close-button {
+  padding: 7px 15px 7px 0;
 }
 /*# sourceMappingURL=/src/assets/main.css.map */
