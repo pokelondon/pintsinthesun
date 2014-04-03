@@ -1309,7 +1309,9 @@ hr {
   -ms-flex: 1;
   flex: 1;
   padding: 20px 10px;
-  background: #da4453;
+  background-color: #da4453;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
   font-size: 14px;
   text-align: center;
   text-transform: uppercase;
@@ -1318,20 +1320,30 @@ hr {
 .Tool-button:hover {
   color: #fff;
 }
+.Tool-button.is-loading {
+  text-indent: -99999px;
+  background-image: url(../img/loading-red.gif);
+}
 .Tool-button:hover {
-  background: #ed5565;
+  background-color: #ed5565;
 }
 .Tool-button--green {
-  background: #37bc9b;
+  background-color: #37bc9b;
+}
+.Tool-button--green.is-loading {
+  background-image: url(../img/loading-green.gif);
 }
 .Tool-button--green:hover {
-  background: #48cfad;
+  background-color: #48cfad;
 }
 .Tool-button--yellow {
-  background: #f6bb42;
+  background-color: #f6bb42;
+}
+.Tool-button--yellow.is-loading {
+  background-image: url(../img/loading-yellow.gif);
 }
 .Tool-button--yellow:hover {
-  background: #ffce54;
+  background-color: #ffce54;
 }
 .Slider-container {
   -webkit-touch-callout: none;

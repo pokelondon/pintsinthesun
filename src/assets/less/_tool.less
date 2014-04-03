@@ -28,7 +28,9 @@
 .Tool-button {
     .flex(1);
     padding: 20px 10px;
-    background: @red;
+    background-color: @red;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
     font-size: 14px;
     text-align: center;
     text-transform: uppercase;
@@ -36,20 +38,30 @@
     &:hover {
         color: #fff;
     }
+    &.is-loading {
+        text-indent: -99999px;
+        background-image: url(../img/loading-red.gif);
+    }
 }
 .Tool-button:hover {
-    background: @redLight;
+    background-color: @redLight;
 }
 .Tool-button--green {
-    background: @green;
-}
-.Tool-button--green:hover {
-    background: @greenDark;
+    background-color: @green;
+    &.is-loading {
+        background-image: url(../img/loading-green.gif);
+    }
+    &:hover {
+        background-color: @greenDark;
+    }
 }
 .Tool-button--yellow {
-    background: @yellow;
-}
-.Tool-button--yellow:hover {
-    background: @yellowDark;
+    background-color: @yellow;
+    &.is-loading {
+        background-image: url(../img/loading-yellow.gif);
+    }
+    &:hover {
+        background-color: @yellowDark;
+    }
 }
 

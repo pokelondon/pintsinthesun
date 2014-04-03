@@ -39,19 +39,38 @@ define([
                 var cachedCentre = JSON.parse(data);
                 var zoom = window.localStorage['zoom'] || 18;
 
+                function centreCurrentLocation(callback) {
+                    if(navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(function(position) {
+                            var centre = {};
+                            centre.lat = position.coords.latitude;
+                            centre.lng = position.coords.longitude;
+                            map.setView(centre, zoom);
+                            if('function' === typeof callback) {
+                                callback(centre);
+                            }
+                        });
+                    }
+                }
+
                 try {
                     map.setView(cachedCentre, zoom);
                 } catch(e) {
                     map.setView(centre, zoom);
-
-                    if(navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(function(position) {
-                            centre.lat = position.coords.latitude;
-                            centre.lng = position.coords.longitude;
-                            map.setView(centre, zoom);
-                        });
-                    }
+                    centreCurrentLocation();
                 }
+
+                // Bind button
+                var $btnLocate = $('.js-locate-me');
+                $btnLocate.on('click', function(evt) {
+                    evt.preventDefault();
+                    $btnLocate.addClass('is-loading');
+                    centreCurrentLocation(function() {
+                        $btnLocate.removeClass('is-loading');
+                    });
+                });
+
+
             }
             centreMap();
 
@@ -82,14 +101,19 @@ define([
             // Raster base layer
             window.baseLayer = L.tileLayer(tileProvider).addTo(map);
 
-            $('.js-load-pubs').on('click', function(evt) {
+            // Load pubs button
+            var $loadPubs = $('.js-load-pubs');
+            $loadPubs.on('click', function(evt) {
                 evt.preventDefault();
+
+                $loadPubs.addClass('is-loading');
+
                 getPubs(function(data) {
+                    $loadPubs.removeClass('is-loading');
                     _(data.response.venues).each(function(item) {
-                        var content = item.name;
                         var m = L.marker([item.location.lat, item.location.lng])
                                 .addTo(map)
-                                .bindPopup(content);
+                                .bindPopup(item.name);
                         m.on('click', function() {
                             m.openPopup();
                         });
