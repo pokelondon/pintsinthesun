@@ -142,5 +142,17 @@ define([
                 window.localStorage.setItem('centre', centre);
                 window.localStorage.setItem('zoom', map.getZoom());
             });
+
+            // Bind button
+            var $btnOverlay = $('.js-open-modal');
+            $btnOverlay.on('click', function(evt) {
+                evt.preventDefault();
+                $('.js-modal').toggleClass('is-open');
+            });
+            var $btnCloseOverlay = $('.js-close-modal');
+            $btnCloseOverlay.on('click', function(evt) {
+                evt.preventDefault();
+                $('.js-modal').removeClass('is-open');
+            });
         });
 });

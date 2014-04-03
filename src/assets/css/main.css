@@ -1328,13 +1328,13 @@ hr {
   background-color: #ed5565;
 }
 .Tool-button--green {
-  background-color: #37bc9b;
+  background-color: #48cfad;
 }
 .Tool-button--green.is-loading {
   background-image: url(../img/loading-green.gif);
 }
 .Tool-button--green:hover {
-  background-color: #48cfad;
+  background-color: #37bc9b;
 }
 .Tool-button--yellow {
   background-color: #f6bb42;
@@ -1423,9 +1423,9 @@ hr {
   box-shadow: #f6bb42 0 0 5px;
 }
 @font-face {
-  font-family: 'ClearSans-Bold';
-  src: url('../fonts/clearsans/EOT/ClearSans-Bold.eot');
-  src: url('../fonts/clearsans/EOT/ClearSans-Bold.eot?#iefix') format('embedded-opentype'), url('../fonts/clearsans/WOFF/ClearSans-Bold.woff') format('woff'), url('../fonts/clearsans/TTF/ClearSans-Bold.ttf') format('truetype');
+  font-family: 'ClearSans-Regular';
+  src: url('../fonts/clearsans/EOT/ClearSans-Regular.eot');
+  src: url('../fonts/clearsans/EOT/ClearSans-Regular.eot?#iefix') format('embedded-opentype'), url('../fonts/clearsans/WOFF/ClearSans-Regular.woff') format('woff'), url('../fonts/clearsans/TTF/ClearSans-Regular.ttf') format('truetype');
 }
 @font-face {
   font-family: 'ClearSans-Light';
@@ -1436,12 +1436,18 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'ClearSans-Light';
+  color: #434a54;
 }
 h1,
 h2,
 h3,
 h4 {
-  font-family: 'ClearSans-Bold';
+  font-weight: normal;
+  padding: 0;
+  margin: 0;
+  line-height: 1em;
+  text-transform: uppercase;
+  font-family: ClearSans-Light;
 }
 a {
   text-decoration: none;
@@ -1449,6 +1455,133 @@ a {
 a:focus,
 a:hover {
   text-decoration: none;
+}
+p {
+  font-family: 'ClearSans-Regular';
+  font-size: 14px;
+  line-height: 1.5em;
+  margin: 0;
+  padding: 0;
+}
+p + p {
+  margin-top: 1em;
+}
+._linkBase {
+  display: inline-block;
+  padding: 10px 20px;
+  padding-right: 0;
+  font-size: 14px;
+  font-family: ClearSans-Light;
+  text-transform: uppercase;
+  vertical-align: middle;
+  margin-top: 1em;
+}
+._linkBase.u-pad-close {
+  margin-top: 0.3em;
+}
+.Cta {
+  display: inline-block;
+  padding: 10px 20px;
+  padding-right: 0;
+  font-size: 14px;
+  font-family: ClearSans-Light;
+  text-transform: uppercase;
+  vertical-align: middle;
+  margin-top: 1em;
+}
+.Cta.u-pad-close {
+  margin-top: 0.3em;
+}
+.Cta span {
+  border-bottom: rgba(0, 0, 0, 0.05) 1px solid;
+}
+.Cta:hover span {
+  border-bottom: #3bafda 1px solid;
+}
+.Button {
+  display: inline-block;
+  padding-right: 0;
+  font-size: 14px;
+  font-family: ClearSans-Light;
+  text-transform: uppercase;
+  vertical-align: middle;
+  margin-top: 1em;
+  padding: 10px 20px;
+  background-color: #4fc1e9;
+  color: #fff;
+}
+.Button.u-pad-close {
+  margin-top: 0.3em;
+}
+.Button:hover {
+  background-color: #3bafda;
+  color: #fff;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+.Button:active {
+  background-color: #3bafda;
+  color: #fff;
+  box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.1);
+}
+.Button.Button--block {
+  display: block;
+  text-align: center;
+}
+.Modal-container {
+  position: fixed;
+  z-index: 1001;
+  background: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  padding: 20px;
+  overflow: auto;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transform: scale(0.9);
+  transform: scale(0.9);
+  -webkit-transition: -webkit-transform 0.2s, opacity 0.2s, visibility 0s 0.2s;
+  transition: transform 0.2s, opacity 0.2s, visibility 0s 0.2s;
+}
+.Modal-container.is-open {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  -webkit-transition: -webkit-transform 0.4s, opacity 0.4s;
+  transition: transform 0.4s, opacity 0.4s;
+}
+.Modal {
+  background: #fff;
+  margin: 20px auto 20px;
+  max-width: 500px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+.Modal-header {
+  padding: 10px 10px;
+  position: relative;
+  background: #48cfad;
+  color: #fff;
+}
+.Modal-close {
+  color: #fff;
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  font-family: ClearSans-Light;
+  font-size: 20px;
+}
+.Modal-body {
+  padding: 10px 10px;
+}
+.Modal-body p:first-child {
+  margin-top: 0.5em;
+}
+.Modal-body p:last-child {
+  margin-bottom: 0.5em;
 }
 .Map {
   width: 100%;

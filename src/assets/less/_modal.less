@@ -1,0 +1,63 @@
+.Modal-container {
+    position: fixed;
+    z-index: 1001; // To get over leaflet control (@1000!)
+    background: rgba(0, 0, 0, .5);
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    padding: 20px;
+
+    overflow: auto;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
+    -webkit-transition: -webkit-transform 0.2s, opacity 0.2s, visibility 0s 0.2s;
+    transition: transform 0.2s, opacity 0.2s, visibility 0s 0.2s;
+
+    &.is-open {
+        visibility: visible;
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        -webkit-transition: -webkit-transform 0.4s, opacity 0.4s;
+        transition: transform 0.4s, opacity 0.4s;
+    }
+}
+.Modal {
+    background: #fff;
+    margin: 20px auto 20px;
+    max-width: 500px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .5);
+}
+.Modal-header {
+    padding: 10px 10px;
+    position: relative;
+    background: @green;
+    color: #fff;
+}
+.Modal-heading {
+
+}
+.Modal-close {
+    color: #fff;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-family: ClearSans-Light;
+    font-size: 20px;
+}
+.Modal-body {
+    padding: 10px 10px;
+    p:first-child {
+        margin-top: 0.5em;
+    }
+    p:last-child {
+        margin-bottom: 0.5em;
+    }
+}
+
