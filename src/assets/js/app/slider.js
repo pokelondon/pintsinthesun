@@ -7,13 +7,14 @@ define(
             has_touchstart = true;
         }
 
-        var Slider = function Constructor($el, onChange) {
+        var Slider = function Constructor($el, onDrag, onChange) {
             var self = this;
             this.$el = $el;
             this.$indicator = this.$el.find('.Slider-indicator');
             this.$thumb = this.$indicator.find('.Slider-thumb');
             this.offset = this.$indicator.offset().left;
-            this.onChange = onChange;
+            this.onDrag = onDrag ? _.throttle(onDrag, 100, {trailing: true}) : null;
+            this.onChange = onChange || null;
 
             // Events
             //this.$el.on('click', $.proxy(this.clicked, this));
@@ -22,18 +23,8 @@ define(
             * Has touchstart event
             * ====================================================== */
             //this.$el.on('touchstart', $.proxy(this.clicked, this));
-            this.$thumb.on('movestart', function(evt) {
-                self.$thumb.on('move', $.proxy(self.dragging, self));
-                self.$thumb.addClass('is-active');
-                self.$indicator.removeClass('is-moving');
-            });
-            this.$thumb.on('moveend', function() {
-                self.$thumb.off('move');
-                self.$thumb.removeClass('is-active');
-                self.$el.trigger('updated');
-                self.getState();
-                self.onChange(self.value);
-            });
+            this.$thumb.on('movestart', $.proxy(this.movestart, this));
+            this.$thumb.on('moveend', $.proxy(this.moveend, this));
         };
 
         /**
@@ -54,6 +45,11 @@ define(
             var x = evt.pageX - this.offset;
             evt.preventDefault();
             this.$indicator.css('width', x + 'px');
+
+            if('function' === typeof this.onDrag) {
+                this.getState();
+                this.onDrag(this.value);
+            }
         };
 
         /**
@@ -63,7 +59,30 @@ define(
         Slider.prototype.clicked = function clicked(evt) {
             var x = evt.pageX - this.offset;
             this.$indicator.addClass('is-moving').css('width', x + 'px');
-        }
+        };
+
+        /**
+         * Fired when the drag interaction is over,
+         * update the slider handle state and possibly run a callback
+         */
+        Slider.prototype.moveend = function moveend(evt) {
+            this.$thumb.off('move');
+            this.$thumb.removeClass('is-active');
+            this.$el.trigger('updated');
+            this.getState();
+            if('function' === typeof this.onChange) {
+                this.onChange(this.value);
+            }
+        };
+
+        /**
+         * Beggin the dragging, and bind move event
+         */
+        Slider.prototype.movestart = function movestart(evt) {
+            this.$thumb.on('move', $.proxy(this.dragging, this));
+            this.$thumb.addClass('is-active');
+            this.$indicator.removeClass('is-moving');
+        };
 
         return Slider;
     }
