@@ -16,12 +16,12 @@ define(
             this.onChange = onChange;
 
             // Events
-            this.$el.on('click', $.proxy(this.clicked, this));
+            //this.$el.on('click', $.proxy(this.clicked, this));
 
             /**
             * Has touchstart event
             * ====================================================== */
-            this.$el.on('touchstart', $.proxy(this.clicked, this));
+            //this.$el.on('touchstart', $.proxy(this.clicked, this));
             this.$thumb.on('movestart', function(evt) {
                 self.$thumb.on('move', $.proxy(self.dragging, self));
                 self.$thumb.addClass('is-active');

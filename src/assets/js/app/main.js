@@ -11,6 +11,18 @@ define([
         var mapBoxUrl = 'https://a.tiles.mapbox.com/v3/errkk.hmcik8n5/{z}/{x}/{y}.png'
         var tileProvider = mapBoxUrl;
 
+        var pintIcon = L.icon({
+            iconUrl: 'assets/img/pint-icon.png',
+            iconRetinaUrl: 'assets/img/pint-icon@2x.png',
+            iconSize: [30, 54],
+            iconAnchor: [15, 54],
+            popupAnchor: [-3, -76],
+            shadowUrl: 'assets/img/pint-icon-shadow.png',
+            shadowRetinaUrl: 'assets/img/pint-icon-shadow@2x.png',
+            shadowSize: [49, 27],
+            shadowAnchor: [10, 27]
+        });
+
         function getPubs(callback) {
             var centre = map.getCenter();
             var url = 'https://api.foursquare.com/v2/venues/search\?client_id\=FNJEOV4QV4YBMJ4J5EQNKQTCQXOQBCUSIIYIZAXWMKLY5XPN\&client_secret\=NEKCZ4IFX4SOJEPDY2E1ZIV4NTAYZ3GWQHWKKPSQF3KOZKCS\&v\=1396279715756\&ll\=' + centre.lat + '%2C' + centre.lng + '\&radius\=500\&intent\=browse\&limit\=50\&categoryId\=4bf58dd8d48988d11b941735%2C4bf58dd8d48988d116941735'
@@ -111,7 +123,7 @@ define([
                 getPubs(function(data) {
                     $loadPubs.removeClass('is-loading');
                     _(data.response.venues).each(function(item) {
-                        var m = L.marker([item.location.lat, item.location.lng])
+                        var m = L.marker([item.location.lat, item.location.lng], {icon: pintIcon})
                                 .addTo(map)
                                 .bindPopup(item.name);
                         m.on('click', function() {
