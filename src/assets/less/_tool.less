@@ -1,0 +1,55 @@
+.Toolbar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: @greyDark;
+    color: #fff;
+}
+.Toolbar-row {
+    .flex-display();
+    .flex-direction(row);
+    vertical-align: middle;
+}
+.Toolbar-row--pad {
+    padding: 10px 10px;
+}
+.Clock-input {
+    .flex(9);
+}
+.Clock-display {
+    .flex(1);
+    text-align: center;
+    min-width: 80px;
+    font-size: 18px;
+    padding: 10px 10px;
+}
+.Tool-button {
+    .flex(1);
+    padding: 20px 10px;
+    background: @red;
+    font-size: 14px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #fff;
+    &:hover {
+        color: #fff;
+    }
+}
+.Tool-button:hover {
+    background: @redLight;
+}
+.Tool-button--green {
+    background: @green;
+}
+.Tool-button--green:hover {
+    background: @greenDark;
+}
+.Tool-button--yellow {
+    background: @yellow;
+}
+.Tool-button--yellow:hover {
+    background: @yellowDark;
+}
+

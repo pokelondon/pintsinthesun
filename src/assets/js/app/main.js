@@ -1,7 +1,10 @@
-define(['jquery',
+define([
+        'jquery',
         'underscore',
-        'OSMBuildings'],
-    function($, _, OSMBuildings) {
+        'OSMBuildings',
+        'slider',
+        'moment'
+    ], function($, _, OSMBuildings, Slider, moment) {
 
         var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/1a1b06b230af4efdbb989ea99e9841af/997/256/{z}/{x}/{y}.png';
         var osmUrl = 'http://a.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -22,8 +25,6 @@ define(['jquery',
                 } else {
                     console.error('Error from teh server', request.status);
                 }
-            };
-            request.onerror = function() {
             };
             request.send();
             return request;
@@ -56,24 +57,24 @@ define(['jquery',
 
             function setupBuildings() {
                 var osmb = new OSMBuildings(map).loadData();
-                var d = new Date(2014, 3, 1, 11, 0);
-                var $timeEl = $('#time');
-                var $hourEl = $('#hour');
-                var $minsEl = $('#mins');
-                $timeEl.on('change', function() {
-                    var hour = $timeEl.val();
-                    var wholeHour = Math.floor(hour);
-                    var mins = 0;
-                    if(hour > wholeHour) {
-                        mins = 30;
-                    }
-                    var d = new Date(2014, 3, 1, hour, mins);
-                    $hourEl.text(wholeHour);
-                    $minsEl.text(mins ? mins : '00');
-                    osmb.setDate(d);
+                var m = moment();
+                m.hour(11).minute(0).second(0);
+                var duration = moment.duration(7, 'hours').asSeconds();
+                var $time = $('.js-slider-time');
+                var $clock = $('.js-clock');
+
+                function setClock(mObj) {
+                    $clock.text(mObj.format("h:mm a"));
+                    osmb.setDate(mObj.toDate());
+                }
+
+                var slider = new Slider($time, function(data) {
+                    var newM = m.clone().add(duration * data / 100, 'seconds');
+                    setClock(newM);
                 });
 
-                osmb.setDate(d);
+                setClock(m);
+
                 osmb.setStyle({'roofColor': '#aaaaaa', 'wallColor': '#aaaaaa'});
             }
             setupBuildings();

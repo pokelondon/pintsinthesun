@@ -1263,48 +1263,13 @@ hr {
     display: none !important;
   }
 }
-@font-face {
-  font-family: 'ClearSans-Bold';
-  src: url('../fonts/clearsans/EOT/ClearSans-Bold.eot');
-  src: url('../fonts/clearsans/EOT/ClearSans-Bold.eot?#iefix') format('embedded-opentype'), url('../fonts/clearsans/WOFF/ClearSans-Bold.woff') format('woff'), url('../fonts/clearsans/TTF/ClearSans-Bold.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'ClearSans-Light';
-  src: url('../fonts/clearsans/EOT/ClearSans-Light.eot');
-  src: url('../fonts/clearsans/EOT/ClearSans-Light.eot?#iefix') format('embedded-opentype'), url('../fonts/clearsans/WOFF/ClearSans-Light.woff') format('woff'), url('../fonts/clearsans/TTF/ClearSans-Light.ttf') format('truetype');
-}
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'ClearSans-Light';
-}
-h1,
-h2,
-h3,
-h4 {
-  font-family: 'ClearSans-Bold';
-}
-a {
-  text-decoration: none;
-}
-a:hover {
-  text-decoration: none;
-}
-.Map {
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 150px;
-}
 .Toolbar {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 150px;
-  background: #434A54;
+  height: 100px;
+  background: #434a54;
   color: #fff;
 }
 .Toolbar-row {
@@ -1334,33 +1299,140 @@ a:hover {
   -ms-flex: 1;
   flex: 1;
   text-align: center;
-  min-width: 70px;
+  min-width: 80px;
+  font-size: 18px;
+  padding: 10px 10px;
 }
 .Tool-button {
   -webkit-flex: 1;
   -moz-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  padding: 40px 10px;
-  background: #DA4453;
+  padding: 20px 10px;
+  background: #da4453;
   font-size: 14px;
   text-align: center;
   text-transform: uppercase;
   color: #fff;
 }
 .Tool-button:hover {
-  background: #ED5565;
+  color: #fff;
+}
+.Tool-button:hover {
+  background: #ed5565;
 }
 .Tool-button--green {
-  background: #37BC9B;
+  background: #37bc9b;
 }
 .Tool-button--green:hover {
-  background: #48CFAD;
+  background: #48cfad;
 }
 .Tool-button--yellow {
-  background: #F6BB42;
+  background: #f6bb42;
 }
 .Tool-button--yellow:hover {
-  background: #FFCE54;
+  background: #ffce54;
+}
+.Slider-container {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  height: 40px;
+}
+.Slider-input {
+  vertical-align: middle;
+  display: inline-block;
+  width: 100%;
+}
+.Slider-indicator {
+  height: 40px;
+  background: #f6bb42;
+  background-color: #434a54;
+  background-image: -webkit-gradient(linear, left top, left top, color-stop(0%, #434a54), color-stop(100% #2c3138));
+  background-image: -webkit-linear-gradient(left, #434a54 0%, #2c3138 100%);
+  background-image: -moz-linear-gradient(left, #434a54 0%, #2c3138 100%);
+  background-image: -ms-linear-gradient(left, #434a54 0%, #2c3138 100%);
+  background-image: -o-linear-gradient(left, #434a54 0%, #2c3138 100%);
+  background-image: linear-gradient(left, #434a54 0%, #2c3138 100%);
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 3px;
+  position: relative;
+  max-width: 100%;
+  -webkit-transform: transform3d(0, 0, 0);
+}
+.Slider-indicator.is-moving {
+  -webkit-transition: width 0.5s ease-in-out;
+}
+.Slider-indicator.val_25 {
+  width: 25%;
+}
+.Slider-indicator.val_50 {
+  width: 50%;
+}
+.Slider-indicator.val_75 {
+  width: 75%;
+}
+.Slider-indicator.val_100 {
+  width: 100%;
+}
+.Slider-label {
+  display: inline-block;
+  color: #fff;
+  vertical-align: middle;
+  width: 100px;
+  text-align: right;
+  padding-right: 10px;
+}
+.Slider-thumb {
+  position: absolute;
+  right: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  display: block;
+  width: 40px;
+  height: 40px;
+  margin-right: -20px;
+  top: 0;
+  bottom: 0;
+}
+.Slider-thumb.is-active {
+  background: rgba(255, 255, 255, 0.5);
+}
+@font-face {
+  font-family: 'ClearSans-Bold';
+  src: url('../fonts/clearsans/EOT/ClearSans-Bold.eot');
+  src: url('../fonts/clearsans/EOT/ClearSans-Bold.eot?#iefix') format('embedded-opentype'), url('../fonts/clearsans/WOFF/ClearSans-Bold.woff') format('woff'), url('../fonts/clearsans/TTF/ClearSans-Bold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'ClearSans-Light';
+  src: url('../fonts/clearsans/EOT/ClearSans-Light.eot');
+  src: url('../fonts/clearsans/EOT/ClearSans-Light.eot?#iefix') format('embedded-opentype'), url('../fonts/clearsans/WOFF/ClearSans-Light.woff') format('woff'), url('../fonts/clearsans/TTF/ClearSans-Light.ttf') format('truetype');
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'ClearSans-Light';
+}
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'ClearSans-Bold';
+}
+a {
+  text-decoration: none;
+}
+a:focus,
+a:hover {
+  text-decoration: none;
+}
+.Map {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 100px;
 }
 /*# sourceMappingURL=/src/assets/main.css.map */

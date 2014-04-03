@@ -15,21 +15,23 @@
     <script data-main="assets/js/app" src="assets/js/app.js"></script>
 </head>
 <body>
-<div id="map" class="Map"></div>
-<form>
+    <div id="map" class="Map"></div>
     <div class="Toolbar">
         <div class="Toolbar-row">
             <a class="Tool-button js-load-pubs" href="#na">Load Pubs</a>
             <a class="Tool-button Tool-button--yellow" href="#na">Load Pubs</a>
             <a class="Tool-button Tool-button--green" href="#na">Load Pubs</a>
         </div>
-        <div class="Toolbar-row Toolbar-row--pad">
-            <input class="Clock-input" type="range" id="time" max="20" min="11" value="12" step="0.5" />
+        <div class="Toolbar-row Slider-container">
+            <div class="Slider-input js-slider-time">
+                <div class="Slider-indicator">
+                    <a class="Slider-thumb"></a>
+                </div>
+            </div>
             <div class="Clock-display">
-                <span id="hour">12</span>:<span id="mins">00</span>
+                <span class="js-clock">00</span>
             </div>
         </div>
     </div>
-</form>
 </body>
 </html>

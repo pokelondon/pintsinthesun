@@ -5,6 +5,7 @@ requirejs.config({
     'baseUrl': 'assets/js/lib',
     'paths': {
         'app': '../app',
+        'slider': '../app/slider',
         'OSMBuildings': 'osmbuildings/OSMBuildings-Leaflet',
         'leaflet': 'http://cdn.leafletjs.com/leaflet-0.7/leaflet'
     },
@@ -16,6 +17,7 @@ requirejs.config({
         'jquery': {
             exports: '$'
         },
+        'jquery.event.move': ['jquery'],
         'underscore': {
             exports: '_'
         }
