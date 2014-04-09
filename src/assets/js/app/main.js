@@ -3,8 +3,9 @@ define([
         'underscore',
         'OSMBuildings',
         'slider',
-        'moment'
-    ], function($, _, OSMBuildings, Slider, moment) {
+        'moment',
+        'threeDBuidlings'
+    ], function($, _, OSMBuildings, Slider, moment, ThreeDScene) {
 
         var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/1a1b06b230af4efdbb989ea99e9841af/997/256/{z}/{x}/{y}.png';
         var osmUrl = 'http://a.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -148,58 +149,14 @@ define([
             $btnOverlay.on('click', function(evt) {
                 evt.preventDefault();
                 $('.js-modal').toggleClass('is-open');
+                var scene = new ThreeDScene();
+                scene.renderBuilding();
             });
+
             var $btnCloseOverlay = $('.js-close-modal');
             $btnCloseOverlay.on('click', function(evt) {
                 evt.preventDefault();
                 $('.js-modal').removeClass('is-open');
             });
         });
-
-
-    init();
-
-
-    function init() {
-      if ((window.DeviceMotionEvent) || ('listenForDeviceMovement' in window)) {
-        window.addEventListener('devicemotion', _.throttle(deviceMotionHandler,500), false);
-      } else {
-        document.getElementById("dmEvent").innerHTML = "Not supported on your device or browser.  Sorry."
-      }
-    }
-
-    function deviceMotionHandler(eventData) {
-      var info, xyz = "[X, Y, Z]";
-
-      // Grab the acceleration including gravity from the results
-      var acceleration = eventData.compassHeading || eventData.webkitCompassHeading || 0;
-      info = xyz.replace("X", round(acceleration.x));
-      info = info.replace("Y", round(acceleration.y));
-      info = info.replace("Z", round(acceleration.z));
-      document.getElementById("moAccel").innerHTML = info;
-
-      // Grab the acceleration including gravity from the results
-      acceleration = eventData.accelerationIncludingGravity;
-      info = xyz.replace("X", round(acceleration.x));
-      info = info.replace("Y", round(acceleration.y));
-      info = info.replace("Z", round(acceleration.z));
-      document.getElementById("moAccelGrav").innerHTML = info;
-
-      // Grab the acceleration including gravity from the results
-      var rotation = eventData.rotationRate;
-      info = xyz.replace("X", round(rotation.alpha));
-      info = info.replace("Y", round(rotation.beta));
-      info = info.replace("Z", round(rotation.gamma));
-      document.getElementById("moRotation").innerHTML = info;
-
-      info = eventData.interval;
-      document.getElementById("moInterval").innerHTML = info;
-    }
-
-    function round(val) {
-      var amt = 10;
-      return Math.round(val * amt) /  amt;
-    }
-
-
 });
