@@ -109,7 +109,7 @@ define([
 
                 osmb.setStyle({'roofColor': '#aaaaaa', 'wallColor': '#aaaaaa'});
             }
-            setupBuildings();
+            //setupBuildings();
 
             // Raster base layer
             window.baseLayer = L.tileLayer(tileProvider).addTo(map);
@@ -149,9 +149,28 @@ define([
             $btnOverlay.on('click', function(evt) {
                 evt.preventDefault();
                 $('.js-modal').toggleClass('is-open');
-                var scene = new ThreeDScene();
-                scene.renderBuilding();
+                renderLocality();
             });
+
+            function renderLocality() {
+                var scene = new ThreeDScene();
+                var centre = map.getCenter();
+                scene.setCentre([centre.lng, centre.lat]);
+                var bound = 0.0005;
+                var box = [centre.lat - bound, centre.lng - bound, centre.lat + bound, centre.lng + bound];
+                var url = 'http://overpass-api.de/api/interpreter?data=[out:json];((way(' + box.join(',') + ')[%22building%22]);(._;node(w);););out;'
+
+                $.getJSON(url, function(data) {
+                    var nodes = _(data.elements).filter(function(item) { return 'node' == item.type; });
+                    var features = _(data.elements).filter(function(item) { return 'way' == item.type && item.tags.building; });
+                    _(features).each(function(feature) {
+                        var outlinePath = _(nodes).map(function(item) {
+                            return [item.lon, item.lat];
+                        });
+                        scene.renderBuilding(outlinePath);
+                    });
+                });
+            };
 
             var $btnCloseOverlay = $('.js-close-modal');
             $btnCloseOverlay.on('click', function(evt) {
@@ -159,4 +178,5 @@ define([
                 $('.js-modal').removeClass('is-open');
             });
         });
+
 });
