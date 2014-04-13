@@ -163,12 +163,36 @@ define([
                 $.getJSON(url, function(data) {
                     var nodes = _(data.elements).filter(function(item) { return 'node' == item.type; });
                     var features = _(data.elements).filter(function(item) { return 'way' == item.type && item.tags.building; });
-                    _(features).each(function(feature) {
-                        var outlinePath = _(nodes).map(function(item) {
-                            return [item.lon, item.lat];
-                        });
+
+                    window.paths = [];
+                    function renderFeature(feature) {
+                        var outlinePath = _(nodes).chain().filter(function(node) {
+                            return 0 <= feature.nodes.indexOf(node.id);
+                        })
+                        .reverse()
+                        .map(function(node) {
+                            return [node.lon, node.lat];
+                        }).value();
+                        // Close path
+                        outlinePath.push(outlinePath[0]);
+                        var f = {
+                            "type": "Feature",
+                            "properties": {},
+                            "geometry": {
+                                "type": "LineString",
+                                "coordinates": outlinePath
+                            }
+                        }
+                        window.paths.push(f);
                         scene.renderBuilding(outlinePath);
-                    });
+                    }
+                    //_(features).each(renderFeature);
+
+                    renderFeature(features[2]);
+                    renderFeature(features[5]);
+                    renderFeature(features[7]);
+                    var gj = { "type": "FeatureCollection", features: window.paths};
+                    window.j = JSON.stringify(gj);
                 });
             };
 

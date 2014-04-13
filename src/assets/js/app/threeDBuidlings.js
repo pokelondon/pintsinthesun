@@ -4,16 +4,27 @@ define([
         'slider',
         'moment',
         'threejs',
-        'd3'
-    ], function($, _, Slider, moment, three, d3) {
+        'd3',
+        'mediator'
+    ], function($, _, Slider, moment, three, d3, Mediator) {
 
         var ThreeDScene = function() {
+            _.extend(this, Mediator)
             this.initScene();
             this.centre = [-0.0668529, 51.5127414]; // Central point as [lon, lat]
+            this.subscribe('update', this.render);
+
+            this.material = new THREE.MeshLambertMaterial({color: 0xffeedd});
+            this.height = 20;
+            this.extrudeSettings = { amount: this.height, bevelEnabled: false };
+
+            this.features = [];
         };
 
         ThreeDScene.prototype.setCentre = function setCentre(coords) {
             this.centre = coords;
+            this.publish('update');
+            return this;
         };
 
         // Set up the three.js scene. This is the most basic setup without
@@ -30,24 +41,24 @@ define([
                 FAR = 1000;
 
             // create a WebGL renderer, camera, and a scene
-            var renderer = new THREE.WebGLRenderer({antialias:true});
+            this.renderer = new THREE.WebGLRenderer({antialias:true});
             this.camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
             this.scene = new THREE.Scene();
 
             // add and position the camera at a fixed position
             this.scene.add(this.camera);
             this.camera.position.z = 100;
-            this.camera.position.x = 0;
+            this.camera.position.x = -100;
             this.camera.position.y = 350;
             this.camera.lookAt(new THREE.Vector3(0, 50, 0));
 
             // start the renderer, and black background
-            renderer.setSize(WIDTH, HEIGHT);
-            renderer.setClearColor(0x000);
-            renderer.shadowMapEnabled = true;
+            this.renderer.setSize(WIDTH, HEIGHT);
+            this.renderer.setClearColor(0x000);
+            this.renderer.shadowMapEnabled = true;
 
             // add the render target to the page
-            $("#ddd").append(renderer.domElement);
+            $("#ddd").append(this.renderer.domElement);
 
             // add a light at a specific position
             var pointLight = new THREE.SpotLight(0xFFFFFF);
@@ -69,44 +80,50 @@ define([
             // rotate it to correct position
             this.plane.rotation.x = -Math.PI/2;
             this.scene.add(this.plane);
+            this.render();
+        };
 
-            function render() {
-                requestAnimationFrame(render);
-                renderer.render(self.scene, self.camera);
-            }
-            render();
+        ThreeDScene.prototype.render = function render() {
+            //requestAnimationFrame(this.render);
+            this.renderer.render(this.scene, this.camera);
+            return this;
         };
 
         ThreeDScene.prototype.renderBuilding = function(coords) {
-            var self = this;
-            var material = new THREE.MeshLambertMaterial({color: 0xffeedd});
-            var height = 20;
-            var extrudeSettings = { amount: height, bevelEnabled: false };
             var shape = new THREE.Shape();
 
-            shape.moveTo(0, 0);
+            shape.moveTo(coords[coords.length-1][0], coords[coords.length-1][1]);
+            // Make points (that are lat longs into pixel coordinates
+            var points = _(coords).map(_.bind(this.convertProjection, this));
 
-            _(coords).each(function(xy) {
-                var pixelCoords = self.convertProjection(xy);
-                shape.lineTo(pixelCoords[0], pixelCoords[1]);
+            // Add points to the shape
+            _(points).each(function(xy) {
+                shape.lineTo(xy[0], xy[1]);
             });
 
-            // Close the shape
-            //shape.lineTo(coords[0][0], coords[0][1]);
+            //for(var i = 0; i < points.length; i++) {
+                //shape.lineTo(points[1][0], points[i][1]);
+            //}
 
-            var geom = new THREE.ExtrudeGeometry( shape, extrudeSettings );
-            var mesh = new THREE.Mesh(geom, material);
+            // Close the shape
+            //shape.close();
+
+            var geom = new THREE.ExtrudeGeometry(shape, this.extrudeSettings);
+            var mesh = new THREE.Mesh(geom, this.material);
+            //geom.computeFaceNormals();
 
             mesh.rotation.x = -Math.PI/2;
-            mesh.rotation.z = -Math.PI/2;
 
             mesh.castShadow = true;
             mesh.receiveShadow = true;
             this.scene.add(mesh);
-            this.convertProjection(51.5126588, -0.0668385);
+            this.features.push(mesh);
+            this.publish('update');
+            return this;
         };
 
-        ThreeDScene.prototype.render = function() {
+        ThreeDScene.prototype.unload = function() {
+            this.scene;
         };
 
 
