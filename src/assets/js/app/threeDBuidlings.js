@@ -32,7 +32,7 @@ define([
         ThreeDScene.prototype.initScene = function initScene() {
             var self = this;
             // set the scene size
-            var WIDTH = 600, HEIGHT = 600;
+            var WIDTH = 640, HEIGHT = 640;
 
             // set some camera attributes
             var VIEW_ANGLE = 45,
@@ -90,32 +90,27 @@ define([
         };
 
         ThreeDScene.prototype.renderBuilding = function(coords) {
-            var shape = new THREE.Shape();
-
-            shape.moveTo(coords[coords.length-1][0], coords[coords.length-1][1]);
             // Make points (that are lat longs into pixel coordinates
             var points = _(coords).map(_.bind(this.convertProjection, this));
+            var shape = new THREE.Shape();
+
+
+            shape.moveTo(points[points.length-1][0], points[points.length-1][1]);
 
             // Add points to the shape
             _(points).each(function(xy) {
                 shape.lineTo(xy[0], xy[1]);
             });
 
-            //for(var i = 0; i < points.length; i++) {
-                //shape.lineTo(points[1][0], points[i][1]);
-            //}
-
-            // Close the shape
-            //shape.close();
-
             var geom = new THREE.ExtrudeGeometry(shape, this.extrudeSettings);
             var mesh = new THREE.Mesh(geom, this.material);
-            //geom.computeFaceNormals();
+            geom.computeFaceNormals();
 
             mesh.rotation.x = -Math.PI/2;
 
             mesh.castShadow = true;
             mesh.receiveShadow = true;
+
             this.scene.add(mesh);
             this.features.push(mesh);
             this.publish('update');

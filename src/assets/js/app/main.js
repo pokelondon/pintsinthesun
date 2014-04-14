@@ -166,13 +166,18 @@ define([
 
                     window.paths = [];
                     function renderFeature(feature) {
-                        var outlinePath = _(nodes).chain().filter(function(node) {
+                        var nodesInThisFeature = _(nodes).filter(function(node) {
                             return 0 <= feature.nodes.indexOf(node.id);
-                        })
-                        .reverse()
-                        .map(function(node) {
+                        });
+
+                        nodesInThisFeature = nodesInThisFeature.sort(function(node) {
+                            console.log(feature.nodes.indexOf(node.id));
+                            return feature.nodes.indexOf(node.id);
+                        });
+
+                        var outlinePath = _(nodesInThisFeature).map(function(node) {
                             return [node.lon, node.lat];
-                        }).value();
+                        });
                         // Close path
                         outlinePath.push(outlinePath[0]);
                         var f = {
@@ -188,11 +193,10 @@ define([
                     }
                     //_(features).each(renderFeature);
 
-                    renderFeature(features[2]);
+                    renderFeature(features[4]);
                     renderFeature(features[5]);
-                    renderFeature(features[7]);
                     var gj = { "type": "FeatureCollection", features: window.paths};
-                    window.j = JSON.stringify(gj);
+                    console.log(JSON.stringify(gj));
                 });
             };
 
