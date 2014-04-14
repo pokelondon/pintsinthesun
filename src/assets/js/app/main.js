@@ -89,8 +89,8 @@ define([
             function setupBuildings() {
                 var osmb = new OSMBuildings(map).loadData();
                 var m = moment();
-                m.hour(11).minute(0).second(0);
-                var duration = moment.duration(8, 'hours').asSeconds();
+                m.hour(7).minute(0).second(0);
+                var duration = moment.duration(12, 'hours').asSeconds();
                 var $time = $('.js-slider-time');
                 var $clock = $('.js-clock');
 
