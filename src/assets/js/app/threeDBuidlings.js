@@ -62,15 +62,15 @@ define([
             $("#ddd").append(this.renderer.domElement);
 
             // add a light at a specific position
-            var pointLight = new THREE.SpotLight(0xFFFFFF);
-            this.scene.add(pointLight);
-            pointLight.position.x = 400;
-            pointLight.position.y = 320;
-            pointLight.position.z = -220;
-            pointLight.castShadow = true;
+            this.pointLight = new THREE.SpotLight(0xFFFFFF);
+            this.scene.add(this.pointLight);
+            this.pointLight.position.x = 400;
+            this.pointLight.position.y = 320;
+            this.pointLight.position.z = -220;
+            this.pointLight.castShadow = true;
 
-            pointLight.shadowDarkness = 0.4;
-            pointLight.shadowCameraVisible = true;
+            this.pointLight.shadowDarkness = 0.4;
+            this.pointLight.shadowCameraVisible = true;
 
             // add a base plane on which we'll render our map
             var planeGeo = new THREE.PlaneGeometry(1000, 1000, 10, 10);
@@ -81,22 +81,29 @@ define([
             // rotate it to correct position
             this.plane.rotation.x = -Math.PI/2;
             this.scene.add(this.plane);
-            this.render();
-            var axes = new THREE.AxisHelper(200);
-            this.scene.add(axes);
 
             this.controls = new THREE.TrackballControls( this.camera, this.renderer.domElement );
             this.animate();
         };
 
+        ThreeDScene.prototype.addHelpers = function addHelpers() {
+            var axes = new THREE.AxisHelper(200);
+            this.scene.add(axes);
+        };
+
+
         ThreeDScene.prototype.animate = function render() {
             requestAnimationFrame(_.bind(this.animate, this));
 
             this.controls.update();
-
             this.camera.position.sub(this.controls.target);
 
-            this.camera.lookAt(new THREE.Vector3(0, 50, 0));
+            var timer = new Date().getTime() * 0.0002;
+
+            this.pointLight.position.x = Math.floor(Math.cos(timer) * 200);
+            this.pointLight.position.z = Math.floor(Math.sin(timer) * 200);
+
+            this.pointLight.lookAt(new THREE.Vector3(0, 50, 0));
             this.render();
         };
 
