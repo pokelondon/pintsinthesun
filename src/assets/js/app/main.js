@@ -169,6 +169,7 @@ define([
                      * Add a feature from the GeoJSON to the 3d Scene/
                      */
                     function renderFeature(feature) {
+                        var levels = feature.tags['building:levels'] || 3;
                         var outlinePath = _(nodes).chain().filter(function(node) {
                             // Find nodes that are part of this feature
                             return 0 <= feature.nodes.indexOf(node.id);
@@ -183,7 +184,7 @@ define([
                         // Close path
                         outlinePath.push(outlinePath[0]);
                         // Render the buidling in 3D
-                        scene.renderBuilding(outlinePath);
+                        scene.renderBuilding(outlinePath, levels);
                     }
 
                     _(features).each(renderFeature);

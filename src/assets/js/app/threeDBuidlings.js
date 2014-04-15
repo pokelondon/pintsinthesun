@@ -106,7 +106,7 @@ define([
             return this;
         };
 
-        ThreeDScene.prototype.renderBuilding = function(coords) {
+        ThreeDScene.prototype.renderBuilding = function(coords, levels) {
             // Make points (that are lat longs into pixel coordinates
             var points = _(coords).map(_.bind(this.convertProjection, this));
             var shape = new THREE.Shape();
@@ -119,7 +119,7 @@ define([
                 shape.lineTo(xy[0], xy[1]);
             });
 
-            this.extrudeSettings['amount'] = _.random(10, 50);
+            this.extrudeSettings['amount'] = levels * 8;
             var geom = new THREE.ExtrudeGeometry(shape, this.extrudeSettings);
             var mesh = new THREE.Mesh(geom, this.material);
             geom.computeFaceNormals();
