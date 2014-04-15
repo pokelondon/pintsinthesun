@@ -11,6 +11,7 @@ requirejs.config({
         'OSMBuildings': 'osmbuildings/OSMBuildings-Leaflet',
         'leaflet': 'http://cdn.leafletjs.com/leaflet-0.7/leaflet',
         'threejs': 'https://rawgithub.com/mrdoob/three.js/master/build/three',
+        'trackball': 'http://threejs.org/examples/js/controls/TrackballControls',
         'd3': 'http://d3js.org/d3.v3.min',
         //'threeD': 'd3.threeD',
     },
@@ -29,9 +30,9 @@ requirejs.config({
         'd3': {
             exports: ['d3']
         },
-        //'threeD': {
-            //deps: ['threejs', 'd3']
-        //}
+        'trackball': {
+            deps: ['threejs']
+        }
     }
 });
 

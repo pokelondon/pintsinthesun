@@ -5,8 +5,9 @@ define([
         'moment',
         'threejs',
         'd3',
-        'mediator'
-    ], function($, _, Slider, moment, three, d3, Mediator) {
+        'mediator',
+        'trackball'
+    ], function($, _, Slider, moment, three, d3, Mediator, trackball) {
 
         var ThreeDScene = function() {
             _.extend(this, Mediator)
@@ -81,6 +82,24 @@ define([
             this.plane.rotation.x = -Math.PI/2;
             this.scene.add(this.plane);
             this.render();
+            var axes = new THREE.AxisHelper( 200 );
+            this.scene.add( axes );
+
+            this.controls = new THREE.TrackballControls( this.camera, this.renderer.domElement );
+            this.animate();
+        };
+
+        ThreeDScene.prototype.animate = function render() {
+            requestAnimationFrame(_.bind(this.animate, this));
+
+            this.controls.update();
+
+            //camera2.position.copy( camera.position );
+            this.camera.position.sub( this.controls.target ); // added by @libe
+            //camera2.position.setLength( CAM_DISTANCE );
+
+            this.camera.lookAt(new THREE.Vector3(0, 50, 0));
+            this.render();
         };
 
         ThreeDScene.prototype.render = function render() {
@@ -102,11 +121,14 @@ define([
                 shape.lineTo(xy[0], xy[1]);
             });
 
+            this.extrudeSettings['amount'] = _.random(10, 100);
             var geom = new THREE.ExtrudeGeometry(shape, this.extrudeSettings);
             var mesh = new THREE.Mesh(geom, this.material);
             geom.computeFaceNormals();
 
-            mesh.rotation.x = -Math.PI/2;
+            mesh.rotation.x = 3 * Math.PI/2;
+            mesh.rotation.z = 5* Math.PI/2;
+            //mesh.rotation.y = 2* -Math.PI/2;
 
             mesh.castShadow = true;
             mesh.receiveShadow = true;

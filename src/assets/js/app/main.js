@@ -161,42 +161,32 @@ define([
                 var url = 'http://overpass-api.de/api/interpreter?data=[out:json];((way(' + box.join(',') + ')[%22building%22]);(._;node(w);););out;'
 
                 $.getJSON(url, function(data) {
+                    // Filter items from the GeoJSON into nodes and features
                     var nodes = _(data.elements).filter(function(item) { return 'node' == item.type; });
                     var features = _(data.elements).filter(function(item) { return 'way' == item.type && item.tags.building; });
 
-                    window.paths = [];
+                    /**
+                     * Add a feature from the GeoJSON to the 3d Scene/
+                     */
                     function renderFeature(feature) {
-                        var nodesInThisFeature = _(nodes).filter(function(node) {
+                        var outlinePath = _(nodes).chain().filter(function(node) {
+                            // Find nodes that are part of this feature
                             return 0 <= feature.nodes.indexOf(node.id);
-                        });
-
-                        nodesInThisFeature = nodesInThisFeature.sort(function(node) {
-                            console.log(feature.nodes.indexOf(node.id));
+                        }).sortBy(function(node) {
+                            // Order nodes in the order that they are specified in the feature
                             return feature.nodes.indexOf(node.id);
-                        });
-
-                        var outlinePath = _(nodesInThisFeature).map(function(node) {
+                        }).map(function(node) {
+                            // Convert node objects to lat/lng array for passing to polygon function
                             return [node.lon, node.lat];
-                        });
+                        }).value();
+
                         // Close path
                         outlinePath.push(outlinePath[0]);
-                        var f = {
-                            "type": "Feature",
-                            "properties": {},
-                            "geometry": {
-                                "type": "LineString",
-                                "coordinates": outlinePath
-                            }
-                        }
-                        window.paths.push(f);
+                        // Render the buidling in 3D
                         scene.renderBuilding(outlinePath);
                     }
-                    //_(features).each(renderFeature);
 
-                    renderFeature(features[4]);
-                    renderFeature(features[5]);
-                    var gj = { "type": "FeatureCollection", features: window.paths};
-                    console.log(JSON.stringify(gj));
+                    _(features).each(renderFeature);
                 });
             };
 
