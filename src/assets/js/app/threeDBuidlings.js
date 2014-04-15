@@ -82,8 +82,8 @@ define([
             this.plane.rotation.x = -Math.PI/2;
             this.scene.add(this.plane);
             this.render();
-            var axes = new THREE.AxisHelper( 200 );
-            this.scene.add( axes );
+            var axes = new THREE.AxisHelper(200);
+            this.scene.add(axes);
 
             this.controls = new THREE.TrackballControls( this.camera, this.renderer.domElement );
             this.animate();
@@ -94,9 +94,7 @@ define([
 
             this.controls.update();
 
-            //camera2.position.copy( camera.position );
-            this.camera.position.sub( this.controls.target ); // added by @libe
-            //camera2.position.setLength( CAM_DISTANCE );
+            this.camera.position.sub(this.controls.target);
 
             this.camera.lookAt(new THREE.Vector3(0, 50, 0));
             this.render();
@@ -121,14 +119,12 @@ define([
                 shape.lineTo(xy[0], xy[1]);
             });
 
-            this.extrudeSettings['amount'] = _.random(10, 100);
+            this.extrudeSettings['amount'] = _.random(10, 50);
             var geom = new THREE.ExtrudeGeometry(shape, this.extrudeSettings);
             var mesh = new THREE.Mesh(geom, this.material);
             geom.computeFaceNormals();
 
             mesh.rotation.x = 3 * Math.PI/2;
-            mesh.rotation.z = 5* Math.PI/2;
-            //mesh.rotation.y = 2* -Math.PI/2;
 
             mesh.castShadow = true;
             mesh.receiveShadow = true;
@@ -151,8 +147,7 @@ define([
                 .center(this.centre) // Geographic coordinates of map centre
                 .translate([0, 0]) // Pixel coordinates of .center()
                 .scale(tileSize << zoom); // Scaling value
-            // Pixel location of Heathrow Airport to relation to central point (geoCoords)
-            var pixelValue = projection(coords); // Returns [x, y]
+            var pixelValue = projection(coords).reverse(); // Returns [x, y]
             return pixelValue;
         };
 
