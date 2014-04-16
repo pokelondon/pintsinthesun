@@ -87,29 +87,19 @@ define([
             }
             centreMap();
 
-            function setupBuildings() {
-                var osmb = new OSMBuildings(map).loadData();
-                var m = moment();
-                m.hour(11).minute(0).second(0);
-                var duration = moment.duration(8, 'hours').asSeconds();
-                var $time = $('.js-slider-time');
-                var $clock = $('.js-clock');
+            var $time = $('.js-slider-time');
+            var $clock = $('.js-clock');
+            var m = moment();
+            m.hour(11).minute(0).second(0);
+            var duration = moment.duration(8, 'hours').asSeconds();
+            var slider = new Slider($time, function(data) {
+                var newM = m.clone().add(duration * data / 100, 'seconds');
+                $(window).trigger('clock:change', newM);
+            });
 
-                function setClock(mObj) {
-                    $clock.text(mObj.format("H:mm a"));
-                    osmb.setDate(mObj.toDate());
-                }
-
-                var slider = new Slider($time, function(data) {
-                    var newM = m.clone().add(duration * data / 100, 'seconds');
-                    setClock(newM);
-                });
-
-                setClock(m);
-
-                osmb.setStyle({'roofColor': '#aaaaaa', 'wallColor': '#aaaaaa'});
-            }
-            //setupBuildings();
+            $(window).on('clock:change', function(evt, m) {
+                $clock.text(m.format("H:mm a"));
+            });
 
             // Raster base layer
             window.baseLayer = L.tileLayer(tileProvider).addTo(map);

@@ -13,8 +13,8 @@ define([
         function angles2cartesian(azimuth, altitude) {
             var x, y, z, h;
 
-            y = 300;
-            x = Math.tan(90 + azimuth) * y;
+            y = 100;
+            x = Math.tan(180 + azimuth) * y;
             h = Math.sqrt(Math.pow(y, 2) + Math.pow(x, 2));
             z = Math.tan(altitude) * h;
 
@@ -27,7 +27,7 @@ define([
             this.centre = [-0.0668529, 51.5127414]; // Central point as [lon, lat]
             this.subscribe('update', this.render);
 
-            this.material = new THREE.MeshLambertMaterial({color: 0xffeedd});
+            this.material = new THREE.MeshLambertMaterial({color: 0xeeffdd});
             this.height = 20;
             this.extrudeSettings = { amount: this.height, bevelEnabled: false };
 
@@ -51,7 +51,7 @@ define([
             var VIEW_ANGLE = 45,
                 ASPECT = WIDTH / HEIGHT,
                 NEAR = 0.1,
-                FAR = 1000;
+                FAR = 10000;
 
             // create a WebGL renderer, camera, and a scene
             this.renderer = new THREE.WebGLRenderer({antialias:true});
@@ -60,10 +60,12 @@ define([
 
             // add and position the camera at a fixed position
             this.scene.add(this.camera);
-            this.camera.position.z = 100;
-            this.camera.position.x = -100;
-            this.camera.position.y = 350;
-            this.camera.lookAt(new THREE.Vector3(0, 50, 0));
+            this.camera.position.z = 300;
+            this.camera.position.x = 0;
+            this.camera.position.y = 300;
+            this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+            this.camera.rotation.x = 3*-Math.PI/2;
 
             // start the renderer, and black background
             this.renderer.setSize(WIDTH, HEIGHT);
@@ -73,37 +75,90 @@ define([
             // add the render target to the page
             $("#ddd").append(this.renderer.domElement);
 
-            // add a light at a specific position
-            this.pointLight = new THREE.SpotLight(0xFFFFFF);
-            this.scene.add(this.pointLight);
+            this.letThereBeLight();
+            this.createFloor();
 
-            this.pointLight.position.x = 1072;
-            this.pointLight.position.y = 300;
-            this.pointLight.position.z = 1132;
-            this.pointLight.castShadow = true;
+            this.addHelpers();
 
-            this.pointLight.shadowDarkness = 0.4;
-            this.pointLight.shadowCameraVisible = true;
+            var light = new THREE.PointLight( 0xeeff00, 1, 1000 );
+            light.position.set( 1000, 3000, -3000 );
+            this.scene.add( light );
 
+            this.controls = new THREE.TrackballControls( this.camera, this.renderer.domElement );
+            this.animate();
+        };
+
+
+        ThreeDScene.prototype.createFloor = function createFloor() {
             // add a base plane on which we'll render our map
             var planeGeo = new THREE.PlaneGeometry(1000, 1000, 10, 10);
-            var planeMat = new THREE.MeshLambertMaterial({color: 0x666699});
+            var planeMat = new THREE.MeshLambertMaterial({color: 0xcccccc});
+
             this.plane = new THREE.Mesh(planeGeo, planeMat);
             this.plane.receiveShadow = true;
 
             // rotate it to correct position
             this.plane.rotation.x = -Math.PI/2;
             this.scene.add(this.plane);
+        };
 
-            this.updateSunPosition(new Date());
 
-            this.controls = new THREE.TrackballControls( this.camera, this.renderer.domElement );
-            this.animate();
+        ThreeDScene.prototype.letThereBeLight = function letThereBeLight() {
+            var self = this;
+            // add a light at a specific position
+            this.sun = new THREE.SpotLight(0xFFFFFF);
+            this.scene.add(this.sun);
+
+            this.sun.position.x = -100;
+            this.sun.position.y = 500;
+            this.sun.position.z = 1000;
+            this.sun.castShadow = true;
+
+            this.sun.shadowDarkness = 0.4;
+            this.sun.shadowCameraVisible = true;
+
+            //this.updateSunPosition(new Date(2014, 4, 16, 18, 0, 0));
+
+            $(window).on('clock:change', function(evt, m) {
+                //self.updateSunPosition(m.toDate());
+            });
         };
 
         ThreeDScene.prototype.addHelpers = function addHelpers() {
+            var self = this;
             var axes = new THREE.AxisHelper(200);
             this.scene.add(axes);
+
+            (function() {
+                var southBox = new THREE.CubeGeometry(10, 10, 10);
+                var cubeMat = new THREE.MeshPhongMaterial({color: 0xff0000});
+                var cubeMesh = new THREE.Mesh(southBox, cubeMat);
+                self.scene.add(cubeMesh);
+                cubeMesh.position.x = 200;
+                cubeMesh.position.y = 0;
+                cubeMesh.position.z = 0;
+            }());
+
+            (function() {
+                var southBox = new THREE.CubeGeometry(10, 10, 10);
+                var cubeMat = new THREE.MeshPhongMaterial({color: 0x00ff00});
+                var cubeMesh = new THREE.Mesh(southBox, cubeMat);
+                self.scene.add(cubeMesh);
+                cubeMesh.position.x = 0;
+                cubeMesh.position.y = 200;
+                cubeMesh.position.z = 0;
+            }());
+
+            (function() {
+                var southBox = new THREE.CubeGeometry(10, 10, 10);
+                var cubeMat = new THREE.MeshPhongMaterial({color: 0x0000ff});
+                var cubeMesh = new THREE.Mesh(southBox, cubeMat);
+                self.scene.add(cubeMesh);
+                cubeMesh.position.x = 0;
+                cubeMesh.position.y = 0;
+                cubeMesh.position.z = 200;
+            }());
+
         };
 
 
@@ -121,21 +176,19 @@ define([
             return this;
         };
 
-        ThreeDScene.prototype.updateSunPosition = function updateSunPosition(date, centre) {
-            var dt = date || new Date();
-            var pos = SunCalc.getPosition(dt, this.centre[1], this.centre[0]);
+        ThreeDScene.prototype.updateSunPosition = function updateSunPosition(date) {
+            var dt = date || new Date(2014, 04, 16, 10, 0, 0);
+            var centre = this.centre || [-0.0668529, 51.5127414];
+            var pos = SunCalc.getPosition(dt, centre[1], centre[0]);
             var azimuth = pos.azimuth * 180 / Math.PI;
             var altitude = pos.altitude * 180 / Math.PI;
             console.log(azimuth, altitude, this.centre);
 
             var sun = angles2cartesian(azimuth, altitude);
 
-            this.pointLight.position.x = sun[0];
-            this.pointLight.position.y = sun[1];
-            this.pointLight.position.z = sun[2];
-            this.pointLight.lookAt(new THREE.Vector3(0, 50, 0));
-
-            console.log('Updating sun position for', dt);
+            this.sun.position.x = sun[0];
+            this.sun.position.y = sun[1];
+            this.sun.position.z = sun[2];
 
             this.publish('update');
         };
@@ -144,7 +197,6 @@ define([
             // Make points (that are lat longs into pixel coordinates
             var points = _(coords).map(_.bind(this.convertProjection, this));
             var shape = new THREE.Shape();
-
 
             shape.moveTo(points[points.length-1][0], points[points.length-1][1]);
 
@@ -158,7 +210,8 @@ define([
             var mesh = new THREE.Mesh(geom, this.material);
             geom.computeFaceNormals();
 
-            mesh.rotation.x = 3 * Math.PI/2;
+            mesh.rotation.x = -Math.PI/2;
+            mesh.rotation.z = Math.PI/2;
 
             mesh.castShadow = true;
             mesh.receiveShadow = true;
@@ -181,8 +234,8 @@ define([
                 .center(this.centre) // Geographic coordinates of map centre
                 .translate([0, 0]) // Pixel coordinates of .center()
                 .scale(tileSize << zoom); // Scaling value
-            var pixelValue = projection(coords).reverse(); // Returns [x, y]
-            return pixelValue;
+            var pixelValue = projection(coords); // Returns [x, y]
+            return [pixelValue[1] * -1, pixelValue[0] * -1];
         };
 
         return ThreeDScene;
