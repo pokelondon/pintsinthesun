@@ -64,9 +64,10 @@ define([
             // add a light at a specific position
             this.pointLight = new THREE.SpotLight(0xFFFFFF);
             this.scene.add(this.pointLight);
-            this.pointLight.position.x = 400;
-            this.pointLight.position.y = 320;
-            this.pointLight.position.z = -220;
+
+            this.pointLight.position.x = 1072;
+            this.pointLight.position.y = 300;
+            this.pointLight.position.z = 1132;
             this.pointLight.castShadow = true;
 
             this.pointLight.shadowDarkness = 0.4;
@@ -97,13 +98,6 @@ define([
 
             this.controls.update();
             this.camera.position.sub(this.controls.target);
-
-            var timer = new Date().getTime() * 0.0002;
-
-            this.pointLight.position.x = Math.floor(Math.cos(timer) * 200);
-            this.pointLight.position.z = Math.floor(Math.sin(timer) * 200);
-
-            this.pointLight.lookAt(new THREE.Vector3(0, 50, 0));
             this.render();
         };
 
