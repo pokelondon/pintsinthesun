@@ -6,8 +6,20 @@ define([
         'threejs',
         'd3',
         'mediator',
-        'trackball'
-    ], function($, _, Slider, moment, three, d3, Mediator, trackball) {
+        'trackball',
+        'suncalc'
+    ], function($, _, Slider, moment, three, d3, Mediator, trackball, SunCalc) {
+
+        function angles2cartesian(azimuth, altitude) {
+            var x, y, z, h;
+
+            y = 300;
+            x = Math.tan(90 + azimuth) * y;
+            h = Math.sqrt(Math.pow(y, 2) + Math.pow(x, 2));
+            z = Math.tan(altitude) * h;
+
+            return [x, y, z];
+        }
 
         var ThreeDScene = function() {
             _.extend(this, Mediator)
@@ -33,7 +45,7 @@ define([
         ThreeDScene.prototype.initScene = function initScene() {
             var self = this;
             // set the scene size
-            var WIDTH = 640, HEIGHT = 640;
+            var WIDTH = 600, HEIGHT = 600;
 
             // set some camera attributes
             var VIEW_ANGLE = 45,
@@ -83,6 +95,8 @@ define([
             this.plane.rotation.x = -Math.PI/2;
             this.scene.add(this.plane);
 
+            this.updateSunPosition(new Date());
+
             this.controls = new THREE.TrackballControls( this.camera, this.renderer.domElement );
             this.animate();
         };
@@ -105,6 +119,25 @@ define([
             //requestAnimationFrame(this.render);
             this.renderer.render(this.scene, this.camera);
             return this;
+        };
+
+        ThreeDScene.prototype.updateSunPosition = function updateSunPosition(date, centre) {
+            var dt = date || new Date();
+            var pos = SunCalc.getPosition(dt, this.centre[1], this.centre[0]);
+            var azimuth = pos.azimuth * 180 / Math.PI;
+            var altitude = pos.altitude * 180 / Math.PI;
+            console.log(azimuth, altitude, this.centre);
+
+            var sun = angles2cartesian(azimuth, altitude);
+
+            this.pointLight.position.x = sun[0];
+            this.pointLight.position.y = sun[1];
+            this.pointLight.position.z = sun[2];
+            this.pointLight.lookAt(new THREE.Vector3(0, 50, 0));
+
+            console.log('Updating sun position for', dt);
+
+            this.publish('update');
         };
 
         ThreeDScene.prototype.renderBuilding = function(coords, levels) {
