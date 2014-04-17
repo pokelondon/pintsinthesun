@@ -11,12 +11,13 @@ define([
     ], function($, _, Slider, moment, three, d3, Mediator, trackball, SunCalc) {
 
         function angles2cartesian(azimuth, altitude) {
-            var x, y, z;
+            var x, y, z, radius, h;
 
-            y = 200;
-            x = Math.tan(azimuth) * y;
-            z = Math.tan(altitude) * Math.cos(azimuth) / y;
-            console.log(azimuth, altitude, x, y, z);
+            radius = 500;
+            h = radius * Math.cos(altitude);
+            y = h * Math.tan(altitude);
+            x = h * Math.tan(azimuth) * -1;
+            z = h * Math.cos(azimuth);
 
             return [x, y, z];
         }
@@ -45,7 +46,7 @@ define([
         ThreeDScene.prototype.initScene = function initScene() {
             var self = this;
             // set the scene size
-            var WIDTH = 600, HEIGHT = 600;
+            var WIDTH = $('.Modal-body').innerWidth(), HEIGHT = 600;
 
             // set some camera attributes
             var VIEW_ANGLE = 45,
@@ -180,10 +181,10 @@ define([
             var dt = date || new Date(2014, 04, 16, 10, 0, 0);
             var centre = this.centre || [-0.0668529, 51.5127414];
             var pos = SunCalc.getPosition(dt, centre[1], centre[0]);
-            var azimuth = pos.azimuth * 180 / Math.PI;
-            var altitude = pos.altitude * 180 / Math.PI;
+            //var azimuth = pos.azimuth * 180 / Math.PI;
+            //var altitude = pos.altitude * 180 / Math.PI;
 
-            var sun = angles2cartesian(azimuth, altitude);
+            var sun = angles2cartesian(pos.azimuth, pos.altitude);
 
             this.sun.position.x = sun[0];
             this.sun.position.y = sun[1];
