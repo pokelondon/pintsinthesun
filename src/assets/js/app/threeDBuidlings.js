@@ -11,12 +11,12 @@ define([
     ], function($, _, Slider, moment, three, d3, Mediator, trackball, SunCalc) {
 
         function angles2cartesian(azimuth, altitude) {
-            var x, y, z, h;
+            var x, y, z;
 
-            y = 100;
-            x = Math.tan(180 + azimuth) * y;
-            h = Math.sqrt(Math.pow(y, 2) + Math.pow(x, 2));
-            z = Math.tan(altitude) * h;
+            y = 200;
+            x = Math.tan(azimuth) * y;
+            z = Math.tan(altitude) * Math.cos(azimuth) / y;
+            console.log(azimuth, altitude, x, y, z);
 
             return [x, y, z];
         }
@@ -80,9 +80,9 @@ define([
 
             this.addHelpers();
 
-            var light = new THREE.PointLight( 0xeeff00, 1, 1000 );
-            light.position.set( 1000, 3000, -3000 );
-            this.scene.add( light );
+            //var light = new THREE.PointLight( 0xeeff00, 1, 1000 );
+            //light.position.set( 1000, 3000, -3000 );
+            //this.scene.add( light );
 
             this.controls = new THREE.TrackballControls( this.camera, this.renderer.domElement );
             this.animate();
@@ -117,10 +117,10 @@ define([
             this.sun.shadowDarkness = 0.4;
             this.sun.shadowCameraVisible = true;
 
-            //this.updateSunPosition(new Date(2014, 4, 16, 18, 0, 0));
+            this.updateSunPosition(new Date(2014, 4, 16, 18, 0, 0));
 
             $(window).on('clock:change', function(evt, m) {
-                //self.updateSunPosition(m.toDate());
+                self.updateSunPosition(m.toDate());
             });
         };
 
@@ -182,7 +182,6 @@ define([
             var pos = SunCalc.getPosition(dt, centre[1], centre[0]);
             var azimuth = pos.azimuth * 180 / Math.PI;
             var altitude = pos.altitude * 180 / Math.PI;
-            console.log(azimuth, altitude, this.centre);
 
             var sun = angles2cartesian(azimuth, altitude);
 
