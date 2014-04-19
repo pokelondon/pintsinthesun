@@ -90,8 +90,8 @@ define([
             var $time = $('.js-slider-time');
             var $clock = $('.js-clock');
             var m = moment();
-            m.hour(11).minute(0).second(0);
-            var duration = moment.duration(8, 'hours').asSeconds();
+            m.hour(8).minute(0).second(0);
+            var duration = moment.duration(12, 'hours').asSeconds();
             var slider = new Slider($time, function(data) {
                 var newM = m.clone().add(duration * data / 100, 'seconds');
                 $(window).trigger('clock:change', newM);
