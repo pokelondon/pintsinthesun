@@ -23,14 +23,25 @@ define([
         }
 
         var ThreeDScene = function() {
-            _.extend(this, Mediator)
+            _.extend(this, Mediator);
             this.initScene();
             this.centre = [-0.0668529, 51.5127414]; // Central point as [lon, lat]
             this.subscribe('update', this.render);
 
-            this.material = new THREE.MeshLambertMaterial({color: 0xeeffdd});
+
+            this.roofMaterials = [];
+            var txRoof1 = THREE.ImageUtils.loadTexture("assets/img/textures/roof1.jpg");
+            var txRoof2 = THREE.ImageUtils.loadTexture("assets/img/textures/roof2.jpg");
+            var txRoof3 = THREE.ImageUtils.loadTexture("assets/img/textures/roof3.jpg");
+            this.roofMaterials.push(new THREE.MeshLambertMaterial({map: txRoof1}));
+            this.roofMaterials.push(new THREE.MeshLambertMaterial({map: txRoof2}));
+            this.roofMaterials.push(new THREE.MeshLambertMaterial({map: txRoof3}));
+
+            this.pubMaterialRoof = new THREE.MeshLambertMaterial({color: 0x00ffdd});
+            this.materialWall = new THREE.MeshLambertMaterial({color: 0x00ff00});
             this.height = 20;
-            this.extrudeSettings = { amount: this.height, bevelEnabled: false };
+            this.extrudeSettings = { amount: this.height, bevelEnabled: false, material: 0,
+                                    extrudeMaterial: 1 };
 
             this.features = [];
         };
@@ -93,9 +104,11 @@ define([
         ThreeDScene.prototype.createFloor = function createFloor() {
             // add a base plane on which we'll render our map
             var planeGeo = new THREE.PlaneGeometry(1000, 1000, 10, 10);
-            var planeMat = new THREE.MeshLambertMaterial({color: 0xcccccc});
+            var texture = THREE.ImageUtils.loadTexture("assets/img/textures/tarmac.jpg");
+            var planeMat = new THREE.MeshLambertMaterial({map: texture});
 
             this.plane = new THREE.Mesh(planeGeo, planeMat);
+            this.plane.side = THREE.DoubleSide;
             this.plane.receiveShadow = true;
 
             // rotate it to correct position
@@ -120,8 +133,8 @@ define([
 
             this.updateSunPosition(new Date(2014, 4, 16, 18, 0, 0));
 
-            $(window).on('clock:change', function(evt, m) {
-                self.updateSunPosition(m.toDate());
+            this.subscribe('clock:change', function(m) {
+                this.updateSunPosition(m.toDate());
             });
         };
 
@@ -193,10 +206,14 @@ define([
             this.publish('update');
         };
 
-        ThreeDScene.prototype.renderBuilding = function(coords, levels) {
+        ThreeDScene.prototype.renderBuilding = function(coords, levels, isPub) {
             // Make points (that are lat longs into pixel coordinates
             var points = _(coords).map(_.bind(this.convertProjection, this));
             var shape = new THREE.Shape();
+            var materialRoof = this.roofMaterials[_.random(0, this.roofMaterials.length -1)];
+            if(isPub) {
+                materialRoof = this.pubMaterialRoof;
+            }
 
             shape.moveTo(points[points.length-1][0], points[points.length-1][1]);
 
@@ -206,8 +223,12 @@ define([
             });
 
             this.extrudeSettings['amount'] = levels * 8;
+
+            var materials = [materialRoof, this.materialWall];
             var geom = new THREE.ExtrudeGeometry(shape, this.extrudeSettings);
-            var mesh = new THREE.Mesh(geom, this.material);
+            var meshMaterial = new THREE.MeshFaceMaterial(materials);
+            var mesh = new THREE.Mesh(geom, meshMaterial);
+
             geom.computeFaceNormals();
 
             mesh.rotation.x = -Math.PI/2;

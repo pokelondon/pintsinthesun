@@ -4,13 +4,13 @@ define([
         'OSMBuildings',
         'slider',
         'moment',
-        'threeDBuidlings'
-    ], function($, _, OSMBuildings, Slider, moment, ThreeDScene) {
+        'threeDBuidlings',
+        'mediator',
+        'map'
+    ], function($, _, OSMBuildings, Slider, moment, ThreeDScene, Mediator, Map) {
 
-        var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/1a1b06b230af4efdbb989ea99e9841af/997/256/{z}/{x}/{y}.png';
-        var osmUrl = 'http://a.tile.openstreetmap.org/{z}/{x}/{y}.png';
-        var mapBoxUrl = 'https://a.tiles.mapbox.com/v3/errkk.hmcik8n5/{z}/{x}/{y}@2x.png'
-        var tileProvider = mapBoxUrl;
+        var FOURSQUARE_URL = 'https://api.foursquare.com/v2/venues/search\?client_id\=FNJEOV4QV4YBMJ4J5EQNKQTCQXOQBCUSIIYIZAXWMKLY5XPN\&client_secret\=NEKCZ4IFX4SOJEPDY2E1ZIV4NTAYZ3GWQHWKKPSQF3KOZKCS\&v\=1396279715756\&ll\={lat}%2C{lng}\&radius\=500\&intent\=browse\&limit\=50\&categoryId\=4bf58dd8d48988d11b941735%2C4bf58dd8d48988d116941735'
+        var OVERPASS_URL = 'http://overpass-api.de/api/interpreter?data=[out:json];((way({bounds})[%22building%22]);(._;node(w);););out;'
 
         var pintIcon = L.icon({
             iconUrl: 'assets/img/pint-icon.png',
@@ -24,162 +24,151 @@ define([
             shadowAnchor: [10, 27]
         });
 
-        function getPubs(callback) {
-            var centre = map.getCenter();
-            var url = 'https://api.foursquare.com/v2/venues/search\?client_id\=FNJEOV4QV4YBMJ4J5EQNKQTCQXOQBCUSIIYIZAXWMKLY5XPN\&client_secret\=NEKCZ4IFX4SOJEPDY2E1ZIV4NTAYZ3GWQHWKKPSQF3KOZKCS\&v\=1396279715756\&ll\=' + centre.lat + '%2C' + centre.lng + '\&radius\=500\&intent\=browse\&limit\=50\&categoryId\=4bf58dd8d48988d11b941735%2C4bf58dd8d48988d116941735'
-            request = new XMLHttpRequest();
-            request.open('GET', url, true);
-            request.onload = function() {
-                if (request.status >= 200 && request.status < 400){
-                    // Success!
-                    data = JSON.parse(request.responseText);
-                    callback(data);
-                    window.pubs = data.response.venues;
-                } else {
-                    console.error('Error from teh server', request.status);
-                }
-            };
-            request.send();
-            return request;
+        /**
+         * Utility to parse strings with placeholders
+         */
+        function format(str, values) {
+           _(values).each(function(v, k) {
+                str = str.replace('{' + k + '}', v);
+            });
+           return str;
         }
 
-        $(document).ready(function() {
-            window.map = new L.Map('map');
+        /**
+         * Main app
+         * Instanciates other components and controlls the display and flow of the page
+         */
+        var App = function(mapController) {
+            _.extend(this, Mediator);
+            this.mapController = mapController;
 
-            function centreMap() {
-                var centre = {lat: 51.524312, lng: -0.076432};
-                var data = window.localStorage.getItem('centre');
-                var cachedCentre = JSON.parse(data);
-                var zoom = window.localStorage['zoom'] || 18;
+            // Elements
+            this.$btnLoadPubs = $('.js-load-pubs');
+            this.$time = $('.js-slider-time');
+            this.$clock = $('.js-clock');
 
-                function centreCurrentLocation(callback) {
-                    if(navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(function(position) {
-                            var centre = {};
-                            centre.lat = position.coords.latitude;
-                            centre.lng = position.coords.longitude;
-                            map.setView(centre, zoom);
-                            if('function' === typeof callback) {
-                                callback(centre);
-                            }
-                        });
-                    }
-                }
+            // Events
+            this.$btnLoadPubs.on('click', _.bind(this.loadPubsButton, this));
 
-                try {
-                    map.setView(cachedCentre, zoom);
-                } catch(e) {
-                    map.setView(centre, zoom);
-                    centreCurrentLocation();
-                }
+            // Mediator events
+            this.subscribe('foursquare:loaded', this.plotPubs);
+            this.subscribe('clock:change', function(m) {
+                this.$clock.text(m.format("H:mm a"));
+            });
 
-                // Bind button
-                var $btnLocate = $('.js-locate-me');
-                $btnLocate.on('click', function(evt) {
-                    evt.preventDefault();
-                    $btnLocate.addClass('is-loading');
-                    centreCurrentLocation(function() {
-                        $btnLocate.removeClass('is-loading');
-                    });
+            // Init stuff
+            this.setUpTime();
+
+        };
+
+        /**
+         * Load pubs form FSQ near to the map centre.
+         * Publishes an event to the mediator when complete
+         */
+        App.prototype.getPubs = function () {
+            var centre = this.mapController.map.getCenter();
+            var url = format(FOURSQUARE_URL, {lat: centre.lat, lng: centre.lng});
+            $.getJSON(url, _.bind(function(data) {
+                this.publish('foursquare:loaded', data);
+            }, this));
+        };
+
+        /**
+         * Triggers ajax load of locations
+         */
+        App.prototype.loadPubsButton = function(evt) {
+            evt.preventDefault();
+            this.$btnLoadPubs.addClass('is-loading');
+            this.getPubs();
+        };
+
+        /**
+         * Plots pubs on the map.
+         * Subscribe to the ajax event to recieve data when its ready
+         */
+        App.prototype.plotPubs = function(data) {
+            var self = this;
+            this.$btnLoadPubs.removeClass('is-loading');
+            _(data.response.venues).each(function(item) {
+                var m = L.marker([item.location.lat, item.location.lng], {icon: pintIcon})
+                        .addTo(self.mapController.map)
+                        .bindPopup(item.name);
+                m.on('click', function() {
+                    m.openPopup();
                 });
+            });
+        };
 
-
-            }
-            centreMap();
-
-            var $time = $('.js-slider-time');
-            var $clock = $('.js-clock');
-            var m = moment();
-            m.hour(8).minute(0).second(0);
+        /**
+         * Set up the app's simulated time. Publishes events when it changes so all
+         * suscribers can update their shit
+         */
+        App.prototype.setUpTime = function() {
+            this.m = moment();
+            this.m.hour(8).minute(0).second(0);
             var duration = moment.duration(12, 'hours').asSeconds();
-            var slider = new Slider($time, function(data) {
-                var newM = m.clone().add(duration * data / 100, 'seconds');
-                $(window).trigger('clock:change', newM);
+
+            var slider = new Slider(this.$time, _.bind(function(data) {
+                var newM = this.m.clone().add(duration * data / 100, 'seconds');
+                this.publish('clock:change', newM);
+            }, this));
+
+            // TODO set slider to now
+        };
+
+        App.prototype.renderLocality = function(centre) {
+            var scene = new ThreeDScene();
+            var centre = centre || this.mapController.map.getCenter();
+            scene.setCentre([centre.lng, centre.lat]);
+            var bound = 0.0008;
+            var box = [centre.lat - bound, centre.lng - bound, centre.lat + bound, centre.lng + bound];
+            var url = format(OVERPASS_URL, {bounds: box.join(',')});
+
+            $.getJSON(url, function(data) {
+                // Filter items from the GeoJSON into nodes and features
+                var nodes = _(data.elements).filter(function(item) { return 'node' == item.type; });
+                var features = _(data.elements).filter(function(item) { return 'way' == item.type && item.tags.building; });
+
+                /**
+                 * Add a feature from the GeoJSON to the 3D scene
+                 */
+                function renderFeature(feature) {
+                    var levels = feature.tags['building:levels'] || 3;
+                    var isPub = (feature.tags.amenity == 'pub');
+                    var outlinePath = _(nodes).chain().filter(function(node) {
+                        // Find nodes that are part of this feature
+                        return 0 <= feature.nodes.indexOf(node.id);
+                    }).sortBy(function(node) {
+                        // Order nodes in the order that they are specified in the feature
+                        return feature.nodes.indexOf(node.id);
+                    }).map(function(node) {
+                        // Convert node objects to lat/lng array for passing to polygon function
+                        return [node.lon, node.lat];
+                    }).value();
+
+                    // Close path
+                    outlinePath.push(outlinePath[0]);
+                    // Render the buidling in 3D
+                    scene.renderBuilding(outlinePath, levels, isPub);
+                }
+
+                _(features).each(renderFeature);
             });
+        };
 
-            $(window).on('clock:change', function(evt, m) {
-                $clock.text(m.format("H:mm a"));
-            });
 
-            // Raster base layer
-            window.baseLayer = L.tileLayer(tileProvider).addTo(map);
-
-            // Load pubs button
-            var $loadPubs = $('.js-load-pubs');
-            $loadPubs.on('click', function(evt) {
-                evt.preventDefault();
-
-                $loadPubs.addClass('is-loading');
-
-                getPubs(function(data) {
-                    $loadPubs.removeClass('is-loading');
-                    _(data.response.venues).each(function(item) {
-                        var m = L.marker([item.location.lat, item.location.lng], {icon: pintIcon})
-                                .addTo(map)
-                                .bindPopup(item.name);
-                        m.on('click', function() {
-                            m.openPopup();
-                        });
-                    });
-                });
-            });
-
-            /**
-            * Save location for next reload
-            */
-            map.on('moveend', function() {
-                var data = map.getCenter();
-                var centre = JSON.stringify({lat: data.lat, lng: data.lng});
-                window.localStorage.setItem('centre', centre);
-                window.localStorage.setItem('zoom', map.getZoom());
-            });
+        $(document).ready(function() {
+            var mapController = new Map();
+            var app = new App(mapController);
 
             // Bind button
             var $btnOverlay = $('.js-open-modal');
             $btnOverlay.on('click', function(evt) {
                 evt.preventDefault();
                 $('.js-modal').toggleClass('is-open');
-                renderLocality();
+                app.renderLocality();
             });
 
-            function renderLocality() {
-                var scene = new ThreeDScene();
-                var centre = map.getCenter();
-                scene.setCentre([centre.lng, centre.lat]);
-                var bound = 0.0005;
-                var box = [centre.lat - bound, centre.lng - bound, centre.lat + bound, centre.lng + bound];
-                var url = 'http://overpass-api.de/api/interpreter?data=[out:json];((way(' + box.join(',') + ')[%22building%22]);(._;node(w);););out;'
-
-                $.getJSON(url, function(data) {
-                    // Filter items from the GeoJSON into nodes and features
-                    var nodes = _(data.elements).filter(function(item) { return 'node' == item.type; });
-                    var features = _(data.elements).filter(function(item) { return 'way' == item.type && item.tags.building; });
-
-                    /**
-                     * Add a feature from the GeoJSON to the 3d Scene/
-                     */
-                    function renderFeature(feature) {
-                        var levels = feature.tags['building:levels'] || 3;
-                        var outlinePath = _(nodes).chain().filter(function(node) {
-                            // Find nodes that are part of this feature
-                            return 0 <= feature.nodes.indexOf(node.id);
-                        }).sortBy(function(node) {
-                            // Order nodes in the order that they are specified in the feature
-                            return feature.nodes.indexOf(node.id);
-                        }).map(function(node) {
-                            // Convert node objects to lat/lng array for passing to polygon function
-                            return [node.lon, node.lat];
-                        }).value();
-
-                        // Close path
-                        outlinePath.push(outlinePath[0]);
-                        // Render the buidling in 3D
-                        scene.renderBuilding(outlinePath, levels);
-                    }
-
-                    _(features).each(renderFeature);
-                });
-            };
 
             var $btnCloseOverlay = $('.js-close-modal');
             $btnCloseOverlay.on('click', function(evt) {

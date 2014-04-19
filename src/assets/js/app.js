@@ -8,6 +8,7 @@ requirejs.config({
         'slider': '../app/slider',
         'threeDBuidlings': '../app/threeDBuidlings',
         'mediator': '../app/mediator',
+        'map': '../app/map',
         'OSMBuildings': 'osmbuildings/OSMBuildings-Leaflet',
         'leaflet': 'http://cdn.leafletjs.com/leaflet-0.7/leaflet',
         'threejs': 'https://rawgithub.com/mrdoob/three.js/master/build/three',
