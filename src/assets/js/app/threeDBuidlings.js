@@ -28,22 +28,33 @@ define([
             this.centre = [-0.0668529, 51.5127414]; // Central point as [lon, lat]
             this.subscribe('update', this.render);
 
-
-            this.roofMaterials = [];
-            var txRoof1 = THREE.ImageUtils.loadTexture("assets/img/textures/roof1.jpg");
-            var txRoof2 = THREE.ImageUtils.loadTexture("assets/img/textures/roof2.jpg");
-            var txRoof3 = THREE.ImageUtils.loadTexture("assets/img/textures/roof3.jpg");
-            this.roofMaterials.push(new THREE.MeshLambertMaterial({map: txRoof1}));
-            this.roofMaterials.push(new THREE.MeshLambertMaterial({map: txRoof2}));
-            this.roofMaterials.push(new THREE.MeshLambertMaterial({map: txRoof3}));
-
-            this.pubMaterialRoof = new THREE.MeshLambertMaterial({color: 0x00ffdd});
-            this.materialWall = new THREE.MeshLambertMaterial({color: 0x00ff00});
+            this.loadTextures();
             this.height = 20;
-            this.extrudeSettings = { amount: this.height, bevelEnabled: false, material: 0,
-                                    extrudeMaterial: 1 };
+            this.extrudeSettings = {amount: this.height, bevelEnabled: false, material: 0,
+                                    extrudeMaterial: 1};
 
             this.features = [];
+        };
+
+        ThreeDScene.prototype.loadTextures = function() {
+            var self = this;
+
+            this.pubMaterialRoof = new THREE.MeshLambertMaterial({color: 0x00ffdd});
+
+            /**
+             * Generates functions to put in the map callback for making textures
+             */
+            function generateTextureFn(prefix) {
+                // Returns a function with prefix closed in
+                return function(i) {
+                    var tex = THREE.ImageUtils.loadTexture('assets/img/textures/' + prefix + i + '.jpg');
+                    tex.anisotropy = 1;
+                    tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+                    return new THREE.MeshLambertMaterial({map: tex});
+                }
+            }
+            this.roofMaterials = _.range(1, 3).map(generateTextureFn('roof'));
+            this.wallMaterials = _.range(1, 3).map(generateTextureFn('wall'));
         };
 
         ThreeDScene.prototype.setCentre = function setCentre(coords) {
@@ -105,6 +116,8 @@ define([
             // add a base plane on which we'll render our map
             var planeGeo = new THREE.PlaneGeometry(1000, 1000, 10, 10);
             var texture = THREE.ImageUtils.loadTexture("assets/img/textures/tarmac.jpg");
+            texture.anisotropy = 1;
+            texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             var planeMat = new THREE.MeshLambertMaterial({map: texture});
 
             this.plane = new THREE.Mesh(planeGeo, planeMat);
@@ -210,7 +223,10 @@ define([
             // Make points (that are lat longs into pixel coordinates
             var points = _(coords).map(_.bind(this.convertProjection, this));
             var shape = new THREE.Shape();
+            // Get random materials
             var materialRoof = this.roofMaterials[_.random(0, this.roofMaterials.length -1)];
+            var materialWall = this.wallMaterials[_.random(0, this.roofMaterials.length -1)];
+
             if(isPub) {
                 materialRoof = this.pubMaterialRoof;
             }
@@ -224,7 +240,7 @@ define([
 
             this.extrudeSettings['amount'] = levels * 8;
 
-            var materials = [materialRoof, this.materialWall];
+            var materials = [materialRoof, materialWall];
             var geom = new THREE.ExtrudeGeometry(shape, this.extrudeSettings);
             var meshMaterial = new THREE.MeshFaceMaterial(materials);
             var mesh = new THREE.Mesh(geom, meshMaterial);
