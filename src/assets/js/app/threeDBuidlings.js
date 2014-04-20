@@ -10,10 +10,14 @@ define([
         'suncalc'
     ], function($, _, Slider, moment, three, d3, Mediator, trackball, SunCalc) {
 
+        var SUN_DISTANCE = 300;
+        var CAMERA_DISTANCE = 100;
+        var ZOOM = 15;
+
         function angles2cartesian(azimuth, altitude) {
             var x, y, z, radius, h;
 
-            radius = 500;
+            radius = SUN_DISTANCE;
             h = radius * Math.cos(altitude);
             y = h * Math.tan(altitude);
             x = h * Math.tan(azimuth) * -1;
@@ -74,7 +78,7 @@ define([
             var VIEW_ANGLE = 45,
                 ASPECT = WIDTH / HEIGHT,
                 NEAR = 0.1,
-                FAR = 10000;
+                FAR = 1000;
 
             // create a WebGL renderer, camera, and a scene
             this.renderer = new THREE.WebGLRenderer({antialias:true});
@@ -83,9 +87,9 @@ define([
 
             // add and position the camera at a fixed position
             this.scene.add(this.camera);
-            this.camera.position.z = 300;
+            this.camera.position.z = CAMERA_DISTANCE;
             this.camera.position.x = 0;
-            this.camera.position.y = 300;
+            this.camera.position.y = CAMERA_DISTANCE;
             this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
             this.camera.rotation.x = 3*-Math.PI/2;
@@ -98,23 +102,23 @@ define([
             // add the render target to the page
             $("#ddd").append(this.renderer.domElement);
 
-            this.letThereBeLight();
-            this.createFloor();
+            this.letThereBeLight()
+                .createFloor()
+                .addHelpers()
+                .updateSunPosition(window.currentMoment.toDate() || new Date());
 
-            this.addHelpers();
+            var light = new THREE.PointLight( 0xffffff, 1, 100 );
+            light.position.set( 100, 300, -300 );
+            this.scene.add( light );
 
-            //var light = new THREE.PointLight( 0xeeff00, 1, 1000 );
-            //light.position.set( 1000, 3000, -3000 );
-            //this.scene.add( light );
-
-            this.controls = new THREE.TrackballControls( this.camera, this.renderer.domElement );
+            this.controls = new THREE.TrackballControls(this.camera, this.renderer.domElement);
             this.animate();
         };
 
 
         ThreeDScene.prototype.createFloor = function createFloor() {
             // add a base plane on which we'll render our map
-            var planeGeo = new THREE.PlaneGeometry(1000, 1000, 10, 10);
+            var planeGeo = new THREE.PlaneGeometry(300, 300, 10, 10);
             var texture = THREE.ImageUtils.loadTexture("assets/img/textures/tarmac.jpg");
             texture.anisotropy = 1;
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
@@ -127,6 +131,7 @@ define([
             // rotate it to correct position
             this.plane.rotation.x = -Math.PI/2;
             this.scene.add(this.plane);
+            return this;
         };
 
 
@@ -135,20 +140,15 @@ define([
             // add a light at a specific position
             this.sun = new THREE.SpotLight(0xFFFFFF);
             this.scene.add(this.sun);
-
-            this.sun.position.x = -100;
-            this.sun.position.y = 500;
-            this.sun.position.z = 1000;
             this.sun.castShadow = true;
-
             this.sun.shadowDarkness = 0.4;
             this.sun.shadowCameraVisible = true;
-
-            this.updateSunPosition(new Date(2014, 4, 16, 18, 0, 0));
 
             this.subscribe('clock:change', function(m) {
                 this.updateSunPosition(m.toDate());
             });
+
+            return this;
         };
 
         ThreeDScene.prototype.addHelpers = function addHelpers() {
@@ -185,7 +185,7 @@ define([
                 cubeMesh.position.y = 0;
                 cubeMesh.position.z = 200;
             }());
-
+            return this;
         };
 
 
@@ -204,12 +204,9 @@ define([
         };
 
         ThreeDScene.prototype.updateSunPosition = function updateSunPosition(date) {
-            var dt = date || new Date(2014, 04, 16, 10, 0, 0);
+            var dt = date || new Date();
             var centre = this.centre || [-0.0668529, 51.5127414];
             var pos = SunCalc.getPosition(dt, centre[1], centre[0]);
-            //var azimuth = pos.azimuth * 180 / Math.PI;
-            //var altitude = pos.altitude * 180 / Math.PI;
-
             var sun = angles2cartesian(pos.azimuth, pos.altitude);
 
             this.sun.position.x = sun[0];
@@ -217,6 +214,8 @@ define([
             this.sun.position.z = sun[2];
 
             this.publish('update');
+
+            return this;
         };
 
         ThreeDScene.prototype.renderBuilding = function(coords, levels, isPub) {
@@ -238,7 +237,7 @@ define([
                 shape.lineTo(xy[0], xy[1]);
             });
 
-            this.extrudeSettings['amount'] = levels * 8;
+            this.extrudeSettings['amount'] = levels * 5;
 
             var materials = [materialRoof, materialWall];
             var geom = new THREE.ExtrudeGeometry(shape, this.extrudeSettings);
@@ -265,8 +264,8 @@ define([
 
 
         ThreeDScene.prototype.convertProjection = function(coords) {
-            var tileSize = 256; // Pixel size of a single map tile
-            var zoom = 15; // Zoom level
+            var tileSize = 128; // Pixel size of a single map tile
+            var zoom = ZOOM || 14; // Zoom level
             var projection = d3.geo.mercator()
                 .center(this.centre) // Geographic coordinates of map centre
                 .translate([0, 0]) // Pixel coordinates of .center()

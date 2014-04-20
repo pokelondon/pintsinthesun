@@ -11,6 +11,7 @@ define([
 
         var FOURSQUARE_URL = 'https://api.foursquare.com/v2/venues/search\?client_id\=FNJEOV4QV4YBMJ4J5EQNKQTCQXOQBCUSIIYIZAXWMKLY5XPN\&client_secret\=NEKCZ4IFX4SOJEPDY2E1ZIV4NTAYZ3GWQHWKKPSQF3KOZKCS\&v\=1396279715756\&ll\={lat}%2C{lng}\&radius\=500\&intent\=browse\&limit\=50\&categoryId\=4bf58dd8d48988d11b941735%2C4bf58dd8d48988d116941735'
         var OVERPASS_URL = 'http://overpass-api.de/api/interpreter?data=[out:json];((way({bounds})[%22building%22]);(._;node(w);););out;'
+        var OVERPASS_BOUND = 0.0008;
 
         var pintIcon = L.icon({
             iconUrl: 'assets/img/pint-icon.png',
@@ -104,8 +105,9 @@ define([
          * suscribers can update their shit
          */
         App.prototype.setUpTime = function() {
+            var startHour = 8;
             this.m = moment();
-            this.m.hour(8).minute(0).second(0);
+            this.m.hour(startHour).minute(0).second(0);
             var duration = moment.duration(12, 'hours').asSeconds();
 
             var slider = new Slider(this.$time, _.bind(function(data) {
@@ -113,14 +115,24 @@ define([
                 this.publish('clock:change', newM);
             }, this));
 
-            // TODO set slider to now
+            var hournow = new Date().getHours();
+            var fromStart = hournow - startHour;
+            var currentPercent = fromStart / 12 * 100;
+
+            this.subscribe('clock:change', function(m) {
+                // save the current moment that the slider's at for when
+                // the 3d view first inits
+                window.currentMoment = m;
+            });
+
+            slider.set(currentPercent);
         };
 
         App.prototype.renderLocality = function(centre) {
             var scene = new ThreeDScene();
             var centre = centre || this.mapController.map.getCenter();
             scene.setCentre([centre.lng, centre.lat]);
-            var bound = 0.0008;
+            var bound = OVERPASS_BOUND || 0.0008;
             var box = [centre.lat - bound, centre.lng - bound, centre.lat + bound, centre.lng + bound];
             var url = format(OVERPASS_URL, {bounds: box.join(',')});
 
@@ -133,7 +145,7 @@ define([
                  * Add a feature from the GeoJSON to the 3D scene
                  */
                 function renderFeature(feature) {
-                    var levels = feature.tags['building:levels'] || 3;
+                    var levels = feature.tags['building:levels'] || 2;
                     var isPub = (feature.tags.amenity == 'pub');
                     var outlinePath = _(nodes).chain().filter(function(node) {
                         // Find nodes that are part of this feature

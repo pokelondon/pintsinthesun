@@ -84,6 +84,20 @@ define(
             this.$indicator.removeClass('is-moving');
         };
 
+        /**
+         * Give it a value that's not come from the dragging
+         */
+        Slider.prototype.set = function(percentage) {
+            var total = this.$el.width();
+            var width = total * percentage / 100;
+
+            this.$indicator.addClass('is-moving').css('width', width + 'px');
+            if('function' === typeof this.onDrag) {
+                this.getState();
+                this.onDrag(this.value);
+            }
+        };
+
         return Slider;
     }
 );
