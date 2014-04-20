@@ -95,7 +95,10 @@ define([
                         .addTo(self.mapController.map)
                         .bindPopup(item.name);
                 m.on('click', function() {
-                    m.openPopup();
+                    $('.js-modal').toggleClass('is-open');
+                    self.mapController.map.setView(item.location, 18);
+                    self.renderLocality();
+                    self.publish('pub:select', item);
                 });
             });
         };
@@ -173,15 +176,13 @@ define([
             var mapController = new Map();
             var app = new App(mapController);
 
-            // Bind button
-            var $btnOverlay = $('.js-open-modal');
-            $btnOverlay.on('click', function(evt) {
-                evt.preventDefault();
-                $('.js-modal').toggleClass('is-open');
-                app.renderLocality();
+            // Update modal title depending on the pub
+            app.subscribe('pub:select', function(item) {
+                $('.js-modal').find('.Modal-heading').text(item.name);
             });
 
 
+            // Modal Close button:w
             var $btnCloseOverlay = $('.js-close-modal');
             $btnCloseOverlay.on('click', function(evt) {
                 evt.preventDefault();
