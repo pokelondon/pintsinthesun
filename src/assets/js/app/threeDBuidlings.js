@@ -14,6 +14,16 @@ define([
         var CAMERA_DISTANCE = 100;
         var ZOOM = 15;
 
+        var greyDark = 0x434A54;
+        var red = 0xDA4453;
+        var redLight = 0xED5565;
+        var green = 0x48CFAD;
+        var greenDark = 0x37BC9B;
+        var yellow = 0xF6BB42;
+        var yellowDark = 0xFFCE54;
+        var blue = 0x4FC1E9;
+        var blueDark = 0x3BAFDA;
+
         function angles2cartesian(azimuth, altitude) {
             var x, y, z, radius, h;
 
@@ -43,22 +53,8 @@ define([
         ThreeDScene.prototype.loadTextures = function() {
             var self = this;
 
-            this.pubMaterialRoof = new THREE.MeshLambertMaterial({color: 0x00ffdd});
-
-            /**
-             * Generates functions to put in the map callback for making textures
-             */
-            function generateTextureFn(prefix) {
-                // Returns a function with prefix closed in
-                return function(i) {
-                    var tex = THREE.ImageUtils.loadTexture('assets/img/textures/' + prefix + i + '.jpg');
-                    tex.anisotropy = 1;
-                    tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-                    return new THREE.MeshLambertMaterial({map: tex});
-                }
-            }
-            this.roofMaterials = _.range(1, 3).map(generateTextureFn('roof'));
-            this.wallMaterials = _.range(1, 3).map(generateTextureFn('wall'));
+            this.pubMaterial = new THREE.MeshLambertMaterial({color: yellow});
+            this.material = new THREE.MeshLambertMaterial({color: blue});
         };
 
         ThreeDScene.prototype.setCentre = function setCentre(coords) {
@@ -113,16 +109,14 @@ define([
 
             this.controls = new THREE.TrackballControls(this.camera, this.renderer.domElement);
             this.animate();
+            this.render();
         };
 
 
         ThreeDScene.prototype.createFloor = function createFloor() {
             // add a base plane on which we'll render our map
             var planeGeo = new THREE.PlaneGeometry(300, 300, 10, 10);
-            var texture = THREE.ImageUtils.loadTexture("assets/img/textures/tarmac.jpg");
-            texture.anisotropy = 1;
-            texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-            var planeMat = new THREE.MeshLambertMaterial({map: texture});
+            var planeMat = new THREE.MeshLambertMaterial({color: greyDark});
 
             this.plane = new THREE.Mesh(planeGeo, planeMat);
             this.plane.side = THREE.DoubleSide;
@@ -155,39 +149,8 @@ define([
             var self = this;
             var axes = new THREE.AxisHelper(200);
             this.scene.add(axes);
-
-            (function() {
-                var southBox = new THREE.CubeGeometry(10, 10, 10);
-                var cubeMat = new THREE.MeshPhongMaterial({color: 0xff0000});
-                var cubeMesh = new THREE.Mesh(southBox, cubeMat);
-                self.scene.add(cubeMesh);
-                cubeMesh.position.x = 200;
-                cubeMesh.position.y = 0;
-                cubeMesh.position.z = 0;
-            }());
-
-            (function() {
-                var southBox = new THREE.CubeGeometry(10, 10, 10);
-                var cubeMat = new THREE.MeshPhongMaterial({color: 0x00ff00});
-                var cubeMesh = new THREE.Mesh(southBox, cubeMat);
-                self.scene.add(cubeMesh);
-                cubeMesh.position.x = 0;
-                cubeMesh.position.y = 200;
-                cubeMesh.position.z = 0;
-            }());
-
-            (function() {
-                var southBox = new THREE.CubeGeometry(10, 10, 10);
-                var cubeMat = new THREE.MeshPhongMaterial({color: 0x0000ff});
-                var cubeMesh = new THREE.Mesh(southBox, cubeMat);
-                self.scene.add(cubeMesh);
-                cubeMesh.position.x = 0;
-                cubeMesh.position.y = 0;
-                cubeMesh.position.z = 200;
-            }());
             return this;
         };
-
 
         ThreeDScene.prototype.animate = function render() {
             requestAnimationFrame(_.bind(this.animate, this));
@@ -198,7 +161,6 @@ define([
         };
 
         ThreeDScene.prototype.render = function render() {
-            //requestAnimationFrame(this.render);
             this.renderer.render(this.scene, this.camera);
             return this;
         };
@@ -222,12 +184,10 @@ define([
             // Make points (that are lat longs into pixel coordinates
             var points = _(coords).map(_.bind(this.convertProjection, this));
             var shape = new THREE.Shape();
-            // Get random materials
-            var materialRoof = this.roofMaterials[_.random(0, this.roofMaterials.length -1)];
-            var materialWall = this.wallMaterials[_.random(0, this.roofMaterials.length -1)];
+            var material = this.material;
 
             if(isPub) {
-                materialRoof = this.pubMaterialRoof;
+                material = this.pubMaterial;
             }
 
             shape.moveTo(points[points.length-1][0], points[points.length-1][1]);
@@ -239,10 +199,10 @@ define([
 
             this.extrudeSettings['amount'] = levels * 5;
 
-            var materials = [materialRoof, materialWall];
+            //var materials = [materialRoof, materialWall];
             var geom = new THREE.ExtrudeGeometry(shape, this.extrudeSettings);
-            var meshMaterial = new THREE.MeshFaceMaterial(materials);
-            var mesh = new THREE.Mesh(geom, meshMaterial);
+            //var meshMaterial = new THREE.MeshFaceMaterial(materials);
+            var mesh = new THREE.Mesh(geom, material);
 
             geom.computeFaceNormals();
 
