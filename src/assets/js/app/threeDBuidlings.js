@@ -68,13 +68,14 @@ define([
         ThreeDScene.prototype.initScene = function initScene() {
             var self = this;
             // set the scene size
-            var WIDTH = $('.Modal-body').innerWidth(), HEIGHT = 600;
+            var WIDTH = $('#ddd').innerWidth(), HEIGHT = $('#ddd').innerHeight();
+            this.$el = $('#ddd');
 
             // set some camera attributes
             var VIEW_ANGLE = 45,
                 ASPECT = WIDTH / HEIGHT,
                 NEAR = 0.1,
-                FAR = 1000;
+                FAR = 10000;
 
             // create a WebGL renderer, camera, and a scene
             this.renderer = new THREE.WebGLRenderer({antialias:true});
@@ -219,7 +220,7 @@ define([
         };
 
         ThreeDScene.prototype.unload = function() {
-            this.scene;
+            this.$el.html('');
         };
 
 

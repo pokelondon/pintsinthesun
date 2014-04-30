@@ -21,23 +21,28 @@
         <script data-main="assets/js/app" src="assets/js/app.js"></script>
     </head>
     <body>
-        <div id="map" class="Map"></div>
-        <div class="Toolbar">
-            <div class="Toolbar-row">
-                <a class="Tool-button js-load-pubs" href="#na">Load Pubs</a>
-                <a class="Tool-button Tool-button--yellow js-locate-me" href="#na">Locate Me</a>
-            </div>
-            <div class="Toolbar-row Slider-container">
-                <div class="Slider-input js-slider-time">
-                    <div class="Slider-indicator">
-                        <a class="Slider-thumb"></a>
-                    </div>
+    <div class="container">
+        <h1>Pints in the Sun</h1>
+            <div id="map" class="Map"></div>
+            <div class="ThreeD" id="ddd"></div>
+            <div class="Toolbar">
+                <div class="Toolbar-row">
+                    <a class="Tool-button js-load-pubs" href="#na">Load Pubs</a>
+                    <a class="Tool-button Tool-button--yellow js-locate-me" href="#na">Locate Me</a>
                 </div>
-                <div class="Clock-display">
-                    <span class="js-clock">00</span>
+                <div class="Toolbar-row Slider-container">
+                    <div class="Slider-input js-slider-time">
+                        <div class="Slider-indicator">
+                            <a class="Slider-thumb"></a>
+                        </div>
+                    </div>
+                    <div class="Clock-display">
+                        <span class="js-clock">00</span>
+                    </div>
                 </div>
             </div>
         </div>
+
         <div class="Modal-container js-modal">
             <div class="Modal">
                 <header class="Modal-header">
@@ -45,7 +50,6 @@
                     <a href="#close" class="Modal-close js-close-modal">&times;</a>
                 </header>
                 <div class="Modal-body">
-                    <div class="ThreeD" id="ddd"></div>
                 </div>
             </div>
         </div>

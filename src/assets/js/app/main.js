@@ -95,7 +95,6 @@ define([
                         .addTo(self.mapController.map)
                         .bindPopup(item.name);
                 m.on('click', function() {
-                    $('.js-modal').toggleClass('is-open');
                     self.mapController.map.setView(item.location, 18);
                     self.renderLocality();
                     self.publish('pub:select', item);
@@ -132,9 +131,13 @@ define([
         };
 
         App.prototype.renderLocality = function(centre) {
-            var scene = new ThreeDScene();
+            var self = this;
+            if(this.scene) {
+                this.scene.unload();
+            }
+            this.scene = new ThreeDScene();
             var centre = centre || this.mapController.map.getCenter();
-            scene.setCentre([centre.lng, centre.lat]);
+            this.scene.setCentre([centre.lng, centre.lat]);
             var bound = OVERPASS_BOUND || 0.0008;
             var box = [centre.lat - bound, centre.lng - bound, centre.lat + bound, centre.lng + bound];
             var url = format(OVERPASS_URL, {bounds: box.join(',')});
@@ -164,7 +167,7 @@ define([
                     // Close path
                     outlinePath.push(outlinePath[0]);
                     // Render the buidling in 3D
-                    scene.renderBuilding(outlinePath, levels, isPub);
+                    self.scene.renderBuilding(outlinePath, levels, isPub);
                 }
 
                 _(features).each(renderFeature);
