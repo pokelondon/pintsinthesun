@@ -1296,7 +1296,7 @@ hr {
   -ms-flex: 1;
   flex: 1;
   text-align: center;
-  min-width: 80px;
+  min-width: 120px;
   font-size: 18px;
   padding: 10px 10px;
 }
@@ -1461,11 +1461,6 @@ h1 {
   font-family: 'ClearSans-Bold';
   letter-spacing: 3px;
   text-align: center;
-  -webkit-transition: text-shadow 200ms;
-  -moz-transition: text-shadow 200ms;
-  -o-transition: text-shadow 200ms;
-  -ms-transition: text-shadow 200ms;
-  transition: text-shadow 200ms;
 }
 p {
   font-family: 'ClearSans-Regular';
@@ -1599,6 +1594,39 @@ p + p {
 .Header {
   text-align: center;
   padding: 40px 0 40px;
+}
+.Pint {
+  position: relative;
+  width: 128px;
+  height: 128px;
+  margin: 0 auto;
+}
+.Pint-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.Pint-shad {
+  position: absolute;
+  z-index: 0;
+  top: 64px;
+  left: 0;
+  width: 128px;
+  height: 128px;
+  background: url(../img/pint_shad.png) 0 100% no-repeat;
+  -webkit-transition: all 200ms;
+  -moz-transition: all 200ms;
+  -o-transition: all 200ms;
+  -ms-transition: all 200ms;
+  transition: all 200ms;
+  -webkit-transform: translateY(-64px);
+  -moz-transform: translateY(-64px);
+  -ms-transform: translateY(-64px);
+  -o-transform: translateY(-64px);
+  transform: translateY(-64px);
+  -webkit-background-size: 128px 128px;
+  background-size: 128px 128px;
 }
 .ThreeD {
   display: block;

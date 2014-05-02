@@ -180,14 +180,22 @@ define([
             var mapController = new Map();
             var app = new App(mapController);
 
-            var $heading = $('h1');
-            app.subscribe('slider:change', function(perc) {
-                var x, y, r;
-                r = 5;
-                x = (perc / (2 * r)) - r;
-                y = Math.sqrt(Math.pow(r, 2) - Math.pow(x, 2));
-                $heading.css('text-shadow', x + 'px ' + y + 'px ' + r + 'px rgba(0, 0, 0, .4)');
-            });
+            // Warp the pint logo so it follows the shadow
+            (function() {
+                var $pint = $('.Pint-shad');
+                var h = $pint.height();
+                app.subscribe('slider:change', function(perc) {
+                    perc = 1 - (perc / 100);
+                    var element = $pint[0];
+                    var angle = Math.floor((90 * perc) - 45);
+                    var transform  = 'skewX(' + angle + 'deg) translateY(-64px)';
+                    element.style.webkitTransform = transform;
+                    element.style.MozTransform = transform;
+                    element.style.msTransform = transform;
+                    element.style.OTransform = transform;
+                    element.style.transform = transform;
+                });
+            }());
 
             // Update modal title depending on the pub
             app.subscribe('pub:select', function(item) {
