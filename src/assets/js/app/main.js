@@ -115,6 +115,7 @@ define([
             var slider = new Slider(this.$time, _.bind(function(data) {
                 var newM = this.m.clone().add(duration * data / 100, 'seconds');
                 this.publish('clock:change', newM);
+                this.publish('slider:change', data);
             }, this));
 
             var hournow = new Date().getHours();
@@ -179,9 +180,24 @@ define([
             var mapController = new Map();
             var app = new App(mapController);
 
+            var $heading = $('h1');
+            app.subscribe('slider:change', function(perc) {
+                var x, y, r;
+                r = 5;
+                x = (perc / (2 * r)) - r;
+                y = Math.sqrt(Math.pow(r, 2) - Math.pow(x, 2));
+                $heading.css('text-shadow', x + 'px ' + y + 'px ' + r + 'px rgba(0, 0, 0, .4)');
+            });
+
             // Update modal title depending on the pub
             app.subscribe('pub:select', function(item) {
                 $('.js-modal').find('.Modal-heading').text(item.name);
+            });
+
+            var $btnRender = $('.js-render-locality');
+            $btnRender.on('click', function(evt) {
+                evt.preventDefault();
+                app.renderLocality();
             });
 
 
