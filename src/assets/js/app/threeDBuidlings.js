@@ -95,11 +95,11 @@ define([
             this.renderer.shadowMapEnabled = true;
 
             // add the render target to the page
-            $("#ddd").append(this.renderer.domElement);
+            $("#ddd").html(this.renderer.domElement);
 
             this.letThereBeLight()
                 .createFloor()
-                .addHelpers()
+                //.addHelpers()
                 .updateSunPosition(window.currentMoment.toDate() || new Date());
 
             var light = new THREE.PointLight( 0xffffff, 1, 100 );

@@ -1533,6 +1533,10 @@ p + p {
   display: block;
   text-align: center;
 }
+.Instructions {
+  font-size: 20px;
+  margin: 40px;
+}
 .Modal-container {
   position: fixed;
   z-index: 1001;
