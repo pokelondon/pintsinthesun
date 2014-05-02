@@ -25,13 +25,12 @@ define([
         var blueDark = 0x3BAFDA;
 
         function angles2cartesian(azimuth, altitude) {
-            var x, y, z, radius, h;
+            var x, y, z, radius;
 
             radius = SUN_DISTANCE;
-            h = radius * Math.cos(altitude);
-            y = h * Math.tan(altitude);
-            x = h * Math.tan(azimuth) * -1;
-            z = h * Math.cos(azimuth);
+            x = radius * Math.cos(altitude) * Math.sin(azimuth) * -1;
+            y = radius * Math.sin(altitude);
+            z = radius * Math.cos(altitude) * Math.cos(azimuth);
 
             return [x, y, z];
         }
