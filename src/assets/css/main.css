@@ -1296,7 +1296,7 @@ hr {
   -ms-flex: 1;
   flex: 1;
   text-align: center;
-  min-width: 120px;
+  min-width: 90px;
   font-size: 18px;
   padding: 10px 10px;
 }
@@ -1348,7 +1348,7 @@ hr {
   -webkit-user-drag: none;
   height: 40px;
   position: relative;
-  z-index: 1003;
+  margin-top: 10px;
 }
 .Slider-input {
   vertical-align: middle;
@@ -1358,13 +1358,13 @@ hr {
 .Slider-indicator {
   height: 10px;
   margin: 15px 0;
-  background-color: #ffffff;
-  background-image: -webkit-gradient(linear, left top, left top, color-stop(0%, #f6bb42), color-stop(100% #ffffff));
-  background-image: -webkit-linear-gradient(left, #f6bb42 0%, #ffffff 100%);
-  background-image: -moz-linear-gradient(left, #f6bb42 0%, #ffffff 100%);
-  background-image: -ms-linear-gradient(left, #f6bb42 0%, #ffffff 100%);
-  background-image: -o-linear-gradient(left, #f6bb42 0%, #ffffff 100%);
-  background-image: linear-gradient(left, #f6bb42 0%, #ffffff 100%);
+  background-color: transparent;
+  background-image: -webkit-gradient(linear, left top, left top, color-stop(0%, #4fc1e9), color-stop(100% transparent));
+  background-image: -webkit-linear-gradient(left, #4fc1e9 0%, transparent 100%);
+  background-image: -moz-linear-gradient(left, #4fc1e9 0%, transparent 100%);
+  background-image: -ms-linear-gradient(left, #4fc1e9 0%, transparent 100%);
+  background-image: -o-linear-gradient(left, #4fc1e9 0%, transparent 100%);
+  background-image: linear-gradient(left, #4fc1e9 0%, transparent 100%);
   display: inline-block;
   vertical-align: middle;
   position: relative;
@@ -1590,6 +1590,9 @@ p + p {
 }
 .Modal-body p:last-child {
   margin-bottom: 0.5em;
+}
+body {
+  background: #faf9f7;
 }
 .Header {
   text-align: center;

@@ -96,6 +96,7 @@ define(
                 this.getState();
                 this.onDrag(this.value);
             }
+            return this;
         };
 
         return Slider;

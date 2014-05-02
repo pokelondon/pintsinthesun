@@ -54,7 +54,7 @@ define([
             // Mediator events
             this.subscribe('foursquare:loaded', this.plotPubs);
             this.subscribe('clock:change', function(m) {
-                this.$clock.text(m.format("H:mm a"));
+                this.$clock.text(m.format("H:mm"));
             });
 
             // Init stuff
@@ -120,7 +120,7 @@ define([
 
             var hournow = new Date().getHours();
             var fromStart = hournow - startHour;
-            var currentPercent = fromStart / 12 * 100;
+            this.currentPercent = fromStart / 12 * 100;
 
             this.subscribe('clock:change', function(m) {
                 // save the current moment that the slider's at for when
@@ -128,7 +128,7 @@ define([
                 window.currentMoment = m;
             });
 
-            slider.set(currentPercent);
+            slider.set(this.currentPercent);
         };
 
         App.prototype.renderLocality = function(centre) {
@@ -185,7 +185,7 @@ define([
                 var $pint = $('.Pint-shad');
                 var h = $pint.height();
                 app.subscribe('slider:change', function(perc) {
-                    perc = 1 - (perc / 100);
+                    perc = 1- (perc / 100);
                     var element = $pint[0];
                     var angle = Math.floor((90 * perc) - 45);
                     var transform  = 'skewX(' + angle + 'deg) translateY(-64px)';
@@ -195,6 +195,7 @@ define([
                     element.style.OTransform = transform;
                     element.style.transform = transform;
                 });
+                app.publish('slider:change', app.currentPercent);
             }());
 
             // Update modal title depending on the pub
