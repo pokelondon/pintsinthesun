@@ -1267,8 +1267,7 @@ hr {
   display: block;
   clear: left;
   height: 100px;
-  background: #434a54;
-  color: #fff;
+  margin-bottom: 20px;
 }
 .Toolbar-row {
   display: -webkit-flex;
@@ -1357,15 +1356,15 @@ hr {
   width: 100%;
 }
 .Slider-indicator {
-  height: 40px;
-  background: #f6bb42;
-  background-color: #434a54;
-  background-image: -webkit-gradient(linear, left top, left top, color-stop(0%, #434a54), color-stop(100% #2c3138));
-  background-image: -webkit-linear-gradient(left, #434a54 0%, #2c3138 100%);
-  background-image: -moz-linear-gradient(left, #434a54 0%, #2c3138 100%);
-  background-image: -ms-linear-gradient(left, #434a54 0%, #2c3138 100%);
-  background-image: -o-linear-gradient(left, #434a54 0%, #2c3138 100%);
-  background-image: linear-gradient(left, #434a54 0%, #2c3138 100%);
+  height: 10px;
+  margin: 15px 0;
+  background-color: #ffffff;
+  background-image: -webkit-gradient(linear, left top, left top, color-stop(0%, #f6bb42), color-stop(100% #ffffff));
+  background-image: -webkit-linear-gradient(left, #f6bb42 0%, #ffffff 100%);
+  background-image: -moz-linear-gradient(left, #f6bb42 0%, #ffffff 100%);
+  background-image: -ms-linear-gradient(left, #f6bb42 0%, #ffffff 100%);
+  background-image: -o-linear-gradient(left, #f6bb42 0%, #ffffff 100%);
+  background-image: linear-gradient(left, #f6bb42 0%, #ffffff 100%);
   display: inline-block;
   vertical-align: middle;
   position: relative;
@@ -1404,7 +1403,7 @@ hr {
   width: 40px;
   height: 40px;
   margin-right: -20px;
-  top: 0;
+  top: -15px;
   bottom: 0;
 }
 .Slider-thumb:after {
@@ -1458,11 +1457,15 @@ a:hover {
 }
 h1 {
   padding: 10px 0 10px;
-  font-size: 30px;
+  font-size: 40px;
   font-family: 'ClearSans-Bold';
-  color: #fff;
   letter-spacing: 3px;
   text-align: center;
+  -webkit-transition: text-shadow 200ms;
+  -moz-transition: text-shadow 200ms;
+  -o-transition: text-shadow 200ms;
+  -ms-transition: text-shadow 200ms;
+  transition: text-shadow 200ms;
 }
 p {
   font-family: 'ClearSans-Regular';
@@ -1593,14 +1596,13 @@ p + p {
 .Modal-body p:last-child {
   margin-bottom: 0.5em;
 }
-.container {
-  background: #434a54;
-  margin-top: 10px;
+.Header {
+  text-align: center;
+  padding: 40px 0 40px;
 }
 .ThreeD {
   display: block;
   float: left;
-  background: green;
   height: 500px;
   width: 50%;
 }

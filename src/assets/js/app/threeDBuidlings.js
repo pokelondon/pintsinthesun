@@ -83,16 +83,15 @@ define([
 
             // add and position the camera at a fixed position
             this.scene.add(this.camera);
-            this.camera.position.z = CAMERA_DISTANCE;
+            this.camera.position.z = 1;
             this.camera.position.x = 0;
             this.camera.position.y = CAMERA_DISTANCE;
             this.camera.lookAt(new THREE.Vector3(0, 0, 0));
-
-            this.camera.rotation.x = 3*-Math.PI/2;
+            this.camera.rotation.z = Math.PI/2;
 
             // start the renderer, and black background
             this.renderer.setSize(WIDTH, HEIGHT);
-            this.renderer.setClearColor(0x000);
+            this.renderer.setClearColor(greyDark);
             this.renderer.shadowMapEnabled = true;
 
             // add the render target to the page
@@ -104,8 +103,8 @@ define([
                 .updateSunPosition(window.currentMoment.toDate() || new Date());
 
             var light = new THREE.PointLight( 0xffffff, 1, 100 );
-            light.position.set( 100, 300, -300 );
-            this.scene.add( light );
+            light.position.set(100, 300, -300);
+            this.scene.add(light);
 
             this.controls = new THREE.TrackballControls(this.camera, this.renderer.domElement);
             this.animate();
@@ -199,9 +198,11 @@ define([
 
             this.extrudeSettings['amount'] = levels * 5;
 
-            //var materials = [materialRoof, materialWall];
+            if(isPub) {
+                this.extrudeSettings['amount'] += 1;
+            }
+
             var geom = new THREE.ExtrudeGeometry(shape, this.extrudeSettings);
-            //var meshMaterial = new THREE.MeshFaceMaterial(materials);
             var mesh = new THREE.Mesh(geom, material);
 
             geom.computeFaceNormals();
