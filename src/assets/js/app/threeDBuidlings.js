@@ -10,8 +10,8 @@ define([
         'suncalc'
     ], function($, _, Slider, moment, three, d3, Mediator, trackball, SunCalc) {
 
-        var SUN_DISTANCE = 300;
-        var CAMERA_DISTANCE = 100;
+        var SUN_DISTANCE = 400;
+        var CAMERA_DISTANCE = 200;
         var ZOOM = 15;
 
         var greyDark = 0x434A54;
@@ -53,7 +53,7 @@ define([
             var self = this;
 
             this.pubMaterial = new THREE.MeshLambertMaterial({color: yellow});
-            this.material = new THREE.MeshLambertMaterial({color: blue});
+            this.material = new THREE.MeshLambertMaterial({color: greyDark});
         };
 
         ThreeDScene.prototype.setCentre = function setCentre(coords) {
@@ -67,12 +67,13 @@ define([
         ThreeDScene.prototype.initScene = function initScene() {
             var self = this;
             // set the scene size
-            var WIDTH = $('#ddd').innerWidth(), HEIGHT = $('#ddd').innerHeight();
+            this.WIDTH = $('#ddd').innerWidth();
+            this.HEIGHT = $('#ddd').innerHeight();
             this.$el = $('#ddd');
 
             // set some camera attributes
             var VIEW_ANGLE = 45,
-                ASPECT = WIDTH / HEIGHT,
+                ASPECT = this.WIDTH / this.HEIGHT,
                 NEAR = 0.1,
                 FAR = 10000;
 
@@ -90,9 +91,10 @@ define([
             this.camera.rotation.z = Math.PI/2;
 
             // start the renderer, and black background
-            this.renderer.setSize(WIDTH, HEIGHT);
+            this.renderer.setSize(this.WIDTH, this.HEIGHT);
             this.renderer.setClearColor(greyDark);
             this.renderer.shadowMapEnabled = true;
+            this.renderer.shadowMapSoft = true;
 
             // add the render target to the page
             $("#ddd").html(this.renderer.domElement);
@@ -102,9 +104,9 @@ define([
                 //.addHelpers()
                 .updateSunPosition(window.currentMoment.toDate() || new Date());
 
-            var light = new THREE.PointLight( 0xffffff, 1, 100 );
-            light.position.set(100, 300, -300);
-            this.scene.add(light);
+            //var light = new THREE.PointLight( 0xffffff, 1, 100 );
+            //light.position.set(100, 300, -300);
+            //this.scene.add(light);
 
             this.controls = new THREE.TrackballControls(this.camera, this.renderer.domElement);
             this.animate();
@@ -115,7 +117,7 @@ define([
         ThreeDScene.prototype.createFloor = function createFloor() {
             // add a base plane on which we'll render our map
             var planeGeo = new THREE.PlaneGeometry(300, 300, 10, 10);
-            var planeMat = new THREE.MeshLambertMaterial({color: greyDark});
+            var planeMat = new THREE.MeshLambertMaterial({color: 0xffffff});
 
             this.plane = new THREE.Mesh(planeGeo, planeMat);
             this.plane.side = THREE.DoubleSide;
@@ -135,7 +137,10 @@ define([
             this.scene.add(this.sun);
             this.sun.castShadow = true;
             this.sun.shadowDarkness = 0.4;
-            this.sun.shadowCameraVisible = true;
+            this.sun.shadowCameraVisible = false;
+            //this.sun.onlyShadow = true;
+            this.sun.shadowMapWidth = this.WIDTH * 2;
+            this.sun.shadowMapHeight = this.HEIGHT * 2;
 
             this.subscribe('clock:change', function(m) {
                 this.updateSunPosition(m.toDate());
@@ -211,7 +216,7 @@ define([
             mesh.rotation.z = Math.PI/2;
 
             mesh.castShadow = true;
-            mesh.receiveShadow = true;
+            mesh.receiveShadow = false;
 
             this.scene.add(mesh);
             this.features.push(mesh);
