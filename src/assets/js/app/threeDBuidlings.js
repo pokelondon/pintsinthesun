@@ -109,6 +109,16 @@ define([
             //this.scene.add(light);
 
             this.controls = new THREE.TrackballControls(this.camera, this.renderer.domElement);
+
+            this.controls.noRotate = true;
+            this.controls.noZoom = false;
+            this.controls.noPan = false;
+            this.controls.noRoll = true;
+
+
+            this.controls.minDistance = 100;
+            this.controls.maxDistance = 300;
+
             this.animate();
             this.render();
         };

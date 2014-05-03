@@ -1529,8 +1529,15 @@ p + p {
   text-align: center;
 }
 .Instructions {
-  font-size: 20px;
+  font-size: 30px;
+  text-align: center;
   margin: 40px;
+}
+.Instructions li {
+  border-bottom: 1px solid #434a54;
+  list-style-type: none;
+  display: inline-block;
+  padding: 30px 5px 10px;
 }
 .Footer {
   clear: both;
