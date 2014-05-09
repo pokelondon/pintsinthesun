@@ -1264,13 +1264,10 @@ hr {
   }
 }
 .Toolbar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  display: block;
+  clear: left;
   height: 100px;
-  background: #434a54;
-  color: #fff;
+  margin-bottom: 20px;
 }
 .Toolbar-row {
   display: -webkit-flex;
@@ -1299,7 +1296,7 @@ hr {
   -ms-flex: 1;
   flex: 1;
   text-align: center;
-  min-width: 80px;
+  min-width: 90px;
   font-size: 18px;
   padding: 10px 10px;
 }
@@ -1350,6 +1347,8 @@ hr {
   -webkit-user-select: none;
   -webkit-user-drag: none;
   height: 40px;
+  position: relative;
+  margin-top: 10px;
 }
 .Slider-input {
   vertical-align: middle;
@@ -1357,15 +1356,10 @@ hr {
   width: 100%;
 }
 .Slider-indicator {
-  height: 40px;
-  background: #f6bb42;
-  background-color: #434a54;
-  background-image: -webkit-gradient(linear, left top, left top, color-stop(0%, #434a54), color-stop(100% #2c3138));
-  background-image: -webkit-linear-gradient(left, #434a54 0%, #2c3138 100%);
-  background-image: -moz-linear-gradient(left, #434a54 0%, #2c3138 100%);
-  background-image: -ms-linear-gradient(left, #434a54 0%, #2c3138 100%);
-  background-image: -o-linear-gradient(left, #434a54 0%, #2c3138 100%);
-  background-image: linear-gradient(left, #434a54 0%, #2c3138 100%);
+  height: 10px;
+  margin: 15px 0;
+  /*.linear-gradient-left(transparent, @blue, 0%, transparent, 100%);*/
+  background: #4fc1e9;
   display: inline-block;
   vertical-align: middle;
   position: relative;
@@ -1404,7 +1398,7 @@ hr {
   width: 40px;
   height: 40px;
   margin-right: -20px;
-  top: 0;
+  top: -15px;
   bottom: 0;
 }
 .Slider-thumb:after {
@@ -1455,6 +1449,13 @@ a {
 a:focus,
 a:hover {
   text-decoration: none;
+}
+h1 {
+  padding: 10px 0 10px;
+  font-size: 40px;
+  font-family: 'ClearSans-Bold';
+  letter-spacing: 3px;
+  text-align: center;
 }
 p {
   font-family: 'ClearSans-Regular';
@@ -1527,6 +1528,23 @@ p + p {
   display: block;
   text-align: center;
 }
+.Instructions {
+  font-size: 30px;
+  text-align: center;
+  margin: 40px;
+}
+.Instructions li {
+  border-bottom: 1px solid #434a54;
+  list-style-type: none;
+  display: inline-block;
+  padding: 30px 5px 10px;
+}
+.Footer {
+  clear: both;
+  text-align: center;
+  padding: 40px 0 30px;
+  color: #707c8d;
+}
 .Modal-container {
   position: fixed;
   z-index: 1001;
@@ -1558,7 +1576,7 @@ p + p {
 .Modal {
   background: #fff;
   margin: 20px auto 20px;
-  max-width: 500px;
+  max-width: 900px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 .Modal-header {
@@ -1576,6 +1594,7 @@ p + p {
   font-size: 20px;
 }
 .Modal-body {
+  position: relative;
   padding: 10px 10px;
 }
 .Modal-body p:first-child {
@@ -1584,13 +1603,56 @@ p + p {
 .Modal-body p:last-child {
   margin-bottom: 0.5em;
 }
-.Map {
-  width: 100%;
+body {
+  background: #faf9f7;
+}
+.Header {
+  text-align: center;
+  padding: 40px 0 40px;
+}
+.Pint {
+  position: relative;
+  width: 128px;
+  height: 128px;
+  margin: 0 auto;
+}
+.Pint-img {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 100px;
+  z-index: 1;
+}
+.Pint-shad {
+  position: absolute;
+  z-index: 0;
+  top: 64px;
+  left: 0;
+  width: 128px;
+  height: 128px;
+  background: url(../img/pint_shad.png) 0 100% no-repeat;
+  -webkit-transition: all 200ms;
+  -moz-transition: all 200ms;
+  -o-transition: all 200ms;
+  -ms-transition: all 200ms;
+  transition: all 200ms;
+  -webkit-transform: translateY(-64px);
+  -moz-transform: translateY(-64px);
+  -ms-transform: translateY(-64px);
+  -o-transform: translateY(-64px);
+  transform: translateY(-64px);
+  -webkit-background-size: 128px 128px;
+  background-size: 128px 128px;
+}
+.ThreeD {
+  display: block;
+  float: left;
+  height: 500px;
+  width: 50%;
+}
+.Map {
+  width: 50%;
+  height: 500px;
+  float: left;
 }
 .leaflet-popup-content {
   font-family: ClearSans-Light;

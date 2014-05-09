@@ -3,6 +3,8 @@
     -webkit-user-select: none;
     -webkit-user-drag:none;
     height: 40px;
+    position: relative;
+    margin-top: 10px;
 }
 .Slider-input {
     vertical-align: middle;
@@ -10,9 +12,10 @@
     width: 100%;
 }
 .Slider-indicator {
-    height: 40px;
-    background: @yellow;
-    .linear-gradient-left(@greyDark, @greyDark, 0%, darken(@greyDark, 10), 100%);
+    height: 10px;
+    margin: 15px 0;
+    /*.linear-gradient-left(transparent, @blue, 0%, transparent, 100%);*/
+    background: @blue;
     display: inline-block;
     vertical-align: middle;
     position: relative;
@@ -43,7 +46,7 @@
     width: 40px;
     height: 40px;
     margin-right: -20px;
-    top: 0;
+    top: -15px;
     bottom: 0;
     &:after {
         top: 0;

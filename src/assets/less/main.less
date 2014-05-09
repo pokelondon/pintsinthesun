@@ -8,13 +8,48 @@
 @import '_type.less';
 @import '_modal.less';
 
-.Map {
-    width: 100%;
+body {
+    background: lighten(#e7dfd7, 10);
+}
+.Header {
+    text-align: center;
+    padding: 40px 0 40px;
+}
+.Pint {
+    position: relative;
+    width: 128px;
+    height: 128px;
+    margin: 0 auto;
+}
+.Pint-img {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 100px;
+    z-index: 1;
+}
+.Pint-shad {
+    position: absolute;
+    z-index: 0;
+    top: 64px;
+    left: 0;
+    width: 128px;
+    height: 128px;
+    background: url(../img/pint_shad.png) 0 100% no-repeat;
+    .transition(all 200ms);
+    .transform(translateY(-64px));
+
+    .background-size(128px 128px);
+}
+.ThreeD {
+    display: block;
+    float: left;
+    height: 500px;
+    width: 50%;
+}
+.Map {
+    width: 50%;
+    height: 500px;
+    float: left;
 }
 .leaflet-popup-content {
     font-family: ClearSans-Light;
