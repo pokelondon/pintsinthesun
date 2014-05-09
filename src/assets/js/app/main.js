@@ -1,13 +1,14 @@
 define([
         'jquery',
         'underscore',
-        'OSMBuildings',
+        'leaflet',
+        'backbone',
         'slider',
         'moment',
         'threeDBuidlings',
         'mediator',
         'map'
-    ], function($, _, OSMBuildings, Slider, moment, ThreeDScene, Mediator, Map) {
+    ], function($, _, leaflet, Backbone, Slider, moment, ThreeDScene, Mediator, Map) {
 
         var FOURSQUARE_URL = 'https://api.foursquare.com/v2/venues/search\?client_id\=FNJEOV4QV4YBMJ4J5EQNKQTCQXOQBCUSIIYIZAXWMKLY5XPN\&client_secret\=NEKCZ4IFX4SOJEPDY2E1ZIV4NTAYZ3GWQHWKKPSQF3KOZKCS\&v\=1396279715756\&ll\={lat}%2C{lng}\&radius\=500\&intent\=browse\&limit\=50\&categoryId\=4bf58dd8d48988d11b941735%2C4bf58dd8d48988d116941735'
         var OVERPASS_URL = 'http://overpass-api.de/api/interpreter?data=[out:json];((way({bounds})[%22building%22]);(._;node(w);););out;'
@@ -41,6 +42,7 @@ define([
          */
         var App = function(mapController) {
             _.extend(this, Mediator);
+            var self = this;
             this.mapController = mapController;
 
             // Elements
@@ -59,6 +61,27 @@ define([
 
             // Init stuff
             this.setUpTime();
+
+            var Router = Backbone.Router.extend({
+                routes: {
+                    ":lat/:lng": 'centre'
+                },
+                centre: function(lat, lng) {
+                    self.mapController.setCentre({lat: lat, lng: lng});
+                }
+            })
+            this.router = new Router();
+            Backbone.history.start({pushState: false});
+
+            // Save a history point
+            this.subscribe('map:centre', function(centre) {
+                self.router.navigate(centre.lat + '/' + centre.lng, {trigger: true});
+            });
+
+            // Update current hash
+            this.subscribe('map:update_centre', function(centre) {
+                self.router.navigate(centre.lat + '/' + centre.lng, {trigger: true, replace:true});
+            });
 
         };
 
@@ -139,6 +162,7 @@ define([
 
             this.scene = new ThreeDScene();
             var centre = centre || this.mapController.map.getCenter();
+            this.publish('map:centre', centre);
             this.scene.setCentre([centre.lng, centre.lat]);
             var bound = OVERPASS_BOUND || 0.0008;
             var box = [centre.lat - bound, centre.lng - bound, centre.lat + bound, centre.lng + bound];
