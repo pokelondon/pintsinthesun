@@ -177,6 +177,10 @@ define([
 
 
         $(document).ready(function() {
+
+            if (!window.WebGLRenderingContext) {
+                $('#ddd').html('<p class="error">Sorry, your device doesn\'t support WebGL, and we needs it for projecting shadows.</p>');
+            }
             var mapController = new Map();
             var app = new App(mapController);
 

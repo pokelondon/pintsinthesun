@@ -1467,6 +1467,12 @@ p {
 p + p {
   margin-top: 1em;
 }
+.error {
+  background: #da4453;
+  color: #fff;
+  font-size: 18px;
+  padding: 40px 20px;
+}
 ._linkBase {
   display: inline-block;
   padding: 10px 20px;
@@ -1532,12 +1538,14 @@ p + p {
   font-size: 30px;
   text-align: center;
   margin: 40px;
+  padding: 0;
 }
 .Instructions li {
   border-bottom: 1px solid #434a54;
   list-style-type: none;
   display: inline-block;
   padding: 30px 5px 10px;
+  margin: 0;
 }
 .Footer {
   clear: both;
@@ -1643,16 +1651,21 @@ body {
   -webkit-background-size: 128px 128px;
   background-size: 128px 128px;
 }
+.Map,
 .ThreeD {
   display: block;
-  float: left;
-  height: 500px;
-  width: 50%;
+  width: 100%;
+  height: 400px;
+  margin-top: 30px;
 }
-.Map {
-  width: 50%;
-  height: 500px;
-  float: left;
+@media (min-width: 590px) {
+  .Map,
+  .ThreeD {
+    margin-top: 0;
+    height: 500px;
+    width: 50%;
+    float: right;
+  }
 }
 .leaflet-popup-content {
   font-family: ClearSans-Light;
