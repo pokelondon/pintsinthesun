@@ -186,7 +186,7 @@ define([
             var sun = angles2cartesian(pos.azimuth, pos.altitude);
 
             this.sun.position.x = sun[0];
-            this.sun.position.y = sun[1];
+            this.sun.position.y = sun[1] + 100;
             this.sun.position.z = sun[2];
 
             this.publish('update');
