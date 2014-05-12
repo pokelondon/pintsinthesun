@@ -1301,6 +1301,7 @@ hr {
   padding: 10px 10px;
 }
 .Tool-button {
+  align-self: center;
   -webkit-flex: 1;
   -moz-flex: 1;
   -ms-flex: 1;

@@ -8,7 +8,7 @@ define([
         var osmUrl = 'http://a.tile.openstreetmap.org/{z}/{x}/{y}.png';
         var mapBoxUrl = 'https://a.tiles.mapbox.com/v3/errkk.hmcik8n5/{z}/{x}/{y}@2x.png'
         var tileProvider = mapBoxUrl;
-        var defaultCentre = {lat: 51.524312, lng: -0.076432};
+        this.defaultCentre = {lat: 51.524312, lng: -0.076432};
 
         var Map = function() {
             _.extend(this, Mediator);
@@ -61,7 +61,7 @@ define([
                 }, this));
             } else {
                 // That didnt work, do the default
-                this.map.setView(defaultCentre, 18);
+                this.map.setView(this.defaultCentre, 18);
             }
         };
 

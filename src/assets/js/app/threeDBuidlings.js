@@ -78,7 +78,7 @@ define([
                 FAR = 10000;
 
             // create a WebGL renderer, camera, and a scene
-            this.renderer = new THREE.WebGLRenderer({antialias:true});
+            this.renderer = new THREE.WebGLRenderer({clearColor: greyDark, antialias:true});
             this.camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
             this.scene = new THREE.Scene();
 
