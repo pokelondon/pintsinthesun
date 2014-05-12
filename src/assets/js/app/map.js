@@ -15,7 +15,6 @@ define([
 
             // Init stuff
             this.map = new L.Map('map');
-            this.loadCentre();
 
             // Raster base layer
             this.baseLayer = L.tileLayer(tileProvider).addTo(this.map);
@@ -33,36 +32,22 @@ define([
                 });
             }, this));
 
-            this.map.on('moveend', _.bind(function() {
-                this.publish('map:moveend');
-            }, this));
-
-            // Object subscribers
-            this.subscribe('map:moveend', this.saveCentre);
-
+            // Update hash via pub sub message
+            this.map.on('moveend', _.bind(this.updatedCentre, this));
         };
 
-        Map.prototype.saveCentre = function() {
+        Map.prototype.updatedCentre = function() {
             var data = this.map.getCenter();
-            var centre = JSON.stringify({lat: data.lat, lng: data.lng});
-            window.localStorage.setItem('centre', centre);
-            window.localStorage.setItem('zoom', this.map.getZoom());
+            this.publish('map:update_centre', {lat: data.lat, lng: data.lng});
         };
 
         Map.prototype.loadCentre = function() {
-            var centre = defaultCentre;
-            var data = window.localStorage.getItem('centre');
-            var cachedCentre = JSON.parse(data);
-            var zoom = window.localStorage['zoom'] || 18;
-            try {
-                // Try to load saved centre
-                this.map.setView(cachedCentre, zoom);
-            } catch(e) {
-                // That didnt work, do the default
-                this.map.setView(centre, zoom);
-                // Unless geolocation is available
-                this.centreCurrentLocation();
-            }
+            // Unless geolocation is available
+            this.centreCurrentLocation();
+        };
+
+        Map.prototype.setCentre = function(centre) {
+            this.map.setView(centre, 18);
         };
 
         Map.prototype.centreCurrentLocation = function() {
@@ -74,6 +59,9 @@ define([
                     this.map.setView(centre, 18);
                     this.publish('geolocation:complete', position.coords);
                 }, this));
+            } else {
+                // That didnt work, do the default
+                this.map.setView(defaultCentre, 18);
             }
         };
 
