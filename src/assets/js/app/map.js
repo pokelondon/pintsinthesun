@@ -12,11 +12,9 @@ define([
 
         var Map = function() {
             _.extend(this, Mediator);
-            this.centred_from_url = false;
 
             // Init stuff
             this.map = new L.Map('map');
-            this.loadCentre();
 
             // Raster base layer
             this.baseLayer = L.tileLayer(tileProvider).addTo(this.map);
@@ -44,16 +42,11 @@ define([
         };
 
         Map.prototype.loadCentre = function() {
-            if(this.centred_from_url) {
-                return;
-            }
             // Unless geolocation is available
             this.centreCurrentLocation();
         };
 
         Map.prototype.setCentre = function(centre) {
-            console.log('settings centre', centre);
-            this.centred_from_url = true;
             this.map.setView(centre, 18);
         };
 
