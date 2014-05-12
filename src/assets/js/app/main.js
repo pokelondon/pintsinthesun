@@ -64,10 +64,14 @@ define([
 
             var Router = Backbone.Router.extend({
                 routes: {
+                    "": 'findCentre',
                     ":lat/:lng": 'centre'
                 },
                 centre: function(lat, lng) {
                     self.mapController.setCentre({lat: lat, lng: lng});
+                },
+                findCentre: function() {
+                    self.mapController.loadCentre();
                 }
             })
             this.router = new Router();
@@ -75,12 +79,12 @@ define([
 
             // Save a history point
             this.subscribe('map:centre', function(centre) {
-                self.router.navigate(centre.lat + '/' + centre.lng, {trigger: true});
+                self.router.navigate(centre.lat + '/' + centre.lng, {trigger: false});
             });
 
             // Update current hash
             this.subscribe('map:update_centre', function(centre) {
-                self.router.navigate(centre.lat + '/' + centre.lng, {trigger: true, replace:true});
+                self.router.navigate(centre.lat + '/' + centre.lng, {trigger: false, replace:true});
             });
 
         };
