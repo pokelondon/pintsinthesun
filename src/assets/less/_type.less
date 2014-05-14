@@ -115,15 +115,15 @@ p {
 }
 .Instructions {
     font-size: 30px;
-    text-align: center;
-    margin: 40px;
+    margin: 90px 40px 0 40px;
     padding: 0;
     li {
-        border-bottom: 1px solid @greyDark;
-        list-style-type: none;
-        display: inline-block;
-        padding: 30px 5px 10px;
-        margin: 0;
+        padding: 30px 5px 33px;
+        margin: 0 0 0 40px;
+        border-bottom: 1px solid lighten(@greyDark, 50);
+        &:first-child {
+            border-top: 1px solid lighten(@greyDark, 50);
+        }
     }
 }
 .Footer {

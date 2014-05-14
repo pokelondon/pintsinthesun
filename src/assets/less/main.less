@@ -46,6 +46,20 @@ body {
     width: 100%;
     height: 400px;
     margin-top: 30px;
+    color: #fff;
+    background: @greyDark;
+    background: -moz-radial-gradient(center, ellipse cover, lighten(@greyDark, 10) 0%, @greyDark 100%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,lighten(@greyDark, 10)), color-stop(100%,@greyDark));
+    background: -webkit-radial-gradient(center, ellipse cover, lighten(@greyDark, 10) 0%,@greyDark 100%);
+    background: -o-radial-gradient(center, ellipse cover, lighten(@greyDark, 10) 0%,@greyDark 100%);
+    background: -ms-radial-gradient(center, ellipse cover, lighten(@greyDark, 10) 0%,@greyDark 100%);
+    background: radial-gradient(ellipse at center, lighten(@greyDark, 10) 0%,lighten(@greyDark, 10) 100%);
+    a {
+        color: lighten(@blue, 10);
+        &:hover {
+            color: @blue;
+        }
+    }
     @media (min-width: 590px) {
         margin-top: 0;
         height: 500px;
