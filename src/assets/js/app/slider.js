@@ -25,6 +25,10 @@ define(
             //this.$el.on('touchstart', $.proxy(this.clicked, this));
             this.$thumb.on('movestart', $.proxy(this.movestart, this));
             this.$thumb.on('moveend', $.proxy(this.moveend, this));
+
+            $(window).on('resize', function() {
+                self.offset = self.$indicator.offset().left;
+            });
         };
 
         /**
