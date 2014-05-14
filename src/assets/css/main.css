@@ -1542,16 +1542,16 @@ p + p {
 }
 .Instructions {
   font-size: 30px;
-  text-align: center;
-  margin: 40px;
+  margin: 90px 40px 0 40px;
   padding: 0;
 }
 .Instructions li {
-  border-bottom: 1px solid #434a54;
-  list-style-type: none;
-  display: inline-block;
-  padding: 30px 5px 10px;
-  margin: 0;
+  padding: 30px 5px 33px;
+  margin: 0 0 0 40px;
+  border-bottom: 1px solid #c5cad1;
+}
+.Instructions li:first-child {
+  border-top: 1px solid #c5cad1;
 }
 .Footer {
   clear: both;
@@ -1663,6 +1663,22 @@ body {
   width: 100%;
   height: 400px;
   margin-top: 30px;
+  color: #fff;
+  background: #434a54;
+  background: -moz-radial-gradient(center, ellipse cover, #5a6370 0%, #434a54 100%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #5a6370), color-stop(100%, #434a54));
+  background: -webkit-radial-gradient(center, ellipse cover, #5a6370 0%, #434a54 100%);
+  background: -o-radial-gradient(center, ellipse cover, #5a6370 0%, #434a54 100%);
+  background: -ms-radial-gradient(center, ellipse cover, #5a6370 0%, #434a54 100%);
+  background: radial-gradient(ellipse at center, #5a6370 0%, #5a6370 100%);
+}
+.Map a,
+.ThreeD a {
+  color: #7cd1ef;
+}
+.Map a:hover,
+.ThreeD a:hover {
+  color: #4fc1e9;
 }
 @media (min-width: 590px) {
   .Map,
