@@ -1690,10 +1690,11 @@ body {
   }
 }
 .leaflet-popup-content {
-  font-family: ClearSans-Light;
+  font-family: ClearSans-Regular;
   font-size: 15px;
   margin: 6px 25px 6px 10px;
   line-height: 1em;
+  color: #434a54;
 }
 .leaflet-container a.leaflet-popup-close-button {
   padding: 7px 15px 7px 0;
