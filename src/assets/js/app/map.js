@@ -30,6 +30,7 @@ define([
                 this.subscribe('geolocation:complete', function() {
                     $btnLocate.removeClass('is-loading');
                 });
+                this.publish('geolocation:requested');
             }, this));
 
             // Update hash via pub sub message
