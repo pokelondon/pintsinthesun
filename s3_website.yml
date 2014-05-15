@@ -1,0 +1,27 @@
+s3_id: AKIAJPCYEAKWW5R3Q6BQ
+s3_secret: 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
+s3_bucket: pints.pokedev.net
+
+# See http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region for valid endpoints
+s3_endpoint: eu-west-1
+
+# exclude_from_upload:
+#   - those_folders_of_stuff
+#   - i_wouldnt_want_to_upload
+
+# concurrency_level: 5
+
+# redirects:
+#   index.php: /
+#   about.php: about.html
+#   music-files/promo.mp4: http://www.youtube.com/watch?v=dQw4w9WgXcQ
+
+# routing_rules:
+#   - condition:
+#       key_prefix_equals: blog/some_path
+#     redirect:
+#       host_name: blog.example.com
+#       replace_key_prefix_with: some_new_path/
+#       http_redirect_code: 301
+
+extensionless_mime_type: text/html
