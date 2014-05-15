@@ -69,6 +69,7 @@ define([
                 },
                 centre: function(lat, lng) {
                     self.mapController.setCentre({lat: lat, lng: lng});
+                    self.publish('centre:fromhash');
                 },
                 findCentre: function() {
                     self.mapController.loadCentre();
@@ -87,6 +88,35 @@ define([
                 self.router.navigate(centre.lat + '/' + centre.lng, {trigger: false, replace:true});
             });
 
+            if('function' === typeof ga) {
+                this.setUpEvents();
+            }
+        };
+
+        App.prototype.setUpEvents = function () {
+            this.subscribe('centre:fromhash', function(centre) {
+                ga('send', 'pageview', '/location-from-hash');
+            });
+
+            this.subscribe('map:centre', function(centre) {
+                ga('send', 'event', 'map', 'center');
+            });
+
+            this.subscribe('pub:select', function(item) {
+                ga('send', 'event', 'map', 'marker', item.name);
+            });
+
+            this.subscribe('track:click:render', function(name) {
+                ga('send', 'event', 'button', 'click', 'render');
+            });
+
+            this.subscribe('geolocation:requested', function() {
+                ga('send', 'event', 'button', 'click', 'locate');
+            });
+
+            this.subscribe('foursquare:loaded', function() {
+                ga('send', 'event', 'button', 'click', 'find pubs');
+            });
         };
 
         /**
@@ -238,6 +268,7 @@ define([
 
             var $btnRender = $('.js-render-locality');
             $btnRender.on('click', function(evt) {
+                app.publish('track:click:render');
                 evt.preventDefault();
                 app.renderLocality();
             });
