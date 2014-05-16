@@ -12,7 +12,13 @@ define([
 
         var FOURSQUARE_URL = 'https://api.foursquare.com/v2/venues/search\?client_id\=FNJEOV4QV4YBMJ4J5EQNKQTCQXOQBCUSIIYIZAXWMKLY5XPN\&client_secret\=NEKCZ4IFX4SOJEPDY2E1ZIV4NTAYZ3GWQHWKKPSQF3KOZKCS\&v\=1396279715756\&ll\={lat}%2C{lng}\&radius\=500\&intent\=browse\&limit\=50\&categoryId\=4bf58dd8d48988d11b941735%2C4bf58dd8d48988d116941735'
         var OVERPASS_URL = 'http://overpass-api.de/api/interpreter?data=[out:json];((way({bounds})[%22building%22]);(._;node(w);););out;'
-        var OVERPASS_BOUND = 0.0008;
+        var OVERPASS_BOUND = 0.0011;
+        var ROADS = false;
+
+        if(ROADS) {
+            // Extra query part to fetch roads data
+            OVERPASS_URL = 'http://overpass-api.de/api/interpreter?data=[out:json];((way({bounds})[%22building%22]);(._;node(w);way({bounds})[%22highway%22]);(._;node(w);););out;';
+        }
 
         var pintIcon = L.icon({
             iconUrl: 'assets/img/pint-icon.png',
@@ -31,6 +37,7 @@ define([
          */
         function format(str, values) {
            _(values).each(function(v, k) {
+                str = str.replace('{' + k + '}', v);
                 str = str.replace('{' + k + '}', v);
             });
            return str;
@@ -202,6 +209,24 @@ define([
             var box = [centre.lat - bound, centre.lng - bound, centre.lat + bound, centre.lng + bound];
             var url = format(OVERPASS_URL, {bounds: box.join(',')});
 
+            /**
+             * Return notes, in order that belong to a certain feature
+             */
+            function filterNodes(feature, nodes) {
+                var path = _(nodes).chain().filter(function(node) {
+                    // Find nodes that are part of this feature
+                    return 0 <= feature.nodes.indexOf(node.id);
+                }).sortBy(function(node) {
+                    // Order nodes in the order that they are specified in the feature
+                    return feature.nodes.indexOf(node.id);
+                }).map(function(node) {
+                    // Convert node objects to lat/lng array for passing to polygon function
+                    return [node.lon, node.lat];
+                }).value();
+
+                return path;
+            }
+
             $.getJSON(url, function(data) {
                 // Filter items from the GeoJSON into nodes and features
                 var nodes = _(data.elements).filter(function(item) { return 'node' == item.type; });
@@ -213,24 +238,25 @@ define([
                 function renderFeature(feature) {
                     var levels = feature.tags['building:levels'] || 2;
                     var isPub = (feature.tags.amenity == 'pub');
-                    var outlinePath = _(nodes).chain().filter(function(node) {
-                        // Find nodes that are part of this feature
-                        return 0 <= feature.nodes.indexOf(node.id);
-                    }).sortBy(function(node) {
-                        // Order nodes in the order that they are specified in the feature
-                        return feature.nodes.indexOf(node.id);
-                    }).map(function(node) {
-                        // Convert node objects to lat/lng array for passing to polygon function
-                        return [node.lon, node.lat];
-                    }).value();
-
+                    var outlinePath = filterNodes(feature, nodes);
                     // Close path
                     outlinePath.push(outlinePath[0]);
                     // Render the buidling in 3D
                     self.scene.renderBuilding(outlinePath, levels, isPub);
                 }
 
+                function renderRoad(feature) {
+                    var path = filterNodes(feature, nodes);
+                    // Render the buidling in 3D
+                    self.scene.renderRoad(path);
+                }
+
                 _(features).each(renderFeature);
+
+                if (ROADS) {
+                    var roads = _(data.elements).filter(function(item) { return 'way' == item.type && item.tags.highway; });
+                    _(roads).each(renderRoad);
+                }
             });
         };
 
@@ -279,6 +305,14 @@ define([
             $btnCloseOverlay.on('click', function(evt) {
                 evt.preventDefault();
                 $('.js-modal').removeClass('is-open');
+            });
+
+            var $about = $('.js-about').hide();
+            var $btnAbout = $('.js-open-about');
+            $btnAbout.on('click', function(evt) {
+                evt.preventDefault();
+                $about.slideToggle();
+                $btnAbout.toggleClass('is-activated');
             });
         });
 
