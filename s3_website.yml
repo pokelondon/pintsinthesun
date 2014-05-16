@@ -1,15 +1,12 @@
 s3_id: AKIAJPCYEAKWW5R3Q6BQ
 s3_secret: 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
-s3_bucket: pints.pokedev.net
+s3_bucket: pintsinthesun.co.uk
 
-# See http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region for valid endpoints
 s3_endpoint: eu-west-1
 
-# exclude_from_upload:
-#   - those_folders_of_stuff
-#   - i_wouldnt_want_to_upload
-
-# concurrency_level: 5
+ exclude_from_upload:
+   - .git
+   - node_modules
 
 # redirects:
 #   index.php: /
