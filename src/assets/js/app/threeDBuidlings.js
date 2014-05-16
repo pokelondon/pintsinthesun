@@ -11,7 +11,7 @@ define([
     ], function($, _, Slider, moment, three, d3, Mediator, trackball, SunCalc) {
 
         var SUN_DISTANCE = 400;
-        var CAMERA_DISTANCE = 200;
+        var CAMERA_DISTANCE = 250;
         var ZOOM = 15;
 
         var greyDark = 0x434A54;
@@ -104,20 +104,16 @@ define([
                 //.addHelpers()
                 .updateSunPosition(window.currentMoment.toDate() || new Date());
 
-            //var light = new THREE.PointLight( 0xffffff, 1, 100 );
-            //light.position.set(100, 300, -300);
-            //this.scene.add(light);
-
             this.controls = new THREE.TrackballControls(this.camera, this.renderer.domElement);
 
             this.controls.noRotate = true;
             this.controls.noZoom = false;
-            this.controls.noPan = false;
-            this.controls.noRoll = true;
+            this.controls.noPan = true;
+            this.controls.rotateSpeed = 0.1;
 
 
             this.controls.minDistance = 100;
-            this.controls.maxDistance = 300;
+            this.controls.maxDistance = CAMERA_DISTANCE + 200;
 
             this.animate();
             this.render();
@@ -126,7 +122,7 @@ define([
 
         ThreeDScene.prototype.createFloor = function createFloor() {
             // add a base plane on which we'll render our map
-            var planeGeo = new THREE.PlaneGeometry(300, 300, 10, 10);
+            var planeGeo = new THREE.PlaneGeometry(400, 400, 10, 10);
             var planeMat = new THREE.MeshLambertMaterial({color: 0xffffff});
 
             this.plane = new THREE.Mesh(planeGeo, planeMat);
@@ -211,7 +207,7 @@ define([
                 shape.lineTo(xy[0], xy[1]);
             });
 
-            this.extrudeSettings['amount'] = levels * 5;
+            this.extrudeSettings['amount'] = levels * 4.5;
 
             if(isPub) {
                 this.extrudeSettings['amount'] += 1;
@@ -231,6 +227,32 @@ define([
             this.scene.add(mesh);
             this.features.push(mesh);
             this.publish('update');
+            return this;
+        };
+
+        ThreeDScene.prototype.renderRoad = function(coords) {
+            var points = _(coords).map(_.bind(this.convertProjection, this));
+            var material = new THREE.LineBasicMaterial({
+                color: green,
+                linewidth: 20,
+                linecap: 'round',
+                linejoin: 'round'
+            });
+            console.log(points);
+
+            var geometry = new THREE.Geometry();
+            _(points).each(function(point) {
+                geometry.vertices.push( new THREE.Vector3( point[0], point[1], 1 ) );
+            });
+
+            var line = new THREE.Line(geometry, material);
+
+            line.castShadow = true;
+            line.receiveShadow = false;
+
+            line.rotation.x = -Math.PI/2;
+            line.rotation.z = Math.PI/2;
+            this.scene.add(line);
             return this;
         };
 
