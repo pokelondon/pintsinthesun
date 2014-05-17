@@ -37,6 +37,7 @@ define([
 
         var ThreeDScene = function() {
             _.extend(this, Mediator);
+            this.$el = $('.js-render-canvas');
             this.initScene();
             this.centre = [-0.0668529, 51.5127414]; // Central point as [lon, lat]
             this.subscribe('update', this.render);
@@ -47,6 +48,10 @@ define([
                                     extrudeMaterial: 1};
 
             this.features = [];
+
+            this.subscribe('update', function() {
+                this.$el.parent().removeClass('needs-reload');
+            });
         };
 
         ThreeDScene.prototype.loadTextures = function() {
@@ -59,6 +64,10 @@ define([
         ThreeDScene.prototype.setCentre = function setCentre(coords) {
             this.centre = coords;
             this.publish('update');
+
+            this.subscribe('map:update_centre', function() {
+                this.$el.parent().addClass('needs-reload');
+            });
             return this;
         };
 
@@ -67,9 +76,8 @@ define([
         ThreeDScene.prototype.initScene = function initScene() {
             var self = this;
             // set the scene size
-            this.WIDTH = $('#ddd').innerWidth();
-            this.HEIGHT = $('#ddd').innerHeight();
-            this.$el = $('#ddd');
+            this.WIDTH = this.$el.innerWidth();
+            this.HEIGHT = this.$el.innerHeight();
 
             // set some camera attributes
             var VIEW_ANGLE = 45,
@@ -97,7 +105,7 @@ define([
             this.renderer.shadowMapSoft = true;
 
             // add the render target to the page
-            $("#ddd").html(this.renderer.domElement);
+            this.$el.html(this.renderer.domElement);
 
             this.letThereBeLight()
                 .createFloor()

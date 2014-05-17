@@ -8,6 +8,8 @@
 @import '_type.less';
 @import '_modal.less';
 
+@transitionTime: 400ms;
+
 body {
     background: lighten(#e7dfd7, 10);
 }
@@ -41,7 +43,8 @@ body {
     .background-size(128px 128px);
 }
 .Map,
-.ThreeD {
+.Render_canvas-container {
+    position: relative;
     display: block;
     width: 100%;
     height: 400px;
@@ -66,7 +69,35 @@ body {
         width: 50%;
         float: right;
     }
+
+    &.needs-reload .Render_canvas-reload {
+        visibility: visible;
+        opacity: 1;
+    }
 }
+.Render_canvas {
+    width: 100%;
+    height: 100%;
+}
+.Render_canvas-reload {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: opacity @transitionTime 0s, visibility 0s @transitionTime;
+    transition: opacity @transitionTime 0s, visibility 0s @transitionTime;
+
+    background-color: rgba(0, 0, 0, .5);
+    background-image: url(../img/reload-tint.png);
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+}
+
 .leaflet-popup-content {
     font-family: ClearSans-Regular;
     font-size: 15px;
