@@ -1729,6 +1729,8 @@ body {
 .Render_canvas-container.needs-reload .Render_canvas-reload {
   visibility: visible;
   opacity: 1;
+  -webkit-transition: opacity 400ms 0s, visibility 0s 400ms;
+  transition: opacity 400ms 0s, visibility 0s 400ms;
 }
 .Render_canvas {
   width: 100%;
@@ -1743,12 +1745,15 @@ body {
   right: 0;
   opacity: 0;
   visibility: hidden;
-  -webkit-transition: opacity 400ms 0s, visibility 0s 400ms;
-  transition: opacity 400ms 0s, visibility 0s 400ms;
+  -webkit-transition: opacity 400ms 0s, visibility 0s;
+  transition: opacity 400ms 0s, visibility 0s;
   background-color: rgba(0, 0, 0, 0.5);
   background-image: url(../img/reload-tint.png);
   background-position: 50% 50%;
   background-repeat: no-repeat;
+}
+.Render_canvas-reload:hover {
+  background-image: url(../img/reload.png);
 }
 .leaflet-popup-content {
   font-family: ClearSans-Regular;
