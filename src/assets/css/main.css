@@ -1284,22 +1284,6 @@ hr {
 .Toolbar-row--pad {
   padding: 10px 10px;
 }
-.Clock-input {
-  -webkit-flex: 9;
-  -moz-flex: 9;
-  -ms-flex: 9;
-  flex: 9;
-}
-.Clock-display {
-  -webkit-flex: 1;
-  -moz-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  text-align: center;
-  min-width: 90px;
-  font-size: 18px;
-  padding: 10px 10px;
-}
 .Tool-button {
   align-self: center;
   -webkit-flex: 1;
@@ -1349,17 +1333,16 @@ hr {
   -webkit-user-drag: none;
   height: 40px;
   position: relative;
-  margin-top: 10px;
+  margin-bottom: 20px;
 }
 .Slider-input {
-  vertical-align: middle;
   display: inline-block;
-  width: 100%;
+  padding: 0 10px;
+  width: 90%;
 }
 .Slider-indicator {
   height: 10px;
   margin: 15px 0;
-  /*.linear-gradient-left(transparent, @blue, 0%, transparent, 100%);*/
   background: #4fc1e9;
   display: inline-block;
   vertical-align: middle;
@@ -1416,6 +1399,14 @@ hr {
 }
 .Slider-thumb.is-active:after {
   box-shadow: #f6bb42 0 0 5px;
+}
+.Clock-display {
+  text-align: center;
+  font-size: 22px;
+  display: inline-block;
+  vertical-align: bottom;
+  line-height: 40px;
+  padding: 0 10px 3px 10px;
 }
 @font-face {
   font-family: 'ClearSans-Bold';
@@ -1657,7 +1648,7 @@ body {
 }
 .Header {
   text-align: center;
-  padding: 40px 0 40px;
+  padding: 40px 0 30px;
 }
 .Pint {
   position: relative;
