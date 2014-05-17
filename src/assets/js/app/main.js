@@ -51,6 +51,7 @@ define([
             _.extend(this, Mediator);
             var self = this;
             this.mapController = mapController;
+            this.pubs = [];
 
             // Elements
             this.$btnLoadPubs = $('.js-load-pubs');
@@ -94,6 +95,7 @@ define([
             this.subscribe('map:update_centre', function(centre) {
                 self.router.navigate(centre.lat + '/' + centre.lng, {trigger: false, replace:true});
             });
+            this.subscribe('map:update_centre', _.debounce(self.getPubs, 1000, true));
 
             if('function' === typeof ga) {
                 this.setUpEvents();
@@ -155,6 +157,10 @@ define([
             var self = this;
             this.$btnLoadPubs.removeClass('is-loading');
             _(data.response.venues).each(function(item) {
+                if(self.pubs.indexOf(item.id) > -1) {
+                    return;
+                }
+                self.pubs.push(item.id);
                 var m = L.marker([item.location.lat, item.location.lng], {icon: pintIcon})
                         .addTo(self.mapController.map)
                         .bindPopup(item.name);
@@ -272,7 +278,7 @@ define([
                 var $pint = $('.Pint-shad');
                 var h = $pint.height();
                 app.subscribe('slider:change', function(perc) {
-                    perc = 1- (perc / 100);
+                    perc = (perc / 100);
                     var element = $pint[0];
                     var angle = Math.floor((90 * perc) - 45);
                     var transform  = 'skewX(' + angle + 'deg) translateY(-64px)';
