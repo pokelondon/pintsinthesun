@@ -87,6 +87,8 @@ define([
 
             // create a WebGL renderer, camera, and a scene
             this.renderer = new THREE.WebGLRenderer({clearColor: greyDark, antialias:true});
+            // Crappy hack to suprress warnings being displayed as errors in the console
+            this.renderer.context.getProgramInfoLog = function () { return '' };
             this.camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
             this.scene = new THREE.Scene();
 

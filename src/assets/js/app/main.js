@@ -239,8 +239,6 @@ define([
                     var levels = feature.tags['building:levels'] || 2;
                     var isPub = (feature.tags.amenity == 'pub');
                     var outlinePath = filterNodes(feature, nodes);
-                    // Close path
-                    outlinePath.push(outlinePath[0]);
                     // Render the buidling in 3D
                     self.scene.renderBuilding(outlinePath, levels, isPub);
                 }
