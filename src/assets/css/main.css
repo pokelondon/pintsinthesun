@@ -1666,6 +1666,9 @@ button {
     margin: 0 auto 20px;
   }
 }
+.modal-open {
+  overflow: hidden;
+}
 .Modal-container {
   position: fixed;
   z-index: 1001;
@@ -1915,7 +1918,7 @@ body {
 }
 .Media-item {
   border-bottom: 1px solid #c5cad1;
-  padding: 8px 10px 5px 10px;
+  padding: 4px 10px 10px 10px;
   margin-top: 10px;
 }
 .Media-item:last-child {
