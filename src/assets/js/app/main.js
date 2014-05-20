@@ -7,8 +7,9 @@ define([
         'moment',
         'threeDBuidlings',
         'mediator',
-        'map'
-    ], function($, _, leaflet, Backbone, Slider, moment, ThreeDScene, Mediator, Map) {
+        'map',
+        'form'
+    ], function($, _, leaflet, Backbone, Slider, moment, ThreeDScene, Mediator, Map, Form) {
 
         var FOURSQUARE_URL = 'https://api.foursquare.com/v2/venues/search\?client_id\=FNJEOV4QV4YBMJ4J5EQNKQTCQXOQBCUSIIYIZAXWMKLY5XPN\&client_secret\=NEKCZ4IFX4SOJEPDY2E1ZIV4NTAYZ3GWQHWKKPSQF3KOZKCS\&v\=1396279715756\&ll\={lat}%2C{lng}\&radius\=500\&intent\=browse\&limit\=50\&categoryId\=4bf58dd8d48988d11b941735%2C4bf58dd8d48988d116941735'
         var OVERPASS_URL = 'http://overpass-api.de/api/interpreter?data=[out:json];((way({bounds})[%22building%22]);(._;node(w);););out;'
@@ -126,6 +127,10 @@ define([
 
             this.subscribe('foursquare:loaded', function() {
                 ga('send', 'event', 'button', 'click', 'find pubs');
+            });
+
+            this.subscribe('form:submit', function() {
+                ga('send', 'event', 'button', 'click', 'search');
             });
         };
 
@@ -273,6 +278,7 @@ define([
             }
             var mapController = new Map();
             var app = new App(mapController);
+            var form = new Form(mapController);
 
             // Warp the pint logo so it follows the shadow
             (function() {
@@ -293,9 +299,10 @@ define([
             }());
 
             // Update modal title depending on the pub
-            app.subscribe('pub:select', function(item) {
-                $('.js-modal').find('.Modal-heading').text(item.name);
+            app.subscribe('map:update_centre', function(item) {
+                $('.js-modal').removeClass('is-open');
             });
+
 
             var $btnRender = $('.js-render-locality');
             $btnRender.on('click', function(evt) {
@@ -304,12 +311,15 @@ define([
                 app.renderLocality();
             });
 
-
-            // Modal Close button:w
+            // Modal Close button
             var $btnCloseOverlay = $('.js-close-modal');
             $btnCloseOverlay.on('click', function(evt) {
                 evt.preventDefault();
                 $('.js-modal').removeClass('is-open');
+            });
+            $('.js-open-modal').on('click', function(evt) {
+                evt.preventDefault();
+                $('.js-modal').addClass('is-open');
             });
 
             var $about = $('.js-about').hide();
@@ -320,5 +330,4 @@ define([
                 $btnAbout.toggleClass('is-activated');
             });
         });
-
 });
