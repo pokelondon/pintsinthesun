@@ -9,7 +9,7 @@
     padding: 20px;
 
     overflow: auto;
-    overflow-y: scroll;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 
     visibility: hidden;
@@ -42,12 +42,13 @@
     color: #fff;
 }
 .Modal-heading {
-
+    font-size: 18px;
+    padding-bottom: 0;
 }
 .Modal-close {
     color: #fff;
     position: absolute;
-    top: 5px;
+    top: 3px;
     right: 10px;
     font-family: ClearSans-Light;
     font-size: 20px;
@@ -55,10 +56,4 @@
 .Modal-body {
     position: relative;
     padding: 10px 10px;
-    p:first-child {
-        margin-top: 0.5em;
-    }
-    p:last-child {
-        margin-bottom: 0.5em;
-    }
 }
