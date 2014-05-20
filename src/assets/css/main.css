@@ -1385,6 +1385,23 @@ hr {
   top: -15px;
   bottom: 0;
 }
+.Slider-thumb:before {
+  content: "Slide Me";
+  left: 40px;
+  width: 80px;
+  text-align: center;
+  font-size: 14px;
+  position: absolute;
+  background: #da4453;
+  color: #fff;
+  margin: 10px 0;
+  opacity: 1;
+  -webkit-transition: opacity 1s;
+  -moz-transition: opacity 1s;
+  -o-transition: opacity 1s;
+  -ms-transition: opacity 1s;
+  transition: opacity 1s;
+}
 .Slider-thumb:after {
   top: 0;
   left: 0;
@@ -1399,6 +1416,9 @@ hr {
 }
 .Slider-thumb.is-active:after {
   box-shadow: #f6bb42 0 0 5px;
+}
+.is-moved .Slider-thumb:before {
+  opacity: 0;
 }
 .Clock-display {
   text-align: center;
