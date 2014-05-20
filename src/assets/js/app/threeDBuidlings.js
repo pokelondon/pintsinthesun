@@ -38,9 +38,7 @@ define([
         var ThreeDScene = function() {
             _.extend(this, Mediator);
             this.$el = $('.js-render-canvas');
-            this.initScene();
             this.centre = [-0.0668529, 51.5127414]; // Central point as [lon, lat]
-            this.subscribe('update', this.render);
 
             this.loadTextures();
             this.height = 20;
@@ -48,10 +46,17 @@ define([
                                     extrudeMaterial: 1};
 
             this.features = [];
+            this.pause = false;
 
             this.subscribe('update', function() {
+                var was_paused = this.pause;
                 this.$el.parent().removeClass('needs-reload');
+                this.pause = false;
+                if(was_paused) {
+                    this.animate();
+                }
             });
+            this.initScene();
         };
 
         ThreeDScene.prototype.loadTextures = function() {
@@ -67,6 +72,7 @@ define([
 
             this.subscribe('map:update_centre', function() {
                 this.$el.parent().addClass('needs-reload');
+                this.pause = true;
             });
             return this;
         };
@@ -126,7 +132,6 @@ define([
             this.controls.maxDistance = CAMERA_DISTANCE + 200;
 
             this.animate();
-            this.render();
         };
 
 
@@ -173,7 +178,9 @@ define([
         };
 
         ThreeDScene.prototype.animate = function render() {
-            requestAnimationFrame(_.bind(this.animate, this));
+            if(!this.pause) {
+                requestAnimationFrame(_.bind(this.animate, this));
+            }
 
             this.controls.update();
             this.camera.position.sub(this.controls.target);
@@ -248,7 +255,6 @@ define([
                 linecap: 'round',
                 linejoin: 'round'
             });
-            console.log(points);
 
             var geometry = new THREE.Geometry();
             _(points).each(function(point) {
