@@ -125,16 +125,22 @@ p {
     color: lighten(@greyDark, 30);
 }
 .Button--open {
-    &:after {
-        content: "\25BC";
-        display: inline-block;
+    padding-right: 20px;
+    .Btn-icon:before {
+        position: relative;
         border-left: 1px solid lighten(@greyDark, 40);
-        padding: 10px 15px;
-        margin: -15px -25px -10px 25px;
+        padding-left: 10px;
+        margin-left: 12px;
+
+        content: "+";
+        font-family: Arial, sans-serif;
+        line-height: 13px;
+        display: inline-block;
+        top: -1px;
     }
     &.is-activated {
-        &:after {
-            content: "\25B2";
+        .Btn-icon:before {
+            content: "\2013";
         }
     }
 }

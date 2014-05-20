@@ -1384,6 +1384,7 @@ hr {
   margin-right: -20px;
   top: -15px;
   bottom: 0;
+  cursor: pointer;
 }
 .Slider-thumb:before {
   content: "Slide Me";
@@ -1572,15 +1573,22 @@ p + p {
 .Button--sec.u-pad-close {
   margin-top: 0.3em;
 }
-.Button--open:after {
-  content: "\25BC";
-  display: inline-block;
-  border-left: 1px solid #a9b0ba;
-  padding: 10px 15px;
-  margin: -15px -25px -10px 25px;
+.Button--open {
+  padding-right: 20px;
 }
-.Button--open.is-activated:after {
-  content: "\25B2";
+.Button--open .Btn-icon:before {
+  position: relative;
+  border-left: 1px solid #a9b0ba;
+  padding-left: 10px;
+  margin-left: 12px;
+  content: "+";
+  font-family: Arial, sans-serif;
+  line-height: 13px;
+  display: inline-block;
+  top: -1px;
+}
+.Button--open.is-activated .Btn-icon:before {
+  content: "\2013";
 }
 .Instructions {
   font-size: 30px;
