@@ -298,10 +298,18 @@ define([
                 app.publish('slider:change', app.currentPercent);
             }());
 
-            // Update modal title depending on the pub
-            app.subscribe('map:update_centre', function(item) {
+            function closeModal() {
                 $('.js-modal').removeClass('is-open');
-            });
+                $('body').removeClass('modal-open');
+            }
+
+            function openModal() {
+                $('.js-modal').addClass('is-open');
+                $('body').addClass('modal-open');
+            }
+
+            // Update modal title depending on the pub
+            app.subscribe('map:update_centre', closeModal);
 
 
             var $btnRender = $('.js-render-locality');
@@ -315,11 +323,23 @@ define([
             var $btnCloseOverlay = $('.js-close-modal');
             $btnCloseOverlay.on('click', function(evt) {
                 evt.preventDefault();
-                $('.js-modal').removeClass('is-open');
+                closeModal();
             });
             $('.js-open-modal').on('click', function(evt) {
                 evt.preventDefault();
-                $('.js-modal').addClass('is-open');
+                openModal();
+            });
+            $('.Modal-container').on('click', function(evt) {
+                closeModal();
+            });
+            $('.Modal-body').on('click', function(evt) {
+                evt.stopPropagation();
+            });
+            $(window).on('keyup', function(evt) {
+                var ESC = 27;
+                if(ESC === evt.keyCode) {
+                    closeModal();
+                }
             });
 
             var $about = $('.js-about').hide();
