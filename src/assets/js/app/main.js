@@ -78,6 +78,7 @@ define([
                 centre: function(lat, lng) {
                     self.mapController.setCentre({lat: lat, lng: lng});
                     self.publish('centre:fromhash');
+                    self.getPubs();
                 },
                 findCentre: function() {
                     self.mapController.loadCentre();
@@ -95,7 +96,7 @@ define([
             this.subscribe('map:update_centre', function(centre) {
                 self.router.navigate(centre.lat + '/' + centre.lng, {trigger: false, replace:true});
             });
-            this.subscribe('map:update_centre', _.debounce(self.getPubs, 1000, true));
+            this.subscribe('map:update_centre', _.debounce(this.getPubs, 1000, true));
 
             if('function' === typeof ga) {
                 this.setUpEvents();
