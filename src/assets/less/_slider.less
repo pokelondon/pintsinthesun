@@ -47,6 +47,19 @@
     margin-right: -20px;
     top: -15px;
     bottom: 0;
+    &:before {
+        content: "Slide Me";
+        left: 40px;
+        width: 80px;
+        text-align: center;
+        font-size: 14px;
+        position: absolute;
+        background: @red;
+        color: #fff;
+        margin: 10px 0;
+        opacity: 1;
+        .transition(opacity 1s);
+    }
     &:after {
         top: 0;
         left: 0;
@@ -63,6 +76,11 @@
         &:after {
             box-shadow: @yellow 0 0 5px;
         }
+    }
+}
+.is-moved .Slider-thumb {
+    &:before {
+        opacity: 0;
     }
 }
 .Clock-display {

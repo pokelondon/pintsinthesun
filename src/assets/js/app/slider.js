@@ -86,6 +86,7 @@ define(
             this.$thumb.on('move', $.proxy(this.dragging, this));
             this.$thumb.addClass('is-active');
             this.$indicator.removeClass('is-moving');
+            this.$el.addClass('is-moved');
         };
 
         /**
