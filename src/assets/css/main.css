@@ -1743,12 +1743,14 @@ button {
   margin: 0;
   padding: 10px;
 }
-.Input-container--half {
-  width: 50%;
-  float: left;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+@media (min-width: 590px) {
+  .Input-container--half {
+    width: 50%;
+    float: left;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
 }
 .Input {
   -webkit-box-sizing: border-box;
