@@ -1338,7 +1338,12 @@ hr {
 .Slider-input {
   display: inline-block;
   padding: 0 10px;
-  width: 90%;
+  width: 70%;
+}
+@media (min-width: 590px) {
+  .Slider-input {
+    width: 90%;
+  }
 }
 .Slider-indicator {
   height: 10px;
@@ -1475,6 +1480,9 @@ h1 {
   letter-spacing: 3px;
   text-align: center;
 }
+h2 {
+  padding-bottom: 8px;
+}
 p {
   font-family: 'ClearSans-Regular';
   font-size: 14px;
@@ -1489,11 +1497,15 @@ p + p {
   font-size: 18px;
   line-height: 26px;
 }
-.error {
+.Error {
+  display: none;
   background: #da4453;
   color: #fff;
   font-size: 18px;
   padding: 40px 20px;
+}
+.has-error .Error {
+  display: block;
 }
 ._linkBase {
   display: inline-block;
@@ -1591,9 +1603,15 @@ p + p {
   content: "\2013";
 }
 .Instructions {
-  font-size: 30px;
+  font-size: 20px;
   margin: 90px 40px 0 40px;
-  padding: 0;
+  padding: 50px 0 0 0;
+}
+@media (min-width: 590px) {
+  .Instructions {
+    font-size: 30px;
+    padding: 0;
+  }
 }
 .Instructions li {
   padding: 30px 5px 33px;
@@ -1610,8 +1628,13 @@ p + p {
   color: #707c8d;
 }
 .Footer-text {
-  width: 70%;
-  margin: 0 auto 20px;
+  margin: 0 20px 20px;
+}
+@media (min-width: 590px) {
+  .Footer-text {
+    width: 70%;
+    margin: 0 auto 20px;
+  }
 }
 .Modal-container {
   position: fixed;
@@ -1751,6 +1774,20 @@ body {
   -webkit-transition: opacity 400ms 0s, visibility 0s 400ms;
   transition: opacity 400ms 0s, visibility 0s 400ms;
 }
+@media (max-width: 590px) {
+  .Map.has-error,
+  .Render_canvas-container.has-error {
+    height: auto;
+  }
+}
+.Map.has-error .Instructions,
+.Render_canvas-container.has-error .Instructions {
+  display: none;
+}
+.Map.has-error .Error,
+.Render_canvas-container.has-error .Error {
+  display: block;
+}
 .Render_canvas {
   width: 100%;
   height: 100%;
@@ -1790,5 +1827,13 @@ body {
   height: 50px;
   background: url(../img/poke-logo.png) 0 0 no-repeat;
   margin-top: 20px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (min--moz-device-pixel-ratio: 1.5), (-o-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+  .logo-poke {
+    -webkit-background-size: 25px 25px;
+    background-size: 25px 25px;
+    width: 25px;
+    height: 25px;
+  }
 }
 /*# sourceMappingURL=/src/assets/main.css.map */

@@ -268,8 +268,8 @@ define([
 
         $(document).ready(function() {
 
-            if (!window.WebGLRenderingContext) {
-                $('#ddd').html('<p class="error">Sorry, your device doesn\'t support WebGL, and we needs it for projecting shadows.</p>');
+            if (!window.WebGLRenderingContext || navigator.appVersion.match(/iPhone/)) {
+                $('.js-render-canvas').parent().addClass('has-error');
             }
             var mapController = new Map();
             var app = new App(mapController);
