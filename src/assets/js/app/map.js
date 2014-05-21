@@ -34,7 +34,7 @@ define([
             }, this));
 
             // Update hash via pub sub message
-            this.map.on('moveend', _.bind(this.updatedCentre, this));
+            this.map.on('dragend', _.bind(this.updatedCentre, this));
         };
 
         Map.prototype.updatedCentre = function() {
@@ -60,6 +60,7 @@ define([
                     centre.lng = position.coords.longitude;
                     this.map.setView(centre, 18);
                     this.publish('geolocation:complete', position.coords);
+                    this.updatedCentre();
                 }, this));
             }
         };
