@@ -70,7 +70,7 @@ define([
             self.clearResults();
             _(data.response.venues).each(function(item) {
                 self.pubs.push(item.id);
-                self.$results.append(self.template({name: item.name, address: item.location.city, location: item.location}));
+                self.$results.append(self.template({item: item, address: item.location.city}));
             });
         };
 

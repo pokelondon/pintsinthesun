@@ -53,6 +53,7 @@ define([
             var self = this;
             this.mapController = mapController;
             this.pubs = [];
+            this.markers = {};
 
             // Elements
             this.$btnLoadPubs = $('.js-load-pubs');
@@ -74,7 +75,8 @@ define([
             var Router = Backbone.Router.extend({
                 routes: {
                     "": 'findCentre',
-                    ":lat/:lng": 'centre'
+                    ":lat/:lng": 'centre',
+                    ":lat/:lng/:id": 'activateMarker',
                 },
                 centre: function(lat, lng) {
                     self.mapController.setCentre({lat: lat, lng: lng});
@@ -83,6 +85,29 @@ define([
                 },
                 findCentre: function() {
                     self.mapController.loadCentre();
+                },
+                activateMarker: function(lat, lng, id) {
+                    // Centre map around area so pubs can be loaded if not already there
+                    // EG from a new page request
+                    self.mapController.setCentre({lat: lat, lng: lng});
+                    self.publish('centre:fromhash');
+
+                    // If marker cant be found, re query pubs in the area
+                    // When the request finisheds apply the callback only
+                    // once on the foursquare:loaded event
+                    var m = self.markers[id];
+                    if(!self.pubs.length || !m) {
+                        self.getPubs();
+                        self.subscribe('foursquare:loaded', _.once(function() {
+                            var m = self.markers[id];
+                            m.fireEvent('click');
+                        }));
+                    } else if(m) {
+                        // Of the marker can be found
+                        m.fireEvent('click');
+                    } else {
+                        alert('Can\'t find that pub');
+                    }
                 }
             })
             this.router = new Router();
@@ -175,6 +200,7 @@ define([
                     self.renderLocality();
                     self.publish('pub:select', item);
                 });
+                self.markers[item.id] = m;
             });
         };
 
