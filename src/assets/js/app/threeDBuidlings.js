@@ -239,7 +239,7 @@ define([
             mesh.rotation.z = Math.PI/2;
 
             mesh.castShadow = true;
-            mesh.receiveShadow = false;
+            mesh.receiveShadow = true;
 
             this.scene.add(mesh);
             this.features.push(mesh);
