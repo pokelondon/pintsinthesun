@@ -9,6 +9,7 @@ requirejs.config({
         'threeDBuidlings': '../app/threeDBuidlings',
         'mediator': '../app/mediator',
         'map': '../app/map',
+        'form': '../app/form',
         'OSMBuildings': 'osmbuildings/OSMBuildings-Leaflet',
         'leaflet': 'http://cdn.leafletjs.com/leaflet-0.7/leaflet',
         //'threejs': 'https://cdn.rawgithub.com/mrdoob/three.js/master/build/three',

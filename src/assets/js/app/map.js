@@ -8,7 +8,7 @@ define([
         var osmUrl = 'http://a.tile.openstreetmap.org/{z}/{x}/{y}.png';
         var mapBoxUrl = 'https://a.tiles.mapbox.com/v3/errkk.hmcik8n5/{z}/{x}/{y}@2x.png'
         var tileProvider = mapBoxUrl;
-        this.defaultCentre = {lat: 51.524312, lng: -0.076432};
+        var defaultCentre = {lat: 51.524312, lng: -0.076432};
 
         var Map = function() {
             _.extend(this, Mediator);
@@ -34,16 +34,25 @@ define([
             }, this));
 
             // Update hash via pub sub message
-            this.map.on('moveend', _.bind(this.updatedCentre, this));
+            this.map.on('dragend', _.bind(this.updatedCentre, this));
         };
 
+        /**
+         * Publish an event when the map centre changes,
+         * Used to update the hash
+         */
         Map.prototype.updatedCentre = function() {
             var data = this.map.getCenter();
             this.publish('map:update_centre', {lat: data.lat, lng: data.lng});
         };
 
+        /**
+         * Load the default centre, then try to locate the user
+         * Called on by the Router when no location is specified
+         */
         Map.prototype.loadCentre = function() {
             // Unless geolocation is available
+            this.map.setView(defaultCentre, 18);
             this.centreCurrentLocation();
         };
 
@@ -51,6 +60,9 @@ define([
             this.map.setView(centre, 18);
         };
 
+        /**
+         * Tries to centre the map on the user's location
+         */
         Map.prototype.centreCurrentLocation = function() {
             if(navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(_.bind(function(position) {
@@ -59,10 +71,8 @@ define([
                     centre.lng = position.coords.longitude;
                     this.map.setView(centre, 18);
                     this.publish('geolocation:complete', position.coords);
+                    this.updatedCentre();
                 }, this));
-            } else {
-                // That didnt work, do the default
-                this.map.setView(this.defaultCentre, 18);
             }
         };
 

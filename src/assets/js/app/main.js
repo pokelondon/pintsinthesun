@@ -7,8 +7,9 @@ define([
         'moment',
         'threeDBuidlings',
         'mediator',
-        'map'
-    ], function($, _, leaflet, Backbone, Slider, moment, ThreeDScene, Mediator, Map) {
+        'map',
+        'form'
+    ], function($, _, leaflet, Backbone, Slider, moment, ThreeDScene, Mediator, Map, Form) {
 
         var FOURSQUARE_URL = 'https://api.foursquare.com/v2/venues/search\?client_id\=FNJEOV4QV4YBMJ4J5EQNKQTCQXOQBCUSIIYIZAXWMKLY5XPN\&client_secret\=NEKCZ4IFX4SOJEPDY2E1ZIV4NTAYZ3GWQHWKKPSQF3KOZKCS\&v\=1396279715756\&ll\={lat}%2C{lng}\&radius\=500\&intent\=browse\&limit\=50\&categoryId\=4bf58dd8d48988d11b941735%2C4bf58dd8d48988d116941735'
         var OVERPASS_URL = 'http://overpass-api.de/api/interpreter?data=[out:json];((way({bounds})[%22building%22]);(._;node(w);););out;'
@@ -51,6 +52,7 @@ define([
             _.extend(this, Mediator);
             var self = this;
             this.mapController = mapController;
+            this.pubs = {};
 
             // Elements
             this.$btnLoadPubs = $('.js-load-pubs');
@@ -72,27 +74,57 @@ define([
             var Router = Backbone.Router.extend({
                 routes: {
                     "": 'findCentre',
-                    ":lat/:lng": 'centre'
+                    ":lat/:lng": 'centre',
+                    ":lat/:lng/:id": 'activateMarker',
                 },
                 centre: function(lat, lng) {
                     self.mapController.setCentre({lat: lat, lng: lng});
                     self.publish('centre:fromhash');
+                    self.getPubs();
                 },
                 findCentre: function() {
                     self.mapController.loadCentre();
+                },
+                activateMarker: function(lat, lng, id) {
+                    // Centre map around area so pubs can be loaded if not already there
+                    // EG from a new page request
+                    self.mapController.setCentre({lat: lat, lng: lng});
+
+                    // Centre around location from hash, should match
+                    // that of the foursquare location
+                    self.renderLocality();
+
+                    // If the pub isn't loaded, re query pubs in the area
+                    // Then when loaded, open the popup
+                    var pub = self.pubs[id];
+                    if(!pub) {
+                        self.getPubs();
+                        self.subscribe('foursquare:loaded', _.once(function() {
+                            pub = self.pubs[id];
+                            pub.marker.openPopup();
+                        }));
+                    } else if(pub) {
+                        // Of the marker can be found
+                        pub.marker.openPopup();
+                    } else {
+                        alert('Can\'t find that pub');
+                    }
                 }
             })
             this.router = new Router();
             Backbone.history.start({pushState: false});
 
-            // Save a history point
-            this.subscribe('map:centre', function(centre) {
-                self.router.navigate(centre.lat + '/' + centre.lng, {trigger: false});
-            });
-
-            // Update current hash
+            // Update current location hash
+            // update_centre proxies to drag end (user initiated reposition)
             this.subscribe('map:update_centre', function(centre) {
                 self.router.navigate(centre.lat + '/' + centre.lng, {trigger: false, replace:true});
+            });
+            // Load pubs for new area
+            this.subscribe('map:update_centre', _.debounce(this.getPubs, 1000, true));
+
+            // Use Router to trigger pub selection (from markers or search)
+            this.subscribe('map:select_pub', function(centre, id) {
+                self.router.navigate(centre.lat + '/' + centre.lng + '/' + id, {trigger: true, replace:true});
             });
 
             if('function' === typeof ga) {
@@ -109,8 +141,8 @@ define([
                 ga('send', 'event', 'map', 'center');
             });
 
-            this.subscribe('pub:select', function(item) {
-                ga('send', 'event', 'map', 'marker', item.name);
+            this.subscribe('map:select_pub', function(centre, id) {
+                ga('send', 'event', 'map', 'marker', id);
             });
 
             this.subscribe('track:click:render', function(name) {
@@ -123,6 +155,10 @@ define([
 
             this.subscribe('foursquare:loaded', function() {
                 ga('send', 'event', 'button', 'click', 'find pubs');
+            });
+
+            this.subscribe('form:submit', function() {
+                ga('send', 'event', 'button', 'click', 'search');
             });
         };
 
@@ -155,14 +191,21 @@ define([
             var self = this;
             this.$btnLoadPubs.removeClass('is-loading');
             _(data.response.venues).each(function(item) {
+                if(self.pubs[item.id]) {
+                    return;
+                }
                 var m = L.marker([item.location.lat, item.location.lng], {icon: pintIcon})
                         .addTo(self.mapController.map)
                         .bindPopup(item.name);
+
                 m.on('click', function() {
-                    self.mapController.map.setView(item.location, 18);
-                    self.renderLocality();
-                    self.publish('pub:select', item);
+                    // Change hash so Router can handle displaying it
+                    self.publish('map:select_pub', item.location, item.id);
                 });
+
+                // Save reference to marker as well
+                item.marker = m;
+                self.pubs[item.id] = item;
             });
         };
 
@@ -239,15 +282,12 @@ define([
                     var levels = feature.tags['building:levels'] || 2;
                     var isPub = (feature.tags.amenity == 'pub');
                     var outlinePath = filterNodes(feature, nodes);
-                    // Close path
-                    outlinePath.push(outlinePath[0]);
                     // Render the buidling in 3D
                     self.scene.renderBuilding(outlinePath, levels, isPub);
                 }
 
                 function renderRoad(feature) {
                     var path = filterNodes(feature, nodes);
-                    // Render the buidling in 3D
                     self.scene.renderRoad(path);
                 }
 
@@ -263,18 +303,19 @@ define([
 
         $(document).ready(function() {
 
-            if (!window.WebGLRenderingContext) {
-                $('#ddd').html('<p class="error">Sorry, your device doesn\'t support WebGL, and we needs it for projecting shadows.</p>');
+            if (!window.WebGLRenderingContext || navigator.appVersion.match(/iPhone/)) {
+                $('.js-render-canvas').parent().addClass('has-error');
             }
             var mapController = new Map();
             var app = new App(mapController);
+            var form = new Form(mapController);
 
             // Warp the pint logo so it follows the shadow
             (function() {
                 var $pint = $('.Pint-shad');
                 var h = $pint.height();
                 app.subscribe('slider:change', function(perc) {
-                    perc = 1- (perc / 100);
+                    perc = (perc / 100);
                     var element = $pint[0];
                     var angle = Math.floor((90 * perc) - 45);
                     var transform  = 'skewX(' + angle + 'deg) translateY(-64px)';
@@ -287,10 +328,18 @@ define([
                 app.publish('slider:change', app.currentPercent);
             }());
 
+            function closeModal() {
+                $('.js-modal').removeClass('is-open');
+                $('body').removeClass('modal-open');
+            }
+
+            function openModal() {
+                $('.js-modal').addClass('is-open');
+                $('body').addClass('modal-open');
+            }
+
             // Update modal title depending on the pub
-            app.subscribe('pub:select', function(item) {
-                $('.js-modal').find('.Modal-heading').text(item.name);
-            });
+            app.subscribe('map:centre', closeModal);
 
             var $btnRender = $('.js-render-locality');
             $btnRender.on('click', function(evt) {
@@ -299,12 +348,27 @@ define([
                 app.renderLocality();
             });
 
-
-            // Modal Close button:w
+            // Modal Close button
             var $btnCloseOverlay = $('.js-close-modal');
             $btnCloseOverlay.on('click', function(evt) {
                 evt.preventDefault();
-                $('.js-modal').removeClass('is-open');
+                closeModal();
+            });
+            $('.js-open-modal').on('click', function(evt) {
+                evt.preventDefault();
+                openModal();
+            });
+            $('.Modal-container').on('click', function(evt) {
+                closeModal();
+            });
+            $('.Modal-body').on('click', function(evt) {
+                evt.stopPropagation();
+            });
+            $(window).on('keyup', function(evt) {
+                var ESC = 27;
+                if(ESC === evt.keyCode) {
+                    closeModal();
+                }
             });
 
             var $about = $('.js-about').hide();
@@ -315,5 +379,4 @@ define([
                 $btnAbout.toggleClass('is-activated');
             });
         });
-
 });

@@ -1284,22 +1284,6 @@ hr {
 .Toolbar-row--pad {
   padding: 10px 10px;
 }
-.Clock-input {
-  -webkit-flex: 9;
-  -moz-flex: 9;
-  -ms-flex: 9;
-  flex: 9;
-}
-.Clock-display {
-  -webkit-flex: 1;
-  -moz-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  text-align: center;
-  min-width: 90px;
-  font-size: 18px;
-  padding: 10px 10px;
-}
 .Tool-button {
   align-self: center;
   -webkit-flex: 1;
@@ -1349,17 +1333,21 @@ hr {
   -webkit-user-drag: none;
   height: 40px;
   position: relative;
-  margin-top: 10px;
+  margin-bottom: 20px;
 }
 .Slider-input {
-  vertical-align: middle;
   display: inline-block;
-  width: 100%;
+  padding: 0 10px;
+  width: 70%;
+}
+@media (min-width: 590px) {
+  .Slider-input {
+    width: 90%;
+  }
 }
 .Slider-indicator {
   height: 10px;
   margin: 15px 0;
-  /*.linear-gradient-left(transparent, @blue, 0%, transparent, 100%);*/
   background: #4fc1e9;
   display: inline-block;
   vertical-align: middle;
@@ -1401,6 +1389,24 @@ hr {
   margin-right: -20px;
   top: -15px;
   bottom: 0;
+  cursor: pointer;
+}
+.Slider-thumb:before {
+  content: "Slide Me";
+  left: 40px;
+  width: 80px;
+  text-align: center;
+  font-size: 14px;
+  position: absolute;
+  background: #da4453;
+  color: #fff;
+  margin: 10px 0;
+  opacity: 1;
+  -webkit-transition: opacity 1s;
+  -moz-transition: opacity 1s;
+  -o-transition: opacity 1s;
+  -ms-transition: opacity 1s;
+  transition: opacity 1s;
 }
 .Slider-thumb:after {
   top: 0;
@@ -1416,6 +1422,17 @@ hr {
 }
 .Slider-thumb.is-active:after {
   box-shadow: #f6bb42 0 0 5px;
+}
+.is-moved .Slider-thumb:before {
+  opacity: 0;
+}
+.Clock-display {
+  text-align: center;
+  font-size: 22px;
+  display: inline-block;
+  vertical-align: bottom;
+  line-height: 40px;
+  padding: 0 10px 3px 10px;
 }
 @font-face {
   font-family: 'ClearSans-Bold';
@@ -1463,6 +1480,20 @@ h1 {
   letter-spacing: 3px;
   text-align: center;
 }
+h2 {
+  padding-bottom: 8px;
+}
+h3 {
+  font-size: 15px;
+  padding-bottom: 4px;
+  font-family: ClearSans-Bold;
+}
+.Media-heading {
+  margin-top: 30px;
+  font-size: 25px;
+  font-family: ClearSans-Regular;
+  padding-left: 10px;
+}
 p {
   font-family: 'ClearSans-Regular';
   font-size: 14px;
@@ -1477,11 +1508,15 @@ p + p {
   font-size: 18px;
   line-height: 26px;
 }
-.error {
+.Error {
+  display: none;
   background: #da4453;
   color: #fff;
   font-size: 18px;
   padding: 40px 20px;
+}
+.has-error .Error {
+  display: block;
 }
 ._linkBase {
   display: inline-block;
@@ -1515,6 +1550,9 @@ p + p {
 .Cta:hover span {
   border-bottom: #3bafda 1px solid;
 }
+button {
+  border: none;
+}
 .Button {
   display: inline-block;
   padding-right: 0;
@@ -1524,25 +1562,77 @@ p + p {
   vertical-align: middle;
   margin-top: 1em;
   padding: 10px 20px;
-  background-color: #4fc1e9;
+  background-color: #48cfad;
   color: #fff;
 }
 .Button.u-pad-close {
   margin-top: 0.3em;
 }
+.Button.is-loading:after {
+  content: "";
+  width: 1em;
+  padding: 12px 15px 12px 25px;
+  margin: -2px 0;
+  display: inline-block;
+  vertical-align: middle;
+  height: 1em;
+  background-repeat: no-repeat;
+  background-position: 100% 50%;
+  background-image: url(../img/loading-green.gif);
+}
 .Button:hover {
-  background-color: #3bafda;
+  background-color: #37bc9b;
   color: #fff;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
 }
 .Button:active {
-  background-color: #3bafda;
+  background-color: #37bc9b;
   color: #fff;
   box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+.Button:focus {
+  outline: none;
 }
 .Button.Button--block {
   display: block;
   text-align: center;
+}
+.Button.Button--green {
+  background-color: #48cfad;
+}
+.Button.Button--green.is-loading:after {
+  background-image: url(../img/loading-green.gif);
+}
+.Button.Button--green:hover {
+  background-color: #37bc9b;
+}
+.Button.Button--red {
+  background-color: #ed5565;
+}
+.Button.Button--red.is-loading:after {
+  background-image: url(../img/loading-red.gif);
+}
+.Button.Button--red:hover {
+  background-color: #da4453;
+}
+.Button.Button--yellow {
+  background-color: #f6bb42;
+}
+.Button.Button--yellow.is-loading:after {
+  background-image: url(../img/loading-yellow.gif);
+}
+.Button.Button--yellow:hover {
+  background-color: #ffce54;
+}
+.Button.Button--blue {
+  background-color: #4fc1e9;
+}
+.Button.Button--blue.is-loading:after {
+  background-image: url(../img/loading-blue.gif);
+}
+.Button.Button--blue:hover {
+  background-color: #3bafda;
 }
 .Button--sec {
   display: inline-block;
@@ -1561,20 +1651,30 @@ p + p {
 .Button--sec.u-pad-close {
   margin-top: 0.3em;
 }
-.Button--open:after {
-  content: "\25BC";
-  display: inline-block;
-  border-left: 1px solid #a9b0ba;
-  padding: 10px 15px;
-  margin: -15px -25px -10px 25px;
+.Button--open {
+  padding-right: 20px;
 }
-.Button--open.is-activated:after {
-  content: "\25B2";
+.Button--open .Btn-icon:before {
+  position: relative;
+  margin-left: 12px;
+  content: "+";
+  font-family: Arial, sans-serif;
+  line-height: 13px;
+  display: inline-block;
+}
+.Button--open.is-activated .Btn-icon:before {
+  content: "\2013";
 }
 .Instructions {
-  font-size: 30px;
-  margin: 90px 40px 0 40px;
-  padding: 0;
+  font-size: 20px;
+  margin: 100px 40px 0 40px;
+  padding: 50px 0 0 0;
+}
+@media (min-width: 590px) {
+  .Instructions {
+    font-size: 30px;
+    padding: 0;
+  }
 }
 .Instructions li {
   padding: 30px 5px 33px;
@@ -1587,12 +1687,23 @@ p + p {
 .Footer {
   clear: both;
   text-align: center;
-  padding: 40px 0 30px;
+  padding: 20px 0 30px;
   color: #707c8d;
 }
+.Footer .Button {
+  margin-bottom: 20px;
+}
 .Footer-text {
-  width: 70%;
-  margin: 0 auto 20px;
+  margin: 0 20px 20px;
+}
+@media (min-width: 590px) {
+  .Footer-text {
+    width: 70%;
+    margin: 0 auto 20px;
+  }
+}
+.modal-open {
+  overflow: hidden;
 }
 .Modal-container {
   position: fixed;
@@ -1604,22 +1715,22 @@ p + p {
   right: 0;
   padding: 20px;
   overflow: auto;
-  overflow-y: scroll;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   visibility: hidden;
   opacity: 0;
   -webkit-transform: scale(0.9);
   transform: scale(0.9);
-  -webkit-transition: -webkit-transform 0.2s, opacity 0.2s, visibility 0s 0.2s, background 0.2s;
-  transition: transform 0.2s, opacity 0.2s, visibility 0s 0.2s, background 0.2s;
+  -webkit-transition: -webkit-transform 400ms, opacity 400ms, visibility 0s 400ms, background 400ms;
+  transition: transform 400ms, opacity 400ms, visibility 0s 400ms, background 400ms;
 }
 .Modal-container.is-open {
   visibility: visible;
   opacity: 1;
   -webkit-transform: scale(1);
   transform: scale(1);
-  -webkit-transition: -webkit-transform 0.4s, opacity 0.4s;
-  transition: transform 0.4s, opacity 0.4s;
+  -webkit-transition: -webkit-transform 800ms, opacity 800ms;
+  transition: transform 800ms, opacity 800ms;
   background: rgba(0, 0, 0, 0.5);
 }
 .Modal {
@@ -1634,10 +1745,14 @@ p + p {
   background: #48cfad;
   color: #fff;
 }
+.Modal-heading {
+  font-size: 18px;
+  padding-bottom: 0;
+}
 .Modal-close {
   color: #fff;
   position: absolute;
-  top: 5px;
+  top: 3px;
   right: 10px;
   font-family: ClearSans-Light;
   font-size: 20px;
@@ -1646,18 +1761,60 @@ p + p {
   position: relative;
   padding: 10px 10px;
 }
-.Modal-body p:first-child {
-  margin-top: 0.5em;
+.Form {
+  background: #eee;
+  padding: 10px 10px 20px;
+  margin: -10px;
+  marign-bottom: 30px;
 }
-.Modal-body p:last-child {
-  margin-bottom: 0.5em;
+.Form fieldset {
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+.Form .Button {
+  margin-left: 10px;
+}
+.Input-container {
+  margin: 0;
+  padding: 10px;
+}
+@media (min-width: 590px) {
+  .Input-container--half {
+    width: 50%;
+    float: left;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+.Input {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 10px 10px;
+  width: 100%;
+  margin: 8px 0 0 0;
+  border: 2px solid #c5cad1;
+}
+.Input:focus {
+  outline: none;
+  border-color: #8c96a4;
+}
+.Input--inline {
+  display: inline-block;
+}
+.Input-label {
+  font-size: 18px;
+  margin-left: 2px;
+  display: block;
 }
 body {
   background: #faf9f7;
 }
 .Header {
   text-align: center;
-  padding: 40px 0 40px;
+  padding: 40px 0 30px;
 }
 .Pint {
   position: relative;
@@ -1693,7 +1850,8 @@ body {
   background-size: 128px 128px;
 }
 .Map,
-.ThreeD {
+.Render_canvas-container {
+  position: relative;
   display: block;
   width: 100%;
   height: 400px;
@@ -1708,21 +1866,65 @@ body {
   background: radial-gradient(ellipse at center, #5a6370 0%, #5a6370 100%);
 }
 .Map a,
-.ThreeD a {
+.Render_canvas-container a {
   color: #7cd1ef;
 }
 .Map a:hover,
-.ThreeD a:hover {
+.Render_canvas-container a:hover {
   color: #4fc1e9;
 }
 @media (min-width: 590px) {
   .Map,
-  .ThreeD {
+  .Render_canvas-container {
     margin-top: 0;
     height: 500px;
     width: 50%;
     float: right;
   }
+}
+.Map.needs-reload .Render_canvas-reload,
+.Render_canvas-container.needs-reload .Render_canvas-reload {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: opacity 400ms 0s, visibility 0s 400ms;
+  transition: opacity 400ms 0s, visibility 0s 400ms;
+}
+@media (max-width: 590px) {
+  .Map.has-error,
+  .Render_canvas-container.has-error {
+    height: auto;
+  }
+}
+.Map.has-error .Instructions,
+.Render_canvas-container.has-error .Instructions {
+  display: none;
+}
+.Map.has-error .Error,
+.Render_canvas-container.has-error .Error {
+  display: block;
+}
+.Render_canvas {
+  width: 100%;
+  height: 100%;
+}
+.Render_canvas-reload {
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: opacity 400ms 0s, visibility 0s;
+  transition: opacity 400ms 0s, visibility 0s;
+  background-color: rgba(0, 0, 0, 0.5);
+  background-image: url(../img/reload-tint.png);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+}
+.Render_canvas-reload:hover {
+  background-image: url(../img/reload.png);
 }
 .leaflet-popup-content {
   font-family: ClearSans-Regular;
@@ -1740,5 +1942,24 @@ body {
   height: 50px;
   background: url(../img/poke-logo.png) 0 0 no-repeat;
   margin-top: 20px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (min--moz-device-pixel-ratio: 1.5), (-o-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+  .logo-poke {
+    -webkit-background-size: 25px 25px;
+    background-size: 25px 25px;
+    width: 25px;
+    height: 25px;
+  }
+}
+.Media-list {
+  margin-top: 20px;
+}
+.Media-item {
+  border-bottom: 1px solid #c5cad1;
+  padding: 4px 10px 10px 10px;
+  margin-top: 10px;
+}
+.Media-item:last-child {
+  border-bottom: none;
 }
 /*# sourceMappingURL=/src/assets/main.css.map */
