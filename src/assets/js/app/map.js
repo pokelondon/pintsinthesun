@@ -37,13 +37,22 @@ define([
             this.map.on('dragend', _.bind(this.updatedCentre, this));
         };
 
+        /**
+         * Publish an event when the map centre changes,
+         * Used to update the hash
+         */
         Map.prototype.updatedCentre = function() {
             var data = this.map.getCenter();
             this.publish('map:update_centre', {lat: data.lat, lng: data.lng});
         };
 
+        /**
+         * Load the default centre, then try to locate the user
+         * Called on by the Router when no location is specified
+         */
         Map.prototype.loadCentre = function() {
             // Unless geolocation is available
+            this.map.setView(defaultCentre, 18);
             this.centreCurrentLocation();
         };
 
@@ -51,8 +60,10 @@ define([
             this.map.setView(centre, 18);
         };
 
+        /**
+         * Tries to centre the map on the user's location
+         */
         Map.prototype.centreCurrentLocation = function() {
-            this.map.setView(defaultCentre, 18);
             if(navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(_.bind(function(position) {
                     var centre = {};
