@@ -52,8 +52,7 @@ define([
             _.extend(this, Mediator);
             var self = this;
             this.mapController = mapController;
-            this.pubs = [];
-            this.markers = {};
+            this.pubs = {};
 
             // Elements
             this.$btnLoadPubs = $('.js-load-pubs');
@@ -90,21 +89,23 @@ define([
                     // Centre map around area so pubs can be loaded if not already there
                     // EG from a new page request
                     self.mapController.setCentre({lat: lat, lng: lng});
-                    self.publish('centre:fromhash');
 
-                    // If marker cant be found, re query pubs in the area
-                    // When the request finisheds apply the callback only
-                    // once on the foursquare:loaded event
-                    var m = self.markers[id];
-                    if(!self.pubs.length || !m) {
+                    // Centre around location from hash, should match
+                    // that of the foursquare location
+                    self.renderLocality();
+
+                    // If the pub isn't loaded, re query pubs in the area
+                    // Then when loaded, open the popup
+                    var pub = self.pubs[id];
+                    if(!pub) {
                         self.getPubs();
                         self.subscribe('foursquare:loaded', _.once(function() {
-                            var m = self.markers[id];
-                            m.fireEvent('click');
+                            pub = self.pubs[id];
+                            pub.marker.openPopup();
                         }));
-                    } else if(m) {
+                    } else if(pub) {
                         // Of the marker can be found
-                        m.fireEvent('click');
+                        pub.marker.openPopup();
                     } else {
                         alert('Can\'t find that pub');
                     }
@@ -113,16 +114,18 @@ define([
             this.router = new Router();
             Backbone.history.start({pushState: false});
 
-            // Save a history point
-            this.subscribe('map:centre', function(centre) {
-                self.router.navigate(centre.lat + '/' + centre.lng, {trigger: false});
-            });
-
-            // Update current hash
+            // Update current location hash
+            // update_centre proxies to drag end (user initiated reposition)
             this.subscribe('map:update_centre', function(centre) {
                 self.router.navigate(centre.lat + '/' + centre.lng, {trigger: false, replace:true});
             });
+            // Load pubs for new area
             this.subscribe('map:update_centre', _.debounce(this.getPubs, 1000, true));
+
+            // Use Router to trigger pub selection (from markers or search)
+            this.subscribe('map:select_pub', function(centre, id) {
+                self.router.navigate(centre.lat + '/' + centre.lng + '/' + id, {trigger: true, replace:true});
+            });
 
             if('function' === typeof ga) {
                 this.setUpEvents();
@@ -138,8 +141,8 @@ define([
                 ga('send', 'event', 'map', 'center');
             });
 
-            this.subscribe('pub:select', function(item) {
-                ga('send', 'event', 'map', 'marker', item.name);
+            this.subscribe('map:select_pub', function(centre, id) {
+                ga('send', 'event', 'map', 'marker', id);
             });
 
             this.subscribe('track:click:render', function(name) {
@@ -188,19 +191,21 @@ define([
             var self = this;
             this.$btnLoadPubs.removeClass('is-loading');
             _(data.response.venues).each(function(item) {
-                if(self.pubs.indexOf(item.id) > -1) {
+                if(self.pubs[item.id]) {
                     return;
                 }
-                self.pubs.push(item.id);
                 var m = L.marker([item.location.lat, item.location.lng], {icon: pintIcon})
                         .addTo(self.mapController.map)
                         .bindPopup(item.name);
+
                 m.on('click', function() {
-                    self.mapController.map.setView(item.location, 18);
-                    self.renderLocality();
-                    self.publish('pub:select', item);
+                    // Change hash so Router can handle displaying it
+                    self.publish('map:select_pub', item.location, item.id);
                 });
-                self.markers[item.id] = m;
+
+                // Save reference to marker as well
+                item.marker = m;
+                self.pubs[item.id] = item;
             });
         };
 
@@ -335,8 +340,7 @@ define([
             }
 
             // Update modal title depending on the pub
-            app.subscribe('map:update_centre', closeModal);
-
+            app.subscribe('map:centre', closeModal);
 
             var $btnRender = $('.js-render-locality');
             $btnRender.on('click', function(evt) {
