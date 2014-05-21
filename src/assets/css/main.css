@@ -1598,6 +1598,42 @@ button {
   display: block;
   text-align: center;
 }
+.Button.Button--green {
+  background-color: #48cfad;
+}
+.Button.Button--green.is-loading:after {
+  background-image: url(../img/loading-green.gif);
+}
+.Button.Button--green:hover {
+  background-color: #37bc9b;
+}
+.Button.Button--red {
+  background-color: #ed5565;
+}
+.Button.Button--red.is-loading:after {
+  background-image: url(../img/loading-red.gif);
+}
+.Button.Button--red:hover {
+  background-color: #da4453;
+}
+.Button.Button--yellow {
+  background-color: #f6bb42;
+}
+.Button.Button--yellow.is-loading:after {
+  background-image: url(../img/loading-yellow.gif);
+}
+.Button.Button--yellow:hover {
+  background-color: #ffce54;
+}
+.Button.Button--blue {
+  background-color: #4fc1e9;
+}
+.Button.Button--blue.is-loading:after {
+  background-image: url(../img/loading-blue.gif);
+}
+.Button.Button--blue:hover {
+  background-color: #3bafda;
+}
 .Button--sec {
   display: inline-block;
   padding: 10px 20px;
@@ -1620,21 +1656,18 @@ button {
 }
 .Button--open .Btn-icon:before {
   position: relative;
-  border-left: 1px solid #a9b0ba;
-  padding-left: 10px;
   margin-left: 12px;
   content: "+";
   font-family: Arial, sans-serif;
   line-height: 13px;
   display: inline-block;
-  top: -1px;
 }
 .Button--open.is-activated .Btn-icon:before {
   content: "\2013";
 }
 .Instructions {
   font-size: 20px;
-  margin: 90px 40px 0 40px;
+  margin: 100px 40px 0 40px;
   padding: 50px 0 0 0;
 }
 @media (min-width: 590px) {
@@ -1654,8 +1687,11 @@ button {
 .Footer {
   clear: both;
   text-align: center;
-  padding: 40px 0 30px;
+  padding: 20px 0 30px;
   color: #707c8d;
+}
+.Footer .Button {
+  margin-bottom: 20px;
 }
 .Footer-text {
   margin: 0 20px 20px;

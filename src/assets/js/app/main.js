@@ -288,7 +288,6 @@ define([
 
                 function renderRoad(feature) {
                     var path = filterNodes(feature, nodes);
-                    // Render the buidling in 3D
                     self.scene.renderRoad(path);
                 }
 
