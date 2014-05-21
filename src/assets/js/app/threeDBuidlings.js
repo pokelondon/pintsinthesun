@@ -37,9 +37,8 @@ define([
 
         var ThreeDScene = function() {
             _.extend(this, Mediator);
-            this.initScene();
+            this.$el = $('.js-render-canvas');
             this.centre = [-0.0668529, 51.5127414]; // Central point as [lon, lat]
-            this.subscribe('update', this.render);
 
             this.loadTextures();
             this.height = 20;
@@ -47,6 +46,17 @@ define([
                                     extrudeMaterial: 1};
 
             this.features = [];
+            this.pause = false;
+
+            this.subscribe('update', function() {
+                var was_paused = this.pause;
+                this.$el.parent().removeClass('needs-reload');
+                this.pause = false;
+                if(was_paused) {
+                    this.animate();
+                }
+            });
+            this.initScene();
         };
 
         ThreeDScene.prototype.loadTextures = function() {
@@ -59,6 +69,11 @@ define([
         ThreeDScene.prototype.setCentre = function setCentre(coords) {
             this.centre = coords;
             this.publish('update');
+
+            this.subscribe('map:update_centre', function() {
+                this.$el.parent().addClass('needs-reload');
+                this.pause = true;
+            });
             return this;
         };
 
@@ -67,9 +82,8 @@ define([
         ThreeDScene.prototype.initScene = function initScene() {
             var self = this;
             // set the scene size
-            this.WIDTH = $('#ddd').innerWidth();
-            this.HEIGHT = $('#ddd').innerHeight();
-            this.$el = $('#ddd');
+            this.WIDTH = this.$el.innerWidth();
+            this.HEIGHT = this.$el.innerHeight();
 
             // set some camera attributes
             var VIEW_ANGLE = 45,
@@ -79,6 +93,8 @@ define([
 
             // create a WebGL renderer, camera, and a scene
             this.renderer = new THREE.WebGLRenderer({clearColor: greyDark, antialias:true});
+            // Crappy hack to suprress warnings being displayed as errors in the console
+            this.renderer.context.getProgramInfoLog = function () { return '' };
             this.camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
             this.scene = new THREE.Scene();
 
@@ -97,7 +113,7 @@ define([
             this.renderer.shadowMapSoft = true;
 
             // add the render target to the page
-            $("#ddd").html(this.renderer.domElement);
+            this.$el.html(this.renderer.domElement);
 
             this.letThereBeLight()
                 .createFloor()
@@ -116,7 +132,6 @@ define([
             this.controls.maxDistance = CAMERA_DISTANCE + 200;
 
             this.animate();
-            this.render();
         };
 
 
@@ -163,7 +178,9 @@ define([
         };
 
         ThreeDScene.prototype.animate = function render() {
-            requestAnimationFrame(_.bind(this.animate, this));
+            if(!this.pause) {
+                requestAnimationFrame(_.bind(this.animate, this));
+            }
 
             this.controls.update();
             this.camera.position.sub(this.controls.target);
@@ -222,7 +239,7 @@ define([
             mesh.rotation.z = Math.PI/2;
 
             mesh.castShadow = true;
-            mesh.receiveShadow = false;
+            mesh.receiveShadow = true;
 
             this.scene.add(mesh);
             this.features.push(mesh);
@@ -238,7 +255,6 @@ define([
                 linecap: 'round',
                 linejoin: 'round'
             });
-            console.log(points);
 
             var geometry = new THREE.Geometry();
             _(points).each(function(point) {

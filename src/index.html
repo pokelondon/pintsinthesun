@@ -13,7 +13,7 @@
         <link rel="apple-touch-icon" href="assets/img/icon-512.png" sizes="512x512" />
         <link rel="apple-touch-startup-image" href="assets/img/startup-image-320x460.png" sizes="320x460" />
         <link rel="apple-touch-startup-image" href="assets/img/startup-image-640x920.png" sizes="640x920" />
-        <link rel="apple-touch-startup-image" href="assets/img/startup-image-640x1096.png" sizes="640x1096">
+        <link rel="apple-touch-startup-image" href="assets/img/startup-image-640x1096.png" sizes="640x1096" />
 
         <link rel="shortcut icon" href="assets/img/favicon.png" />
 
@@ -28,42 +28,70 @@
                     <div class="Pint-shad"></div>
                 </div>
                 <h1>Pints in the Sun</h1>
+                <p class="intro">Find a pub near you that won't be in the shade</p>
             </header>
-            <div class="Toolbar">
-                <div class="Toolbar-row">
-                    <a class="Tool-button Tool-button--yellow js-locate-me" href="#na">Locate Me</a>
-                    <a class="Tool-button js-load-pubs" href="#na">Find Pubs</a>
-                    <a class="Tool-button Tool-button--green js-render-locality" href="#na">Render Locality</a>
+            <div class="Slider-container">
+                <div class="Slider-input js-slider-time">
+                    <div class="Slider-indicator">
+                        <a class="Slider-thumb"></a>
+                    </div>
                 </div>
-                <div class="Toolbar-row Slider-container">
-                    <div class="Slider-input js-slider-time">
-                        <div class="Slider-indicator">
-                            <a class="Slider-thumb"></a>
-                        </div>
-                    </div>
-                    <div class="Clock-display">
-                        <span class="js-clock">00:00</span>
-                    </div>
+                <div class="Clock-display">
+                    <span class="js-clock">00:00</span>
                 </div>
             </div>
 
-            <div class="ThreeD" id="ddd">
-                <ol class="Instructions ">
-                    <li><a class="js-load-pubs" href="#na">Find a pub</a> or location,</li>
-                    <li>Click it or render locality,</li>
-                    <li>Slide the yellow circle</li>
-                </ol>
+            <div class="Render_canvas-container">
+                <div class="Error js-error">
+                    <h2>Sorry,</h2>
+                    <p>Your device doesn't support WebGL, and we need it for projecting shadows.</p>
+                </div>
+                <a href="#na" class="Render_canvas-reload js-render-locality"></a>
+                <div class="Render_canvas js-render-canvas">
+                    <ol class="Instructions">
+                        <li><a href="#na" class="js-open-modal">Find</a> and click a pub near you on the map</li>
+                        <li>Slide the yellow circle to adjust the time</li>
+                    </ol>
+                </div>
             </div>
             <div id="map" class="Map"></div>
             <footer class="Footer">
-                <a href="#" class="Button--sec Button--open js-open-about">About</a>
+                <a href="#na" class="Button Button--green js-locate-me">Locate me</a>
+                <a href="#na" class="Button Button--yellow js-open-modal">Search for Pubs</a>
+                <a href="#" class="Button Button--red Button--open js-open-about">About <span class="Btn-icon"></span></a>
                 <div class="Footer-text is-hidden js-about">
                     <p class="intro">Pints in the Sun addresses the very real problem of finding a pub that will be sunny in the evening, and not overshadowed by adjacent buidlings.</p>
                     <p>Using building outline data from Open Streetmap, the locality around a pub (located via Four Square) is rendered in 3D with three.js (map projection conversion couristy of the D3 library) and onto it, a directional light is projected; from the part of the sky where the sun would be at certain times of year/day. According to a Solar Almanac Calculation, helpfully implmented in JS by SunCalc</p>
                 </div>
-                <p>Hacked together at POKE, with: <a href="http://wiki.openstreetmap.org/wiki/Overpass_API">Open Street Map data</a>, <a href="http://geojson.io/">GeoJSON</a>, <a href="http://d3js.org/">D3</a>, <a href="http://threejs.org/">ThreeJS</a>, <a href="http://www.suncalc.net">SunCalc</a>, <a href="http://foursquare.com/">FourSquare</a> and <a href="http://en.wikipedia.org/wiki/Trigonometry">maths</a></p>
+                <p>Hacked together at POKE, with: <a href="http://wiki.openstreetmap.org/wiki/Overpass_API">Open Street Map data</a>, <a href="http://geojson.io/">GeoJSON</a>, <a href="http://d3js.org/">D3</a>, <a href="http://threejs.org/">ThreeJS</a>, <a href="http://www.suncalc.net">SunCalc</a>, <a href="http://foursquare.com/">Four Square</a> and <a href="http://en.wikipedia.org/wiki/Trigonometry">maths</a></p>
                 <span class="logo-poke"></span>
             </footer>
+            <div class="Modal-container js-modal">
+            <div class="Modal">
+                <header class="Modal-header">
+                    <h2 class="Modal-heading">Find a pub</h2>
+                    <a href="#close" class="Modal-close js-close-modal">&times;</a>
+                </header>
+                <div class="Modal-body">
+                    <form class="Form js-search-form">
+                        <fieldset>
+                            <p class="Input-container Input-container--half">
+                                <label for="input_search" class="Input-label">Search</label>
+                                <input class="Input Input--text" id="input_search" name="s" type="text" value="" placeholder="Pub" />
+                            </p>
+                            <p class="Input-container Input-container--half">
+                                <label for="input_search_near" class="Input-label">Near</label>
+                                <input class="Input Input--text" id="input_search_near" name="s" type="text" value="" placeholder="Shoreditch" />
+                            </p>
+                            <button class="Button js-submit" type="submit">Search</button>
+                        </fieldset>
+                    </form>
+                    <div class="Media-list js-search-results">
+                        <h2 class="Media-heading">Results</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
         </div>
         <script>
           (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -74,6 +102,12 @@
           ga('create', 'UA-15712565-30', 'pints.pokedev.net');
           ga('send', 'pageview');
 
+        </script>
+        <script type="template" id="tpl_search_result">
+            <div class="Media-item">
+                <h3><a href="#<%= item.location.lat %>/<%= item.location.lng %>/<%= item.id %>"><%= item.name %></a></h3>
+                <p><%= address %></p>
+            </div>
         </script>
     </body>
 </html>

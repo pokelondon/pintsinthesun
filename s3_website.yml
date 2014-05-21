@@ -4,9 +4,9 @@ s3_bucket: pintsinthesun.co.uk
 
 s3_endpoint: eu-west-1
 
- exclude_from_upload:
-   - .git
-   - node_modules
+exclude_from_upload:
+  - .git
+  - node_modules
 
 # redirects:
 #   index.php: /
