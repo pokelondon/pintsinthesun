@@ -91,8 +91,13 @@ define([
                 NEAR = 0.1,
                 FAR = 10000;
 
-            // create a WebGL renderer, camera, and a scene
-            this.renderer = new THREE.WebGLRenderer({clearColor: greyDark, antialias:true});
+            try {
+                // create a WebGL renderer, camera, and a scene
+                this.renderer = new THREE.WebGLRenderer({clearColor: greyDark, antialias:true});
+            } catch(e) {
+                alert('Sorry, your hardware can\'t do "float textures", and for some reason it needs to');
+                return;
+            }
             // Crappy hack to suprress warnings being displayed as errors in the console
             this.renderer.context.getProgramInfoLog = function () { return '' };
             this.camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
