@@ -1,0 +1,49 @@
+.Form {
+    fieldset {
+        padding: 0;
+        margin: 0;
+        border: none;
+    }
+    background: #eee;
+    padding: 10px 10px 20px;
+    margin: -10px;
+    marign-bottom: 30px;
+    .Button {
+        margin-left: 10px;
+    }
+}
+.Input-container {
+    margin: 0;
+    padding: 10px;
+}
+.Input-container--half {
+
+    @media (min-width: @breakPoint) {
+        width: 50%;
+        float: left;
+        .box-sizing(border-box);
+    }
+}
+.Input {
+    .box-sizing(border-box);
+    padding: 10px 10px;
+    width: 100%;
+    margin: 8px 0 0 0;
+    border: 2px solid lighten(@greyDark, 50);
+    &:focus {
+        outline: none;
+        border-color: lighten(@greyDark, 30);
+    }
+}
+.Input--inline {
+    display: inline-block;
+}
+.Input-label {
+    font-size: 18px;
+    margin-left: 2px;
+    display: block;
+
+}
+.Input--text {
+
+}
