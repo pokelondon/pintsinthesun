@@ -95,7 +95,7 @@ define([
                 // create a WebGL renderer, camera, and a scene
                 this.renderer = new THREE.WebGLRenderer({clearColor: greyDark, antialias:true});
             } catch(e) {
-                alert('Sorry, your hardware can\'t do "float textures", and for some reason it needs to');
+                $('.js-render-canvas').parent().addClass('has-error');
                 return;
             }
             // Crappy hack to suprress warnings being displayed as errors in the console

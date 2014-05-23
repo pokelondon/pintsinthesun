@@ -1511,9 +1511,18 @@ p + p {
 .Error {
   display: none;
   background: #da4453;
+  background: url(/assets/img/fallback.gif) 0 0 no-repeat;
+  -webkit-background-size: 100% 100%;
+  background-size: 100% 100%;
   color: #fff;
   font-size: 18px;
   padding: 40px 20px;
+  overflow: hidden;
+  height: 100%;
+}
+.Error img {
+  float: right;
+  margin: -40px -20px -40px 20px;
 }
 .has-error .Error {
   display: block;
@@ -1888,12 +1897,6 @@ body {
   opacity: 1;
   -webkit-transition: opacity 400ms 0s, visibility 0s 400ms;
   transition: opacity 400ms 0s, visibility 0s 400ms;
-}
-@media (max-width: 590px) {
-  .Map.has-error,
-  .Render_canvas-container.has-error {
-    height: auto;
-  }
 }
 .Map.has-error .Instructions,
 .Render_canvas-container.has-error .Instructions {

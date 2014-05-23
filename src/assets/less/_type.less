@@ -83,9 +83,18 @@ p {
 .Error {
     display: none;
     background: @red;
+    background: url(/assets/img/fallback.gif) 0 0 no-repeat;
+    .background-size(100% 100%);
     color: #fff;
     font-size: 18px;
     padding: 40px 20px;
+    overflow: hidden;
+    height: 100%;
+
+    img {
+        float: right;
+        margin: -40px -20px -40px 20px;
+    }
 }
 .has-error .Error {
     display: block;
