@@ -1692,7 +1692,7 @@ button {
 }
 .Instructions {
   font-size: 20px;
-  margin: 80px 40px 0 40px;
+  margin: 60px 40px 0 40px;
   padding: 50px 0 0 0;
 }
 @media (min-width: 590px) {
