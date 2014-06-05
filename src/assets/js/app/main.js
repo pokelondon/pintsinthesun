@@ -108,6 +108,11 @@ define([
                         pub.marker.openPopup();
                     } else {
                         alert('Can\'t find that pub');
+
+                        ga('send', 'exception', {
+                            'exDescription': 'Can\'t Find pub',
+                            'exFatal': false
+                        });
                     }
                 }
             })
@@ -171,7 +176,12 @@ define([
             var url = format(FOURSQUARE_URL, {lat: centre.lat, lng: centre.lng});
             $.getJSON(url, _.bind(function(data) {
                 this.publish('foursquare:loaded', data);
-            }, this));
+            }, this)).error(function(error) {
+                ga('send', 'exception', {
+                    'exDescription': 'Can\'t get pubs from Foursquare',
+                    'exFatal': false
+                });
+            });
         };
 
         /**
