@@ -1511,12 +1511,16 @@ p + p {
   font-size: 18px;
   line-height: 26px;
 }
+.u-iphone-only {
+  display: none;
+}
 .Error {
   display: none;
   background: #da4453;
   background: url(/assets/img/fallback.gif) 0 0 no-repeat;
   -webkit-background-size: 100% 100%;
   background-size: 100% 100%;
+  text-shadow: 0 0 5px #000000;
   color: #fff;
   font-size: 18px;
   padding: 40px 20px;
