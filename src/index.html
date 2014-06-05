@@ -38,6 +38,22 @@
                 <h1>Pints in the Sun</h1>
                 <p class="intro">Find a pub near you that won't be in the shade</p>
             </header>
+            <div class="Render_canvas-container">
+                <div class="Error js-error">
+                    <h2>Sorry,</h2>
+                    <p>Your device doesn't support WebGL, and we need it for projecting shadows.</p>
+                </div>
+                <a href="#na" class="Render_canvas-reload js-render-locality"></a>
+                <div class="Render_canvas js-render-canvas">
+                    <ol class="Instructions">
+                        <li><a href="#na" class="js-open-modal">Search</a> for a pub&#8230;</li>
+                        <li>&#8230; or click a pint to select</li>
+                        <li>Use the slider to adjust the time of day</li>
+                    </ol>
+                </div>
+            </div>
+            <div id="map" class="Map"></div>
+
             <div class="Slider-container">
                 <div class="Slider-input js-slider-time">
                     <div class="Slider-indicator">
@@ -49,21 +65,6 @@
                 </div>
             </div>
 
-            <div class="Render_canvas-container">
-                <div class="Error js-error">
-                    <h2>Sorry,</h2>
-                    <p>Your device doesn't support WebGL, and we need it for projecting shadows.</p>
-                </div>
-                <a href="#na" class="Render_canvas-reload js-render-locality"></a>
-                <div class="Render_canvas js-render-canvas">
-                    <ol class="Instructions">
-                        <li><a href="#na" class="js-open-modal">Search</a> for a pub</li>
-                        <li>Click a pint to select</li>
-                        <li>Slide the yellow circle to adjust the time</li>
-                    </ol>
-                </div>
-            </div>
-            <div id="map" class="Map"></div>
             <footer class="Footer">
                 <a href="#na" class="Button Button--green js-locate-me">Locate me</a>
                 <a href="#na" class="Button Button--yellow js-open-modal">Search for Pubs</a>

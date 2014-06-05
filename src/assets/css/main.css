@@ -1331,9 +1331,12 @@ hr {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -webkit-user-drag: none;
-  height: 40px;
+  height: 45px;
   position: relative;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  clear: both;
+  background: #434a54;
+  color: #fff;
 }
 .Slider-input {
   display: inline-block;
@@ -1696,7 +1699,7 @@ button {
 .Footer {
   clear: both;
   text-align: center;
-  padding: 20px 0 30px;
+  padding: 10px 0 30px;
   color: #707c8d;
 }
 .Footer .Button {
@@ -1905,6 +1908,15 @@ body {
 .Map.has-error .Error,
 .Render_canvas-container.has-error .Error {
   display: block;
+}
+@media (max-width: 590px) {
+  .Map {
+    height: 150px;
+    margin-top: 10px;
+  }
+  .Render_canvas-container {
+    height: 350px;
+  }
 }
 .Render_canvas {
   width: 100%;
