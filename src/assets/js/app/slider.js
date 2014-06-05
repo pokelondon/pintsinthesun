@@ -87,6 +87,9 @@ define(
             this.$thumb.addClass('is-active');
             this.$indicator.removeClass('is-moving');
             this.$el.addClass('is-moved');
+            if('function' === typeof ga) {
+                ga('send', 'event', 'slider', 'movestart');
+            }
         };
 
         /**

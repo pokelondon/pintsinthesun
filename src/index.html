@@ -15,6 +15,14 @@
         <link rel="apple-touch-startup-image" href="assets/img/startup-image-640x920.png" sizes="640x920" />
         <link rel="apple-touch-startup-image" href="assets/img/startup-image-640x1096.png" sizes="640x1096" />
 
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Pints in the Sun" />
+        <meta property="og:title" content="Find a pub near you that won't be in the shade" />
+        <meta property="og:url" content="http://pintsinthesun.co.uk" />
+        <meta property="og:image" content="http://pintsinthesun.co.uk/assets/img/share.jpg" />
+        <meta property="og:description" content="Use this 3D tool to findout whether your evening drinking will be sunny or overshadowed by nearby buildings" />
+        <meta name="description" content="Use this 3D tool to findout whether your evening drinking will be sunny or overshadowed by nearby buildings" />
+
         <link rel="shortcut icon" href="assets/img/favicon.png" />
 
         <script src="assets/js/lib/require.js"></script>
@@ -49,7 +57,8 @@
                 <a href="#na" class="Render_canvas-reload js-render-locality"></a>
                 <div class="Render_canvas js-render-canvas">
                     <ol class="Instructions">
-                        <li><a href="#na" class="js-open-modal">Find</a> and click a pub near you on the map</li>
+                        <li><a href="#na" class="js-open-modal">Search</a> for a pub</li>
+                        <li>Click a pint to select</li>
                         <li>Slide the yellow circle to adjust the time</li>
                     </ol>
                 </div>
@@ -76,8 +85,8 @@
                     <form class="Form js-search-form">
                         <fieldset>
                             <p class="Input-container Input-container--half">
-                                <label for="input_search" class="Input-label">Search</label>
-                                <input class="Input Input--text" id="input_search" name="s" type="text" value="" placeholder="Pub" />
+                                <label for="input_search" class="Input-label">Pub Name</label>
+                                <input class="Input Input--text" id="input_search" name="s" type="text" value="" placeholder="The Owl &amp; Pussycat" />
                             </p>
                             <p class="Input-container Input-container--half">
                                 <label for="input_search_near" class="Input-label">Near</label>
@@ -99,7 +108,7 @@
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
           })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-          ga('create', 'UA-15712565-30', 'pints.pokedev.net');
+          ga('create', 'UA-15712565-30', 'pintsinthesun.co.uk');
           ga('send', 'pageview');
 
         </script>

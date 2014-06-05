@@ -96,6 +96,12 @@ define([
                 this.renderer = new THREE.WebGLRenderer({clearColor: greyDark, antialias:true});
             } catch(e) {
                 $('.js-render-canvas').parent().addClass('has-error');
+                if('function' === typeof ga) {
+                    ga('send', 'exception', {
+                        'exDescription': 'Float Texture Unsupported',
+                        'exFatal': false
+                    });
+                }
                 return;
             }
             // Crappy hack to suprress warnings being displayed as errors in the console
