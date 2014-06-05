@@ -318,7 +318,7 @@ define([
 
             }
             if(navigator.appVersion.match(/iPhone/)) {
-                $('.u-iphone-only').removeClass('u-iphone-only')
+                $('.u-iphone-only').removeClass('u-iphone-only');
             }
             var mapController = new Map();
             var app = new App(mapController);

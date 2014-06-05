@@ -8,6 +8,14 @@
     clear: both;
     background: @greyDark;
     color: #fff;
+
+    @media (max-width: @breakPoint) {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1001; // more than leaflet
+    }
 }
 .Slider-input {
     display: inline-block;

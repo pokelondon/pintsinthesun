@@ -1338,6 +1338,15 @@ hr {
   background: #434a54;
   color: #fff;
 }
+@media (max-width: 590px) {
+  .Slider-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1001;
+  }
+}
 .Slider-input {
   display: inline-block;
   padding: 0 10px;
