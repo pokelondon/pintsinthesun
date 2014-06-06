@@ -43,6 +43,9 @@ a {
         text-decoration: none;
     }
 }
+strong {
+    font-family: ClearSans-Bold;
+}
 h1 {
     padding: 10px 0 10px;
     font-size: 40px;
@@ -80,11 +83,15 @@ p {
     font-size: 18px;
     line-height: 26px;
 }
+.u-iphone-only {
+    display: none;
+}
 .Error {
     display: none;
     background: @red;
     background: url(/assets/img/fallback.gif) 0 0 no-repeat;
     .background-size(100% 100%);
+    .text-shadow(0 0 5px #000);
     color: #fff;
     font-size: 18px;
     padding: 40px 20px;
@@ -227,7 +234,7 @@ button {
 }
 .Instructions {
     font-size: 20px;
-    margin: 80px 40px 0 40px;
+    margin: 60px 40px 0 40px;
     padding: 50px 0 0 0;
     @media (min-width: @breakPoint) {
         font-size: 30px;
@@ -245,7 +252,7 @@ button {
 .Footer {
     clear: both;
     text-align: center;
-    padding: 20px 0 30px;
+    padding: 10px 0 30px;
     color: lighten(@greyDark, 20);
     .Button {
         margin-bottom: 20px;

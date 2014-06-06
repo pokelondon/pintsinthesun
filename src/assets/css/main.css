@@ -1331,9 +1331,21 @@ hr {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -webkit-user-drag: none;
-  height: 40px;
+  height: 45px;
   position: relative;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  clear: both;
+  background: #434a54;
+  color: #fff;
+}
+@media (max-width: 590px) {
+  .Slider-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1001;
+  }
 }
 .Slider-input {
   display: inline-block;
@@ -1473,6 +1485,9 @@ a:focus,
 a:hover {
   text-decoration: none;
 }
+strong {
+  font-family: ClearSans-Bold;
+}
 h1 {
   padding: 10px 0 10px;
   font-size: 40px;
@@ -1508,12 +1523,16 @@ p + p {
   font-size: 18px;
   line-height: 26px;
 }
+.u-iphone-only {
+  display: none;
+}
 .Error {
   display: none;
   background: #da4453;
   background: url(/assets/img/fallback.gif) 0 0 no-repeat;
   -webkit-background-size: 100% 100%;
   background-size: 100% 100%;
+  text-shadow: 0 0 5px #000000;
   color: #fff;
   font-size: 18px;
   padding: 40px 20px;
@@ -1676,7 +1695,7 @@ button {
 }
 .Instructions {
   font-size: 20px;
-  margin: 80px 40px 0 40px;
+  margin: 60px 40px 0 40px;
   padding: 50px 0 0 0;
 }
 @media (min-width: 590px) {
@@ -1696,7 +1715,7 @@ button {
 .Footer {
   clear: both;
   text-align: center;
-  padding: 20px 0 30px;
+  padding: 10px 0 30px;
   color: #707c8d;
 }
 .Footer .Button {
@@ -1905,6 +1924,15 @@ body {
 .Map.has-error .Error,
 .Render_canvas-container.has-error .Error {
   display: block;
+}
+@media (max-width: 590px) {
+  .Map {
+    height: 150px;
+    margin-top: 10px;
+  }
+  .Render_canvas-container {
+    height: 350px;
+  }
 }
 .Render_canvas {
   width: 100%;

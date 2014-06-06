@@ -40,6 +40,8 @@ define([
             this.$el = $('.js-render-canvas');
             this.centre = [-0.0668529, 51.5127414]; // Central point as [lon, lat]
 
+            this.mobile = ('ontouchstart' in document.documentElement);
+
             this.loadTextures();
             this.height = 20;
             this.extrudeSettings = {amount: this.height, bevelEnabled: false, material: 0,
@@ -115,7 +117,8 @@ define([
             this.camera.position.x = 0;
             this.camera.position.y = CAMERA_DISTANCE;
             this.camera.lookAt(new THREE.Vector3(0, 0, 0));
-            this.camera.rotation.z = Math.PI/2;
+            //this.camera.rotation.z = Math.PI/2;
+            this.camera.rotation.z = 0;
 
             // start the renderer, and black background
             this.renderer.setSize(this.WIDTH, this.HEIGHT);
@@ -131,16 +134,17 @@ define([
                 //.addHelpers()
                 .updateSunPosition(window.currentMoment.toDate() || new Date());
 
-            this.controls = new THREE.TrackballControls(this.camera, this.renderer.domElement);
+            if(!this.mobile) {
+                this.controls = new THREE.TrackballControls(this.camera, this.renderer.domElement);
 
-            this.controls.noRotate = true;
-            this.controls.noZoom = false;
-            this.controls.noPan = true;
-            this.controls.rotateSpeed = 0.1;
+                this.controls.noRotate = true;
+                this.controls.noZoom = false;
+                this.controls.noPan = true;
+                this.controls.rotateSpeed = 0.1;
 
-
-            this.controls.minDistance = 100;
-            this.controls.maxDistance = CAMERA_DISTANCE + 200;
+                this.controls.minDistance = 100;
+                this.controls.maxDistance = CAMERA_DISTANCE + 200;
+            }
 
             this.animate();
         };
@@ -193,8 +197,10 @@ define([
                 requestAnimationFrame(_.bind(this.animate, this));
             }
 
-            this.controls.update();
-            this.camera.position.sub(this.controls.target);
+            if(!this.mobile) {
+                this.controls.update();
+                this.camera.position.sub(this.controls.target);
+            }
             this.render();
         };
 

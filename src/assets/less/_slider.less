@@ -2,9 +2,20 @@
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -webkit-user-drag:none;
-    height: 40px;
+    height: 45px;
     position: relative;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    clear: both;
+    background: @greyDark;
+    color: #fff;
+
+    @media (max-width: @breakPoint) {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1001; // more than leaflet
+    }
 }
 .Slider-input {
     display: inline-block;

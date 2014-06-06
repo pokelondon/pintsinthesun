@@ -315,6 +315,10 @@ define([
 
             if (!window.WebGLRenderingContext || navigator.appVersion.match(/iPhone/)) {
                 $('.js-render-canvas').parent().addClass('has-error');
+
+            }
+            if(navigator.appVersion.match(/iPhone/)) {
+                $('.u-iphone-only').removeClass('u-iphone-only');
             }
             var mapController = new Map();
             var app = new App(mapController);
