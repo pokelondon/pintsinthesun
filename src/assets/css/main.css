@@ -1485,6 +1485,9 @@ a:focus,
 a:hover {
   text-decoration: none;
 }
+strong {
+  font-family: ClearSans-Bold;
+}
 h1 {
   padding: 10px 0 10px;
   font-size: 40px;

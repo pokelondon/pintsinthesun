@@ -8,6 +8,10 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
         <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css">
+        <link rel="stylesheet" href="assets/css/gh.css">
+        <!--[if lt IE 9]>
+            <link rel="stylesheet" href="assets/css/gh.ie.css">
+        <![endif]-->
         <link rel="stylesheet" href="assets/css/main.css">
         <link rel="apple-touch-icon" href="assets/img/icon-114.png" sizes="114x114" />
         <link rel="apple-touch-icon" href="assets/img/icon-512.png" sizes="512x512" />
@@ -29,6 +33,11 @@
         <script data-main="assets/js/app" src="assets/js/app.js"></script>
     </head>
     <body>
+        <div class="github-fork-ribbon-wrapper right">
+        <div class="github-fork-ribbon">
+            <a href="https://github.com/pokelondon/pintsinthesun/">Fork me on GitHub</a>
+        </div>
+    </div>
     <div class="container">
             <header class="Header">
                 <div class="Pint Header-image">
@@ -71,10 +80,11 @@
                 <a href="#na" class="Button Button--yellow js-open-modal">Search for Pubs</a>
                 <a href="#" class="Button Button--red Button--open js-open-about">About <span class="Btn-icon"></span></a>
                 <div class="Footer-text is-hidden js-about">
-                    <p class="intro">Pints in the Sun addresses the very real problem of finding a pub that will be sunny in the evening, and not overshadowed by adjacent buidlings.</p>
+                    <p class="intro">Pints in the Sun <strong>is an experiement</strong> that addresses the very real problem of finding a pub that will be sunny in the evening, and not overshadowed by adjacent buidlings.</p>
                     <p>Using building outline data from Open Streetmap, the locality around a pub (located via FourSquare) is rendered in 3D with three.js (map projection conversion courtesy of the D3 library) and onto it, a directional light is projected from the part of the sky where the sun would be at certain times of year/day. According to a Solar Almanac Calculation, helpfully implemented in JS by SunCalc.</p>
+                    <p><a title="POKE Blog" href="http://www.pokelondon.com/blog/fun-stuff/pints-in-the-sun/">Read more</a> about our <strong>experiement</strong> here</p>
                 </div>
-                <p>Hacked together (as an experiment) at <a href="http://www.pokelondon.com/blog/fun-stuff/pints-in-the-sun/">POKE</a>, with: <a href="http://wiki.openstreetmap.org/wiki/Overpass_API">Open Street Map data</a>, <a href="http://geojson.io/">GeoJSON</a>, <a href="http://d3js.org/">D3</a>, <a href="http://threejs.org/">ThreeJS</a>, <a href="http://www.suncalc.net">SunCalc</a>, <a href="http://foursquare.com/">FourSquare</a> and <a href="http://en.wikipedia.org/wiki/Trigonometry">maths</a>!</p>
+                <p>Hacked together (as an experiment) at <a href="http://www.pokelondon.com/">POKE</a>, with: <a href="http://wiki.openstreetmap.org/wiki/Overpass_API">Open Street Map data</a>, <a href="http://geojson.io/">GeoJSON</a>, <a href="http://d3js.org/">D3</a>, <a href="http://threejs.org/">ThreeJS</a>, <a href="http://www.suncalc.net">SunCalc</a>, <a href="http://foursquare.com/">FourSquare</a> and <a href="http://en.wikipedia.org/wiki/Trigonometry">maths</a>!</p>
                 <span class="logo-poke"></span>
             </footer>
             <div class="Modal-container js-modal">
