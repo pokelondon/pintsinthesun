@@ -7,7 +7,7 @@ define([
         var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/1a1b06b230af4efdbb989ea99e9841af/997/256/{z}/{x}/{y}.png';
         var osmUrl = 'http://a.tile.openstreetmap.org/{z}/{x}/{y}.png';
         var mapBoxUrl = 'https://a.tiles.mapbox.com/v3/errkk.hmcik8n5/{z}/{x}/{y}@2x.png'
-        var tileProvider = mapBoxUrl;
+        var tileProvider = cloudmadeUrl;
         var defaultCentre = {lat: 51.524312, lng: -0.076432};
 
         var Map = function() {
