@@ -1493,7 +1493,6 @@ h1 {
   font-size: 40px;
   font-family: 'ClearSans-Bold';
   letter-spacing: 3px;
-  text-align: center;
 }
 h2 {
   padding-bottom: 8px;
@@ -1789,6 +1788,10 @@ button {
   position: relative;
   padding: 10px 10px;
 }
+.Modal-insetImage {
+  float: right;
+  margin: 4px 0 0 20px;
+}
 .Form {
   background: #eee;
   padding: 10px 10px 20px;
@@ -1876,6 +1879,40 @@ body {
   transform: translateY(-64px);
   -webkit-background-size: 128px 128px;
   background-size: 128px 128px;
+}
+.Header--lockup {
+  text-align: left;
+  padding: 0;
+  overflow: hidden;
+}
+.Header--lockup .Pint {
+  float: left;
+  margin: 10px 0 10px 10px;
+}
+.Header--lockup h1 {
+  margin-top: 25px;
+}
+.Header--lockup-side {
+  float: right;
+  width: 300px;
+  margin: 14px 25px 0 0;
+  font-size: 16px;
+  line-height: 16px;
+  text-align: right;
+}
+.Header--lockup-side .Header--lockup-side-bottom {
+  margin-top: 12px;
+}
+.Header--lockup-side .logo-poke {
+  margin: 0 2px 0 4px;
+  vertical-align: middle;
+  position: relative;
+  top: 4px;
+}
+.embedded .container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 .Map,
 .Render_canvas-container {

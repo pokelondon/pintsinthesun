@@ -347,8 +347,8 @@ define([
                 $('body').removeClass('modal-open');
             }
 
-            function openModal() {
-                $('.js-modal').addClass('is-open');
+            function openModal(modal) {
+                $('.js-modal--' + modal).addClass('is-open');
                 $('body').addClass('modal-open');
             }
 
@@ -368,9 +368,13 @@ define([
                 evt.preventDefault();
                 closeModal();
             });
-            $('.js-open-modal').on('click', function(evt) {
+            $('.js-open-modal--search').on('click', function(evt) {
                 evt.preventDefault();
-                openModal();
+                openModal('search');
+            });
+            $('.js-open-modal--about').on('click', function(evt) {
+                evt.preventDefault();
+                openModal('about');
             });
             $('.Modal-container').on('click', function(evt) {
                 closeModal();
