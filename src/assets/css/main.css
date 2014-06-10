@@ -1901,11 +1901,13 @@ body {
   text-align: right;
 }
 .Header--lockup-side .Header--lockup-side-bottom {
-  margin-top: 15px;
+  margin-top: 12px;
 }
 .Header--lockup-side .logo-poke {
   margin: 0 2px 0 4px;
   vertical-align: middle;
+  position: relative;
+  top: 4px;
 }
 .embedded .container {
   width: 100%;
