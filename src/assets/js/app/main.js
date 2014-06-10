@@ -11,17 +11,14 @@ define([
         'form'
     ], function($, _, leaflet, Backbone, Slider, moment, ThreeDScene, Mediator, Map, Form) {
 
-        var FOURSQUARE_URL = 'https://api.foursquare.com/v2/venues/search\?client_id\=MUF4IXCQSO3FZ0NGHQ12KAWAEBA412BP4XDAQMB4IHBZRNVG\&client_secret\=3OJDB43Z0T4JOBIDXVEDHBA3BFUHOMEX0NMVWMTWUI3VCHIL\&v\=1396279715756\&ll\={lat}%2C{lng}\&radius\=500\&intent\=browse\&limit\=50\&categoryId\=4bf58dd8d48988d11b941735%2C4bf58dd8d48988d116941735'
-        var FOURSQUARE_URL2 = 'https://api.foursquare.com/v2/venues/search\?client_id\=FNJEOV4QV4YBMJ4J5EQNKQTCQXOQBCUSIIYIZAXWMKLY5XPN\&client_secret\=NEKCZ4IFX4SOJEPDY2E1ZIV4NTAYZ3GWQHWKKPSQF3KOZKCS\&v\=1396279715756\&ll\={lat}%2C{lng}\&radius\=500\&intent\=browse\&limit\=50\&categoryId\=4bf58dd8d48988d11b941735%2C4bf58dd8d48988d116941735'
-        var FOURSQUARE_URL3 = 'https://api.foursquare.com/v2/venues/search\?client_id\=VPUNOBPEASSDU2FK5RB2RXC0EANCOMSNMRKTJBX3ZPESRHIE\&client_secret\=UNW5NPBXKK2IW1EYLN2NXAWZHVAY1UUKJWQ2XPPHWWNYQ4PL\&v\=1396279715756\&ll\={lat}%2C{lng}\&radius\=500\&intent\=browse\&limit\=50\&categoryId\=4bf58dd8d48988d11b941735%2C4bf58dd8d48988d116941735'
-
-        var OVERPASS_URL = 'http://overpass-api.de/api/interpreter?data=[out:json];((way({bounds})[%22building%22]);(._;node(w);););out;'
+        var FOURSQUARE_URL = 'https://d310g5te00bhi.cloudfront.net/v2/venues/search\?client_id\=MUF4IXCQSO3FZ0NGHQ12KAWAEBA412BP4XDAQMB4IHBZRNVG\&client_secret\=3OJDB43Z0T4JOBIDXVEDHBA3BFUHOMEX0NMVWMTWUI3VCHIL\&v\=1396279715756\&ll\={lat}%2C{lng}\&radius\=500\&intent\=browse\&limit\=50\&categoryId\=4bf58dd8d48988d11b941735%2C4bf58dd8d48988d116941735'
+        var OVERPASS_URL = 'http://overpasscache.pintsinthesun.co.uk/api/interpreter?data=[out:json];((way({bounds})[%22building%22]);(._;node(w);););out;'
         var OVERPASS_BOUND = 0.0011;
         var ROADS = false;
 
         if(ROADS) {
             // Extra query part to fetch roads data
-            OVERPASS_URL = 'http://overpass-api.de/api/interpreter?data=[out:json];((way({bounds})[%22building%22]);(._;node(w);way({bounds})[%22highway%22]);(._;node(w);););out;';
+            OVERPASS_URL = 'http://overpasscache.pintsinthesun.co.uk/api/interpreter?data=[out:json];((way({bounds})[%22building%22]);(._;node(w);way({bounds})[%22highway%22]);(._;node(w);););out;';
         }
 
         var pintIcon = L.icon({
