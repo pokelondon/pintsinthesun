@@ -2,6 +2,7 @@
 ## Installation
 ```
 $ make install
+$ gem install s3_website
 ```
 Run Grunt for LiveReload and LESS
 ```
@@ -14,5 +15,6 @@ $ make serve
 
 # Deployment
 ```
-make deploy
+$ make deploy
 ```
+Note: `s3_website.yml` is required for pushing to S3
