@@ -34,6 +34,16 @@
     <body class="embedded">
         <div class="container">
             <header class="Header Header--lockup">
+                <div class="Header--lockup-side">
+                    <div class="Header--lockup-side-top">
+                        <a href="#na" class="Button Button--green js-locate-me">Locate me</a>
+                        <a href="#na" class="Button Button--yellow js-open-modal--search">Search for Pubs</a>
+                    </div>
+                    <div class="Header--lockup-side-bottom">
+                        This is a <a href="http://pokelondon.com/" title="POKE" class="Header-logo"><span class="logo-poke"></span></a> experiment. <a href="#" class="Header-aboutLink js-open-modal--about">About</a> this.
+                    </div>
+                </div>
+
                 <div class="Pint Header-image">
                     <img class="Pint-img" src="assets/img/pint.png" alt="pint">
                     <div class="Pint-shad"></div>
@@ -68,20 +78,6 @@
                     <span class="js-clock">00:00</span>
                 </div>
             </div>
-
-            <footer class="Footer">
-                <a href="#na" class="Button Button--green js-locate-me">Locate me</a>
-                <a href="#na" class="Button Button--yellow js-open-modal--search">Search for Pubs</a>
-                <a href="#" class="Button Button--red Button--open js-open-about">About <span class="Btn-icon"></span></a>
-                <div class="Footer-text is-hidden js-about">
-                    <p class="intro">Pints in the Sun <strong>is an experiment</strong> that addresses the very real problem of finding a pub that will be sunny in the evening, and not overshadowed by adjacent buildings.</p>
-                    <p>Using building outline data from Open Streetmap, the locality around a pub (located via FourSquare) is rendered in 3D with three.js (map projection conversion courtesy of the D3 library) and a directional light is projected on to it from the part of the sky where the sun would be at certain times of the year/day. According to a Solar Almanac Calculation, helpfully implemented in JS by SunCalc.</p>
-                    <p><a title="POKE Blog" href="http://www.pokelondon.com/blog/fun-stuff/pints-in-the-sun/">Read more</a> about our <strong>experiment</strong> here.</p>
-                </div>
-                <p>Hacked together (as an experiment) at <a href="http://www.pokelondon.com/">POKE</a>, with: <a href="http://wiki.openstreetmap.org/wiki/Overpass_API">Open Street Map data</a>, <a href="http://geojson.io/">GeoJSON</a>, <a href="http://d3js.org/">D3</a>, <a href="http://threejs.org/">ThreeJS</a>, <a href="http://www.suncalc.net">SunCalc</a>, <a href="http://foursquare.com/">FourSquare</a> and <a href="http://en.wikipedia.org/wiki/Trigonometry">maths</a>!</p>
-                <p><a href="https://news.ycombinator.com/item?id=7857047">Discussion on Hacker News</a></p>
-                <a href="http://pokelondon.com/" title="POKE"><span class="logo-poke"></span></a>
-            </footer>
 
             <div class="Modal-container js-modal js-modal--search">
                 <div class="Modal">
@@ -118,6 +114,7 @@
                         <a href="#close" class="Modal-close js-close-modal">&times;</a>
                     </header>
                     <div class="Modal-body">
+                        <img class="Modal-insetImage" src="assets/img/sunny-pint.jpg" width="300" height="225" alt="A sunny pint">
                         <p class="intro">
                             Pints in the Sun <strong>is an experiment</strong> that addresses the very real problem of finding a pub that will be sunny in the evening, and not overshadowed by adjacent buildings.
                         </p>
