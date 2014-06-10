@@ -1,0 +1,4 @@
+Pillow==2.4.0
+ephem==3.7.5.3
+numpy==1.8.1
+wsgiref==0.1.2
