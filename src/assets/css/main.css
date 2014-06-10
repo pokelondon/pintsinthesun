@@ -1493,7 +1493,6 @@ h1 {
   font-size: 40px;
   font-family: 'ClearSans-Bold';
   letter-spacing: 3px;
-  text-align: center;
 }
 h2 {
   padding-bottom: 8px;
@@ -1876,6 +1875,23 @@ body {
   transform: translateY(-64px);
   -webkit-background-size: 128px 128px;
   background-size: 128px 128px;
+}
+.Header--lockup {
+  text-align: left;
+  padding: 0;
+  overflow: hidden;
+}
+.Header--lockup .Pint {
+  float: left;
+  margin: 0;
+}
+.Header--lockup h1 {
+  margin-top: 10px;
+}
+.embedded .container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 .Map,
 .Render_canvas-container {
