@@ -1493,7 +1493,6 @@ h1 {
   font-size: 40px;
   font-family: 'ClearSans-Bold';
   letter-spacing: 3px;
-  text-align: center;
 }
 h2 {
   padding-bottom: 8px;
@@ -1789,6 +1788,10 @@ button {
   position: relative;
   padding: 10px 10px;
 }
+.Modal-insetImage {
+  float: right;
+  margin: 4px 0 0 20px;
+}
 .Form {
   background: #eee;
   padding: 10px 10px 20px;
@@ -1850,11 +1853,19 @@ body {
   height: 128px;
   margin: 0 auto;
 }
+.Pint--small {
+  width: 90px;
+  height: 90px;
+}
 .Pint-img {
   position: absolute;
   top: 0;
   left: 0;
   z-index: 1;
+}
+.Pint--small .Pint-img {
+  width: 90px;
+  height: 90px;
 }
 .Pint-shad {
   position: absolute;
@@ -1876,6 +1887,50 @@ body {
   transform: translateY(-64px);
   -webkit-background-size: 128px 128px;
   background-size: 128px 128px;
+}
+.Pint--small .Pint-shad {
+  width: 90px;
+  height: 90px;
+  -webkit-background-size: 90px 90px;
+  background-size: 90px 90px;
+}
+.Header--lockup {
+  text-align: left;
+  margin: 10px 0;
+  padding: 0;
+  overflow: hidden;
+}
+.Header--lockup .Pint {
+  float: left;
+  margin: 20px 15px 20px 20px;
+}
+.Header--lockup h1 {
+  margin-top: 15px;
+}
+.Header--lockup-side {
+  float: right;
+  width: 350px;
+  margin: 12px 35px 0 0;
+  font-size: 16px;
+  line-height: 16px;
+  text-align: right;
+}
+.Header--lockup-side .Header--lockup-side-top .Button.is-loading:after {
+  padding: 8px 15px 10px 25px;
+}
+.Header--lockup-side .Header--lockup-side-bottom {
+  margin-top: 5px;
+}
+.Header--lockup-side .logo-poke {
+  margin: 0 2px 0 4px;
+  vertical-align: middle;
+  position: relative;
+  top: 4px;
+}
+.embedded .container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 .Map,
 .Render_canvas-container {

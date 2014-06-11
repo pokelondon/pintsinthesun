@@ -10,18 +10,9 @@ requirejs.config({
         'mediator': '../app/mediator',
         'map': '../app/map',
         'form': '../app/form',
-        'OSMBuildings': 'osmbuildings/OSMBuildings-Leaflet',
-        'leaflet': 'http://cdn.leafletjs.com/leaflet-0.7/leaflet',
-        //'threejs': 'https://cdn.rawgithub.com/mrdoob/three.js/master/build/three',
-        'trackball': 'THREE.trackballcontrolls',
-        'd3': 'http://d3js.org/d3.v3.min',
-        //'threeD': 'd3.threeD',
+        'trackball': 'THREE.trackballcontrolls'
     },
     "shim": {
-        'OSMBuildings': {
-            exports: 'OSMBuildings',
-            deps: ['leaflet']
-        },
         'jquery': {
             exports: '$'
         },

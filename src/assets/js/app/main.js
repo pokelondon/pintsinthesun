@@ -11,14 +11,14 @@ define([
         'form'
     ], function($, _, leaflet, Backbone, Slider, moment, ThreeDScene, Mediator, Map, Form) {
 
-        var FOURSQUARE_URL = 'https://api.foursquare.com/v2/venues/search\?client_id\=FNJEOV4QV4YBMJ4J5EQNKQTCQXOQBCUSIIYIZAXWMKLY5XPN\&client_secret\=NEKCZ4IFX4SOJEPDY2E1ZIV4NTAYZ3GWQHWKKPSQF3KOZKCS\&v\=1396279715756\&ll\={lat}%2C{lng}\&radius\=500\&intent\=browse\&limit\=50\&categoryId\=4bf58dd8d48988d11b941735%2C4bf58dd8d48988d116941735'
-        var OVERPASS_URL = 'http://overpass-api.de/api/interpreter?data=[out:json];((way({bounds})[%22building%22]);(._;node(w);););out;'
+        var FOURSQUARE_URL = 'https://d310g5te00bhi.cloudfront.net/v2/venues/search\?client_id\=MUF4IXCQSO3FZ0NGHQ12KAWAEBA412BP4XDAQMB4IHBZRNVG\&client_secret\=3OJDB43Z0T4JOBIDXVEDHBA3BFUHOMEX0NMVWMTWUI3VCHIL\&v\=1396279715756\&ll\={lat}%2C{lng}\&radius\=500\&intent\=browse\&limit\=50\&categoryId\=4bf58dd8d48988d11b941735%2C4bf58dd8d48988d116941735'
+        var OVERPASS_URL = 'http://overpasscache.pintsinthesun.co.uk/api/interpreter?data=[out:json];((way({bounds})[%22building%22]);(._;node(w);););out;'
         var OVERPASS_BOUND = 0.0011;
         var ROADS = false;
 
         if(ROADS) {
             // Extra query part to fetch roads data
-            OVERPASS_URL = 'http://overpass-api.de/api/interpreter?data=[out:json];((way({bounds})[%22building%22]);(._;node(w);way({bounds})[%22highway%22]);(._;node(w);););out;';
+            OVERPASS_URL = 'http://overpasscache.pintsinthesun.co.uk/api/interpreter?data=[out:json];((way({bounds})[%22building%22]);(._;node(w);way({bounds})[%22highway%22]);(._;node(w);););out;';
         }
 
         var pintIcon = L.icon({
@@ -332,7 +332,10 @@ define([
                     perc = (perc / 100);
                     var element = $pint[0];
                     var angle = Math.floor((90 * perc) - 45);
-                    var transform  = 'skewX(' + angle + 'deg) translateY(-64px)';
+                    if ($pint.parent().hasClass('Pint--small')) {
+                        angle /= 3;
+                    }
+                    var transform = 'skewX(' + angle + 'deg) translateY(-64px)';
                     element.style.webkitTransform = transform;
                     element.style.MozTransform = transform;
                     element.style.msTransform = transform;
@@ -347,8 +350,8 @@ define([
                 $('body').removeClass('modal-open');
             }
 
-            function openModal() {
-                $('.js-modal').addClass('is-open');
+            function openModal(modal) {
+                $('.js-modal--' + modal).addClass('is-open');
                 $('body').addClass('modal-open');
             }
 
@@ -368,9 +371,13 @@ define([
                 evt.preventDefault();
                 closeModal();
             });
-            $('.js-open-modal').on('click', function(evt) {
+            $('.js-open-modal--search').on('click', function(evt) {
                 evt.preventDefault();
-                openModal();
+                openModal('search');
+            });
+            $('.js-open-modal--about').on('click', function(evt) {
+                evt.preventDefault();
+                openModal('about');
             });
             $('.Modal-container').on('click', function(evt) {
                 closeModal();
