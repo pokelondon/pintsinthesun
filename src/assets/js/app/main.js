@@ -8,8 +8,9 @@ define([
         'threeDBuidlings',
         'mediator',
         'map',
-        'form'
-    ], function($, _, leaflet, Backbone, Slider, moment, ThreeDScene, Mediator, Map, Form) {
+        'form',
+        'conversions'
+    ], function($, _, leaflet, Backbone, Slider, moment, ThreeDScene, Mediator, Map, Form, conversions) {
 
         var FOURSQUARE_URL = 'https://d310g5te00bhi.cloudfront.net/v2/venues/search\?client_id\=MUF4IXCQSO3FZ0NGHQ12KAWAEBA412BP4XDAQMB4IHBZRNVG\&client_secret\=3OJDB43Z0T4JOBIDXVEDHBA3BFUHOMEX0NMVWMTWUI3VCHIL\&v\=1396279715756\&ll\={lat}%2C{lng}\&radius\=500\&intent\=browse\&limit\=50\&categoryId\=4bf58dd8d48988d11b941735%2C4bf58dd8d48988d116941735'
         var OVERPASS_URL = 'http://overpasscache.pintsinthesun.co.uk/api/interpreter?data=[out:json];((way({bounds})[%22building%22]);(._;node(w);););out;'
@@ -123,6 +124,7 @@ define([
             // update_centre proxies to drag end (user initiated reposition)
             this.subscribe('map:update_centre', function(centre) {
                 self.router.navigate(centre.lat + '/' + centre.lng, {trigger: false, replace:true});
+                self.updateGridRef(centre);
             });
             // Load pubs for new area
             this.subscribe('map:update_centre', _.debounce(this.getPubs, 1000, true));
@@ -135,6 +137,14 @@ define([
             if('function' === typeof ga) {
                 this.setUpEvents();
             }
+        };
+
+        App.prototype.updateGridRef = function(centre) {
+            this.GrFull = conversions.LatLongToOSGrid({lat: centre.lat, lon: centre.lng});
+            this.GrEastingsNorthings = conversions.gridrefLetToNum(this.GrFull);
+            this.GrGroup = conversions.gridrefNumToLet(this.GrEastingsNorthings[0], this.GrEastingsNorthings[1], 2);
+            this.GrTile = conversions.gridrefNumToLet(this.GrEastingsNorthings[0], this.GrEastingsNorthings[1], 4);
+            console.log('Group:', this.GrGroup, 'Tile', this.GrTile, 'll', this.GrEastingsNorthings);
         };
 
         App.prototype.setUpEvents = function () {
@@ -284,6 +294,7 @@ define([
                 // Filter items from the GeoJSON into nodes and features
                 var nodes = _(data.elements).filter(function(item) { return 'node' == item.type; });
                 var features = _(data.elements).filter(function(item) { return 'way' == item.type && item.tags.building; });
+                window.data = [];
 
                 /**
                  * Add a feature from the GeoJSON to the 3D scene
@@ -294,6 +305,8 @@ define([
                     var outlinePath = filterNodes(feature, nodes);
                     // Render the buidling in 3D
                     self.scene.renderBuilding(outlinePath, levels, isPub);
+
+                    window.data.push({group: self.GrGroup, tile: self.GrTile, eastings_northings: self.GrEastingsNorthings, path: outlinePath, centre: centre });
                 }
 
                 function renderRoad(feature) {
@@ -307,6 +320,8 @@ define([
                     var roads = _(data.elements).filter(function(item) { return 'way' == item.type && item.tags.highway; });
                     _(roads).each(renderRoad);
                 }
+
+                console.log(JSON.stringify(window.data));
             });
         };
 
