@@ -11,10 +11,11 @@ define([
         'form'
     ], function($, _, leaflet, Backbone, Slider, moment, ThreeDScene, Mediator, Map, Form) {
 
-        var FOURSQUARE_URL = 'https://d310g5te00bhi.cloudfront.net/v2/venues/search\?client_id\=MUF4IXCQSO3FZ0NGHQ12KAWAEBA412BP4XDAQMB4IHBZRNVG\&client_secret\=3OJDB43Z0T4JOBIDXVEDHBA3BFUHOMEX0NMVWMTWUI3VCHIL\&v\=1396279715756\&ll\={lat}%2C{lng}\&radius\=500\&intent\=browse\&limit\=50\&categoryId\=4bf58dd8d48988d11b941735%2C4bf58dd8d48988d116941735'
+        var FOURSQUARE_URL = 'https://d310g5te00bhi.cloudfront.net/v2/venues/search\?client_id\=FNJEOV4QV4YBMJ4J5EQNKQTCQXOQBCUSIIYIZAXWMKLY5XPN\&client_secret\=NEKCZ4IFX4SOJEPDY2E1ZIV4NTAYZ3GWQHWKKPSQF3KOZKCS\&v\=1396279715756\&ll\={lat}%2C{lng}\&radius\=500\&intent\=browse\&limit\=50\&categoryId\=4bf58dd8d48988d11b941735%2C4bf58dd8d48988d116941735'
         var OVERPASS_URL = 'http://overpasscache.pintsinthesun.co.uk/api/interpreter?data=[out:json];((way({bounds})[%22building%22]);(._;node(w);););out;'
         var OVERPASS_BOUND = 0.0011;
         var ROADS = false;
+        var FS_PRECISION = 1000;
 
         if(ROADS) {
             // Extra query part to fetch roads data
@@ -173,7 +174,9 @@ define([
          */
         App.prototype.getPubs = function () {
             var centre = this.mapController.map.getCenter();
-            var url = format(FOURSQUARE_URL, {lat: centre.lat, lng: centre.lng});
+            var lat = Math.floor(centre.lat * FS_PRECISION) / FS_PRECISION;
+            var lng = Math.floor(centre.lng * FS_PRECISION) / FS_PRECISION;
+            var url = format(FOURSQUARE_URL, {lat: lat, lng: lng});
             $.getJSON(url, _.bind(function(data) {
                 this.publish('foursquare:loaded', data);
             }, this)).error(function(error) {
