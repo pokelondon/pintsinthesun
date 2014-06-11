@@ -3,3 +3,4 @@ s3_website.yml
 .ipynb_checkpoints/
 lidar/
 node_modules/
+notebooks/numpyarray.npy
