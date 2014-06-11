@@ -332,7 +332,10 @@ define([
                     perc = (perc / 100);
                     var element = $pint[0];
                     var angle = Math.floor((90 * perc) - 45);
-                    var transform  = 'skewX(' + angle + 'deg) translateY(-64px)';
+                    if ($pint.parent().hasClass('Pint--small')) {
+                        angle /= 3;
+                    }
+                    var transform = 'skewX(' + angle + 'deg) translateY(-64px)';
                     element.style.webkitTransform = transform;
                     element.style.MozTransform = transform;
                     element.style.msTransform = transform;
@@ -347,8 +350,8 @@ define([
                 $('body').removeClass('modal-open');
             }
 
-            function openModal() {
-                $('.js-modal').addClass('is-open');
+            function openModal(modal) {
+                $('.js-modal--' + modal).addClass('is-open');
                 $('body').addClass('modal-open');
             }
 
@@ -368,9 +371,13 @@ define([
                 evt.preventDefault();
                 closeModal();
             });
-            $('.js-open-modal').on('click', function(evt) {
+            $('.js-open-modal--search').on('click', function(evt) {
                 evt.preventDefault();
-                openModal();
+                openModal('search');
+            });
+            $('.js-open-modal--about').on('click', function(evt) {
+                evt.preventDefault();
+                openModal('about');
             });
             $('.Modal-container').on('click', function(evt) {
                 closeModal();
