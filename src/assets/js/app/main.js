@@ -332,7 +332,10 @@ define([
                     perc = (perc / 100);
                     var element = $pint[0];
                     var angle = Math.floor((90 * perc) - 45);
-                    var transform  = 'skewX(' + angle + 'deg) translateY(-64px)';
+                    if ($pint.parent().hasClass('Pint--small')) {
+                        angle /= 3;
+                    }
+                    var transform = 'skewX(' + angle + 'deg) translateY(-64px)';
                     element.style.webkitTransform = transform;
                     element.style.MozTransform = transform;
                     element.style.msTransform = transform;
