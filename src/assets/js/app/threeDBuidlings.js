@@ -115,7 +115,6 @@ define([
             this.scene.add(this.camera);
             this.camera.position.z = 1;
             this.camera.position.x = 0;
-            this.camera.position.x = CAMERA_DISTANCE;
             this.camera.position.y = CAMERA_DISTANCE;
             this.camera.lookAt(new THREE.Vector3(0, 0, 0));
             //this.camera.rotation.z = Math.PI/2;
