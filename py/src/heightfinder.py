@@ -27,9 +27,12 @@ IMG_DEPTH = 512
 
 
 class HeightFinder:
-    doimage = True
 
-    def __init__(self, centre, paths=[]):
+    def __init__(self, centre, doimage=False):
+        self.doimage = doimage
+        self.set_centre(centre)
+
+    def set_centre(self, centre):
         lat, lng = centre
         # Point to choose map tile
         in_osgb36 = transform(wgs84, osgb36, lng, lat)
@@ -40,36 +43,47 @@ class HeightFinder:
         self.block_corner_east = int(eastings / 1000.0) * 1000.0
         self.block_corner_north = int(northings / 1000.0) * 1000.0
 
-        # Convert paths from lat lngs to tile pixel values
-        self.en_paths = [self.convert_path(p) for p in paths]
-
         # Pixel location of the centre point (provided lat lng)
         #x = (eastings - self.block_corner_east) / TILE_RESOLUTION
         #y = (northings - selblock_corner_north) / TILE_RESOLUTION
 
         # sets self.heightmap
-        self.gr_group, self.gr_tile = self.find_tile(in_osgb36)
+        self.gr_group, self.gr_tile = self._find_tile(in_osgb36)
 
         # Get heightmap, from cache or generate from dataset
-        self.heightmap = self.generate_heightmap(self.gr_tile, self.gr_group)
+        self.heightmap = self._generate_heightmap(self.gr_tile, self.gr_group)
+
+
+    def sample_heightmap_wgs84(self, ll_path):
+        """ With the current centre for finding the tile, sample a path
+        submitted in lat lng format eg (51.1234, -0.1234)
+        """
+        en_path = self.convert_path(ll_path)
+        return self.sample_heightmap_osgb36(en_path)
+
+
+    def sample_heightmap_osgb36(self, en_path):
+        """ After having offset the paths to be local to the current tile
+        sample the height map.
+        """
+        # Process each path
+        height_values = self._sample_heightmap(en_path)
+
+        mean = numpy.mean(height_values)
+        median = numpy.median(height_values)
+        #mode = stats.mode(map(int, height_values))
+        mode = 0
 
         if self.doimage:
-            self.generate_image()
+            self._generate_image(en_path)
             self.im.save(path.join(IMG_ROOT, uuid4().hex), 'png')
 
-        # Process each path
-        for p in self.en_paths:
-            height_values = self.sample_heightmap(p)
+            self.path_image.save(path.join(IMG_ROOT, uuid4().hex), 'png')
 
-            print numpy.mean(height_values)
-            print numpy.median(height_values)
-            print stats.mode(map(int, height_values))
-
-            if self.doimage:
-                self.path_image.save(path.join(IMG_ROOT, uuid4().hex), 'png')
+        return mean, median, mode
 
 
-    def find_tile(self, osgb_coords):
+    def _find_tile(self, osgb_coords):
         # Find Grid codes from the OSGB36 projection
         gr_tile = from_osgb36(osgb_coords, 4)
         gr_group = from_osgb36(osgb_coords, 2)
@@ -77,17 +91,16 @@ class HeightFinder:
         return gr_group, gr_tile
 
 
-    def generate_image(self):
+    def _generate_image(self, en_path):
         """ Render the height map as an image for visual checking
         """
         norm_array = (IMG_DEPTH / self.heightmap.max() * (self.heightmap - self.heightmap.min()))\
                 .astype(numpy.uint8)
         self.im = Image.fromarray(norm_array, mode='L')
         self.im = self.im.convert('RGB')
-        for en_path in self.en_paths:
-            en_path.append(en_path[-1]) # Close it
-            draw = ImageDraw.Draw(self.im)
-            draw.line(en_path, fill='#ff00ff')
+        en_path.append(en_path[-1]) # Close it
+        draw = ImageDraw.Draw(self.im)
+        draw.line(en_path, fill='#ff00ff')
 
         # Redraw last item
         draw.line(en_path, fill='#ff0000')
@@ -109,7 +122,7 @@ class HeightFinder:
         return map(self._offset_points, feature_path)
 
 
-    def sample_heightmap(self, en_path):
+    def _sample_heightmap(self, en_path):
         # Create a fuck tonne of random coordinate tuples to sample
         # for whether they're inside the path
         n_samples = 999
@@ -129,7 +142,7 @@ class HeightFinder:
         random_sample_x = numpy.random.random_integers(x1, x2, n_samples)
         random_sample_y = numpy.random.random_integers(y1, y2, n_samples)
 
-        height_values = []
+        height_values = [10, ]
 
         # Make a bitmask of all 1.0s
         bitmask = numpy.ones((500, 500))
@@ -141,9 +154,13 @@ class HeightFinder:
 
             # Check if sample falls within polygon
             if ml_path.contains_point(coords):
-                height = self.heightmap[coords]
-                bitmask[y, x] = height
-                height_values.append(height)
+                try:
+                    height = self.heightmap[coords]
+                except IndexError:
+                    continue
+                else:
+                    bitmask[y, x] = height
+                    height_values.append(height)
 
         if self.doimage:
             self.path_image = self._generate_path_image(bitmask, x1, y1, x2, y2)
@@ -164,7 +181,7 @@ class HeightFinder:
         return im
 
 
-    def generate_heightmap(self, gr_tile, tile_dir):
+    def _generate_heightmap(self, gr_tile, tile_dir):
         # Numpy array file
         array_cache_filename = '{0}_DSM_2M.npy'.format(gr_tile)
         array_cache_path = path.join(HEIGHTMAP_CACHE, array_cache_filename)
@@ -199,7 +216,9 @@ class HeightFinder:
 def main():
     centre = 51.50857551909176, -0.12643396854400635
     ll_path = [[-0.1254071,51.5080211],[-0.1250479,51.5082805],[-0.1247525,51.5084938],[-0.1243632,51.5082859],[-0.1241161,51.5081428],[-0.1228639,51.5074488],[-0.1228313,51.5074238],[-0.1228249,51.507388],[-0.1228353,51.5073627],[-0.1228783,51.5073069],[-0.1229497,51.507353],[-0.1234963,51.5069922],[-0.1246494,51.5076055]]
-    hf = HeightFinder(centre, [ll_path])
+
+    hf = HeightFinder(centre, doimage=True)
+    hf.sample_heightmap_wgs84(ll_path)
 
 if '__main__' == __name__:
     main()

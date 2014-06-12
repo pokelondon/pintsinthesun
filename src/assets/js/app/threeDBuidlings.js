@@ -115,6 +115,7 @@ define([
             this.scene.add(this.camera);
             this.camera.position.z = 1;
             this.camera.position.x = 0;
+            this.camera.position.x = CAMERA_DISTANCE;
             this.camera.position.y = CAMERA_DISTANCE;
             this.camera.lookAt(new THREE.Vector3(0, 0, 0));
             //this.camera.rotation.z = Math.PI/2;
@@ -224,7 +225,7 @@ define([
             return this;
         };
 
-        ThreeDScene.prototype.renderBuilding = function(coords, levels, isPub) {
+        ThreeDScene.prototype.renderBuilding = function(coords, levels, isPub, height) {
             // Make points (that are lat longs into pixel coordinates
             var points = _(coords).map(_.bind(this.convertProjection, this));
             var shape = new THREE.Shape();
@@ -241,7 +242,7 @@ define([
                 shape.lineTo(xy[0], xy[1]);
             });
 
-            this.extrudeSettings['amount'] = levels * 4.5;
+            this.extrudeSettings['amount'] = height;
 
             if(isPub) {
                 this.extrudeSettings['amount'] += 1;

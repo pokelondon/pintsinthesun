@@ -258,60 +258,19 @@ define([
             var centre = centre || this.mapController.map.getCenter();
             this.publish('map:centre', centre);
             this.scene.setCentre([centre.lng, centre.lat]);
-            var bound = OVERPASS_BOUND || 0.0008;
-            var box = [centre.lat - bound, centre.lng - bound, centre.lat + bound, centre.lng + bound];
-            var url = format(OVERPASS_URL, {bounds: box.join(',')});
 
-            /**
-             * Return notes, in order that belong to a certain feature
-             */
-            function filterNodes(feature, nodes) {
-                var path = _(nodes).chain().filter(function(node) {
-                    // Find nodes that are part of this feature
-                    return 0 <= feature.nodes.indexOf(node.id);
-                }).sortBy(function(node) {
-                    // Order nodes in the order that they are specified in the feature
-                    return feature.nodes.indexOf(node.id);
-                }).map(function(node) {
-                    // Convert node objects to lat/lng array for passing to polygon function
-                    return [node.lon, node.lat];
-                }).value();
-
-                return path;
-            }
-
-            $.getJSON(url, function(data) {
-                // Filter items from the GeoJSON into nodes and features
-                var nodes = _(data.elements).filter(function(item) { return 'node' == item.type; });
-                var features = _(data.elements).filter(function(item) { return 'way' == item.type && item.tags.building; });
-                window.data = [];
+            $.getJSON('http://localhost:5000/heightmap/' + centre.lat + '/' + centre.lng + '/', function(data) {
 
                 /**
                  * Add a feature from the GeoJSON to the 3D scene
                  */
                 function renderFeature(feature) {
-                    var levels = feature.tags['building:levels'] || 2;
-                    var isPub = (feature.tags.amenity == 'pub');
-                    var outlinePath = filterNodes(feature, nodes);
                     // Render the buidling in 3D
-                    self.scene.renderBuilding(outlinePath, levels, isPub);
-
-                    window.data.push({path: outlinePath, centre: centre });
+                    self.scene.renderBuilding(feature.outline, feature.levels, feature.is_pub, feature.height.median);
                 }
 
-                function renderRoad(feature) {
-                    var path = filterNodes(feature, nodes);
-                    self.scene.renderRoad(path);
-                }
+                _(data).each(renderFeature);
 
-                _(features).each(renderFeature);
-
-                if (ROADS) {
-                    var roads = _(data.elements).filter(function(item) { return 'way' == item.type && item.tags.highway; });
-                    _(roads).each(renderRoad);
-                }
-
-                console.log(JSON.stringify(window.data));
             });
         };
 
