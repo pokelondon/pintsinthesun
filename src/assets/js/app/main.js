@@ -316,9 +316,13 @@ define([
 
         $(document).ready(function() {
 
-            if (!window.WebGLRenderingContext || navigator.appVersion.match(/iPhone/)) {
+            var iphoneMatch = navigator.appVersion.match('iP[hone|ad]+; CPU OS ([0-9])');
+            var ios_version = null;
+            if (iphoneMatch) {
+                ios_version = iphoneMatch[1];
+            }
+            if (!window.WebGLRenderingContext || (iphoneMatch && 7 <= ios_version)) {
                 $('.js-render-canvas').parent().addClass('has-error');
-
             }
             if(navigator.appVersion.match(/iPhone/)) {
                 $('.u-iphone-only').removeClass('u-iphone-only');
