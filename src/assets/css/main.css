@@ -1263,70 +1263,6 @@ hr {
     display: none !important;
   }
 }
-.Toolbar {
-  display: block;
-  clear: left;
-  height: 100px;
-  margin-bottom: 20px;
-}
-.Toolbar-row {
-  display: -webkit-flex;
-  display: -moz-flex;
-  display: -ms-flexbox;
-  display: -ms-flex;
-  display: flex;
-  -webkit-flex-direction: row;
-  -moz-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  vertical-align: middle;
-}
-.Toolbar-row--pad {
-  padding: 10px 10px;
-}
-.Tool-button {
-  align-self: center;
-  -webkit-flex: 1;
-  -moz-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 20px 10px;
-  background-color: #da4453;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  font-size: 14px;
-  text-align: center;
-  text-transform: uppercase;
-  color: #fff;
-}
-.Tool-button:hover {
-  color: #fff;
-}
-.Tool-button.is-loading {
-  text-indent: -99999px;
-  background-image: url(../img/loading-red.gif);
-}
-.Tool-button:hover {
-  background-color: #ed5565;
-}
-.Tool-button--green {
-  background-color: #48cfad;
-}
-.Tool-button--green.is-loading {
-  background-image: url(../img/loading-green.gif);
-}
-.Tool-button--green:hover {
-  background-color: #37bc9b;
-}
-.Tool-button--yellow {
-  background-color: #f6bb42;
-}
-.Tool-button--yellow.is-loading {
-  background-image: url(../img/loading-yellow.gif);
-}
-.Tool-button--yellow:hover {
-  background-color: #ffce54;
-}
 .Slider-container {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -1842,6 +1778,7 @@ button {
 }
 body {
   background: #faf9f7;
+  height: 100%;
 }
 .Header {
   text-align: center;
@@ -1898,7 +1835,6 @@ body {
   text-align: left;
   margin: 10px 0;
   padding: 0;
-  overflow: hidden;
 }
 .Header--lockup .Pint {
   float: left;
