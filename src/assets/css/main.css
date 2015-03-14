@@ -1780,6 +1780,12 @@ body {
   background: #faf9f7;
   height: 100%;
 }
+#canvas {
+  width: 1000px;
+  height: 1000px;
+  background: #434a54;
+  margin: 20px auto;
+}
 .Header {
   text-align: center;
   padding: 40px 0 30px;
@@ -1984,4 +1990,4 @@ body {
 .Media-item:last-child {
   border-bottom: none;
 }
-/*# sourceMappingURL=/src/assets/main.css.map */
+/*# sourceMappingURL=/assets/main.css.map */

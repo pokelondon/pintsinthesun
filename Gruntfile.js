@@ -7,36 +7,11 @@ module.exports = function(grunt) {
         less: {
             development: {
                 options: {
-                    paths: ["src/snack/public/css"],
-                    sourceMap: true,
-                    sourceMapFilename: "src/snack/public/main.css.map",
-                    sourceMapBasepath: "src/snack/public/",
-                    sourceMapURL: "/s/main.css.map"
-                },
-                files: {
-                    "src/snack/public/css/ltIE9.css": "src/snack/public/less/ltIE9.less",
-                    "src/snack/public/css/main.css": "src/snack/public/less/main.less"
-                }
-            },
-            production: {
-                options: {
-                    paths: ["src/snack/public/css"],
-                    yuicompress: true
-                },
-                files: {
-                    "src/snack/public/css/main.min.css": "src/snack/public/less/main.less",
-                    "src/snack/public/css/ltIE9.min.css":"src/snack/public/less/ltIE9.less"
-                }
-            }
-        },
-        less: {
-            development: {
-                options: {
                     paths: ["src/assets/css"],
                     sourceMap: true,
                     sourceMapFilename: "src/assets/main.css.map",
                     sourceMapBasepath: "src/assets/",
-                    sourceMapURL: "/src/assets/main.css.map"
+                    sourceMapURL: "/assets/main.css.map"
                 },
                 files: {
                     "src/assets/css/main.css": "src/assets/less/main.less"

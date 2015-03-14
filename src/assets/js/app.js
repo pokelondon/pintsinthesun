@@ -2,17 +2,17 @@
  * Config and app loader
  */
 requirejs.config({
-    'baseUrl': 'assets/js/lib',
+    'baseUrl': 'assets/js/app',
     'paths': {
-        'app': '../app',
-        'slider': '../app/slider',
-        'threeDBuidlings': '../app/threeDBuidlings',
-        'mediator': '../app/mediator',
-        'map': '../app/map',
-        'form': '../app/form',
-        'trackball': 'THREE.trackballcontrolls'
+        'mediator': '../lib/mediator',
+        'backbone': '../lib/backbone',
+        'underscore': '../lib/underscore',
+        'jquery': '../lib/jquery',
+        'd3': '../lib/d3',
+        'jquery.event.move': '../lib/jquery.event.move',
+        'moment': '../lib/moment',
     },
-    "shim": {
+    'shim': {
         'jquery': {
             exports: '$'
         },
@@ -22,12 +22,9 @@ requirejs.config({
         },
         'd3': {
             exports: ['d3']
-        },
-        'trackball': {
-            deps: ['threejs']
         }
     }
 });
 
 // Load the main app module to start the app
-requirejs(["app/main"]);
+requirejs(["main"]);
