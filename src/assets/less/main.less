@@ -12,11 +12,22 @@ body {
     background: lighten(#e7dfd7, 10);
     height: 100%;
 }
-#canvas{
+.Stage {
     width: 1000px;
     height: 1000px;
-    background: @greyDark;
     margin: 20px auto;
+    background: @greyDark;
+    position: relative;
+    canvas {
+        position: absolute;
+        width: 1000px;
+        height: 1000px;
+    }
+}
+#canvas_roads {
+}
+#canvas_buildings {
+    opacity: 0.7;
 }
 .Header {
     text-align: center;

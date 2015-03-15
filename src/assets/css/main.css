@@ -1780,11 +1780,20 @@ body {
   background: #faf9f7;
   height: 100%;
 }
-#canvas {
+.Stage {
   width: 1000px;
   height: 1000px;
-  background: #434a54;
   margin: 20px auto;
+  background: #434a54;
+  position: relative;
+}
+.Stage canvas {
+  position: absolute;
+  width: 1000px;
+  height: 1000px;
+}
+#canvas_buildings {
+  opacity: 0.7;
 }
 .Header {
   text-align: center;

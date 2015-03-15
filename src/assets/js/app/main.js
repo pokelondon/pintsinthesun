@@ -12,9 +12,11 @@ define([
         function($, _, Backbone, config, rays, data,  Slider, moment, Mediator) {
 
             // DRAWING
-            var canvas = document.getElementById("canvas");
+            var canvas = document.getElementById("canvas_buildings");
             var ctx = canvas.getContext("2d");
-            var centre = {lat: 51.5127414, lng: -0.1768529};
+            var canvasRoads = document.getElementById("canvas_roads");
+            var ctxRoads = canvasRoads.getContext("2d");
+            var centre = {lat: 51.52489598999532, lng: -0.08028166198730469};
 
             // LINE SEGMENTS
             var segments = [
@@ -24,6 +26,8 @@ define([
                 {a: {x: canvas.width, y: canvas.height}, b: {x: 0, y: canvas.height}},
                 {a: {x: 0, y: canvas.height}, b: {x: 0, y: 0}},
             ];
+
+            var roads = [];
 
             data.getOutlines(centre, [canvas.width, canvas.height], function(coords, floors, isPub) {
 
@@ -35,15 +39,36 @@ define([
                     i ++;
                 }
                 draw();
+            }, function(coords) {
+                var xys = _(coords).map(function(p) { return {x: p[0], y: p[1]}; });
+                var i = 0;
+                for(var i=0; i < (xys.length - 1); i++) {
+                    // Make points into set of lines, the last one ends back at the start
+                    roads.push({a: xys[i], b: xys[i+1]})
+                }
+                drawRoads();
             });
 
-            function draw(){
+            ctxRoads.clearRect(0, 0, canvasRoads.width, canvasRoads.height);
+
+            function drawRoads() {
+                ctxRoads.strokeStyle = "#333";
+                for(var i=0;i<roads.length;i++){
+                    var seg = roads[i];
+                    ctxRoads.beginPath();
+                    ctxRoads.moveTo(seg.a.x,seg.a.y);
+                    ctxRoads.lineTo(seg.b.x,seg.b.y);
+                    ctxRoads.lineWidth = 15;
+                    ctxRoads.stroke();
+                }
+            }
+
+            function draw() {
 
                 // Clear canvas
-                ctx.clearRect(0,0,canvas.width,canvas.height);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
 
                 // Draw segments
-                ctx.fillStyle = "#009900";
                 ctx.strokeStyle = "#999";
                 for(var i=0;i<segments.length;i++){
                     var seg = segments[i];
@@ -52,7 +77,6 @@ define([
                     ctx.lineTo(seg.b.x,seg.b.y);
                     ctx.stroke();
                 }
-                ctx.fill();
 
                 // Get all unique points
                 var points = (function(segments){

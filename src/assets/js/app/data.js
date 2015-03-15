@@ -6,7 +6,6 @@ define([
         'config'
         ],
         function($, _, Backbone, d3, config) {
-            var TMP_CENTRE = [-0.1768529, 51.5127414];
 
             /**
              * Return notes, in order that belong to a certain feature
@@ -60,7 +59,7 @@ define([
                 };
             }
 
-            function getOutlines(centre, canvasDimentions, fn) {
+            function getOutlines(centre, canvasDimentions, buildingFn, roadFn) {
 
                 var bound = config.OVERPASS_BOUND || 0.0008;
                 var box = [centre.lat - bound, centre.lng - bound, centre.lat + bound, centre.lng + bound];
@@ -72,19 +71,27 @@ define([
                     // Filter items from the GeoJSON into nodes and features
                     var nodes = _(data.elements).filter(function(item) { return 'node' == item.type; });
                     var features = _(data.elements).filter(function(item) { return 'way' == item.type && item.tags.building; });
+                    var roads = _(data.elements).filter(function(item) { return 'way' == item.type && item.tags.highway; });
 
                     /**
-                     * Add a feature from the GeoJSON to the 3D scene
+                     * Add a feature from the GeoJSON to the canvas
                      */
-                    function renderFeature(feature) {
+                    function callbackBuilding(feature) {
                         var levels = feature.tags['building:levels'] || 2;
                         var isPub = (feature.tags.amenity == 'pub');
                         var outlinePath = _filterNodes(feature, nodes);
                         var points = _(outlinePath).map(convertProjection);
-                        fn(points, levels, isPub);
+                        buildingFn(points, levels, isPub);
                     }
 
-                    _(features).each(renderFeature);
+                    function callbackRoad(feature) {
+                        var outlinePath = _filterNodes(feature, nodes);
+                        var points = _(outlinePath).map(convertProjection);
+                        roadFn(points);
+                    }
+
+                    _(features).each(callbackBuilding);
+                    _(roads).each(callbackRoad);
                 });
             }
 
