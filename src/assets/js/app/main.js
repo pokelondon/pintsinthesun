@@ -14,7 +14,7 @@ define([
             // DRAWING
             var canvas = document.getElementById("canvas");
             var ctx = canvas.getContext("2d");
-            var centre = {lat: 51.5127414, lng: -0.0668529};
+            var centre = {lat: 51.5127414, lng: -0.1768529};
 
             // LINE SEGMENTS
             var segments = [
@@ -25,7 +25,7 @@ define([
                 {a: {x: 0, y: canvas.height}, b: {x: 0, y: 0}},
             ];
 
-            data.getOutlines(centre, function(coords, floors, isPub) {
+            data.getOutlines(centre, [canvas.width, canvas.height], function(coords, floors, isPub) {
 
                 var xys = _(coords).map(function(p) { return {x: p[0], y: p[1]}; });
                 var i = 0;
@@ -164,12 +164,12 @@ define([
 
             // MOUSE
             var Mouse = {
-                x: canvas.width/2,
-                y: canvas.height/2
+                x: canvas.width / 2,
+                y: canvas.height / 2
             };
             canvas.onmousemove = function(event){
-                Mouse.x = event.clientX;
-                Mouse.y = event.clientY;
+                Mouse.x = event.offsetX;
+                Mouse.y = event.offsetY;
                 updateCanvas = true;
             };
 
