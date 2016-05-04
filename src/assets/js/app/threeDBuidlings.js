@@ -7,8 +7,9 @@ define([
         'd3',
         'mediator',
         'trackball',
-        'suncalc'
-    ], function($, _, Slider, moment, three, d3, Mediator, trackball, SunCalc) {
+        'suncalc',
+        'tween'
+    ], function($, _, Slider, moment, three, d3, Mediator, trackball, SunCalc, TWEEN) {
 
         var SUN_DISTANCE = 400;
         var CAMERA_DISTANCE = 250;
@@ -113,7 +114,7 @@ define([
 
             // add and position the camera at a fixed position
             this.scene.add(this.camera);
-            this.camera.position.z = 1;
+            this.camera.position.z = 10;
             this.camera.position.x = 0;
             this.camera.position.y = CAMERA_DISTANCE;
             this.camera.lookAt(new THREE.Vector3(0, 0, 0));
@@ -145,6 +146,21 @@ define([
                 this.controls.minDistance = 100;
                 this.controls.maxDistance = CAMERA_DISTANCE + 200;
             }
+            var cameraPos = {y: 10, z: 20};
+            var cameraTarget = {y: CAMERA_DISTANCE, z: 10};
+            var timer = {val: 0};
+            var timerEnd = {val: 1};
+            var tween = new TWEEN.Tween(timer).to(timerEnd, 2000);
+
+            tween.onUpdate(function() {
+                //self.camera.position.z = cameraPos.z;
+                //self.camera.position.y = cameraPos.y;
+                self.camera.position.x = Math.cos(timer.val) * 50;
+                self.camera.position.z = Math.sin(timer.val) * 150;
+            });
+            tween.easing(TWEEN.Easing.Quadratic.Out);
+
+            tween.start();
 
             this.animate();
         };
@@ -152,7 +168,7 @@ define([
 
         ThreeDScene.prototype.createFloor = function createFloor() {
             // add a base plane on which we'll render our map
-            var planeGeo = new THREE.PlaneGeometry(400, 400, 10, 10);
+            var planeGeo = new THREE.PlaneGeometry(2000, 2000, 10, 10);
             var planeMat = new THREE.MeshLambertMaterial({color: 0xffffff});
 
             this.plane = new THREE.Mesh(planeGeo, planeMat);
@@ -201,6 +217,14 @@ define([
                 this.controls.update();
                 this.camera.position.sub(this.controls.target);
             }
+            TWEEN.update();
+            //if(this.camera.position.z > 1) {
+                //this.camera.position.z --;
+            //}
+
+            //if(this.camera.position.y < CAMERA_DISTANCE) {
+                //this.camera.position.y ++;
+            //}
             this.render();
         };
 
@@ -210,10 +234,12 @@ define([
         };
 
         ThreeDScene.prototype.updateSunPosition = function updateSunPosition(date) {
+            var self = this;
             var dt = date || new Date();
             var centre = this.centre || [-0.0668529, 51.5127414];
             var pos = SunCalc.getPosition(dt, centre[1], centre[0]);
             var sun = angles2cartesian(pos.azimuth, pos.altitude);
+
 
             this.sun.position.x = sun[0];
             this.sun.position.y = sun[1] + 100;

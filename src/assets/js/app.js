@@ -10,7 +10,8 @@ requirejs.config({
         'mediator': '../app/mediator',
         'map': '../app/map',
         'form': '../app/form',
-        'trackball': 'THREE.trackballcontrolls'
+        'trackball': 'THREE.trackballcontrolls',
+        'tween': 'tween'
     },
     "shim": {
         'jquery': {
