@@ -2,7 +2,7 @@ install:
 	npm install
 
 serve:
-	grunt serve
+	gulp
 
 deploy:
 	s3_website push --site src

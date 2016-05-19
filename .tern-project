@@ -1,0 +1,14 @@
+{
+  "libs": [
+    "browser",
+    "jquery",
+    "gsap"
+  ],
+  "loadEagerly": [
+    "app.js"
+  ],
+  "plugins": {
+    "es_modules": {
+    }
+  }
+}

@@ -148,19 +148,23 @@ define([
             }
             var cameraPos = {y: 10, z: 20};
             var cameraTarget = {y: CAMERA_DISTANCE, z: 10};
-            var timer = {val: 0};
-            var timerEnd = {val: 1};
-            var tween = new TWEEN.Tween(timer).to(timerEnd, 2000);
+            var timer = {val: 0, y: 50};
+            var timerEnd = {val: 1, y: 400};
+            var tween = new TWEEN.Tween(timer).to(timerEnd, 3000);
+
+            this.camera.position.z = 400;
+            this.camera.position.x = 0;
+            this.camera.position.y = 10;
 
             tween.onUpdate(function() {
                 //self.camera.position.z = cameraPos.z;
-                //self.camera.position.y = cameraPos.y;
+                self.camera.position.y = timer.y;
                 self.camera.position.x = Math.cos(timer.val) * 50;
                 self.camera.position.z = Math.sin(timer.val) * 150;
             });
             tween.easing(TWEEN.Easing.Quadratic.Out);
 
-            tween.start();
+            //tween.start();
 
             this.animate();
         };
