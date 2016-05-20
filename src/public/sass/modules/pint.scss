@@ -1,0 +1,40 @@
+.Pint {
+    position: relative;
+    width: 128px;
+    height: 128px;
+    margin: 0 auto;
+}
+.Pint--small {
+    width: 90px;
+    height: 90px;
+}
+.Pint-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+
+    .Pint--small & {
+        width: 90px;
+        height: 90px;
+    }
+}
+.Pint-shad {
+    position: absolute;
+    z-index: 0;
+    top: 64px;
+    left: 0;
+    width: 128px;
+    height: 128px;
+    background: url(/img/pint_shad.png) 0 100% no-repeat;
+    transition: all 200ms;
+    transform: translateY(-64px);
+
+    background-size: 128px 128px;
+
+    .Pint--small & {
+        width: 90px;
+        height: 90px;
+        background-size: 90px 90px;
+    }
+}

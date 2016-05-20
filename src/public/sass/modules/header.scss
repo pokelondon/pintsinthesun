@@ -1,0 +1,16 @@
+.Header {
+    height: 50px;
+    overflow: hidden;
+    position: relative;
+    background: orange;
+    h1 {
+        float: left;
+    }
+    .Pint--small {
+        display: none;
+        float: left;
+    }
+    p {
+        float: left;
+    }
+}

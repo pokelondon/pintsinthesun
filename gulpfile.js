@@ -18,7 +18,6 @@ var autoprefixer = require('autoprefixer');
 var http = require('http');
 var st = require('st');
 var server = require('gulp-express');
-var spawn = require('child_process').spawn;
 
 
 
@@ -44,7 +43,7 @@ gulp.task('deploy', function (){
 });
 
 gulp.task('watch', function () {
-    gulp.watch(['./src/app/*.js'], ['scripts']);
+    gulp.watch(['./src/app/**/*.js'], ['scripts']);
     gulp.watch('./src/public/sass/**/*.scss', ['sass']);
 });
 
@@ -69,19 +68,7 @@ gulp.task('server', function(done) {
     server.run(['server.js'], options, 35729);
 });
 
-function refreshGulpfile() {
-    server.stop();
-    console.log('Ang on a sec');
-    setTimeout(function() {
-        if (subprocess) subprocess.kill();
-        subprocess = spawn('gulp', ['scripts','watch', 'server'], {stdio: 'inherit'});
-    }, 2000);
-}
-
-gulp.task('default', function () {
-    refreshGulpfile();
-    gulp.watch(['gulpfile.js'], refreshGulpfile);
-});
+gulp.task('default', ['scripts','watch', 'server']);
 
 
 // Private Functions
@@ -120,7 +107,7 @@ function bundleApp(isProduction) {
 
     return appBundler
         // transform ES6 and JSX to ES5 with babelify
-        .transform("babelify", {presets: ["es2015", "react"]})
+        .transform("babelify", {presets: ["es2015", "react", "stage-2"]})
         .bundle()
         .on('error', gutil.log)
         .pipe(source('bundle.js'))

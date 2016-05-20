@@ -1,0 +1,27 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    margin: 0 0 $footer-height; /* bottom = footer height */
+}
+.container {
+    max-width: 800px;
+    @include make-container();
+}
+.row {
+    @include make-row();
+}
+
+.half-col {
+    @include make-col();
+    @include make-col-span(8);
+    &:nth-child(2n) {
+        @include make-col-offset(1);
+    }
+}
+
+.AppContainer {
+    background: orange;
+    height: 200px;
+}

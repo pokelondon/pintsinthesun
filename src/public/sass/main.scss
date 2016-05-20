@@ -1,0 +1,38 @@
+$enable-flex: true;
+
+// Core Variables and Mixins
+@import 'variables'; // Override
+@import '../../../node_modules/bootstrap/scss/mixins/breakpoints';
+@import '../../../node_modules/bootstrap/scss/mixins/clearfix';
+@import '../../../node_modules/bootstrap/scss/mixins/grid';
+@import '../../../node_modules/bootstrap/scss/mixins/grid-framework';
+
+// Core CSS
+@import '../../../node_modules/bootstrap/scss/print';
+@import '../../../node_modules/bootstrap/scss/normalize';
+
+// Grid classes
+// @import '../../node_modules/bootstrap/scss/_grid';
+
+// Utillitites
+
+// General
+@import 'type',
+        'layout';
+
+// Modules
+@import 'modules/map';
+@import 'modules/pint';
+@import 'modules/pub';
+@import 'modules/header';
+@import 'modules/footer';
+
+html {
+}
+
+body {
+    background: $blueDark;
+    color: $grey;
+    background: linear-gradient(#fff, $bg);
+    height: 100%;
+}

@@ -7,75 +7,39 @@
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-        <link rel="stylesheet" href="assets/css/leaflet.css">
-        <link rel="stylesheet" href="assets/css/gh.css">
-        <!--[if lt IE 9]>
-            <link rel="stylesheet" href="assets/css/gh.ie.css">
-        <![endif]-->
-        <link rel="stylesheet" href="assets/css/main.css">
-        <link rel="apple-touch-icon" href="assets/img/icon-114.png" sizes="114x114" />
-        <link rel="apple-touch-icon" href="assets/img/icon-512.png" sizes="512x512" />
-        <link rel="apple-touch-startup-image" href="assets/img/startup-image-320x460.png" sizes="320x460" />
-        <link rel="apple-touch-startup-image" href="assets/img/startup-image-640x920.png" sizes="640x920" />
-        <link rel="apple-touch-startup-image" href="assets/img/startup-image-640x1096.png" sizes="640x1096" />
+        <link rel="stylesheet" href="/css/main.css">
+
+        <link rel="apple-touch-icon" href="img/icon-114.png" sizes="114x114" />
+        <link rel="apple-touch-icon" href="img/icon-512.png" sizes="512x512" />
+        <link rel="apple-touch-startup-image" href="img/startup-image-320x460.png" sizes="320x460" />
+        <link rel="apple-touch-startup-image" href="img/startup-image-640x920.png" sizes="640x920" />
+        <link rel="apple-touch-startup-image" href="img/startup-image-640x1096.png" sizes="640x1096" />
 
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Pints in the Sun" />
         <meta property="og:title" content="Find a pub near you that won't be in the shade" />
         <meta property="og:url" content="http://pintsinthesun.co.uk" />
-        <meta property="og:image" content="http://pintsinthesun.co.uk/assets/img/share.jpg" />
+        <meta property="og:image" content="http://pintsinthesun.co.uk/img/share.jpg" />
         <meta property="og:description" content="Use this 3D tool to find out whether your evening drinking will be sunny or overshadowed by nearby buildings" />
         <meta name="description" content="Use this 3D tool to find out whether your evening drinking will be sunny or overshadowed by nearby buildings" />
 
-        <link rel="shortcut icon" href="assets/img/favicon.png" />
+        <link rel="shortcut icon" href="img/favicon.png" />
 
-        <script src="assets/js/lib/require.js"></script>
-        <script data-main="assets/js/app" src="assets/js/app.js"></script>
     </head>
     <body>
-        <div class="github-fork-ribbon-wrapper right">
-        <div class="github-fork-ribbon">
-            <a href="https://github.com/pokelondon/pintsinthesun/">Fork me on GitHub</a>
-        </div>
-    </div>
-    <div class="container">
-            <header class="Header">
-                <div class="Pint Header-image">
-                    <img class="Pint-img" src="assets/img/pint.png" alt="pint">
+        <header class="Header">
+            <div class="container">
+                <div class="Pint--small Header-image">
+                    <img class="Pint-img" src="/img/pint.png" alt="pint">
                     <div class="Pint-shad"></div>
                 </div>
                 <h1><span title="Pints In (or Near) The Sun">Pints</span> in the Sun</h1>
                 <p class="intro">Find a pub near you that won't be in the shade</p>
-            </header>
-            <div class="Render_canvas-container">
-                <div class="Error js-error">
-                    <h2>Sorry,</h2>
-                    <p>Your device doesn't support WebGL, and we need it for projecting shadows.</p>
-                    <p class="u-iphone-only">iOS8 now supports WebGL, so that great if your phone is new enough!</p>
-                </div>
-                <a href="#na" class="Render_canvas-reload js-render-locality"></a>
-                <div class="Render_canvas js-render-canvas">
-                    <ol class="Instructions">
-                        <li><a href="#na" class="js-open-modal--search">Search</a> for a pub&#8230;</li>
-                        <li>&#8230; or click a pint on the map to view it.</li>
-                        <li>Move the sun slider to adjust the time of day.</li>
-                    </ol>
-                </div>
             </div>
-            <div id="map" class="Map"></div>
-
-            <div class="Slider-container">
-                <div class="Slider-input js-slider-time">
-                    <div class="Slider-indicator">
-                        <a class="Slider-thumb"></a>
-                    </div>
-                </div>
-                <div class="Clock-display">
-                    <span class="js-clock">00:00</span>
-                </div>
-            </div>
-
-            <footer class="Footer">
+        </header>
+        <div class="App container" id="App"></div>
+        <footer class="Footer">
+            <div class="container">
                 <a href="#na" class="Button Button--green js-locate-me">Locate me</a>
                 <a href="#na" class="Button Button--yellow js-open-modal--search">Search for Pubs</a>
                 <a href="#" class="Button Button--red Button--open js-open-about">About <span class="Btn-icon"></span></a>
@@ -87,34 +51,8 @@
                 <p>Hacked together (as an experiment) at <a href="http://www.pokelondon.com/">POKE</a>, with: <a href="http://wiki.openstreetmap.org/wiki/Overpass_API">Open Street Map data</a>, <a href="http://geojson.io/">GeoJSON</a>, <a href="http://d3js.org/">D3</a>, <a href="http://threejs.org/">ThreeJS</a>, <a href="http://www.suncalc.net">SunCalc</a>, <a href="http://foursquare.com/">FourSquare</a> and <a href="http://en.wikipedia.org/wiki/Trigonometry">maths</a>!</p>
                 <p><a href="https://news.ycombinator.com/item?id=7857047">Discussion on HackerNews</a></p>
                 <a href="http://pokelondon.com/" title="POKE"><span class="logo-poke"></span></a>
-            </footer>
-            <div class="Modal-container js-modal js-modal--search">
-            <div class="Modal">
-                <header class="Modal-header">
-                    <h2 class="Modal-heading">Find a pub</h2>
-                    <a href="#close" class="Modal-close js-close-modal">&times;</a>
-                </header>
-                <div class="Modal-body">
-                    <form class="Form js-search-form">
-                        <fieldset>
-                            <p class="Input-container Input-container--half">
-                                <label for="input_search" class="Input-label">Pub Name</label>
-                                <input class="Input Input--text" id="input_search" name="s" type="text" value="" placeholder="The Owl &amp; Pussycat" />
-                            </p>
-                            <p class="Input-container Input-container--half">
-                                <label for="input_search_near" class="Input-label">Near</label>
-                                <input class="Input Input--text" id="input_search_near" name="s" type="text" value="" placeholder="Shoreditch" />
-                            </p>
-                            <button class="Button js-submit" type="submit">Search</button>
-                        </fieldset>
-                    </form>
-                    <div class="Media-list js-search-results">
-                        <h2 class="Media-heading">Results</h2>
-                    </div>
-                </div>
             </div>
-        </div>
-        </div>
+        </footer>
         <script>
           (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
           (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -125,11 +63,8 @@
           ga('send', 'pageview');
 
         </script>
-        <script type="template" id="tpl_search_result">
-            <div class="Media-item">
-                <h3><a href="#<%= item.location.lat %>/<%= item.location.lng %>/<%= item.id %>"><%= item.name %></a></h3>
-                <p><%= address %></p>
-            </div>
-        </script>
+
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBhezG4CZ4Gwr0JuXEOfcEwWGP3rKdTsLU"></script>
+        <script src="/js/bundle.js"></script>
     </body>
 </html>
