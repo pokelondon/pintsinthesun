@@ -2,12 +2,15 @@ import React from 'react';
 import { Link } from 'react-router'
 import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 
-export default class Map extends React.Component {
+class Map extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            markers: []
-        }
+        this.props = props;
+    }
+
+    onCenterChanged() {
+        let centre = this.map.props.map.getCenter();
+        this.props.onCenterChanged({lat: centre.lat(), lng: centre.lng()});
     }
 
     render() {
@@ -24,17 +27,11 @@ export default class Map extends React.Component {
                         )}
                         googleMapElement={
                             <GoogleMap
-                                ref={(map) => console.log(map)}
+                                ref={(map) => this.map = map}
                                 defaultZoom={15}
-                                defaultCenter={{lat: 51.54, lng: -0.064922}}
+                                defaultCenter={this.props.centre}
+                                onCenterChanged={centre => this.onCenterChanged()}
                                 >
-                                {this.state.markers.map((marker, index) => {
-                                    return (
-                                        <Marker
-                                            {...marker}
-                                            onRightclick={this.handleMarkerRightclick.bind(this, index)} />
-                                        );
-                                })}
                             </GoogleMap>
                             }
                         />
@@ -42,3 +39,9 @@ export default class Map extends React.Component {
         )
     }
 }
+
+Map.propTypes = {
+    onCenterChanged: React.PropTypes.func.isRequired,
+}
+
+export default Map
