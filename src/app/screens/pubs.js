@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router'
 
-import { getSuggestions, AFTERNOON } from '../api';
-
 import ThreeD from '../components/threed';
+
+import { fetchBuildings } from '../services/overpass';
+import { getSuggestions, AFTERNOON } from '../services/api';
 
 
 class Pub extends React.Component {
@@ -11,13 +12,22 @@ class Pub extends React.Component {
         super(props);
         this.props = props;
         this.state = {
-            items: []
+            items: [],
+            buildings: []
         };
     }
 
     componentDidMount() {
         let { lat, lng } = this.props.params;
-        getSuggestions(AFTERNOON, { lat, lng }).then(items => this.setState({items: items.items}));
+        getSuggestions(AFTERNOON, { lat, lng })
+            .then(items => this.setState({items: items.items}))
+            .then(() => this.fetchBuildings());
+    }
+
+    fetchBuildings() {
+        let item = this.state.items[0];
+        fetchBuildings(item.lat, item.lng)
+            .then(buildings => this.setState({buildings}));
     }
 
     render() {
@@ -33,7 +43,11 @@ class Pub extends React.Component {
             return (
                 <div className="Pub">
                     <h2>{item.name}</h2>
-                    <ThreeD centre={{lat: item.lat, lng: item.lng}} date={new Date()} />
+                    <ThreeD
+                        centre={{lat: item.lat, lng: item.lng}}
+                        date={new Date()}
+                        buildings={this.state.buildings}
+                    />
                     <p>Lorem ipsum</p>
                 </div>
             )

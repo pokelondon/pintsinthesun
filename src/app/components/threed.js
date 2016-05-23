@@ -1,6 +1,7 @@
 import React from 'react';
 import THREE from 'three';
 import SunCalc from '../lib/suncalc';
+import d3 from 'd3';
 
 
 const GREYDARK = 0x434A54;
@@ -16,8 +17,10 @@ const BUILDING_MATERIAL = new THREE.MeshLambertMaterial({color: GREYDARK});
 const VIEW_ANGLE = 45;
 const NEAR = 0.1;
 const FAR = 10000;
-const CAMERA_DISTANCE = 400;
-const SUN_DISTANCE = 400;
+const SUN_DISTANCE = 200;
+const CAMERA_DISTANCE = 250;
+const ZOOM = 15;
+const EXTRUDE_SETTINGS = {bevelEnabled: false, material: 0, extrudeMaterial: 1};
 
 function angles2cartesian(azimuth, altitude) {
     var radius = SUN_DISTANCE;
@@ -36,8 +39,8 @@ class ThreeD extends React.Component {
     }
 
     componentDidMount() {
-        this.WIDTH = 200;
-        this.HEIGHT = 200;
+        this.WIDTH = 500;
+        this.HEIGHT = 500;
 
             // set some camera attributes
         const ASPECT = this.WIDTH / this.HEIGHT;
@@ -63,6 +66,14 @@ class ThreeD extends React.Component {
             .createLights()
             .updateSunPosition()
             .render3d();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.buildings.length > 0) {
+            nextProps.buildings.forEach(building => this.renderBuilding(building));
+        }
+
+        //TODO update sun position if date changes
     }
 
     render() {
@@ -103,11 +114,12 @@ class ThreeD extends React.Component {
 
     updateSunPosition() {
         let { lat, lng } = this.props.centre;
-        var pos = SunCalc.getPosition(this.props.date, lng, lat);
+        var pos = SunCalc.getPosition(this.props.date, lat, lng);
         var sun = angles2cartesian(pos.azimuth, pos.altitude);
+        console.log(pos.azimuth);
 
         this.sun.position.x = sun[0];
-        this.sun.position.y = sun[1] + 100;
+        this.sun.position.y = sun[1];
         this.sun.position.z = sun[2];
         return this;
     }
@@ -115,6 +127,78 @@ class ThreeD extends React.Component {
     render3d() {
         this.renderer.render(this.scene, this.camera);
         return this;
+    }
+
+    renderBuilding({outlinePath, levels, isPub}) {
+        var points = this.convertPoints(outlinePath);
+        var shape = new THREE.Shape();
+        var material = BUILDING_MATERIAL;
+        var amount = levels * 4.5
+
+        if(isPub) {
+            material = PUB_MATERIAL;
+            amount += 1;
+        }
+
+        var extrudeSettings = {
+            ...EXTRUDE_SETTINGS,
+            amount
+        }
+
+        // Starting point, last coordinate
+        shape.moveTo(points[points.length-1][0], points[points.length-1][1]);
+
+        // Add points to the shape
+        points.forEach(xy => {
+            shape.lineTo(xy[0], xy[1]);
+        });
+
+        var geom = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+        var mesh = new THREE.Mesh(geom, material);
+
+        geom.computeFaceNormals();
+
+        mesh.rotation.x = -Math.PI/2;
+        mesh.rotation.z = Math.PI/2;
+
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+
+        this.scene.add(mesh);
+
+        this.render3d();
+
+        return this;
+    }
+
+    convertPoints(coords) {
+        return coords.map(vector => this.convertProjection(vector));
+    }
+
+    /**
+     * Get a D3 projection function for the current centre and zoom level
+     * @returns function
+     */
+    getProjection() {
+        const centre = [this.props.centre.lng, this.props.centre.lat];
+        const TILESIZE = 128;
+        return d3.geo.mercator()
+            .center(centre)
+            .translate([0, 0])
+            .scale(TILESIZE << ZOOM);
+    }
+
+    /**
+     * Convert a set of lat lng coordinates to pixel coorindates
+     * for this rendering
+     * @param coords Array [x, y]
+     * @returns Array [y, x]
+     */
+    convertProjection(vector) {
+        var pixelValue = this.getProjection()(vector); // Returns [x, y]
+        // Flip it
+        //return pixelValue;
+        return [pixelValue[1] * -1, pixelValue[0] * -1];
     }
 }
 

@@ -26,7 +26,7 @@ var server = require('gulp-express');
 var dependencies = [
     'D3',
     'React',
-    'Three.js'
+    'THREE'
 ];
 // keep a count of the times a task refires
 var scriptsCount = 0;

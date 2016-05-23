@@ -5,10 +5,10 @@
 
 .Render {
     display: block;
-    width: 200px;
-    height: 200px;
+    width: 500px;
+    height: 500px;
     margin: 20px auto 0;
     canvas {
-        border-radius: 200px;
+        border-radius: 100%;
     }
 }

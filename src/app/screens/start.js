@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { getLocation } from '../location';
+import { getLocation } from '../services/location';
+import { getPubs } from '../services/foursquare';
+
 import Map from '../components/map';
-import { getPubs } from '../foursquare';
 
 class Start extends React.Component {
     constructor(props) {

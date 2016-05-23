@@ -11,6 +11,8 @@ var MongoClient = require('mongodb').MongoClient;
 var http = require('http');
 var assert = require('assert');
 
+var SunCalc = require('./app/lib/suncalc')
+
 // Configs
 // ================================================================
 var bind = (process.env.WEBSERVER_PORT || 8080);
