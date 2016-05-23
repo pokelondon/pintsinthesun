@@ -1,0 +1,20 @@
+{
+    "items": [
+        {
+            "name": "Barly Mow",
+            "outdoor_angle": 0,
+            "building_to_the_west": true,
+            "has_terrace": false,
+            "lat": 51.6,
+            "lng": -0.15
+        },
+        {
+            "name": "Owl & Pussycat",
+            "outdoor_angle": 180,
+            "building_to_the_west": false,
+            "has_terrace": false,
+            "lat": 51.56,
+            "lng": -0.08
+        }
+    ]
+}

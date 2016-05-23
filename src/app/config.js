@@ -3,6 +3,7 @@ const OVERPASS_URL = 'http://overpasscache.pintsinthesun.co.uk/api/interpreter?d
 const OVERPASS_BOUND = 0.0011;
 const ROADS = false;
 const FS_PRECISION = 1000;
+const API = 'http://localhost:8080/data/';
 
 const config = {
     FOURSQUARE_URL,
@@ -10,6 +11,7 @@ const config = {
     OVERPASS_BOUND,
     ROADS,
     FS_PRECISION,
+    API,
 }
 
 export default config;

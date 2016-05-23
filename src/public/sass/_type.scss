@@ -45,6 +45,7 @@ a {
     display: block;
     width: 100%;
     border: none;
+    box-sizing: border-box;
 
     background: $pink;
     color: $white;

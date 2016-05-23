@@ -12,7 +12,7 @@ import NoMatch from './screens/nomatch';
 ReactDOM.render((
     <Router className="AppContainer" history={hashHistory}>
         <Route path="/" component={Start} />
-        <Route path="pubs" component={Pubs}>
+        <Route path="/pubs/:lat/:lng" component={Pubs}>
             <Route path="/pubs/:pubId" component={Pub}/>
         </Route>
         <Route path="*" component={NoMatch}/>

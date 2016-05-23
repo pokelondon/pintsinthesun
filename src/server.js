@@ -22,19 +22,6 @@ var ENV = (process.env.ENV || 'dev');
 var app = express();
 var httpServer = http.Server(app);
 
-var options = {
-    dotfiles: 'ignore',
-    etag: true,
-    extensions: ['htm', 'html'],
-    index: 'index.html',
-    lastModified: true,
-    maxAge: '1d',
-    setHeaders: function (res, path, stat) {
-        res.set('x-timestamp', Date.now());
-        res.header('Cache-Control', 'public, max-age=1d');
-    }
-};
-
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -45,14 +32,13 @@ var allowCrossDomain = function(req, res, next) {
 app.use(allowCrossDomain);
 app.use(express.static(__dirname + '/build'));
 app.use(express.static(__dirname + '/public'));
-app.use('/about/', express.static(__dirname + '/public', options));
 
 
-var positionsDB;
+var pubs;
 
-MongoClient.connect('mongodb://localhost/virgin_' + ENV, function(err, db) {
+MongoClient.connect('mongodb://localhost/pints_' + ENV, function(err, db) {
     assert.equal(null, err);
-    positionsDB = db.collection('rssi');
+    pubs = db.collection('pubs');
     console.log("Connected to Mongodb");
 });
 
@@ -62,6 +48,7 @@ var connections = 0;
 
 // Views + endpoints
 // ================================================================
+
 
 // Web server for API Endpoints
 // ================================================================

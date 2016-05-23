@@ -13,6 +13,18 @@ class Map extends React.Component {
         this.props.onCenterChanged({lat: centre.lat(), lng: centre.lng()});
     }
 
+    /**
+     * Something being updated.
+     * Not for init.
+     */
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.hasOwnProperty('centre')) {
+            if (nextProps.centre != this.props.centre) {
+                this.map.props.map.panTo(nextProps.centre);
+            }
+        }
+    }
+
     render() {
         return (
             <div className="Map">
@@ -31,6 +43,11 @@ class Map extends React.Component {
                                 defaultZoom={15}
                                 defaultCenter={this.props.centre}
                                 onCenterChanged={centre => this.onCenterChanged()}
+                                options={{
+                                    mapTypeControl: false,
+                                    streetViewControl: false,
+                                    zoomControl: false
+                                }}
                                 >
                             </GoogleMap>
                             }

@@ -30,7 +30,7 @@
     "react-google-maps": "^4.10.1",
     "react-router": "^2.4.1",
     "st": "^1.1.0",
-    "three.js": "^0.73.2",
+    "three": "^0.76.1",
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
