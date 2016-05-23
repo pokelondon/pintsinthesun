@@ -12,7 +12,7 @@ const BLUE = 0x4FC1E9;
 const WHITE = 0xFFFFFF;
 
 const PUB_MATERIAL = new THREE.MeshLambertMaterial({color: YELLOW});
-const BUILDING_MATERIAL = new THREE.MeshLambertMaterial({color: GREYDARK});
+const BUILDING_MATERIAL = new THREE.MeshLambertMaterial({color: 0xffffff});
 
 const VIEW_ANGLE = 45;
 const NEAR = 0.1;
@@ -116,7 +116,7 @@ class ThreeD extends React.Component {
         let { lat, lng } = this.props.centre;
         var pos = SunCalc.getPosition(this.props.date, lat, lng);
         var sun = angles2cartesian(pos.azimuth, pos.altitude);
-        console.log(pos.azimuth);
+        console.log((pos.azimuth - (0.5 * Math.PI)) * (360 / (2 * Math.PI)));
 
         this.sun.position.x = sun[0];
         this.sun.position.y = sun[1];
