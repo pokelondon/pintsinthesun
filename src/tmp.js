@@ -1,33 +1,41 @@
-
 var SunCalc = require('./app/lib/suncalc');
-var data = require('./public/data/results.json');
+var MongoClient = require('mongodb').MongoClient;
+var assert = require('assert');
 
-var date = new Date();
+var ENV = (process.env.ENV || 'dev');
 
-function pubtime(angle) {
-    var angle = angle - 90;
-    var upper = angle + 10;
-    var lower = angle - 10;
-    console.log(upper, lower);
-    SunCalc.addTime(upper, 'upper', 'upper2');
-    SunCalc.addTime(lower, 'lower', 'lower2');
-    var times = SunCalc.getTimes(date, 51.526, -0.82);
-    console.log(times.upper.getHours(), times.upper2.getHours());
-    console.log(times.lower.getHours(), times.lower2.getHours());
+var pubs;
+
+function getAngleRange(date, lat, lng) {
+    // Use rough latlng
+    var position = SunCalc.getPosition(date, lat, lng);
+    var sunAngle = position.azimuth * 180 / Math.PI;
+    return [sunAngle  -90 -45, sunAngle -90 + 45];
 }
 
-var times = SunCalc.getTimes(date, 51.526, -0.82);
-var sunriseStr = times.sunrise.getHours() + ':' + times.sunrise.getMinutes();
+MongoClient.connect('mongodb://localhost/pintsinthesun2_' + ENV, function(err, db) {
+    assert.equal(null, err);
+    pubs = db.collection('pubs');
+    console.log("Connected to Mongodb");
 
-// get position of the sun (azimuth and altitude) at today's sunrise
-var sunrisePos = SunCalc.getPosition(times.sunrise, 51.5, -0.1);
+    var lat = 51.52034327025973;
+    var lng = -0.1581805944442749;
 
-// get sunrise azimuth in degrees
-var sunriseAzimuth = sunrisePos.azimuth * 180 / Math.PI;
+    var angleRange = getAngleRange(new Date(), lat, lng);
 
-
-
-data.items.forEach(function(item) {
-    console.log(item.name);
-    pubtime(item.outdoor_angle);
-})
+    pubs.aggregate([
+        {
+            $geoNear: {
+                near: { type: 'Point', coordinates: [ lng, lat ] },
+                maxDistance: 30000,
+                distanceField: 'distance',
+                spherical: true,
+                query: { "location.type": "Point",
+                        outdoor_angle: { $gt: angleRange[0], $lt: angleRange[1] }, }
+            },
+        },
+    ], function(err, docs) {
+        console.error(err);
+        console.log(docs);
+    });
+});

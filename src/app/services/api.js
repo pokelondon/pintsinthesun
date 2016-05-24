@@ -10,9 +10,9 @@ export const EVENING = 3;
 /**
  * @returns Promise
  */
-export function getSuggestions(timeofday, centre) {
+export function getSuggestions(date, centre) {
     let { lat, lng } = floorLatLng(centre);
-    const url = config.API + 'results.json';
+    const url = config.API + `near/${lat}/${lng}/${date.toISOString()}`;
     return fetch(url).then(data => data.json());
 }
 

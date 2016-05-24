@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+import SunCalc from '../lib/suncalc';
 import { getLocation } from '../services/location';
-import { getPubs } from '../services/foursquare';
 
 import Map from '../components/map';
 
@@ -10,20 +10,20 @@ class Start extends React.Component {
     constructor(props) {
         super(props);
         this.props = props;
+        let date = new Date();
+        date.setHours(10);
         this.state = {
             centre: {lat: 51.526, lng: -0.082},
-            angle: 0
+            angle: 0,
+            date
         }
     }
 
     componentDidMount() {
         getLocation().then(centre => this.setState({centre}));
-    }
-
-    onPressFind() {
-        getPubs(this.state.centre)
-            .then(venues => console.log(venues))
-            .catch(err => console.error(err));
+        let pos = SunCalc.getPosition(this.state.date, this.state.centre.lat, this.state.centre.lng);
+        let angle = pos.azimuth * 180 / Math.PI;
+        this.setState({angle});
     }
 
     onIncrementAngle() {

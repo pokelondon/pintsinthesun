@@ -28,7 +28,7 @@ class AngleMarker extends React.Component {
                 className="Marker"
                 onMouseMove={this.onMouseMove.bind(this)}
                 >
-                <span className="Marker-text">{this.props.angle}</span>
+                <span className="Marker-text">{this.props.angle.toFixed(2)}</span>
                 <div className="Marker-angle" style={{transform: `rotate(${this.props.angle}deg)`}}></div>
             </div>
         );

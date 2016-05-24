@@ -38,7 +38,7 @@ app.use(express.static(__dirname + '/public'));
 
 var pubs;
 
-MongoClient.connect('mongodb://localhost/pints_' + ENV, function(err, db) {
+MongoClient.connect('mongodb://localhost/pintsinthesun2_' + ENV, function(err, db) {
     assert.equal(null, err);
     pubs = db.collection('pubs');
     console.log("Connected to Mongodb");
@@ -47,6 +47,41 @@ MongoClient.connect('mongodb://localhost/pints_' + ENV, function(err, db) {
 // State
 // ================================================================
 var connections = 0;
+
+function getAngleRange(date, lat, lng) {
+    // Use rough latlng
+    var position = SunCalc.getPosition(date, lat, lng);
+    var sunAngle = position.azimuth * 180 / Math.PI;
+    return [sunAngle  -90 -45, sunAngle -90 + 45];
+}
+
+app.get('/near/:lat/:lng/:date', function(req, res) {
+    var lat = Number(req.params.lat);
+    var lng = Number(req.params.lng);
+    var date = new Date(req.params.date);
+    var angleRange = getAngleRange(date, lat, lng);
+
+    pubs.aggregate([
+        {
+            $geoNear: {
+                near: { type: 'Point', coordinates: [ lng, lat ] },
+                maxDistance: 30000,
+                distanceField: 'distance',
+                spherical: true,
+                query: { "location.type": "Point",
+                        outdoor_angle: { $gt: angleRange[0], $lt: angleRange[1] }, }
+            },
+        },
+        {
+            $sort: { distance: 1 }
+        }
+    ], function(err, docs) {
+        if(err) {
+            res.json({error: 'sorry'}, 500);
+        }
+        res.json({items: docs});
+    });
+});
 
 // Views + endpoints
 // ================================================================
