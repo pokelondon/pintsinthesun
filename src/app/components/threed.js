@@ -31,6 +31,7 @@ const CAMERA_DISTANCE = 250;
 const ZOOM = 15;
 const EXTRUDE_SETTINGS = {bevelEnabled: false, material: 0, extrudeMaterial: 1};
 
+
 function angles2cartesian(azimuth, altitude) {
     var radius = SUN_DISTANCE;
     var x = radius * Math.cos(altitude) * Math.sin(azimuth) * -1;
@@ -74,7 +75,7 @@ class ThreeD extends React.Component {
         this.createFloor()
             .createLights()
             .updateSunPosition()
-            .render3d();
+            .animate();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -82,7 +83,13 @@ class ThreeD extends React.Component {
             nextProps.buildings.forEach(building => this.renderBuilding(building));
         }
 
-        //TODO update sun position if date changes
+        if(nextProps.date !== this.props.date) {
+            this.updateSunPosition();
+        }
+    }
+
+    shouldComponentUpdate() {
+        return false;
     }
 
     render() {
@@ -126,7 +133,7 @@ class ThreeD extends React.Component {
         let { lat, lng } = this.props.centre;
         var pos = SunCalc.getPosition(this.props.date, lat, lng);
         var sun = angles2cartesian(pos.azimuth, pos.altitude);
-        console.log((pos.azimuth - (0.5 * Math.PI)) * (360 / (2 * Math.PI)));
+        //console.log((pos.azimuth - (0.5 * Math.PI)) * (360 / (2 * Math.PI)));
 
         this.sun.position.x = sun[0];
         this.sun.position.y = sun[1];
@@ -137,6 +144,11 @@ class ThreeD extends React.Component {
     render3d() {
         this.renderer.render(this.scene, this.camera);
         return this;
+    }
+
+    animate() {
+        this.render3d();
+        requestAnimationFrame(this.animate.bind(this));
     }
 
     renderBuilding({outlinePath, levels, isPub}) {
@@ -177,8 +189,6 @@ class ThreeD extends React.Component {
         mesh.receiveShadow = true;
 
         this.scene.add(mesh);
-
-        this.render3d();
 
         return this;
     }

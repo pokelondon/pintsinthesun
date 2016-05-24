@@ -26,6 +26,8 @@
     "gulp-sourcemaps": "^2.0.0-alpha",
     "gulp-util": "^3.0.7",
     "jquery": "^2.2.3",
+    "moment": "^2.13.0",
+    "rc-slider": "^3.6.2",
     "react-dom": "^15.0.2",
     "react-google-maps": "^4.10.1",
     "react-router": "^2.4.1",
