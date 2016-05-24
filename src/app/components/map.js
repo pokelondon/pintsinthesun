@@ -2,10 +2,15 @@ import React from 'react';
 import { Link } from 'react-router'
 import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 
+import AngleMarker from './anglemarker';
+
 class Map extends React.Component {
     constructor(props) {
         super(props)
         this.props = props;
+        this.state = {
+            angle: 0
+        }
     }
 
     onCenterChanged() {
@@ -28,6 +33,11 @@ class Map extends React.Component {
     render() {
         return (
             <div className="Map">
+                <AngleMarker
+                    angle={this.props.angle}
+                    onIncrement={this.props.onIncrement}
+                    onDecrement={this.props.onDecrement} />
+
                 <GoogleMapLoader
                     containerElement={(
                         <div

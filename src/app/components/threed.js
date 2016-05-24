@@ -12,7 +12,16 @@ const BLUE = 0x4FC1E9;
 const WHITE = 0xFFFFFF;
 
 const PUB_MATERIAL = new THREE.MeshLambertMaterial({color: YELLOW});
-const BUILDING_MATERIAL = new THREE.MeshLambertMaterial({color: 0xffffff});
+const BUILDING_MATERIAL = new THREE.MeshPhongMaterial({
+    color: GREYDARK,
+    shininess: 10,
+    specular: WHITE,
+    shading: THREE.SmoothShading
+});
+
+const FLOOR_MATERIAL = new THREE.MeshLambertMaterial({
+    color: BLUE,
+});
 
 const VIEW_ANGLE = 45;
 const NEAR = 0.1;
@@ -39,8 +48,8 @@ class ThreeD extends React.Component {
     }
 
     componentDidMount() {
-        this.WIDTH = 500;
-        this.HEIGHT = 500;
+        this.WIDTH = 400;
+        this.HEIGHT = 400;
 
             // set some camera attributes
         const ASPECT = this.WIDTH / this.HEIGHT;
@@ -89,10 +98,9 @@ class ThreeD extends React.Component {
 
     createFloor() {
         const planeGeo = new THREE.PlaneGeometry(400, 400, 10, 10);
-        const planeMat = new THREE.MeshLambertMaterial({color: 0xffffff});
 
-        this.plane = new THREE.Mesh(planeGeo, planeMat);
-        this.plane.side = THREE.DoubleSide;
+        this.plane = new THREE.Mesh(planeGeo, FLOOR_MATERIAL);
+        //this.plane.side = THREE.DoubleSide;
         this.plane.receiveShadow = true;
 
         // rotate it to correct position
@@ -102,6 +110,8 @@ class ThreeD extends React.Component {
     }
 
     createLights() {
+        var ambient = new THREE.AmbientLight(0x404040);
+        this.scene.add(ambient);
         // add a light at a specific position
         this.sun = new THREE.SpotLight(WHITE);
         this.scene.add(this.sun);
@@ -138,6 +148,8 @@ class ThreeD extends React.Component {
         if(isPub) {
             material = PUB_MATERIAL;
             amount += 1;
+        } else {
+            amount += Math.random();
         }
 
         var extrudeSettings = {

@@ -3,3 +3,42 @@
     width: 100%;
     height: 200px;
 }
+
+.Marker {
+    display: block;
+    width: 100px;
+    height: 100px;
+    background: url(../img/marker2.png) no-repeat 50% 50%;
+    background-size: 100px 100px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    transform: translate(-50%, -50%);
+    cursor: ew-resize;
+}
+
+.Marker-angle {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: url(../img/marker1.png) no-repeat 50% 50%;
+    background-size: 100% 100%;
+
+    position: absolute;
+}
+
+.Marker-text {
+    color: #fff;
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    top: 50%;
+    text-align: center;
+    display: block;
+    width: 100%;
+    transform: translate(-50%, -150%);
+    user-select: none;
+    text-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.6);
+}

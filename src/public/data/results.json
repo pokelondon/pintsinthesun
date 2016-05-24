@@ -2,7 +2,7 @@
     "items": [
         {
             "name": "Barly Mow",
-            "outdoor_angle": 0,
+            "outdoor_angle": -15,
             "building_to_the_west": true,
             "has_terrace": false,
             "lat": 51.519664199999994,
@@ -10,9 +10,25 @@
         },
         {
             "name": "Owl & Pussycat",
-            "outdoor_angle": 180,
+            "outdoor_angle": 260,
             "building_to_the_west": false,
             "has_terrace": false,
+            "lat": 51.56,
+            "lng": -0.08
+        },
+        {
+            "name": "Crown Shuttle",
+            "outdoor_angle": 91,
+            "building_to_the_west": false,
+            "has_terrace": true,
+            "lat": 51.56,
+            "lng": -0.08
+        },
+        {
+            "name": "Gunmakers",
+            "outdoor_angle": -96,
+            "building_to_the_west": false,
+            "has_terrace": true,
             "lat": 51.56,
             "lng": -0.08
         }

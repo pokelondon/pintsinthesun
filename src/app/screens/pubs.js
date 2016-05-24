@@ -42,7 +42,8 @@ class Pub extends React.Component {
             let item = this.state.items[0];
             return (
                 <div className="Pub">
-                    <h2>{item.name}</h2>
+                    <h2 className="Pub-name">{item.name}</h2>
+                    <p className="Pub-distance">0.2Km away</p>
                     <ThreeD
                         centre={{lat: item.lat, lng: item.lng}}
                         date={new Date()}

@@ -11,7 +11,8 @@ class Start extends React.Component {
         super(props);
         this.props = props;
         this.state = {
-            centre: {lat: 51.526, lng: -0.082}
+            centre: {lat: 51.526, lng: -0.082},
+            angle: 0
         }
     }
 
@@ -25,6 +26,14 @@ class Start extends React.Component {
             .catch(err => console.error(err));
     }
 
+    onIncrementAngle() {
+        this.setState({angle: this.state.angle + 1});
+    }
+
+    onDecrementAngle() {
+        this.setState({angle: this.state.angle - 1});
+    }
+
     render() {
         let { lat, lng } = this.state.centre;
         return (
@@ -33,6 +42,10 @@ class Start extends React.Component {
                     markers={[]}
                     centre={this.state.centre}
                     onCenterChanged={centre => this.setState({centre})}
+
+                    angle={this.state.angle}
+                    onIncrement={this.onIncrementAngle.bind(this)}
+                    onDecrement={this.onDecrementAngle.bind(this)}
                 />
                 <Link className="Button Button--primary" to={`/pubs/${this.state.centre.lat}/${this.state.centre.lng}`}>
                     lnk

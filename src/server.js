@@ -51,7 +51,6 @@ var connections = 0;
 // Views + endpoints
 // ================================================================
 
-
 // Web server for API Endpoints
 // ================================================================
 httpServer.listen(bind, function () {
