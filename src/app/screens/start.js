@@ -11,10 +11,10 @@ class Start extends React.Component {
         super(props);
         this.props = props;
         let date = new Date();
-        date.setHours(10);
+        date.setHours(20);
 
         this.state = {
-            centre: {lat: 51.526, lng: -0.082},
+            centre: {lat: 51.526, lng: -0.182},
             date
         }
     }

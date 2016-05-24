@@ -5,7 +5,7 @@ import { fetchBuildings } from '../services/overpass';
 
 import ThreeD from '../components/threed';
 
-class Pubs extends React.Component {
+class Pub extends React.Component {
     constructor(props) {
         super(props);
         this.props = props;
@@ -44,7 +44,7 @@ class Pubs extends React.Component {
     }
 }
 
-Pubs.propTypes = {
+Pub.propTypes = {
     name: React.PropTypes.string.isRequired,
     location: React.PropTypes.shape([
       React.PropTypes.number, React.PropTypes.number
@@ -53,5 +53,5 @@ Pubs.propTypes = {
     date: React.PropTypes.instanceOf(Date)
 }
 
-export default Pubs;
+export default Pub;
 

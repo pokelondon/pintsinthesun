@@ -14,7 +14,7 @@ class Pubs extends React.Component {
         this.props = props;
         // TODO get this globaler.
         let date = new Date();
-        date.setHours(10);
+        date.setHours(18);
         this.state = {
             items: [],
             date
