@@ -22,6 +22,8 @@ class Start extends React.Component {
     componentDidMount() {
         // No using map.
         // User might want to change location before searching so coords still passed as path
+        // TODO this promise sometimes doesnt finish till after
+        // this component is unmounted. Another reason to put it up a level
         getLocation().then(centre => this.setState({centre}));
     }
 
