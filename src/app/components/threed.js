@@ -28,7 +28,7 @@ const NEAR = 0.1;
 const FAR = 10000;
 const SUN_DISTANCE = 200;
 const CAMERA_DISTANCE = 250;
-const ZOOM = 15;
+const ZOOM = 16;
 const EXTRUDE_SETTINGS = {bevelEnabled: false, material: 0, extrudeMaterial: 1};
 
 

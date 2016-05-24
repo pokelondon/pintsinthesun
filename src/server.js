@@ -77,7 +77,7 @@ app.get('/near/:lat/:lng/:date', function(req, res) {
         }
     ], function(err, docs) {
         if(err) {
-            res.json({error: 'sorry'}, 500);
+            res.json({error: err.errmsg}, 500);
         }
         res.json({items: docs});
     });

@@ -39,9 +39,9 @@ class Pub extends React.Component {
     }
 
     onSliderChange(value) {
-
-        let date = this.moment.clone().add(value, 'hours');
-        this.setState({date: date.toDate()});
+        const date = new Date(this.state.date);
+        date.setHours(value);
+        this.setState({date});
     }
 
     render() {
@@ -55,17 +55,23 @@ class Pub extends React.Component {
         else {
             let item = this.state.items[0];
             let centre = item.location.coordinates;
+            var distance = item.distance;
+            var distanceUnit = 'm';
+            if (item.distance > 1000) {
+                distance = item.distance / 1000;
+                distanceUnit = 'Km';
+            }
             return (
                 <div className="Pub">
                     <h2 className="Pub-name">{item.name}</h2>
-                    <p className="Pub-distance">0.2Km away</p>
+                    <p className="Pub-distance">{distance.toFixed(1)}{distanceUnit} away</p>
                     <ThreeD
                         centre={{lat: centre[1], lng: centre[0]}}
                         date={this.state.date}
                         buildings={this.state.buildings}
                     />
                     <p>Lorem ipsum</p>
-                    <Slider min={8} max={22} step={0.5} included={false} defaultValue={8} onChange={this.onSliderChange.bind(this)}/>
+                    <Slider min={8} max={22} step={1} included={false} defaultValue={8} onChange={this.onSliderChange.bind(this)}/>
                 </div>
             )
         }
