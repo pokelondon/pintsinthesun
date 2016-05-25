@@ -38,7 +38,15 @@ class Pubs extends React.Component {
             return (
                 <div>
                     <p>{this.props.items.length} Results {this.props.date.toString()}</p>
-                    <Slider min={8} max={22} step={1} included={false} defaultValue={8} onChange={this.onSliderChange.bind(this)}/>
+                    <Slider
+                        min={8}
+                        max={22}
+                        step={1}
+                        included={false}
+                        defaultValue={8}
+                        className='Slider'
+                        onChange={this.onSliderChange.bind(this)}
+                    />
                     <Pub {...item} date={this.props.date} />
                 </div>
             )

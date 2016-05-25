@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import SunCalc from '../../lib/suncalc';
+import Slider from 'rc-slider';
 
 import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 import AngleMarker from '../../components/anglemarker';
@@ -16,6 +17,10 @@ class Locate extends React.Component {
         //let pos = SunCalc.getPosition(this.state.date, this.state.centre.lat, this.state.centre.lng);
         //let angle = pos.azimuth * 180 / Math.PI;
         //this.setState({angle});
+    }
+
+    onSliderChange(value) {
+        this.props.updateAngle(value);
     }
 
     onDragEnd() {
@@ -55,6 +60,17 @@ class Locate extends React.Component {
                         />
 
                         <p>{lat}, {lng}</p>
+
+                        <Slider
+                            min={-150}
+                            max={150}
+                            step={1}
+                            included={false}
+                            defaultValue={this.props.angle}
+                            className='Slider'
+                            onChange={this.onSliderChange.bind(this)}
+                        />
+
                         <Link className="Button Button--primary" to={`/pubs/${lat}/${lng}`}>
                             Find somewhere NOW
                         </Link>
@@ -70,6 +86,7 @@ Locate.propTypes = {
       lng: React.PropTypes.number
     }),
     onCenterChanged: React.PropTypes.func,
+    updateAngle: React.PropTypes.func,
     angle: React.PropTypes.number
 }
 

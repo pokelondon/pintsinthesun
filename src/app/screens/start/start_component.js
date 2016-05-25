@@ -21,6 +21,9 @@ class Start extends React.Component {
                 <Link className="Button Button--primary" to={`/pubs/${lat}/${lng}`}>
                     Find somewhere NOW
                 </Link>
+                <Link className="Button" to='/locate'>
+                    Map
+                </Link>
             </div>
         )
     }

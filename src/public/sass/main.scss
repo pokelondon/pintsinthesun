@@ -32,8 +32,7 @@ html {
 }
 
 body {
-    background: $blueDark;
     color: $grey;
-    background: linear-gradient(#fff, $bg);
+    background: linear-gradient($blueDark, $bg);
     height: 100%;
 }

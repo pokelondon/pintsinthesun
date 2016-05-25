@@ -30,6 +30,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         fetchPosition: () => {
 
         },
+        updateAngle: angle => {
+            boundLocateActions.updateAngle(angle);
+        }
     }
 }
 

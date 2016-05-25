@@ -5,6 +5,7 @@
     margin: 0 auto;
 }
 .Pint--small {
+    @extend .Pint;
     width: 90px;
     height: 90px;
 }
