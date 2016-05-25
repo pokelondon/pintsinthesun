@@ -16,6 +16,7 @@ class Start extends React.Component {
         let { lat, lng } = this.props.centre;
         return (
             <div>
+                <p>{this.props.isLocating ? 'Locating you' : 'Found ya'}</p>
                 <p>{lat}, {lng}</p>
                 <Link className="Button Button--primary" to={`/pubs/${lat}/${lng}`}>
                     Find somewhere NOW
@@ -31,7 +32,8 @@ Start.propTypes = {
       lat: React.PropTypes.number,
       lng: React.PropTypes.number
     }),
-    date: React.PropTypes.instanceOf(Date)
+    date: React.PropTypes.instanceOf(Date),
+    isLocating: React.PropTypes.bool
 }
 
 export default Start;

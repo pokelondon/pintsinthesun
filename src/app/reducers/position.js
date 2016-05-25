@@ -9,7 +9,7 @@ const date = new Date();
 date.setHours(14);
 
 const INITIAL_STATE = {
-    centre: {lat: 51.6, lng: -0.1},
+    centre: {lat: 51.54, lng: -0.04},
     date,
     isLocating: false
 }

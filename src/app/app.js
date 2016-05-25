@@ -11,7 +11,7 @@ import reducers from './reducers';
 
 import Start from './screens/start/start_container';
 import Pubs from './screens/pubs/pubs_container';
-import Locate from './screens/locate';
+import Locate from './screens/locate/locate_container';
 import NoMatch from './screens/nomatch';
 
 const loggerMiddleware = createLogger();

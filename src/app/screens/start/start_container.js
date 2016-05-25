@@ -8,9 +8,10 @@ import Start from './start_component';
 
 
 const mapStateToProps = (state, ownProps) => {
-    const { centre, date } = state.position;
+    const { centre, date, isLocating } = state.position;
 
     return {
+        isLocating,
         centre,
         date
     }

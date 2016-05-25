@@ -83,9 +83,7 @@ class ThreeD extends React.Component {
             nextProps.buildings.forEach(building => this.renderBuilding(building));
         }
 
-        if(nextProps.date !== this.props.date) {
-            this.updateSunPosition();
-        }
+        this.updateSunPosition();
     }
 
     shouldComponentUpdate() {
