@@ -91,6 +91,7 @@ class ThreeD extends React.Component {
     }
 
     componentWillUnmount() {
+        this.renderer.dispose();
         this.refs.canvas.remove();
         if(this.cancelablePromise && this.cancelablePromise.cancel) {
             this.cancelablePromise.cancel();

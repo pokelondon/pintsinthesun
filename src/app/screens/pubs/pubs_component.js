@@ -57,7 +57,7 @@ class Pubs extends React.Component {
                         max={22}
                         step={1}
                         included={false}
-                        defaultValue={8}
+                        defaultValue={this.props.date.getHours()}
                         className='Slider'
                         onChange={this.onSliderChange.bind(this)}
                     />
