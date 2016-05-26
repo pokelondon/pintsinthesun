@@ -48,6 +48,9 @@ class ThreeD extends React.Component {
     constructor(props) {
         super(props);
         this.props = props;
+        this.state = {
+            isTransitioning: false
+        }
         this.building_refs = [];
     }
 
@@ -101,7 +104,7 @@ class ThreeD extends React.Component {
     render() {
         return (
             <div
-                className="Render"
+                className={(this.state.isTransitioning) ? 'Render is-transitioning' : 'Render'}
                 ref='canvas'
                 width="200"
                 height="200"
