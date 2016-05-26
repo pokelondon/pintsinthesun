@@ -10,14 +10,26 @@ var express = require('express');
 var MongoClient = require('mongodb').MongoClient;
 var http = require('http');
 var assert = require('assert');
+var bodyParser = require('body-parser');
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
 
-var SunCalc = require('./app/lib/suncalc')
+var SunCalc = require('../app/lib/suncalc')
+
+var config = require('./config');
+
 
 // Configs
 // ================================================================
 var bind = (process.env.WEBSERVER_PORT || 8080);
 var ENV = (process.env.ENV || 'dev');
+var ANGLE_RANGE = 100;
 
+var SUBMIT_PROPS = {
+    outdoor_angle: Number,
+    has_terrace: Boolean,
+    building_to_the_west: Boolean
+}
 
 // Init
 // ================================================================
@@ -32,6 +44,7 @@ var allowCrossDomain = function(req, res, next) {
     next();
 }
 app.use(allowCrossDomain);
+app.use(bodyParser.json());
 app.use(express.static(__dirname + '/build'));
 app.use(express.static(__dirname + '/public'));
 
@@ -52,9 +65,11 @@ function getAngleRange(date, lat, lng) {
     // Use rough latlng
     var position = SunCalc.getPosition(date, lat, lng);
     var sunAngle = position.azimuth * 180 / Math.PI;
-    return [sunAngle  -90 -45, sunAngle -90 + 45];
+    return [sunAngle - 90 - (ANGLE_RANGE/2), sunAngle - 90 + (ANGLE_RANGE/2)];
 }
 
+// Views + endpoints
+// ================================================================
 app.get('/near/:lat/:lng/:date', function(req, res) {
     var lat = Number(req.params.lat);
     var lng = Number(req.params.lng);
@@ -83,8 +98,69 @@ app.get('/near/:lat/:lng/:date', function(req, res) {
     });
 });
 
-// Views + endpoints
-// ================================================================
+app.get('/pub/:id', function(req, res) {
+    pubs.findOne({"foursquare.id": req.params.id}, function(err, obj) {
+        assert.equal(null, err);
+        res.json(obj);
+    })
+});
+
+app.put('/pub/:id', function(req, res) {
+    var update = {
+        outdoor_angle: req.body.outdoor_angle,
+        has_terrace: req.body.has_terrace,
+    }
+    pubs.update({
+        "foursquare.id": req.params.id},
+        update,
+        function(err, num, obj) {
+            assert.equal(null, err);
+            res.json(obj);
+        }
+    );
+});
+
+app.post('/pub/create/:id', function(req, res) {
+    var submittedData = req.body;
+    var foursquareID = req.params.id;
+    var pub = {}
+
+    for(var key in SUBMIT_PROPS) {
+        if (submittedData.hasOwnProperty(key)) {
+            pub[key] = SUBMIT_PROPS[key](submittedData[key]);
+        }
+    }
+
+    fetch(config.FOURSQUARE_VENUE_URL + foursquareID + config.FOURSQUARE_CREDS)
+        .then(function(response) {
+            return response.json();
+        }).then(function(data) {
+            pub.foursquare = {id: foursquareID};
+            pub.name = data.response.venue.name;
+            pub.location = {
+                type: 'Point',
+                coordinates: [
+                    data.response.venue.location.lng,
+                    data.response.venue.location.lat
+                ]
+            };
+            //res.json(pub);
+            return pub
+        }).then(function(pub) {
+            pubs.update({
+                "foursquare.id": req.params.id},
+                pub,
+                {upsert: true},
+                function(err, num, obj) {
+                    assert.equal(null, err);
+                    console.log(num, obj);
+                    res.json({pub: pub, res: num});
+                }
+            );
+        }).catch(function(err) {
+            console.error(err);
+        });
+});
 
 // Web server for API Endpoints
 // ================================================================

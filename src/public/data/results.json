@@ -12,7 +12,8 @@
             "outdoor_angle": 160,
             "building_to_the_west": false,
             "has_terrace": false,
-            "location": { "type": "Point", "coordinates": [ -0.07548980037134943, 51.52431378309289 ] }
+            "location": { "type": "Point", "coordinates": [ -0.07548980037134943, 51.52431378309289 ] },
+            "foursquare": {"id": "4ad78c64f964a5200f0c21e3"}
         },
         {
             "name": "Crown Shuttle",

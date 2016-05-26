@@ -60,12 +60,12 @@ gulp.task('sass', function () {
 
 gulp.task('server', function(done) {
     var options = {
-        cwd: 'src'
+        cwd: 'src/server'
     }
     options.env = process.env;
     options.env.NODE_ENV = 'development';
 
-    server.run(['server.js'], options, 35729);
+    server.run(['main.js'], options, 35729);
 });
 
 gulp.task('default', ['scripts','watch', 'server']);
