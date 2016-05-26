@@ -43,15 +43,23 @@ a {
     color: inherit;
 }
 
-
-.Button--primary {
+.Button {
     padding: 20px;
     display: block;
-    width: 100%;
     border: none;
     box-sizing: border-box;
+    margin: 10px 0;
 
-    background: $pink;
-    color: $white;
     text-align: center;
+    color: $white;
+    background: $blueLight;
+
+    & + & {
+        margin-top: 0;
+    }
+}
+
+.Button--primary {
+    @extend .Button;
+    background: $pink;
 }

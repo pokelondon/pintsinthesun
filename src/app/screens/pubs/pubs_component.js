@@ -17,7 +17,8 @@ class Pubs extends React.Component {
 
     onSliderChange(value) {
         var current = this.props.date;
-        this.props.updateTime(current.setHours(value));
+        this.props.updateTime(new Date(current.setHours(value)));
+        console.log(this.props.sun);
     }
 
     render() {

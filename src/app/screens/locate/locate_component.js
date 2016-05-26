@@ -13,10 +13,7 @@ class Locate extends React.Component {
         this.props = props;
     }
 
-    componentDidMount() {
-        //let pos = SunCalc.getPosition(this.state.date, this.state.centre.lat, this.state.centre.lng);
-        //let angle = pos.azimuth * 180 / Math.PI;
-        //this.setState({angle});
+    componentWillReceiveProps(newProps) {
     }
 
     onSliderChange(value) {
@@ -24,7 +21,6 @@ class Locate extends React.Component {
     }
 
     onDragEnd() {
-        console.log('dragend');
         let centre = this.map.props.map.getCenter();
         this.props.onCenterChanged({lat: centre.lat(), lng: centre.lng()});
     }

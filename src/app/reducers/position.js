@@ -1,3 +1,5 @@
+import SunCalc from '../lib/suncalc';
+
 import {
     UPDATE_TIME,
     FETCH_POSITION,
@@ -19,13 +21,15 @@ export default function position(state=INITIAL_STATE, action) {
         case UPDATE_TIME:
             return {
                 ...state,
-                centre: action.date
+                date: action.date,
+                sun: SunCalc.getPosition(action.date, state.centre.lat, state.centre.lng)
             }
         case RESPONSE_POSITION:
             return {
                 ...state,
                 centre: action.centre,
-                isLocating: false
+                isLocating: false,
+                sun: SunCalc.getPosition(state.date, action.centre.lat, action.centre.lng)
             }
 
         case REQUEST_POSITION:

@@ -8,11 +8,12 @@ import Pubs from './pubs_component';
 
 
 const mapStateToProps = (state, ownProps) => {
-    const { centre, date } = state.position;
+    const { centre, date, sun } = state.position;
     const { items, receivedAt, isFetching } = state.data;
     return {
         centre,
         date,
+        sun,
         items,
         receivedAt,
         isFetching

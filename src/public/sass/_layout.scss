@@ -5,8 +5,8 @@ html {
 body {
     margin: 0 0 $footer-height; /* bottom = footer height */
 }
-.container {
-    max-width: 800px;
+.App > div {
+    max-width: 600px;
     @include make-container();
 }
 .row {
