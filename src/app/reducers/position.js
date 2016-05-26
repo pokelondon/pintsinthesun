@@ -31,7 +31,6 @@ export default function position(state=INITIAL_STATE, action) {
                 isLocating: false,
                 sun: SunCalc.getPosition(state.date, action.centre.lat, action.centre.lng)
             }
-
         case REQUEST_POSITION:
             return {
                 ...state,

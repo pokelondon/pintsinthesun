@@ -9,6 +9,9 @@ class Pubs extends React.Component {
     constructor(props) {
         super(props);
         this.props = props;
+        this.state = {
+            index: 0
+        }
     }
 
     componentDidMount() {
@@ -18,7 +21,17 @@ class Pubs extends React.Component {
     onSliderChange(value) {
         var current = this.props.date;
         this.props.updateTime(new Date(current.setHours(value)));
-        console.log(this.props.sun);
+    }
+
+    next(evt) {
+        evt.preventDefault();
+        if(this.props.items.length > 1) {
+            let index = this.state.index + 1;
+            if(this.state.index >= this.props.items.length -1) {
+                index = 0
+            }
+            this.setState({index});
+        }
     }
 
     render() {
@@ -35,7 +48,7 @@ class Pubs extends React.Component {
                 </div>
             )
         } else {
-            let item = this.props.items[0];
+            let item = this.props.items[this.state.index];
             return (
                 <div>
                     <p>{this.props.items.length} Results {this.props.date.toString()}</p>
@@ -49,6 +62,7 @@ class Pubs extends React.Component {
                         onChange={this.onSliderChange.bind(this)}
                     />
                     <Pub {...item} date={this.props.date} />
+                    <button className="Button" onClick={this.next.bind(this)}>Nah</button>
                 </div>
             )
         }

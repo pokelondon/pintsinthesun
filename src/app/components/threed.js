@@ -3,6 +3,8 @@ import THREE from 'three';
 import SunCalc from '../lib/suncalc';
 import d3 from 'd3';
 
+import { fetchBuildings } from '../services/overpass';
+
 
 const GREYDARK = 0x434A54;
 const RED = 0xDA4453;
@@ -46,6 +48,7 @@ class ThreeD extends React.Component {
     constructor(props) {
         super(props);
         this.props = props;
+        this.building_refs = [];
     }
 
     componentDidMount() {
@@ -75,19 +78,23 @@ class ThreeD extends React.Component {
         this.createFloor()
             .createLights()
             .updateSunPosition()
+            .updateBuildings()
             .animate();
     }
 
-    componentWillReceiveProps(nextProps) {
-        if(nextProps.buildings.length > 0) {
-            nextProps.buildings.forEach(building => this.renderBuilding(building));
+    componentDidUpdate(prevProps) {
+        if(this.props.centre.lat !== prevProps.centre.lat) {
+            console.log('different building', 'was', prevProps.sceneid, 'now', this.props.sceneid);
+            this.updateBuildings();
         }
-
         this.updateSunPosition();
     }
 
-    shouldComponentUpdate() {
-        return false;
+    componentWillUnmount() {
+        this.refs.canvas.remove();
+        if(this.cancelablePromise && this.cancelablePromise.cancel) {
+            this.cancelablePromise.cancel();
+        }
     }
 
     render() {
@@ -99,6 +106,27 @@ class ThreeD extends React.Component {
                 height="200"
             />
         )
+    }
+
+    renderBuildings(buildings) {
+        this.clearBuildings();
+        console.log('Rendering', buildings.length, 'buildings');
+        buildings.forEach(building => this.renderBuilding(building));
+    }
+
+    updateBuildings() {
+        let { lat, lng } = this.props.centre;
+        this.cancelablePromise = fetchBuildings(lat, lng);
+        this.cancelablePromise.promise.then(buildings => this.renderBuildings(buildings));
+        return this;
+    }
+
+    clearBuildings() {
+        console.log('Clearing', this.building_refs.length, 'buildings');
+        this.building_refs.forEach(ref => {
+            this.scene.remove(this.scene.getObjectByName(ref));
+        });
+        this.building_refs = [];
     }
 
     createFloor() {
@@ -131,7 +159,6 @@ class ThreeD extends React.Component {
         let { lat, lng } = this.props.centre;
         var pos = SunCalc.getPosition(this.props.date, lat, lng);
         var sun = angles2cartesian(pos.azimuth, pos.altitude);
-        //console.log((pos.azimuth - (0.5 * Math.PI)) * (360 / (2 * Math.PI)));
 
         this.sun.position.x = sun[0];
         this.sun.position.y = sun[1];
@@ -185,8 +212,11 @@ class ThreeD extends React.Component {
 
         mesh.castShadow = true;
         mesh.receiveShadow = true;
+        mesh.name = Math.random() + '-' + Math.random();
 
         this.scene.add(mesh);
+
+        this.building_refs.push(mesh.name);
 
         return this;
     }

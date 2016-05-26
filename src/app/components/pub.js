@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router'
 
-import { fetchBuildings } from '../services/overpass';
-
 import ThreeD from '../components/threed';
 
 class Pub extends React.Component {
@@ -15,14 +13,7 @@ class Pub extends React.Component {
         };
     }
 
-    componentDidMount() {
-        let [lng, lat] = this.props.location.coordinates;
-        fetchBuildings(lat, lng)
-            .then(buildings => this.setState({buildings}));
-    }
-
     render() {
-
         let { distance, location, name } = this.props;
         let [lng, lat] = location.coordinates;
         var distanceUnit = 'm';
@@ -37,7 +28,7 @@ class Pub extends React.Component {
                 <ThreeD
                     centre={{lat, lng}}
                     date={this.props.date}
-                    buildings={this.state.buildings}
+                    sceneid={name}
                 />
             </div>
         )
@@ -50,7 +41,7 @@ Pub.propTypes = {
       React.PropTypes.number, React.PropTypes.number
     ]),
     distance: React.PropTypes.number,
-    date: React.PropTypes.instanceOf(Date)
+    date: React.PropTypes.instanceOf(Date),
 }
 
 export default Pub;

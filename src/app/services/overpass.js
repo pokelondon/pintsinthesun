@@ -23,6 +23,22 @@ function filterNodes(feature, nodes) {
     return path;
 }
 
+const makeCancelable = (promise) => {
+    let hasCanceled_ = false;
+
+    const wrappedPromise = new Promise((resolve, reject) => {
+        promise.then((val) => hasCanceled_ ? reject({isCanceled: true}) : resolve(val));
+        promise.catch((error) => hasCanceled_ ? reject({isCanceled: true}) : reject(error));
+    });
+
+    return {
+        promise: wrappedPromise,
+        cancel() {
+            hasCanceled_ = true;
+        },
+    };
+};
+
 /**
  * Get buildings around a certain lat/lng.
  * Finds features that are pubs and gets sorted outline paths for them
@@ -36,7 +52,7 @@ export function fetchBuildings(lat, lng) {
                lat + bound, lng + bound];
     let bounds = box.join(',');
 
-    return fetch(`http://overpasscache.pintsinthesun.co.uk/api/interpreter?data=[out:json];((way(${bounds})[%22building%22]);(._;node(w);););out;`)
+    return makeCancelable(fetch(`http://overpasscache.pintsinthesun.co.uk/api/interpreter?data=[out:json];((way(${bounds})[%22building%22]);(._;node(w);););out;`)
         .then(data => data.json())
         .then(data => {
             let nodes = data.elements.filter(item => 'node' === item.type);
@@ -50,5 +66,5 @@ export function fetchBuildings(lat, lng) {
             });
 
             return buildings;
-        });
+        }));
 }
