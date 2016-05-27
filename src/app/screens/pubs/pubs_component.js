@@ -41,6 +41,10 @@ class Pubs extends React.Component {
         }
     }
 
+    filterPubs() {
+        this.props.filterPubs();
+    }
+
     render() {
         if(this.props.isFetching) {
             return (
@@ -70,6 +74,7 @@ class Pubs extends React.Component {
                     />
                     {this.props.children}
                     <button className="Button" onClick={this.next.bind(this)}>Nah</button>
+                    <button className="Button" onClick={this.filterPubs.bind(this)}>Filter Pubs</button>
                 </div>
             )
         }
@@ -79,6 +84,7 @@ class Pubs extends React.Component {
 Pubs.propTypes = {
     items: React.PropTypes.array,
     fetchPubs: React.PropTypes.func,
+    filterPubs: React.PropTypes.func,
     updateTime: React.PropTypes.func,
     date: React.PropTypes.instanceOf(Date)
 }

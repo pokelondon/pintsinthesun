@@ -4,7 +4,10 @@ import {
     UPDATE_TIME,
     FETCH_POSITION,
     REQUEST_POSITION,
-    RESPONSE_POSITION
+    RESPONSE_POSITION,
+    FILTER_PUBS,
+    REQUEST_PUBS,
+    RESPONSE_PUBS
 } from '../actions/position';
 
 const date = new Date();
@@ -20,7 +23,10 @@ const INITIAL_STATE = {
     isLocating: false,
     sun: getAngleRange(SunCalc.getPosition(date, centre.lat, centre.lng)),
     centre,
-    date
+    date,
+    items: [],
+    filteredPubs : [],
+    isFetching: false
 }
 
 export default function position(state=INITIAL_STATE, action) {
@@ -46,6 +52,22 @@ export default function position(state=INITIAL_STATE, action) {
             return {
                 ...state,
                 isLocating: true
+            }
+        case FILTER_PUBS:
+            console.log(state);
+            return {
+                ...state
+            }
+        case REQUEST_PUBS:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case RESPONSE_PUBS:
+            return {
+                ...state,
+                isFetching: false,
+                items: action.items
             }
         default:
             return state;
