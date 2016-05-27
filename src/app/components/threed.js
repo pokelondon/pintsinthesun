@@ -114,7 +114,6 @@ class ThreeD extends React.Component {
 
     renderBuildings(buildings) {
         this.clearBuildings();
-        console.log('Rendering', buildings.length, 'buildings');
         buildings.forEach(building => this.renderBuilding(building));
     }
 
@@ -126,7 +125,6 @@ class ThreeD extends React.Component {
     }
 
     clearBuildings() {
-        console.log('Clearing', this.building_refs.length, 'buildings');
         this.building_refs.forEach(ref => {
             this.scene.remove(this.scene.getObjectByName(ref));
         });

@@ -18,6 +18,12 @@ class Pubs extends React.Component {
         this.props.fetchPubs(this.props.date, this.props.centre);
     }
 
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.items.length && !this.props.children) {
+            this.context.router.push(`/pubs/0`);
+        }
+    }
+
     onSliderChange(value) {
         var current = this.props.date;
         this.props.updateTime(new Date(current.setHours(value)));
@@ -25,7 +31,6 @@ class Pubs extends React.Component {
 
     next(evt) {
         evt.preventDefault();
-        console.log(this.props);
         if(this.props.items.length > 1) {
             let index = this.state.index + 1;
             if(this.state.index >= this.props.items.length -1) {
