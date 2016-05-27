@@ -21,6 +21,7 @@ class Pubs extends React.Component {
     componentWillReceiveProps(nextProps) {
         if(nextProps.items.length && !this.props.children) {
             this.context.router.push(`/pubs/0`);
+            console.log('Run initial filter here perhaps');
         }
     }
 
@@ -62,7 +63,7 @@ class Pubs extends React.Component {
             let item = this.props.items[this.state.index];
             return (
                 <div>
-                    <p>{this.props.items.length} Results {this.props.date.toString()}</p>
+                    <p>Matching: {this.props.filteredPubs.length}/{this.props.items.length}</p>
                     <Slider
                         min={8}
                         max={22}

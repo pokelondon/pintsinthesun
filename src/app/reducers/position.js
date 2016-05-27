@@ -19,6 +19,12 @@ function getAngleRange(position) {
     return [sunAngle - 90 - (ANGLE_RANGE/2), sunAngle - 90 + (ANGLE_RANGE/2)];
 }
 
+function filterForAngle(sun, items) {
+    let [ min, max ] = getAngleRange(sun);
+    const res = items.filter(item => (item.outdoor_angle >= min && item.outdoor_angle <= max));
+    return res;
+}
+
 const INITIAL_STATE = {
     isLocating: false,
     sun: getAngleRange(SunCalc.getPosition(date, centre.lat, centre.lng)),
@@ -36,7 +42,7 @@ export default function position(state=INITIAL_STATE, action) {
             return {
                 ...state,
                 date: action.date,
-                angleRange: getAngleRange(sun),
+                filteredPubs: filterForAngle(sun, state.items),
                 sun
             }
         case RESPONSE_POSITION:
@@ -45,7 +51,7 @@ export default function position(state=INITIAL_STATE, action) {
                 ...state,
                 centre: action.centre,
                 isLocating: false,
-                angleRange: getAngleRange(sun),
+                filteredPubs: filterForAngle(sun, state.items),
                 sun
             }
         case REQUEST_POSITION:
@@ -54,9 +60,10 @@ export default function position(state=INITIAL_STATE, action) {
                 isLocating: true
             }
         case FILTER_PUBS:
-            console.log(state);
+            // Might not need this
             return {
-                ...state
+                ...state,
+                filteredPubs: filterForAngle(state.sun, state.items)
             }
         case REQUEST_PUBS:
             return {
@@ -67,7 +74,8 @@ export default function position(state=INITIAL_STATE, action) {
             return {
                 ...state,
                 isFetching: false,
-                items: action.items
+                items: action.items,
+                filteredPubs: filterForAngle(state.sun, action.items)
             }
         default:
             return state;

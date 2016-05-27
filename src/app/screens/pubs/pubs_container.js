@@ -13,7 +13,8 @@ const mapStateToProps = (state, ownProps) => {
         sun,
         items,
         receivedAt,
-        isFetching
+        isFetching,
+        filteredPubs
     } = state.position;
 
     return {
@@ -22,7 +23,8 @@ const mapStateToProps = (state, ownProps) => {
         sun,
         items,
         receivedAt,
-        isFetching
+        isFetching,
+        filteredPubs
     }
 }
 
@@ -34,6 +36,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             boundPositionActions.fetchPubs(date, centre);
         },
         filterPubs: () => {
+            // Might not need
             boundPositionActions.filterPubs();
         },
         updateTime: (date) => {
