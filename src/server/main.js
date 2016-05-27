@@ -45,8 +45,8 @@ var allowCrossDomain = function(req, res, next) {
 }
 app.use(allowCrossDomain);
 app.use(bodyParser.json());
-app.use(express.static(__dirname + '/build'));
-app.use(express.static(__dirname + '/public'));
+app.use(express.static('../build'));
+app.use(express.static('../public'));
 
 
 var pubs;
@@ -70,21 +70,28 @@ function getAngleRange(date, lat, lng) {
 
 // Views + endpoints
 // ================================================================
-app.get('/near/:lat/:lng/:date', function(req, res) {
+app.get('/near/:lat/:lng/:date?', function(req, res) {
+    var date, angleRange;
     var lat = Number(req.params.lat);
     var lng = Number(req.params.lng);
-    var date = new Date(req.params.date);
-    var angleRange = getAngleRange(date, lat, lng);
+    var query = {
+        "location.type": "Point"
+    }
+
+    if(req.params.date) {
+        date = new Date(req.params.date);
+        angleRange = getAngleRange(date, lat, lng);
+        query.outdoor_angle = { $gt: angleRange[0], $lt: angleRange[1] };
+    }
 
     pubs.aggregate([
         {
             $geoNear: {
                 near: { type: 'Point', coordinates: [ lng, lat ] },
-                maxDistance: 30000,
+                maxDistance: 3000,
                 distanceField: 'distance',
                 spherical: true,
-                query: { "location.type": "Point",
-                        outdoor_angle: { $gt: angleRange[0], $lt: angleRange[1] }, }
+                query: query
             },
         },
         {
@@ -94,33 +101,22 @@ app.get('/near/:lat/:lng/:date', function(req, res) {
         if(err) {
             res.json({error: err.errmsg}, 500);
         }
-        res.json({items: docs});
+        var results = {items: docs};
+        if(date) {
+            results.date = date.toISOString();
+        }
+        res.json(results);
     });
 });
 
 app.get('/pub/:id', function(req, res) {
-    pubs.findOne({"foursquare.id": req.params.id}, function(err, obj) {
+    pubs.findOne({"foursquare.id": req.params.id}, function(err, pub) {
         assert.equal(null, err);
-        res.json(obj);
+        res.json({pub: pub});
     })
 });
 
-app.put('/pub/:id', function(req, res) {
-    var update = {
-        outdoor_angle: req.body.outdoor_angle,
-        has_terrace: req.body.has_terrace,
-    }
-    pubs.update({
-        "foursquare.id": req.params.id},
-        update,
-        function(err, num, obj) {
-            assert.equal(null, err);
-            res.json(obj);
-        }
-    );
-});
-
-app.post('/pub/create/:id', function(req, res) {
+app.post('/pub/:id', function(req, res) {
     var submittedData = req.body;
     var foursquareID = req.params.id;
     var pub = {}
@@ -153,7 +149,6 @@ app.post('/pub/create/:id', function(req, res) {
                 {upsert: true},
                 function(err, num, obj) {
                     assert.equal(null, err);
-                    console.log(num, obj);
                     res.json({pub: pub, res: num});
                 }
             );
