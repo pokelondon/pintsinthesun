@@ -8,17 +8,13 @@ class Start extends React.Component {
         this.props = props;
     }
 
-    componentDidMount() {
-        this.props.fetchPosition();
-    }
-
     render() {
         let { lat, lng } = this.props.centre;
         return (
             <div>
                 <p>{this.props.isLocating ? 'Locating you' : 'Found ya'}</p>
                 <p>{lat}, {lng}</p>
-                <Link className="Button Button--primary" to={`/pubs/${lat}/${lng}`}>
+                <Link className="Button Button--primary" to='/pubs'>
                     Find somewhere NOW
                 </Link>
                 <Link className="Button" to='/locate'>
@@ -30,7 +26,6 @@ class Start extends React.Component {
 }
 
 Start.propTypes = {
-    fetchPosition: React.PropTypes.func,
     centre: React.PropTypes.shape({
       lat: React.PropTypes.number,
       lng: React.PropTypes.number

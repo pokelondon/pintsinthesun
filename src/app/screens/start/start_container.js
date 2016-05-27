@@ -19,12 +19,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     const boundPositionActions = bindActionCreators(positionActions, dispatch);
-    const boundDataActions = bindActionCreators(dataActions, dispatch);
 
     return {
-        fetchPosition: () => {
-            boundPositionActions.fetchPosition();
-        },
         updateTime: (date) => {
             boundPositionActions.updateTime(date);
         }

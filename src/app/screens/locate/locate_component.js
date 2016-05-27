@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import SunCalc from '../../lib/suncalc';
 import Slider from 'rc-slider';
 
 import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
@@ -12,7 +11,6 @@ class Locate extends React.Component {
         super(props);
         this.props = props;
     }
-
 
     onDragEnd() {
         let centre = this.map.props.map.getCenter();
@@ -47,7 +45,7 @@ class Locate extends React.Component {
                             }
                         />
 
-                        <Link className="Button Button--primary" to={`/pubs/${lat}/${lng}`}>
+                        <Link className="Button Button--primary" to='/pubs/'>
                             Find somewhere near here
                         </Link>
                     </div>

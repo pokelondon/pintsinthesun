@@ -11,6 +11,7 @@ import reducers from './reducers';
 
 import Start from './screens/start/start_container';
 import Pubs from './screens/pubs/pubs_container';
+import PubDetail from './screens/pubdetail/pubdetail_container';
 import Locate from './screens/locate/locate_container';
 import Base from './screens/base/base_container';
 import NoMatch from './screens/nomatch';
@@ -29,8 +30,10 @@ ReactDOM.render((
             <Router className="AppContainer" history={hashHistory}>
                 <Route path="/" component={Base}>
                     <IndexRoute component={Start} />
-                    <Route path="/pubs/:lat/:lng" component={Pubs} />
                     <Route path="/locate" component={Locate} />
+                    <Route path="/pubs" component={Pubs}>
+                        <Route path="/pubs/:index" component={PubDetail} />
+                    </Route>
                     <Route path="*" component={NoMatch}/>
                 </Route>
             </Router>

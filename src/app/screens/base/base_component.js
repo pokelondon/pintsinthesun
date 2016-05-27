@@ -8,6 +8,10 @@ class Base extends React.Component {
         this.props = props;
     }
 
+    componentDidMount() {
+        this.props.fetchPosition();
+    }
+
     render() {
         return (
             <div>
@@ -30,6 +34,7 @@ class Base extends React.Component {
 }
 
 Base.propTypes = {
+    fetchPosition: React.PropTypes.func.isRequired,
     date: React.PropTypes.instanceOf(Date),
     isLocating: React.PropTypes.bool
 }

@@ -47,7 +47,7 @@ export function fetchPubs(date, centre) {
         // This is not required by thunk middleware, but it is convenient for us.
 
         let { lat, lng } = floorLatLng(centre);
-        const url = config.API + `near/${lat}/${lng}/${date.toISOString()}`;
+        const url = config.API + `near/${lat}/${lng}`;
 
         return fetch(url)
             .then(data => data.json())

@@ -1,11 +1,11 @@
 import React from 'react';
 
 import Slider from 'rc-slider';
-
-import Pub from '../../components/pub';
+import { browserHistory } from 'react-router'
 
 
 class Pubs extends React.Component {
+
     constructor(props) {
         super(props);
         this.props = props;
@@ -25,12 +25,14 @@ class Pubs extends React.Component {
 
     next(evt) {
         evt.preventDefault();
+        console.log(this.props);
         if(this.props.items.length > 1) {
             let index = this.state.index + 1;
             if(this.state.index >= this.props.items.length -1) {
                 index = 0
             }
             this.setState({index});
+            this.context.router.push(`/pubs/${index}`);
         }
     }
 
@@ -61,7 +63,7 @@ class Pubs extends React.Component {
                         className='Slider'
                         onChange={this.onSliderChange.bind(this)}
                     />
-                    <Pub {...item} date={this.props.date} />
+                    {this.props.children}
                     <button className="Button" onClick={this.next.bind(this)}>Nah</button>
                 </div>
             )
@@ -74,6 +76,10 @@ Pubs.propTypes = {
     fetchPubs: React.PropTypes.func,
     updateTime: React.PropTypes.func,
     date: React.PropTypes.instanceOf(Date)
+}
+
+Pubs.contextTypes = {
+    router: React.PropTypes.object.isRequired
 }
 
 export default Pubs;
