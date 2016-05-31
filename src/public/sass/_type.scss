@@ -1,3 +1,4 @@
+@import url(https://fonts.googleapis.com/css?family=Karla:400,700);
 $font-size-root: 12px;
 
 html {
@@ -5,8 +6,10 @@ html {
 }
 body {
     line-height: $line-height;
-    font-family: 'Helvetica Neue';
+    /*font-family: 'Helvetica Neue';*/
+    font-family: 'Karla', sans-serif;
     font-weight: normal;
+    font-weight: 100;
 }
 
 h1,
@@ -16,14 +19,13 @@ h4,
 h5 {
     margin: 0;
     padding: 0;
-    font-weight: 300;
+    font-weight: 700;
 }
 
 p {
     margin: 0;
     padding: 0;
     font-size: inherit;
-    font-weight: 100;
 }
 
 .intro {
@@ -34,28 +36,41 @@ h1 {
     font-size: 3rem;
     margin: 0.2em 0 0;
     padding: 0;
-    font-weight: 100;
-    letter-spacing: 0.1rem;
 }
 
 a {
     text-decoration: none;
     color: inherit;
 }
+a,
+button {
+    &:focus {
+        outline: none;
+    }
+}
 
 .Button {
-    padding: 20px;
+    padding: 1rem 2rem;
     display: block;
     border: none;
     box-sizing: border-box;
     margin: 10px 0;
 
+    font-size: 1.9rem;
+    font-weight: 700;
+
     text-align: center;
-    color: $white;
-    background: $blueLight;
+    background: $blue;
 
     & + & {
         margin-top: 0;
+    }
+
+    transition: box-shadow 100ms ease;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
+
+    &:active {
+        box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.1);
     }
 }
 

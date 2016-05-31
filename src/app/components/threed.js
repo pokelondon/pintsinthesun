@@ -7,9 +7,9 @@ import { fetchBuildings } from '../services/overpass';
 
 
 const GREYDARK = 0x434A54;
-const RED = 0xDA4453;
+const RED = 0xf14545;
 const GREEN = 0x48CFAD;
-const YELLOW = 0xF6BB42;
+const YELLOW = 0xf14545;
 const BLUE = 0x4FC1E9;
 const WHITE = 0xFFFFFF;
 
@@ -17,6 +17,12 @@ const PUB_MATERIAL = new THREE.MeshLambertMaterial({color: YELLOW});
 const BUILDING_MATERIAL = new THREE.MeshPhongMaterial({
     color: GREYDARK,
     shininess: 10,
+    specular: WHITE,
+    shading: THREE.SmoothShading
+});
+const TARGET_MATERIAL = new THREE.MeshPhongMaterial({
+    color: RED,
+    shininess: 5,
     specular: WHITE,
     shading: THREE.SmoothShading
 });
@@ -28,17 +34,20 @@ const FLOOR_MATERIAL = new THREE.MeshLambertMaterial({
 const VIEW_ANGLE = 45;
 const NEAR = 0.1;
 const FAR = 10000;
-const SUN_DISTANCE = 200;
+const SUN_DISTANCE = 300;
 const CAMERA_DISTANCE = 250;
+//const ZOOM = 15.5;
 const ZOOM = 16;
 const EXTRUDE_SETTINGS = {bevelEnabled: false, material: 0, extrudeMaterial: 1};
 
 
 function angles2cartesian(azimuth, altitude) {
     var radius = SUN_DISTANCE;
-    var x = radius * Math.cos(altitude) * Math.sin(azimuth) * -1;
+    var x = radius * Math.cos(altitude) * Math.sin(azimuth);
     var y = radius * Math.sin(altitude);
-    var z = radius * Math.cos(altitude) * Math.cos(azimuth);
+    var z = (radius * Math.cos(altitude) * Math.cos(azimuth)) + 70;
+
+    z = Math.max(10, z);
 
     return [x, y, z];
 }
@@ -66,15 +75,16 @@ class ThreeD extends React.Component {
         this.renderer = new THREE.WebGLRenderer({clearColor: '#ccc', antialias: true});
         this.scene.add(this.camera);
 
-        this.camera.position.z = 1;
+        this.camera.position.z = CAMERA_DISTANCE;
         this.camera.position.x = 0;
-        this.camera.position.y = CAMERA_DISTANCE;
+        this.camera.position.y = 100;
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
-        this.camera.rotation.z = 0;
+        this.camera.rotation.z = Math.PI;
 
         this.renderer.setSize(this.WIDTH, this.HEIGHT);
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.soft = true;
+        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
         this.refs.canvas.appendChild(this.renderer.domElement);
 
@@ -82,6 +92,7 @@ class ThreeD extends React.Component {
             .createLights()
             .updateSunPosition()
             .updateBuildings()
+            .addTarget()
             .animate();
     }
 
@@ -131,15 +142,25 @@ class ThreeD extends React.Component {
         this.building_refs = [];
     }
 
+    addTarget() {
+        let { lat, lng } = this.props.centre;
+        let [x, y] = this.convertProjection([lat, lng]);
+        var geometry = new THREE.CircleGeometry(10, 20);
+        this.target = new THREE.Mesh(geometry, TARGET_MATERIAL);
+
+        console.log(x, y);
+        this.target.rotation.z = -Math.PI/2;
+        this.target.position.y = 10;
+        this.target.receiveShadow = true;
+        this.scene.add(this.target);
+        return this;
+    }
+
     createFloor() {
         const planeGeo = new THREE.PlaneGeometry(400, 400, 10, 10);
-
         this.plane = new THREE.Mesh(planeGeo, FLOOR_MATERIAL);
-        //this.plane.side = THREE.DoubleSide;
         this.plane.receiveShadow = true;
-
-        // rotate it to correct position
-        this.plane.rotation.x = -Math.PI/2;
+        this.plane.position.z = -1;
         this.scene.add(this.plane);
         return this;
     }
@@ -150,10 +171,22 @@ class ThreeD extends React.Component {
         // add a light at a specific position
         this.sun = new THREE.SpotLight(WHITE);
         this.scene.add(this.sun);
+
         this.sun.castShadow = true;
-        //this.sun.onlyShadow = true;
+
         this.sun.shadow.mapSize.width = this.WIDTH * 2;
         this.sun.shadow.mapSize.height = this.HEIGHT * 2;
+
+
+        var shadowCameraHelper = new THREE.CameraHelper( this.sun.shadow.camera );
+        shadowCameraHelper.visible = true;
+        this.scene.add(shadowCameraHelper);
+
+        var geometry = new THREE.SphereGeometry(10, 20);
+        this.ball = new THREE.Mesh(geometry, TARGET_MATERIAL);
+
+        this.scene.add(this.ball);
+
         return this;
     }
 
@@ -165,6 +198,11 @@ class ThreeD extends React.Component {
         this.sun.position.x = sun[0];
         this.sun.position.y = sun[1];
         this.sun.position.z = sun[2];
+
+        this.ball.position.x = sun[0];
+        this.ball.position.y = sun[1];
+        this.ball.position.z = sun[2];
+
         return this;
     }
 
@@ -209,8 +247,9 @@ class ThreeD extends React.Component {
 
         geom.computeFaceNormals();
 
-        mesh.rotation.x = -Math.PI/2;
-        mesh.rotation.z = Math.PI/2;
+        //mesh.rotation.x = -Math.PI/2;
+        // Rotate so south is down
+        mesh.rotation.z = -Math.PI/2;
 
         mesh.castShadow = true;
         mesh.receiveShadow = true;

@@ -16,6 +16,7 @@ class Base extends React.Component {
         return (
             <div>
                 <header className="Header">
+                    <Link className="InfoLink" to='/about'>What?</Link>
                     <div className="Pint--small">
                         <img className="Pint-img" src="/img/pint.png" alt="pint" />
                         <div className="Pint-shad"></div>

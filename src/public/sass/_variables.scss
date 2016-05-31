@@ -33,17 +33,15 @@
 // Colours
 $white: #fff;
 $black: #000;
-$lightGrey: #f0f0f0;
-$red: #900;
-$bg: #e7dfd7;
-$whiteAlpha: transparentize($white, 0.8);
-$blackAlpha: transparentize($black, 0.7);
-$blueDark: #1b2831;
-$blueLight: #7cabd0;
-$pink: #b71257;
-$green: #1a272f;
-$yellow: #bdb200;
-$grey: #888;
+
+$green: #7bc8a4;
+$yellow: #ffc65d;
+$grey: #404040;
+$pink: #f14545;
+$orange: #f16745;
+$blue: #4cc3d9;
+$blueDark: #2b7999;
+
 
 $easeInOutQuad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
 $easeInQuad: cubic-bezier(0.55, 0.085, 0.68, 0.53);

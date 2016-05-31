@@ -7,11 +7,9 @@ import Start from './start_component';
 
 
 const mapStateToProps = (state, ownProps) => {
-    const { centre, date, isLocating } = state.position;
+    const { date } = state.position;
 
     return {
-        isLocating,
-        centre,
         date
     }
 }

@@ -35,10 +35,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         fetchPubs: (date, centre) => {
             boundPositionActions.fetchPubs(date, centre);
         },
-        filterPubs: () => {
-            // Might not need
-            boundPositionActions.filterPubs();
-        },
         updateTime: (date) => {
             boundPositionActions.updateTime(date)
         }
