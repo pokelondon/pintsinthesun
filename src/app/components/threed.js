@@ -2,8 +2,11 @@ import React from 'react';
 import THREE from 'three';
 import SunCalc from '../lib/suncalc';
 import d3 from 'd3';
+import gsap from 'gsap';
 
 import { fetchBuildings } from '../services/overpass';
+
+window.gsap = gsap;
 
 
 const GREYDARK = 0x434A54;
@@ -35,7 +38,7 @@ const VIEW_ANGLE = 45;
 const NEAR = 0.1;
 const FAR = 10000;
 const SUN_DISTANCE = 300;
-const CAMERA_DISTANCE = 250;
+const CAMERA_DISTANCE = 350;
 //const ZOOM = 15.5;
 const ZOOM = 16;
 const EXTRUDE_SETTINGS = {bevelEnabled: false, material: 0, extrudeMaterial: 1};
@@ -76,7 +79,7 @@ class ThreeD extends React.Component {
         this.scene.add(this.camera);
 
         this.camera.position.z = CAMERA_DISTANCE;
-        this.camera.position.x = 0;
+        this.camera.position.x = 1;
         this.camera.position.y = 100;
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
         this.camera.rotation.z = Math.PI;
@@ -94,6 +97,7 @@ class ThreeD extends React.Component {
             .updateBuildings()
             .addTarget()
             .animate();
+
     }
 
     componentDidUpdate(prevProps) {
@@ -194,14 +198,9 @@ class ThreeD extends React.Component {
         let { lat, lng } = this.props.centre;
         var pos = SunCalc.getPosition(this.props.date, lat, lng);
         var sun = angles2cartesian(pos.azimuth, pos.altitude);
+        var [ x, y, z ] = sun;
 
-        this.sun.position.x = sun[0];
-        this.sun.position.y = sun[1];
-        this.sun.position.z = sun[2];
-
-        this.ball.position.x = sun[0];
-        this.ball.position.y = sun[1];
-        this.ball.position.z = sun[2];
+        var sunTween = new window.GreenSockGlobals.TweenLite.to(this.sun.position, 2, { x, y, z } );
 
         return this;
     }
