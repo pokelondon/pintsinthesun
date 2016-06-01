@@ -168,7 +168,7 @@ class ThreeD extends React.Component {
     }
 
     createLights() {
-        var ambient = new THREE.AmbientLight(0x404040);
+        var ambient = new THREE.AmbientLight(0x909090);
         this.scene.add(ambient);
         // add a light at a specific position
         this.sun = new THREE.SpotLight(WHITE);
