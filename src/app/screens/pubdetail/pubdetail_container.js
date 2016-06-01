@@ -8,25 +8,25 @@ import PubDetail from './pubdetail_component';
 
 const mapStateToProps = (state, ownProps) => {
     const {
-        centre,
         date,
-        sun,
         items,
-        receivedAt,
-        isFetching
+        isFetching,
+        isLocating,
+        currentPub
     } = state.position;
 
     return {
-        centre,
         date,
-        sun,
         items,
-        receivedAt,
-        isFetching
+        isFetching,
+        isLocating,
+        pub: items[currentPub]
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
+    const boundPositionActions = bindActionCreators(positionActions, dispatch);
+
     return {
     }
 }

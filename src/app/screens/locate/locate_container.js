@@ -26,7 +26,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         onCenterChanged: (centre) => {
             boundPositionActions.responsePosition(centre);
-            boundPositionActions.fetchPubs(ownProps.date, centre);
         },
         fetchPosition: () => {
             boundPositionActions.fetchPosition();

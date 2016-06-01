@@ -5,9 +5,11 @@ import {
     FETCH_POSITION,
     REQUEST_POSITION,
     RESPONSE_POSITION,
-    FILTER_PUBS,
     REQUEST_PUBS,
-    RESPONSE_PUBS
+    RESPONSE_PUBS,
+    REQUEST_PUB_DETAIL,
+    RESPONSE_PUB_DETAIL,
+    INCREMENT_CURRENT_PUB
 } from '../actions/position';
 
 const date = new Date();
@@ -32,7 +34,8 @@ const INITIAL_STATE = {
     date,
     items: [],
     filteredPubs : [],
-    isFetching: false
+    isFetching: false,
+    currentPub: 0
 }
 
 export default function position(state=INITIAL_STATE, action) {
@@ -59,13 +62,12 @@ export default function position(state=INITIAL_STATE, action) {
                 ...state,
                 isLocating: true
             }
-        case FILTER_PUBS:
-            // Might not need this
+        case REQUEST_PUBS:
             return {
                 ...state,
-                filteredPubs: filterForAngle(state.sun, state.items)
+                isFetching: true
             }
-        case REQUEST_PUBS:
+        case REQUEST_PUB_DETAIL:
             return {
                 ...state,
                 isFetching: true
@@ -75,7 +77,23 @@ export default function position(state=INITIAL_STATE, action) {
                 ...state,
                 isFetching: false,
                 items: action.items,
-                filteredPubs: filterForAngle(state.sun, action.items)
+                filteredPubs: filterForAngle(state.sun, action.items),
+                currentPub: 0
+            }
+        case RESPONSE_PUB_DETAIL:
+            return {
+                ...state,
+                isFetching: false,
+                pub: action.pub
+            }
+        case INCREMENT_CURRENT_PUB:
+            let currentPub = state.currentPub + 1;
+            if(currentPub >= state.items.length) {
+                currentPub = 0;
+            }
+            return {
+                ...state,
+                currentPub
             }
         default:
             return state;

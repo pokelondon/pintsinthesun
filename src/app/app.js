@@ -32,9 +32,7 @@ ReactDOM.render((
                 <Route path="/" component={Base}>
                     <IndexRoute component={Start} />
                     <Route path="/locate" component={Locate} />
-                    <Route path="/pubs" component={Pubs}>
-                        <Route path="/pubs/:index" component={PubDetail} />
-                    </Route>
+                    <Route path="/pubs" component={Pubs} />
                     <Route path="/admin" component={AdminTool} />
                     <Route path="*" component={NoMatch}/>
                 </Route>

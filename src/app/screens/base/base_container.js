@@ -7,11 +7,12 @@ import Base from './base_component';
 
 
 const mapStateToProps = (state, ownProps) => {
-    const { date, isLocating } = state.position;
+    const { date, isLocating, centre } = state.position;
 
     return {
         isLocating,
-        date
+        date,
+        centre
     }
 }
 

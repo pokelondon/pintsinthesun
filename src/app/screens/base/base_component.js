@@ -15,6 +15,7 @@ class Base extends React.Component {
     }
 
     componentDidMount() {
+        console.log('Requesting position');
         this.props.fetchPosition();
     }
 
@@ -62,7 +63,12 @@ class Base extends React.Component {
 Base.propTypes = {
     fetchPosition: React.PropTypes.func.isRequired,
     date: React.PropTypes.instanceOf(Date),
-    isLocating: React.PropTypes.bool
+    isLocating: React.PropTypes.bool,
+    centre: React.PropTypes.shape({
+        lat: React.PropTypes.number,
+        lng: React.PropTypes.number
+    }),
+
 }
 
 export default Base;

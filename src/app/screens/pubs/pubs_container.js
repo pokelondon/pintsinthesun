@@ -8,22 +8,14 @@ import Pubs from './pubs_component';
 
 const mapStateToProps = (state, ownProps) => {
     const {
-        centre,
         date,
-        sun,
         items,
-        receivedAt,
-        isFetching,
         filteredPubs
     } = state.position;
 
     return {
-        centre,
         date,
-        sun,
         items,
-        receivedAt,
-        isFetching,
         filteredPubs
     }
 }
@@ -32,11 +24,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     const boundPositionActions = bindActionCreators(positionActions, dispatch);
 
     return {
-        fetchPubs: (date, centre) => {
-            boundPositionActions.fetchPubs(date, centre);
-        },
-        updateTime: (date) => {
+        updateTime: date => {
             boundPositionActions.updateTime(date)
+        },
+        incrementCurrentPub: index => {
+            boundPositionActions.incrementCurrentPub();
         }
     }
 }
@@ -47,4 +39,3 @@ const PubsContainer = connect(
 )(Pubs)
 
 export default PubsContainer;
-
