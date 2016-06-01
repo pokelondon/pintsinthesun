@@ -170,6 +170,7 @@ class ThreeD extends React.Component {
         this.sun = new THREE.SpotLight(WHITE);
         this.scene.add(this.sun);
         this.sun.penumbra = 0;
+        this.sun.distance = 1000;
 
         this.sun.shadow.camera.near = 300;
         this.sun.shadow.camera.far = 600;

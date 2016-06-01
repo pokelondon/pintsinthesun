@@ -10,13 +10,17 @@ const mapStateToProps = (state, ownProps) => {
     const {
         date,
         items,
-        filteredPubs
+        filteredPubs,
+        currentPub,
+        filteredIndex
     } = state.position;
 
     return {
         date,
         items,
-        filteredPubs
+        filteredPubs,
+        currentPub,
+        filteredIndex
     }
 }
 

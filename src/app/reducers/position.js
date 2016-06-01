@@ -35,7 +35,8 @@ const INITIAL_STATE = {
     items: [],
     filteredPubs : [],
     isFetching: false,
-    currentPub: 0
+    currentPub: 0,
+    filteredIndex: 0
 }
 
 export default function position(state=INITIAL_STATE, action) {
@@ -87,13 +88,15 @@ export default function position(state=INITIAL_STATE, action) {
                 pub: action.pub
             }
         case INCREMENT_CURRENT_PUB:
-            let currentPub = state.currentPub + 1;
-            if(currentPub >= state.items.length) {
-                currentPub = 0;
+            let filteredIndex = state.filteredIndex + 1;
+            if(filteredIndex >= state.filteredPubs.length) {
+                filteredIndex = 0;
             }
+            let currentPub = state.items.indexOf(state.filteredPubs[filteredIndex]);
             return {
                 ...state,
-                currentPub
+                currentPub,
+                filteredIndex
             }
         default:
             return state;

@@ -12,7 +12,7 @@ const mapStateToProps = (state, ownProps) => {
         items,
         isFetching,
         isLocating,
-        currentPub
+        currentPub,
     } = state.position;
 
     return {
