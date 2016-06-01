@@ -13,7 +13,7 @@ export const RESPONSE_PUBS = 'response_pubs';
 export const REQUEST_PUB_DETAIL = 'request_pub_detail';
 export const RESPONSE_PUB_DETAIL = 'response_pub_detail';
 
-export const SET_CURRENT_PUB = 'set_current_pub';
+export const INCREMENT_CURRENT_PUB = 'increment_current_pub';
 
 
 export function requestPosition() {
@@ -118,9 +118,8 @@ export function responsePubDetail(data) {
     }
 }
 
-export function setCurrentPub(index) {
+export function incrementCurrentPub() {
     return {
-        type: SET_CURRENT_PUB,
-        index
+        type: INCREMENT_CURRENT_PUB
     }
 }

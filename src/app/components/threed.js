@@ -119,8 +119,6 @@ class ThreeD extends React.Component {
             <div
                 className={(this.state.isTransitioning) ? 'Render is-transitioning' : 'Render'}
                 ref='canvas'
-                width="200"
-                height="200"
             />
         )
     }
@@ -150,7 +148,6 @@ class ThreeD extends React.Component {
         var geometry = new THREE.CircleGeometry(10, 20);
         this.target = new THREE.Mesh(geometry, TARGET_MATERIAL);
 
-        console.log(x, y);
         this.target.rotation.z = -Math.PI/2;
         this.target.position.y = 10;
         this.target.receiveShadow = true;
@@ -179,15 +176,9 @@ class ThreeD extends React.Component {
         this.sun.shadow.mapSize.width = this.WIDTH * 2;
         this.sun.shadow.mapSize.height = this.HEIGHT * 2;
 
-
-        var shadowCameraHelper = new THREE.CameraHelper( this.sun.shadow.camera );
-        shadowCameraHelper.visible = true;
-        this.scene.add(shadowCameraHelper);
-
-        var geometry = new THREE.SphereGeometry(10, 20);
-        this.ball = new THREE.Mesh(geometry, TARGET_MATERIAL);
-
-        this.scene.add(this.ball);
+        //var shadowCameraHelper = new THREE.CameraHelper( this.sun.shadow.camera );
+        //shadowCameraHelper.visible = true;
+        //this.scene.add(shadowCameraHelper);
 
         return this;
     }

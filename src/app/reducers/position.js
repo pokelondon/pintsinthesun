@@ -9,7 +9,7 @@ import {
     RESPONSE_PUBS,
     REQUEST_PUB_DETAIL,
     RESPONSE_PUB_DETAIL,
-    SET_CURRENT_PUB
+    INCREMENT_CURRENT_PUB
 } from '../actions/position';
 
 const date = new Date();
@@ -85,10 +85,14 @@ export default function position(state=INITIAL_STATE, action) {
                 isFetching: false,
                 pub: action.pub
             }
-        case SET_CURRENT_PUB:
+        case INCREMENT_CURRENT_PUB:
+            let currentPub = state.currentPub + 1;
+            if(currentPub >= state.items.length) {
+                currentPub = 0;
+            }
             return {
                 ...state,
-                currentPub: action.index
+                currentPub
             }
         default:
             return state;

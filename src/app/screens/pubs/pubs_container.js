@@ -27,8 +27,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         updateTime: date => {
             boundPositionActions.updateTime(date)
         },
-        setCurrentPub: item => {
-            console.log('Set current item', item);
+        incrementCurrentPub: index => {
+            boundPositionActions.incrementCurrentPub();
         }
     }
 }

@@ -32,6 +32,7 @@ class Pubs extends React.Component {
                     onChange={this.onSliderChange.bind(this)}
                 />
                 <PubDetail />
+                <button className="Button--primary" onClick={this.props.incrementCurrentPub}>Next</button>
             </div>
         )
     }
@@ -42,7 +43,7 @@ Pubs.propTypes = {
     filteredPubs: React.PropTypes.array.isRequired,
     updateTime: React.PropTypes.func.isRequired,
     date: React.PropTypes.instanceOf(Date).isRequired,
-    setCurrentPub: React.PropTypes.func,
+    incrementCurrentPub: React.PropTypes.func
 }
 
 export default Pubs;
