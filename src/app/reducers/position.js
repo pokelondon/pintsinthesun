@@ -78,6 +78,7 @@ export default function position(state=INITIAL_STATE, action) {
                 isFetching: false,
                 items: action.items,
                 filteredPubs: filterForAngle(state.sun, action.items),
+                currentPub: 0
             }
         case RESPONSE_PUB_DETAIL:
             return {

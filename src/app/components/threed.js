@@ -35,8 +35,8 @@ const FLOOR_MATERIAL = new THREE.MeshLambertMaterial({
 const VIEW_ANGLE = 45;
 const NEAR = 0.1;
 const FAR = 10000;
-const SUN_DISTANCE = 300;
-const CAMERA_DISTANCE = 350;
+const SUN_DISTANCE = 400;
+const CAMERA_DISTANCE = 250;
 //const ZOOM = 15.5;
 const ZOOM = 16;
 const EXTRUDE_SETTINGS = {bevelEnabled: false, material: 0, extrudeMaterial: 1};
@@ -100,7 +100,6 @@ class ThreeD extends React.Component {
 
     componentDidUpdate(prevProps) {
         if(this.props.centre.lat !== prevProps.centre.lat) {
-            console.log('different building', 'was', prevProps.sceneid, 'now', this.props.sceneid);
             this.updateBuildings();
         }
         this.updateSunPosition();
@@ -170,15 +169,20 @@ class ThreeD extends React.Component {
         // add a light at a specific position
         this.sun = new THREE.SpotLight(WHITE);
         this.scene.add(this.sun);
+        this.sun.penumbra = 0;
+
+        this.sun.shadow.camera.near = 300;
+        this.sun.shadow.camera.far = 600;
+        this.sun.shadow.camera.fov = 40;
 
         this.sun.castShadow = true;
 
         this.sun.shadow.mapSize.width = this.WIDTH * 2;
         this.sun.shadow.mapSize.height = this.HEIGHT * 2;
 
-        //var shadowCameraHelper = new THREE.CameraHelper( this.sun.shadow.camera );
-        //shadowCameraHelper.visible = true;
-        //this.scene.add(shadowCameraHelper);
+        var shadowCameraHelper = new THREE.CameraHelper( this.sun.shadow.camera );
+        shadowCameraHelper.visible = true;
+        this.scene.add(shadowCameraHelper);
 
         return this;
     }
