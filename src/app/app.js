@@ -14,6 +14,7 @@ import Pubs from './screens/pubs/pubs_container';
 import PubDetail from './screens/pubdetail/pubdetail_container';
 import Locate from './screens/locate/locate_container';
 import Base from './screens/base/base_container';
+import AdminTool from './screens/admintool/admintool_component';
 import NoMatch from './screens/nomatch';
 
 const loggerMiddleware = createLogger();
@@ -34,6 +35,7 @@ ReactDOM.render((
                     <Route path="/pubs" component={Pubs}>
                         <Route path="/pubs/:index" component={PubDetail} />
                     </Route>
+                    <Route path="/admin" component={AdminTool} />
                     <Route path="*" component={NoMatch}/>
                 </Route>
             </Router>
