@@ -3,16 +3,17 @@ import { floorLatLng } from '../services/location';
 
 import config from '../config';
 
-
-
 export const UPDATE_TIME = 'update_time';
 export const FETCH_POSITION = 'fetch_position';
 export const REQUEST_POSITION = 'request_position';
 export const RESPONSE_POSITION = 'response_position';
 
-export const FILTER_PUBS = 'filter_pubs';
 export const REQUEST_PUBS = 'request_pubs';
 export const RESPONSE_PUBS = 'response_pubs';
+export const REQUEST_PUB_DETAIL = 'request_pub_detail';
+export const RESPONSE_PUB_DETAIL = 'response_pub_detail';
+
+export const SET_CURRENT_PUB = 'set_current_pub';
 
 
 export function requestPosition() {
@@ -22,10 +23,13 @@ export function requestPosition() {
 }
 
 export function responsePosition(centre) {
-    return {
-        type: RESPONSE_POSITION,
-        centre: centre,
-        receivedAt: new Date()
+    return function(dispatch) {
+        dispatch(fetchPubs(centre));
+        dispatch({
+            type: RESPONSE_POSITION,
+            centre: centre,
+            receivedAt: new Date()
+        });
     }
 }
 
@@ -41,7 +45,9 @@ export function fetchPosition() {
         // Update UI to show spinner or something
         dispatch(requestPosition());
 
-        return getLocation().then(centre => dispatch(responsePosition(centre)));
+        return getLocation().then(centre => {
+            dispatch(responsePosition(centre));
+        });
     }
 }
 
@@ -60,6 +66,12 @@ export function requestPubs() {
         isLoading: true
     }
 }
+export function requestPubDetail() {
+    return {
+        type: REQUEST_PUB_DETAIL,
+        isLoading: true
+    }
+}
 
 export function responsePubs(data) {
     return {
@@ -70,7 +82,7 @@ export function responsePubs(data) {
     }
 }
 
-export function fetchPubs(date, centre) {
+export function fetchPubs(centre) {
     return function(dispatch) {
         dispatch(requestPubs());
         let { lat, lng } = floorLatLng(centre);
@@ -84,8 +96,31 @@ export function fetchPubs(date, centre) {
     };
 }
 
-export function filterPubs() {
+export function fetchPubDetail(id) {
+    return function(dispatch) {
+        dispatch(requestPubDetail());
+        const url = config.API + `pub/${id}`;
+        return fetch(url)
+            .then(data => data.json())
+            .then(data => {
+                dispatch(responsePubDetail(data));
+            });
+            // TODO handle promise error in UI too
+    };
+}
+
+export function responsePubDetail(data) {
     return {
-        type: FILTER_PUBS
+        type: RESPONSE_PUB_DETAIL,
+        pub: data.pub,
+        receivedAt: new Date(),
+        isLoading: false
+    }
+}
+
+export function setCurrentPub(index) {
+    return {
+        type: SET_CURRENT_PUB,
+        index
     }
 }

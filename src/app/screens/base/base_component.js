@@ -9,6 +9,7 @@ class Base extends React.Component {
     }
 
     componentDidMount() {
+        console.log('Requesting position');
         this.props.fetchPosition();
     }
 
@@ -16,7 +17,7 @@ class Base extends React.Component {
         return (
             <div>
                 <header className="Header">
-                    <Link className="InfoLink" to='/about'>What?</Link>
+                    <Link className="InfoLink" to='/about'>{this.props.centre.lat}</Link>
                     <div className="Pint--small">
                         <img className="Pint-img" src="/img/pint.png" alt="pint" />
                         <div className="Pint-shad"></div>
@@ -37,7 +38,12 @@ class Base extends React.Component {
 Base.propTypes = {
     fetchPosition: React.PropTypes.func.isRequired,
     date: React.PropTypes.instanceOf(Date),
-    isLocating: React.PropTypes.bool
+    isLocating: React.PropTypes.bool,
+    centre: React.PropTypes.shape({
+        lat: React.PropTypes.number,
+        lng: React.PropTypes.number
+    }),
+
 }
 
 export default Base;

@@ -18,12 +18,11 @@ class Locate extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(this.props.centre.lat != nextProps.centre.lat) {
-            let { lat, lng } = nextProps.centre;
-            let ll = new google.maps.LatLng(lat, lng);
-            console.log(lat, lng, ll);
-            this.map.props.map.panTo(ll);
-        }
+        //if(this.props.centre.lat != nextProps.centre.lat) {
+            //let { lat, lng } = nextProps.centre;
+            //let ll = new google.maps.LatLng(lat, lng);
+            //this.map.props.map.panTo(ll);
+        //}
     }
 
     render() {
@@ -44,6 +43,7 @@ class Locate extends React.Component {
                                 defaultZoom={15}
                                 defaultCenter={this.props.centre}
                                 onDragend={this.onDragEnd.bind(this)}
+                                center={this.props.centre}
                                 options={{
                                     mapTypeControl: false,
                                     streetViewControl: false,
@@ -64,7 +64,7 @@ class Locate extends React.Component {
                     <button
                         className="Button"
                         onClick={this.props.fetchPosition}>
-                        Locate Me
+                        {(this.props.isLocating) ? 'Locating' : 'Locate Me'}
                     </button>
                 </div>
         )
@@ -73,7 +73,7 @@ class Locate extends React.Component {
 
 Locate.propTypes = {
     fetchPosition: React.PropTypes.func,
-    isLocation: React.PropTypes.bool,
+    isLocating: React.PropTypes.bool,
     centre: React.PropTypes.shape({
         lat: React.PropTypes.number,
         lng: React.PropTypes.number
