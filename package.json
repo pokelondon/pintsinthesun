@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "body-parser": "^1.15.1",
+    "classnames": "^2.2.5",
     "es6-promise": "^3.2.1",
     "express": "~4.4.3",
     "isomorphic-fetch": "^2.2.1",

@@ -1,15 +1,34 @@
 import React from 'react';
 import { Link } from 'react-router';
+import Pulldown from '../pulldown/pulldown';
 
 
 class Base extends React.Component {
     constructor(props) {
         super(props);
         this.props = props;
+
+        this.state = {
+            isPulldownOpen: false,
+            pulldownMenu: null
+        }
     }
 
     componentDidMount() {
         this.props.fetchPosition();
+    }
+
+    openPulldownMenu(menu) {
+        this.setState({
+            isPulldownOpen: true,
+            pulldownMenu: menu
+        });
+    }
+
+    closePulldownMenu(menu) {
+        this.setState({
+            isPulldownOpen: false
+        });
     }
 
     render() {
@@ -27,8 +46,10 @@ class Base extends React.Component {
                         </Link>
                     </h1>
                     <p className="intro">Find a pub near you that won't be in the shade</p>
+                    <button onClick={this.openPulldownMenu.bind(this, 'locationMenu')}>Show location menu</button>
                 </header>
                 {this.props.children}
+                <Pulldown onClose={this.closePulldownMenu.bind(this)} pulldownMenu={this.state.pulldownMenu} isOpen={this.state.isPulldownOpen}/>
             </div>
         )
     }
@@ -41,4 +62,3 @@ Base.propTypes = {
 }
 
 export default Base;
-
