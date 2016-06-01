@@ -1,18 +1,39 @@
 $enable-flex: true;
 
+@mixin box-shadow($shadow...) {
+  @if $enable-shadows {
+    box-shadow: $shadow;
+  }
+}
+
+@mixin transition($transition...) {
+  @if $enable-transitions {
+    transition: $transition;
+  }
+}
+
+
 // Core Variables and Mixins
 @import 'variables'; // Override
-@import '../../../node_modules/bootstrap/scss/mixins/breakpoints';
-@import '../../../node_modules/bootstrap/scss/mixins/clearfix';
-@import '../../../node_modules/bootstrap/scss/mixins/grid';
-@import '../../../node_modules/bootstrap/scss/mixins/grid-framework';
+// @import '../../../node_modules/bootstrap/scss/mixins/breakpoints';
+// @import '../../../node_modules/bootstrap/scss/mixins/clearfix';
+// @import '../../../node_modules/bootstrap/scss/mixins/grid';
+// @import '../../../node_modules/bootstrap/scss/mixins/grid-framework';
+// @import '../../../node_modules/bootstrap/scss/mixins/border-radius';
+// @import '../../../node_modules/bootstrap/scss/mixins/forms';
+// @import '../../../node_modules/bootstrap/scss/mixins/buttons';
+@import '../../../node_modules/bootstrap/scss/mixins';
 
 // Core CSS
 @import '../../../node_modules/bootstrap/scss/print';
 @import '../../../node_modules/bootstrap/scss/normalize';
+@import '../../../node_modules/bootstrap/scss/forms';
+@import '../../../node_modules/bootstrap/scss/buttons';
 
 // Grid classes
 // @import '../../node_modules/bootstrap/scss/_grid';
+
+
 
 // Utillitites
 @import 'lib/slider';
@@ -28,6 +49,7 @@ $enable-flex: true;
 @import 'modules/header';
 @import 'modules/footer';
 @import 'modules/pulldown';
+@import 'modules/location-marker';
 
 html {
 }

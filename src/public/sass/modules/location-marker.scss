@@ -1,0 +1,22 @@
+.LocationMarker{
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    left: 50%;
+    top: 50%;
+    margin: -20px 0 0 -20px;
+    transform: rotate(-45deg);
+    border-radius: 50% 50% 50% 0;
+    background: $blue;
+    text-align: left;
+
+    &:after {
+        content: '';
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        margin: 7px 0 0 7px;
+        background: $white;
+        border-radius: 50%;
+    }
+}

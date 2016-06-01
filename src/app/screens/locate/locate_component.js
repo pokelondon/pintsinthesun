@@ -32,19 +32,28 @@ class Locate extends React.Component {
         this.setState({searchTerm: e.target.value})
     }
 
-    doSearch() {
+    doSearch(e) {
+        e.preventDefault();
         geocode(this.state.searchTerm, (centre) => {
             this.props.onCenterChanged(centre);
         });
     }
 
     render() {
+
         let { lat, lng } = this.props.centre;
         return (
-            <div>
+            <div class="Locate">
 
-                <input onChange={this.onSearchChange.bind(this)} type="search" value={this.state.searchTerm} placeholder="Postcode / Street name" />
-                <button className="Button" onClick={this.doSearch.bind(this)}>Search</button>
+                <form className="form-inline" onSubmit={this.doSearch.bind(this)}>
+                    <br />
+                    <div className="form-group">
+                        <input className="form-control" onChange={this.onSearchChange.bind(this)} type="search" value={this.state.searchTerm} placeholder="Postcode / Street name" />
+                        <button type="submit" className="btn btn-primary" onClick={this.doSearch.bind(this)}>Search</button>
+                    </div>
+                    <br /><br />
+                </form>
+
 
                 <div className="Map">
                     <GoogleMapLoader
@@ -71,13 +80,16 @@ class Locate extends React.Component {
                         }
                     />
 
+                    <div className="LocationMarker"></div>
+
                     <p></p>
                     <Link
-                        to='/pubs'
-                        className="Button Button--primary"
-                        >
-                        Find somewhere near here {this.props.filteredPubs.length}/{this.props.items.length}
-                    </Link>
+                       onClick={this.props.onClose}
+                       to='/pubs'
+                       className="Button Button--primary"
+                       >
+                       Find somewhere near here {this.props.filteredPubs.length}/{this.props.items.length}
+                   </Link>
                     <button
                         className="Button"
                         onClick={this.props.fetchPosition}>
