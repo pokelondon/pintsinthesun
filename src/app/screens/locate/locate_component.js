@@ -17,6 +17,15 @@ class Locate extends React.Component {
         this.props.onCenterChanged({lat: centre.lat(), lng: centre.lng()});
     }
 
+    componentWillReceiveProps(nextProps) {
+        if(this.props.centre.lat != nextProps.centre.lat) {
+            let { lat, lng } = nextProps.centre;
+            let ll = new google.maps.LatLng(lat, lng);
+            console.log(lat, lng, ll);
+            this.map.props.map.panTo(ll);
+        }
+    }
+
     render() {
         let { lat, lng } = this.props.centre;
         return (
@@ -45,23 +54,33 @@ class Locate extends React.Component {
                             }
                         />
 
-                        <Link className="Button Button--primary" to='/pubs/'>
-                            Find somewhere near here
-                        </Link>
-                    </div>
+                    <p></p>
+                    <Link
+                        to='/pubs'
+                        className="Button Button--primary"
+                        >
+                        Find somewhere near here {this.props.filteredPubs.length}/{this.props.items.length}
+                    </Link>
+                    <button
+                        className="Button"
+                        onClick={this.props.fetchPosition}>
+                        Locate Me
+                    </button>
+                </div>
         )
     }
 }
 
 Locate.propTypes = {
     fetchPosition: React.PropTypes.func,
+    isLocation: React.PropTypes.bool,
     centre: React.PropTypes.shape({
-      lat: React.PropTypes.number,
-      lng: React.PropTypes.number
+        lat: React.PropTypes.number,
+        lng: React.PropTypes.number
     }),
     onCenterChanged: React.PropTypes.func,
-    updateAngle: React.PropTypes.func,
-    angle: React.PropTypes.number
+    filteredPubs: React.PropTypes.array,
+    items: React.PropTypes.array,
 }
 
 export default Locate;

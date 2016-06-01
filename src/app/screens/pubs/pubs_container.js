@@ -2,31 +2,38 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 
 import * as positionActions from '../../actions/position';
-import * as dataActions from '../../actions/data';
 
 import Pubs from './pubs_component';
 
 
 const mapStateToProps = (state, ownProps) => {
-    const { centre, date, sun } = state.position;
-    const { items, receivedAt, isFetching } = state.data;
+    const {
+        centre,
+        date,
+        sun,
+        items,
+        receivedAt,
+        isFetching,
+        filteredPubs
+    } = state.position;
+
     return {
         centre,
         date,
         sun,
         items,
         receivedAt,
-        isFetching
+        isFetching,
+        filteredPubs
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     const boundPositionActions = bindActionCreators(positionActions, dispatch);
-    const boundDataActions = bindActionCreators(dataActions, dispatch);
 
     return {
         fetchPubs: (date, centre) => {
-            boundDataActions.fetchPubs(date, centre);
+            boundPositionActions.fetchPubs(date, centre);
         },
         updateTime: (date) => {
             boundPositionActions.updateTime(date)

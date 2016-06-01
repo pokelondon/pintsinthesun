@@ -18,6 +18,13 @@ class Pubs extends React.Component {
         this.props.fetchPubs(this.props.date, this.props.centre);
     }
 
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.items.length && !this.props.children) {
+            this.context.router.push(`/pubs/0`);
+            console.log('Run initial filter here perhaps');
+        }
+    }
+
     onSliderChange(value) {
         var current = this.props.date;
         this.props.updateTime(new Date(current.setHours(value)));
@@ -25,7 +32,6 @@ class Pubs extends React.Component {
 
     next(evt) {
         evt.preventDefault();
-        console.log(this.props);
         if(this.props.items.length > 1) {
             let index = this.state.index + 1;
             if(this.state.index >= this.props.items.length -1) {
@@ -53,18 +59,20 @@ class Pubs extends React.Component {
             let item = this.props.items[this.state.index];
             return (
                 <div>
-                    <p>{this.props.items.length} Results {this.props.date.toString()}</p>
+                    <p>Sunny: {this.props.filteredPubs.length}/{this.props.items.length} Nearby</p>
                     <Slider
-                        min={8}
-                        max={22}
+                        min={6}
+                        max={21}
                         step={1}
                         included={false}
                         defaultValue={this.props.date.getHours()}
                         className='Slider'
                         onChange={this.onSliderChange.bind(this)}
                     />
+                    <div className="Panel">
+                        <button className="Button" onClick={this.next.bind(this)}>Nah &rarr;</button>
+                    </div>
                     {this.props.children}
-                    <button className="Button" onClick={this.next.bind(this)}>Nah</button>
                 </div>
             )
         }

@@ -32,7 +32,8 @@ html {
 }
 
 body {
-    color: $grey;
-    background: linear-gradient($blueDark, $bg);
+    color: $white;
+    background: linear-gradient($blueDark, $blue);
     height: 100%;
 }
+textarea, input { outline: none; }

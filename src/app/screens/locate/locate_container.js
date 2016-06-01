@@ -8,31 +8,28 @@ import Locate from './locate_component';
 
 
 const mapStateToProps = (state, ownProps) => {
-    const { centre, sun } = state.position;
+    const { centre, sun, items, filteredPubs, date } = state.position;
     const { angle } = state.locate;
     return {
+        date,
         sun,
         centre,
-        angle
+        angle,
+        items,
+        filteredPubs
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     const boundPositionActions = bindActionCreators(positionActions, dispatch);
-    const boundLocateActions = bindActionCreators(locateActions, dispatch);
 
     return {
-        /**
-         * [SIC]
-         */
         onCenterChanged: (centre) => {
             boundPositionActions.responsePosition(centre);
+            boundPositionActions.fetchPubs(ownProps.date, centre);
         },
         fetchPosition: () => {
-
-        },
-        updateAngle: angle => {
-            boundLocateActions.updateAngle(angle);
+            boundPositionActions.fetchPosition();
         }
     }
 }
