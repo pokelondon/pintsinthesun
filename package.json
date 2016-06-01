@@ -38,6 +38,7 @@
     "redux-thunk": "^1.0.0",
     "st": "^1.1.0",
     "three": "^0.76.1",
+    "tween.js": "^16.3.4",
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {

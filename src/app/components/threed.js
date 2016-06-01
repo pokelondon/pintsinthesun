@@ -2,11 +2,9 @@ import React from 'react';
 import THREE from 'three';
 import SunCalc from '../lib/suncalc';
 import d3 from 'd3';
-import gsap from 'gsap';
+import TWEEN from 'tween.js';
 
 import { fetchBuildings } from '../services/overpass';
-
-window.gsap = gsap;
 
 
 const GREYDARK = 0x434A54;
@@ -200,12 +198,14 @@ class ThreeD extends React.Component {
         var sun = angles2cartesian(pos.azimuth, pos.altitude);
         var [ x, y, z ] = sun;
 
-        var sunTween = new window.GreenSockGlobals.TweenLite.to(this.sun.position, 2, { x, y, z } );
+        var sunTween = new TWEEN.Tween(this.sun.position);
+        sunTween.to({ x, y, z }, 1000).start();
 
         return this;
     }
 
     render3d() {
+        TWEEN.update();
         this.renderer.render(this.scene, this.camera);
         return this;
     }
