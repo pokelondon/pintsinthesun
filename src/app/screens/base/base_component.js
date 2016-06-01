@@ -36,6 +36,7 @@ class Base extends React.Component {
             <div>
                 <header className="Header">
                     <Link className="InfoLink" to='/about'>What?</Link>
+                    <button onClick={this.openPulldownMenu.bind(this, 'locationMenu')}>Show location menu</button>
                     <div className="Pint--small">
                         <img className="Pint-img" src="/img/pint.png" alt="pint" />
                         <div className="Pint-shad"></div>
@@ -46,7 +47,6 @@ class Base extends React.Component {
                         </Link>
                     </h1>
                     <p className="intro">Find a pub near you that won't be in the shade</p>
-                    <button onClick={this.openPulldownMenu.bind(this, 'locationMenu')}>Show location menu</button>
                 </header>
                 {this.props.children}
                 <Pulldown onClose={this.closePulldownMenu.bind(this)} pulldownMenu={this.state.pulldownMenu} isOpen={this.state.isPulldownOpen}/>

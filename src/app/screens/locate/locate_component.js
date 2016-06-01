@@ -1,15 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router';
-
-import Slider from 'rc-slider';
+import { geocode } from '../../services/googlemaps.js';
 
 import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 
 
 class Locate extends React.Component {
+
     constructor(props) {
         super(props);
         this.props = props;
+
+        this.state = {searchTerm: ''};
     }
 
     onDragEnd() {
@@ -26,17 +28,32 @@ class Locate extends React.Component {
         }
     }
 
+    onSearchChange(e) {
+        this.setState({searchTerm: e.target.value})
+    }
+
+    doSearch() {
+        geocode(this.state.searchTerm, (centre) => {
+            this.props.onCenterChanged(centre);
+        });
+    }
+
     render() {
         let { lat, lng } = this.props.centre;
         return (
-            <div className="Map">
-                <GoogleMapLoader
-                    containerElement={(
-                        <div
-                            style={{
-                                height: "100%",
-                            }}
-                        />
+            <div>
+
+                <input onChange={this.onSearchChange.bind(this)} type="search" value={this.state.searchTerm} placeholder="Postcode / Street name" />
+                <button className="Button" onClick={this.doSearch.bind(this)}>Search</button>
+
+                <div className="Map">
+                    <GoogleMapLoader
+                        containerElement={(
+                            <div
+                                style={{
+                                    height: "100%",
+                                }}
+                            />
                         )}
                         googleMapElement={
                             <GoogleMap
@@ -51,8 +68,8 @@ class Locate extends React.Component {
                                 }}
                                 >
                             </GoogleMap>
-                            }
-                        />
+                        }
+                    />
 
                     <p></p>
                     <Link
@@ -67,6 +84,7 @@ class Locate extends React.Component {
                         Locate Me
                     </button>
                 </div>
+            </div>
         )
     }
 }
@@ -84,4 +102,3 @@ Locate.propTypes = {
 }
 
 export default Locate;
-
