@@ -21,7 +21,7 @@ $font-size-6: 0.75rem;
 $font-family-heading: 'LeagueSpartan', sans-serif;
 $font-family-body: 'Karla', sans-serif;
 
-$font-size-root: 12px;
+$font-size-root: 16px;
 
 html {
     font-size: $font-size-root;
@@ -49,6 +49,9 @@ p {
     margin: 0;
     padding: 0;
     font-size: inherit;
+}
+.Box {
+    font-weight: bold;
 }
 
 .intro {
@@ -121,6 +124,10 @@ p {
     font-family: $font-family-heading;
     font-size: $font-size-6;
     text-transform: uppercase;
+}
+
+.txt-suggestion {
+    color: $mint;
 }
 
 

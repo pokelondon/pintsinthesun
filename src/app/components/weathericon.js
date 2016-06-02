@@ -9,7 +9,7 @@ class WeatherIcon extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            skycons: new Skycons()
+            skycons: new Skycons({color: '#000'})
         };
     }
 
@@ -42,7 +42,7 @@ class WeatherIcon extends React.Component {
         }
         delete props.autoplay;
         return (
-            <canvas {...props} />
+            <canvas {...props} className="WeatherIcon" />
         )
     }
 }

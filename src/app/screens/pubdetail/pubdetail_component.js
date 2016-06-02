@@ -40,7 +40,7 @@ class PubDetail extends React.Component {
         return (
             <div className="Screen">
                 <header className="Screen-header">
-                    <p className="">
+                    <p className="Heading--1">
                         <span className="txt-suggestion">Why dont you head down to </span>
                         <span className="Pub-name">{name}</span>
                     </p>
@@ -54,7 +54,7 @@ class PubDetail extends React.Component {
                             Best for sun: 13:32 - 17:23
                         </div>
                         <div className="Box-item">
-                            Weather now: <WeatherIcon />
+                            Weather now: <WeatherIcon icon='RAIN' />
                         </div>
                     </div>
                 </header>
@@ -75,7 +75,7 @@ class PubDetail extends React.Component {
                             onChange={this.onSliderChange.bind(this)}
                         />
                     </div>
-                    <div className="Box">
+                    <div className="Box Para--large">
                         <p>Its good cos its got a roof terrace, it faces west, and the outside bit faces the sun at the time of day</p>
                     </div>
                     <div className="Box">
