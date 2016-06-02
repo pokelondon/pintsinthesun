@@ -43,6 +43,7 @@ $enable-flex: true;
         'layout';
 
 // Modules
+@import 'modules/box';
 @import 'modules/map';
 @import 'modules/pint';
 @import 'modules/pub';
@@ -55,8 +56,8 @@ html {
 }
 
 body {
-    color: $white;
-    background: linear-gradient($blueDark, $blue);
+    color: $blueDark;
+    background: $yellow;
     height: 100%;
 }
 textarea, input { outline: none; }

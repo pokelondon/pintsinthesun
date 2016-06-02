@@ -1,21 +1,14 @@
 .Header {
+    padding: 10px $padding;
+    color: $mintLight;
+    background: $blueDark;
     overflow: hidden;
-    position: relative;
-    padding: 10px;
-    color: $white;
-    text-align: center;
-}
-
-.InfoLink {
-    position: absolute;
-    top: 20px;
-    right: 0;
-    text-align: right;
+    h1 {
+        float: left;
+    }
 }
 
 .SearchLink {
-    position: absolute;
-    top: 20px;
-    right: 50px;
     text-align: right;
+    float: right;
 }

@@ -36,18 +36,12 @@ class Base extends React.Component {
         return (
             <div>
                 <header className="Header">
-                    <Link className="InfoLink" to='/about'>What?</Link>
-                    <a className="SearchLink" onClick={this.openPulldownMenu.bind(this, 'locationMenu')}>Search</a>
-                    <div className="Pint--small">
-                        <img className="Pint-img" src="/img/pint.png" alt="pint" />
-                        <div className="Pint-shad"></div>
-                    </div>
                     <h1>
                         <Link to="/">
                             <span title="Pints In (or Near) The Sun">Pints</span> in the Sun
                         </Link>
                     </h1>
-                    <p className="intro">Find a pub near you that won't be in the shade</p>
+                    <a className="SearchLink" onClick={this.openPulldownMenu.bind(this, 'locationMenu')}>Search</a>
                 </header>
                 {this.props.children}
                 <Pulldown

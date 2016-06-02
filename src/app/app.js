@@ -10,7 +10,6 @@ import createLogger from "redux-logger";
 import reducers from './reducers';
 
 import Start from './screens/start/start_container';
-import Pubs from './screens/pubs/pubs_container';
 import PubDetail from './screens/pubdetail/pubdetail_container';
 import Locate from './screens/locate/locate_container';
 import Base from './screens/base/base_container';
@@ -33,7 +32,7 @@ ReactDOM.render((
                 <Route path="/" component={Base}>
                     <IndexRoute component={Start} />
                     <Route path="/locate" component={Locate} />
-                    <Route path="/pubs" component={Pubs} />
+                    <Route path="/pubs" component={PubDetail} />
                     <Route path="/admin" component={AdminTool} />
                     <Route path="*" component={NoMatch}/>
                 </Route>

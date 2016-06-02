@@ -13,6 +13,8 @@ const mapStateToProps = (state, ownProps) => {
         isFetching,
         isLocating,
         currentPub,
+        filteredPubs,
+        filteredIndex
     } = state.position;
 
     return {
@@ -20,6 +22,9 @@ const mapStateToProps = (state, ownProps) => {
         items,
         isFetching,
         isLocating,
+        filteredPubs,
+        currentPub,
+        filteredIndex,
         pub: items[currentPub]
     }
 }
@@ -28,6 +33,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     const boundPositionActions = bindActionCreators(positionActions, dispatch);
 
     return {
+        updateTime: date => {
+            boundPositionActions.updateTime(date)
+        },
+        incrementCurrentPub: index => {
+            boundPositionActions.incrementCurrentPub();
+        }
     }
 }
 

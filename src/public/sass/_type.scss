@@ -33,9 +33,10 @@ p {
 }
 
 h1 {
-    font-size: 3rem;
-    margin: 0.2em 0 0;
+    font-size: 2rem;
+    margin: 0.1em 0 0;
     padding: 0;
+    text-transform: uppercase;
 }
 
 a {
@@ -52,19 +53,15 @@ button {
 .Button {
     padding: 1rem 2rem;
     display: block;
+    width: 100%;
     border: none;
     box-sizing: border-box;
-    margin: 10px 0;
 
     font-size: 1.9rem;
     font-weight: 700;
 
     text-align: center;
     background: $blue;
-
-    & + & {
-        margin-top: 0;
-    }
 
     transition: box-shadow 100ms ease;
     box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
