@@ -7,19 +7,16 @@ import TWEEN from 'tween.js';
 import { fetchBuildings } from '../services/overpass';
 
 
-const GREYDARK = 0x434A54;
-const RED = 0xf14545;
+const GREYDARK = 0x232A24;
+const RED = 0xf05440;
 const GREEN = 0x48CFAD;
-const YELLOW = 0xf14545;
+const YELLOW = 0xf7efdb;
 const BLUE = 0x4FC1E9;
 const WHITE = 0xFFFFFF;
 
 const PUB_MATERIAL = new THREE.MeshLambertMaterial({color: YELLOW});
-const BUILDING_MATERIAL = new THREE.MeshPhongMaterial({
+const BUILDING_MATERIAL = new THREE.MeshLambertMaterial({
     color: GREYDARK,
-    shininess: 10,
-    specular: WHITE,
-    shading: THREE.SmoothShading
 });
 const TARGET_MATERIAL = new THREE.MeshPhongMaterial({
     color: RED,
@@ -29,7 +26,7 @@ const TARGET_MATERIAL = new THREE.MeshPhongMaterial({
 });
 
 const FLOOR_MATERIAL = new THREE.MeshLambertMaterial({
-    color: BLUE,
+    color: YELLOW,
 });
 
 const VIEW_ANGLE = 45;
@@ -164,13 +161,14 @@ class ThreeD extends React.Component {
     }
 
     createLights() {
-        var ambient = new THREE.AmbientLight(0x909090);
+        var ambient = new THREE.AmbientLight(0xa0a0a0);
         this.scene.add(ambient);
         // add a light at a specific position
         this.sun = new THREE.SpotLight(WHITE);
         this.scene.add(this.sun);
         this.sun.penumbra = 0;
         this.sun.distance = 1000;
+        this.sun.intensity = 2;
 
         this.sun.shadow.camera.near = 300;
         this.sun.shadow.camera.far = 600;
@@ -181,9 +179,11 @@ class ThreeD extends React.Component {
         this.sun.shadow.mapSize.width = this.WIDTH * 2;
         this.sun.shadow.mapSize.height = this.HEIGHT * 2;
 
-        var shadowCameraHelper = new THREE.CameraHelper( this.sun.shadow.camera );
-        shadowCameraHelper.visible = true;
-        this.scene.add(shadowCameraHelper);
+        if(window.HELPERS) {
+            var shadowCameraHelper = new THREE.CameraHelper( this.sun.shadow.camera );
+            shadowCameraHelper.visible = true;
+            this.scene.add(shadowCameraHelper);
+        }
 
         return this;
     }
@@ -194,8 +194,12 @@ class ThreeD extends React.Component {
         var sun = angles2cartesian(pos.azimuth, pos.altitude);
         var [ x, y, z ] = sun;
 
+        TWEEN.removeAll();
         var sunTween = new TWEEN.Tween(this.sun.position);
-        sunTween.to({ x, y, z }, 1000).start();
+        sunTween
+            .to({ x, y, z }, 1000)
+            .easing(TWEEN.Easing.Quadratic.Out)
+            .start();
 
         return this;
     }
@@ -221,7 +225,7 @@ class ThreeD extends React.Component {
             material = PUB_MATERIAL;
             amount += 1;
         } else {
-            amount += Math.random();
+            //amount += Math.random();
         }
 
         var extrudeSettings = {
