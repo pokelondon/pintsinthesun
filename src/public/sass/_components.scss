@@ -1,0 +1,76 @@
+.Logo--main {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+
+.Button {
+    padding: 1rem 2rem;
+    display: block;
+    width: 100%;
+    border: none;
+    box-sizing: border-box;
+
+    // font-size: 1.9rem;
+    // font-weight: 700;
+
+    text-align: center;
+    background: $blue;
+}
+
+.Button--primary {
+    @extend .btn-text--large;
+    color: $white;
+    background: $red;
+}
+
+.Button--time {
+    @extend .Button;
+    position: relative;
+    min-height: 110px;
+    background-color: $yellowLight;
+    background-repeat: no-repeat;
+    background-size: auto 55%;
+    background-position: center 20%;
+
+    & span {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        bottom: 5%;
+    }
+}
+
+.Button--morning {
+    @extend .Button--time;
+    background-image: url(../img/icons/morning-icon.svg);
+}
+
+.Button--afternoon {
+    @extend .Button--time;
+    background-image: url(../img/icons/afternoon-icon.svg);
+}
+
+.Button--evening {
+    @extend .Button--time;
+    background-image: url(../img/icons/evening-icon.svg);
+}
+
+.Circle-or {
+    @extend .caps--small;
+    $width: 2.666rem;
+    $border-width: 3px;
+    box-sizing: border-box;
+    display: block;
+    width: $width;
+    height: $width / 2;
+    padding-top: 0.2rem;
+    margin: -10px auto $width/-4 auto;
+    background: $mintLight;
+    border-top-left-radius: $width;
+    border-top-right-radius: $width;
+    border: $border-width solid $blueDark;
+    border-bottom: 0;
+    transform: translateY(-100%);
+}

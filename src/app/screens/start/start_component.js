@@ -10,22 +10,49 @@ class Start extends React.Component {
 
     render() {
         return (
-            <div>
-                <Link className="Button Button--primary" to='/pubs'>
-                    Find somewhere RIGHT NOW {this.props.date.toString()}
-                </Link>
+            <div className="Screen">
+                <header className="Screen-header">
+                    <div className="Box Box-row">
+                        <div className="Box-item no-padding">
+                            <img className="Logo--main" src="http://placehold.it/280x130?text=logo" />
+                        </div>
+                    </div>
 
-                <button className="Button" onClick={this.props.setMorning}>
-                    Morning
-                </button>
+                </header>
 
-                <button className="Button" onClick={this.props.setAfternoon}>
-                    Afternoon
-                </button>
+                <div className="Screen-main">
+                    <div className="Box Box-row no-padding">
+                        <div className="Box-item no-padding">
+                            <Link className="Button Button--primary" to='/pubs'>
+                                Find somewhere RIGHT NOW {this.props.date.toString()}
+                            </Link>
+                        </div>
+                    </div>
+                    <div className="Box Box-row no-padding">
+                        <div className="Box-item Para--large text-centre">
+                            <span className="Circle-or">or</span>
+                            Find nearby pubs that will be sunny in the...
+                        </div>
+                    </div>
 
-                <button className="Button" onClick={this.props.setEvening}>
-                    Evening
-                </button>
+                    <div className="Box Box-row">
+                        <div className="Box-item no-padding">
+                            <a className="Button--morning" onClick={this.props.setMorning}>
+                                <span>Morning</span>
+                            </a>
+                        </div>
+                        <div className="Box-item no-padding">
+                            <a className="Button--afternoon" onClick={this.props.setAfternoon}>
+                                <span>Afternoon</span>
+                            </a>
+                        </div>
+                        <div className="Box-item no-padding">
+                            <a className="Button--evening" onClick={this.props.setEvening}>
+                                <span>Evening</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
@@ -39,4 +66,3 @@ Start.propTypes = {
 }
 
 export default Start;
-

@@ -40,7 +40,9 @@ $enable-flex: true;
 
 // General
 @import 'type',
-        'layout';
+        'layout',
+        'components',
+        'utilities'; 
 
 // Modules
 @import 'modules/box';
