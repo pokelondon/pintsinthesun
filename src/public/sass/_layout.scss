@@ -6,8 +6,6 @@ body {
     margin: 0 0 $footer-height; /* bottom = footer height */
 }
 .App > div {
-    max-width: 400px;
-    @include make-container();
 }
 .row {
     @include make-row();

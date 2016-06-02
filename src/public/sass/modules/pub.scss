@@ -1,13 +1,15 @@
 .Render {
     display: block;
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
     margin: 20px auto 0;
     canvas {
         border-radius: 100%;
+        transform: scale(0.5) translate(-50%, -50%);
+        margin-right: -210px;
+        margin-bottom: -210px;
     }
 }
-
 
 .Slider {
     margin-bottom: 20px;

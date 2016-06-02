@@ -1,12 +1,11 @@
 .Footer {
     position: absolute;
-    left: 0;
     bottom: 0;
     height: $footer-height;
     width: 100%;
     box-sizing: border-box;
-    padding: 20px;
-    text-align: center;
+    padding: 10px $padding;
 
-    display: none;
+    background: $blueDark;
+    color: $mintLight;
 }
