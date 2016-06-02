@@ -1,4 +1,26 @@
 @import url(https://fonts.googleapis.com/css?family=Karla:400,700);
+
+@font-face {
+    font-family: 'LeagueSpartan';
+    src: url('../fonts/leaguespartan-bold-webfont.woff2') format('woff2'),
+         url('../fonts/leaguespartan-bold-webfont.woff') format('woff'),
+         url('../fonts/leaguespartan-bold-webfont.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+
+$font-size-1: 1.5rem;
+$font-size-2: 1.333rem;
+$font-size-3: 1.25rem;
+$font-size-4: 1rem;
+$font-size-5: 0.833rem;
+$font-size-6: 0.75rem;
+
+
+$font-family-heading: 'LeagueSpartan', sans-serif;
+$font-family-body: 'Karla', sans-serif;
+
 $font-size-root: 12px;
 
 html {
@@ -6,10 +28,11 @@ html {
 }
 body {
     line-height: $line-height;
-    /*font-family: 'Helvetica Neue';*/
-    font-family: 'Karla', sans-serif;
+    font-family: $font-family-body;
     font-weight: normal;
     font-weight: 100;
+    color: $purple-dark;
+    font-size: $font-size-4;
 }
 
 h1,
@@ -48,6 +71,60 @@ button {
         outline: none;
     }
 }
+
+
+/****/
+
+
+
+p {
+    font-size: 1rem;
+}
+
+.LogoType {
+    font-size: $font-size-4;
+    font-family: $font-family-heading;
+    text-transform: uppercase;
+}
+
+.Heading--1 {
+    font-family: $font-family-heading;
+    text-transform: uppercase;
+    font-size: $font-size-1;
+    line-height: 1.958rem;
+}
+
+.Para--large {
+    font-family: $font-family-heading;
+    font-size: $font-size-2;
+    line-height: 1.75rem;
+}
+
+.btn-text--large {
+    font-size: $font-size-3;
+    font-weight: 700;
+}
+
+.btn-text--small {
+    font-size: $font-size-4;
+    font-weight: 700;
+}
+
+.caps--small {
+    font-family: $font-family-heading;
+    font-size: $font-size-5;
+    text-transform: uppercase;
+}
+
+.caps--smaller {
+    font-family: $font-family-heading;
+    font-size: $font-size-6;
+    text-transform: uppercase;
+}
+
+
+
+
 
 .Button {
     padding: 1rem 2rem;
