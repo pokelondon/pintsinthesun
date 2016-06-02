@@ -4,7 +4,7 @@ import { Link, Router, Route, hashHistory, IndexRoute } from 'react-router'
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
-
+import { routerMiddleware } from 'react-router-redux'
 import createLogger from "redux-logger";
 
 import reducers from './reducers';
@@ -21,7 +21,8 @@ const loggerMiddleware = createLogger();
 
 const createStoreWithMiddleware = applyMiddleware(
     thunkMiddleware,
-    //loggerMiddleware
+    loggerMiddleware,
+    routerMiddleware(hashHistory),
 )(createStore);
 const store = createStoreWithMiddleware(reducers);
 

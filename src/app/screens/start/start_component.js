@@ -12,14 +12,19 @@ class Start extends React.Component {
         return (
             <div>
                 <Link className="Button Button--primary" to='/pubs'>
-                    Find somewhere RIGHT NOW
-                </Link>
-                <Link className="Button" to='/locate'>
-                    Map
+                    Find somewhere RIGHT NOW {this.props.date.toString()}
                 </Link>
 
-                <button className="Button">
-                    or how about later
+                <button className="Button" onClick={this.props.setMorning}>
+                    Morning
+                </button>
+
+                <button className="Button" onClick={this.props.setAfternoon}>
+                    Afternoon
+                </button>
+
+                <button className="Button" onClick={this.props.setEvening}>
+                    Evening
                 </button>
             </div>
         )
@@ -27,7 +32,10 @@ class Start extends React.Component {
 }
 
 Start.propTypes = {
-    date: React.PropTypes.instanceOf(Date)
+    date: React.PropTypes.instanceOf(Date).isRequired,
+    setMorning: React.PropTypes.func.isRequired,
+    setAfternoon: React.PropTypes.func.isRequired,
+    setEvening: React.PropTypes.func.isRequired,
 }
 
 export default Start;
