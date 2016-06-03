@@ -12,10 +12,14 @@ const INITIAL_STATE = {
     weatherNow: {}
 }
 
-const filterWeather = (weather, hour) => {
-    return weather.sort((prev, curr) => {
-        return (Math.abs(curr - hour) < Math.abs(prev - hour) ? curr : prev);
-    })[0];
+const nearestPrognosis = (weather, hour) => {
+    if(Date === typeof hour) {
+        hour = hour.getHours();
+    }
+    weather.sort((prev, curr) => {
+        return (Math.abs(curr.hour - hour) < Math.abs(prev.hour - hour) ? curr.hour : prev.hour);
+    });
+    return weather[0];
 }
 
 export default function weather(state=INITIAL_STATE, action) {
@@ -29,13 +33,13 @@ export default function weather(state=INITIAL_STATE, action) {
             return {
                 ...state,
                 isFetching: false,
-                weatherNow: filterWeather(action.data, new Date().getHours()),
+                weatherNow: nearestPrognosis(action.data, new Date().getHours()),
                 data: action.data
             }
         case FILTER_WEATHER:
             return {
                 ...state,
-                weatherNow: filterWeather(state.data, action.hour)
+                weatherNow: nearestPrognosis(state.data, action.hour)
             }
         default:
             return state

@@ -41,7 +41,8 @@ export function updateTime(date) {
             type: UPDATE_TIME,
             date
         });
-        dispatch(filterWeather(date));
+        let hour = date.getHours();
+        dispatch(filterWeather(hour));
     }
 }
 
