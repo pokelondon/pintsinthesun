@@ -1,29 +1,23 @@
 .PulldownMenu {
 
     position: absolute;
+    margin-top: 20px;
+    top: $font-size-4;
+    left: 0;
+    right: 0;
+    bottom: 0;
     z-index: 1;
-    top: 0;
-    transform: translateY(-100%);
-    transition: transform 1s;
-    text-align: center;
-    height: 600px;
 
-    .inner {
-        @include make-container();
-        max-width: 600px;
-    }
+    padding: $padding;
+
+    text-align: center;
+    background: transparentize($blueDark, 0.1);
+
+    transform: translateY(-120%);
+    transition: transform 1s;
 
     &.is-visible {
         display: block;
         transform: translateY(0%);
-    }
-
-    &-closeBtn {
-        float: right;
-        background: none;
-        border: 1px solid white;
-        border-radius: 100%;
-        width: 30px;
-        height: 30px;
     }
 }

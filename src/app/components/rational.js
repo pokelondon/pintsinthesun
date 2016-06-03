@@ -22,7 +22,7 @@ class Rational extends React.Component {
     getRationalText() {
         var response = [];
 
-        response.push('This place looks like it could be good.');
+        response.push('This place looks like it could be good,');
 
         if(this.props.pub) {
 
@@ -52,7 +52,7 @@ class Rational extends React.Component {
         return (
             <div className="Box Para--large">
                 <p dangerouslySetInnerHTML={{__html: rational}}></p>
-                <p>{weatherStatement}</p>
+                <p dangerouslySetInnerHTML={{__html: weatherStatement}}></p>
             </div>
         )
     }
@@ -81,21 +81,21 @@ Rational.propTypes = {
 };
 
 Rational.WEATHER_SENTENCES = {
-    'CLEAR_DAY': ['The sun\'s out! woop!', 'What a lovely day'],
-    'CLEAR_NIGHT': ['It\'s pretty clear!', 'What a lovely day'],
-    'PARTLY_CLOUDY_DAY': ['Might be a bit cloudy mind', 'Too bad it\'s a bit cloudy.'],
-    'PARTLY_CLOUDY_NIGHT': ['It\'ll be cloudy this evening.'],
-    'CLOUDY': ['Doh! it\'s pretty cloudy.', 'It\'s quite cloudy :(', 'It\'s cloudy right now.'],
-    'RAIN': ['Shame it\'s raining!', 'It\'s raining. Dammit.', 'Urgh, it\'s rainy :('],
-    'SLEET': ['But, it\'s sleeting!', 'it\'s wet out.'],
-    'SNOW': ['But, it\'s snowing. You crazy?!'],
-    'WIND': ['Watch out for the wind!'],
-    'FOG': ['But it\'s foggy.']
+    'CLEAR_DAY': ['The <em>sun\'s</em> out! woop!', 'What a lovely day'],
+    'CLEAR_NIGHT': ['It\'s pretty <em>clear!</em>', 'What a lovely day'],
+    'PARTLY_CLOUDY_DAY': ['Might be a bit <em>cloudy</em> mind!', 'Too bad it\'s a bit <em>cloudy.</em>'],
+    'PARTLY_CLOUDY_NIGHT': ['It\'ll be <em>cloudy</em> this evening.'],
+    'CLOUDY': ['Doh! it\'s pretty <em>cloudy.</em>', 'It\'s quite <em>cloudy</em> :(', 'It\'s <em>cloudy</em> right now.'],
+    'RAIN': ['Shame it\'s <em>raining!</em>', 'It\'s <em>raining.</em> Dammit.', 'Urgh, it\'s <em>rainy</em> :('],
+    'SLEET': ['But, it\'s <em>sleeting!</em>', 'it\'s <em>wet</em> out.'],
+    'SNOW': ['But, it\'s <em>snowing.</em> You crazy?!'],
+    'WIND': ['Watch out for the <em>wind!</em>'],
+    'FOG': ['But it\'s <em>foggy.</em>']
 }
 
 Rational.BUIDLING_TO_THE_WEST_SENTENCES = [
-    ['There\'s nothing much blocking the sun <em>to the west</em>.', 'No buidlings <em>west of here.</em> to get in the way', 'Not much <em>over the street</em> to block the sun.'],
-    ['There is a buidling next door, it might block the sun.', 'Look out for <em>shadows from over the road</em>.']
+    ['there\'s nothing much blocking the sun <em>to the west</em>.', 'no buidlings <em>west of here.</em> to get in the way', 'not much <em>over the street</em> to block the sun.'],
+    ['but there is a buidling next door, it might block the sun.', 'Look out for <em>shadows from over the road</em>.']
 ]
 
 Rational.TERRACE_SENTENCES = [

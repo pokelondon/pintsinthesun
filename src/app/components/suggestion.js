@@ -27,9 +27,9 @@ class Suggestion extends React.Component {
         last = (last) ? ' ' + last : '?';
         return (
             <p className="Heading--1">
-                <span className="txt-suggestion">{first} </span>
-                <span className="Pub-name">{this.props.name}</span>
-                <span className="txt-suggestion">{last}</span>
+                <span className="">{first} </span>
+                <span className="txt-suggestion">{this.props.name}</span>
+                <span className="">{last}</span>
             </p>
         )
     }

@@ -47,7 +47,7 @@ class PubDetail extends React.Component {
                 </div>
             )
         }
-        let { distance, location, name } = this.props.pub;
+        let { distance, location, name, neighbourhood } = this.props.pub;
         let [lng, lat] = location.coordinates;
         var distanceUnit = 'm';
         if (distance > 1000) {
@@ -60,12 +60,12 @@ class PubDetail extends React.Component {
                     <Suggestion name={name} />
                     <div className="Box Box-row">
                         <div className="Box-item">
-                            <span>Marylebone &mdash; {distance.toFixed(1)}{distanceUnit}</span>
+                            <span>{neighbourhood ? `${neighbourhood} &mdash; ` : ''}{distance.toFixed(1)}{distanceUnit} away</span>
                         </div>
                     </div>
                     <div className="Box Box-row">
                         <div className="Box-item">
-                            Best for sun: 13:32 - 17:23
+                            Best for sun: 13:32-17:23
                         </div>
                         <div className="Box-item">
                             Weather now: <WeatherIcon />
@@ -111,6 +111,7 @@ PubDetail.propTypes = {
     incrementCurrentPub: React.PropTypes.func,
     filteredIndex: React.PropTypes.number.isRequired,
     pub: React.PropTypes.shape({
+        neighbourhoot: React.PropTypes.string,
         name: React.PropTypes.string.isRequired,
         location: React.PropTypes.shape([
             React.PropTypes.number, React.PropTypes.number

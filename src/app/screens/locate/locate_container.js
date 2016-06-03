@@ -8,7 +8,7 @@ import Locate from './locate_component';
 
 
 const mapStateToProps = (state, ownProps) => {
-    const { centre, sun, items, filteredPubs, date } = state.position;
+    const { centre, sun, items, filteredPubs, date, isLocating } = state.position;
     const { angle } = state.locate;
     return {
         date,
@@ -16,7 +16,8 @@ const mapStateToProps = (state, ownProps) => {
         centre,
         angle,
         items,
-        filteredPubs
+        filteredPubs,
+        isLocating
     }
 }
 

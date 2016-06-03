@@ -69,6 +69,12 @@ button {
     }
 }
 
+input {
+    border: none;
+    box-sizing: border-box;
+    padding: 1em;
+}
+
 
 /****/
 
@@ -122,6 +128,8 @@ h1,
     text-transform: uppercase;
 }
 
+em,
 .txt-suggestion {
+    font-style: normal;
     color: $mint;
 }
