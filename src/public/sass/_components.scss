@@ -22,7 +22,7 @@
 .Button--primary {
     @extend .btn-text--large;
     color: $white;
-    background: $red;
+    background: linear-gradient(to bottom, $red 0%,$red 90%,$red 90%,#b1554b 90%,#b1554b 100%);
 }
 
 .Button--time {
