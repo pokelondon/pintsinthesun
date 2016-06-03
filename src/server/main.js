@@ -11,6 +11,8 @@ var MongoClient = require('mongodb').MongoClient;
 var http = require('http');
 var assert = require('assert');
 var bodyParser = require('body-parser');
+var apicache = require('apicache').options({ debug: true });
+var apimiddleware = apicache.middleware;
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
 
@@ -154,6 +156,31 @@ app.post('/pub/:id', function(req, res) {
             );
         }).catch(function(err) {
             console.error(err);
+        });
+});
+
+app.get('/weather/:lat/:lng', apimiddleware('10 minutes'), function(req, res) {
+    var lat = Number(req.params.lat);
+    var lng = Number(req.params.lng);
+    var url = 'https://api.forecast.io/forecast/' + config.DARK_SKY_KEY + '/' + lat + ',' + lng;
+
+    fetch(url)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data) {
+            var ret = data.hourly.data.map(point => {
+                var date = new Date(point.time * 1000);
+                var hour = date.getHours();
+                return {
+                    hour: hour,
+                    time: point.time,
+                    summary: point.summary,
+                    icon: point.icon
+                };
+            });
+            console.log(ret);
+            res.json(ret);
         });
 });
 

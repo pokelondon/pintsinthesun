@@ -6,6 +6,10 @@
     border-color: $blueDark;
     border-style: solid;
     border-bottom-width: 3px;
+
+    p + .Box {
+        margin-top: 1rem;
+    }
 }
 .Screen-main {
     padding: 0 $padding $padding;

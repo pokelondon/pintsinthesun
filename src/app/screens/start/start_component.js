@@ -31,7 +31,7 @@ class Start extends React.Component {
                     <div className="Box Box-row no-padding">
                         <div className="Box-item Para--large text-centre">
                             <span className="Circle-or">or</span>
-                            Find nearby pubs that will be sunny in the...
+                            Find nearby pubs that will be sunny in the&#8230;
                         </div>
                     </div>
 

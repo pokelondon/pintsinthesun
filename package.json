@@ -49,6 +49,7 @@
     "express": "~4.4.3",
     "isomorphic-fetch": "^2.2.1",
     "mongodb": "^2.1.7",
-    "react": "^15.0.2"
+    "react": "^15.0.2",
+    "apicache": "0.0.12"
   }
 }
