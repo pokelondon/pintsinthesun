@@ -24,7 +24,7 @@ class Start extends React.Component {
                     <div className="Box Box-row no-padding">
                         <div className="Box-item no-padding">
                             <Link className="Button Button--primary" to='/pubs'>
-                                Find somewhere RIGHT NOW {this.props.date.toString()}
+                                Find the nearest sunny pub
                             </Link>
                         </div>
                     </div>

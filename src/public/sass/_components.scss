@@ -17,12 +17,29 @@
 
     text-align: center;
     background: $blue;
+
+    border-width: 0;
+    transition: box-shadow 100ms ease;
 }
 
 .Button--primary {
-    @extend .btn-text--large;
+    @extend .Button;
+    padding-top: 1.3rem;
+    padding-bottom: 1.7rem;
+
     color: $white;
-    background: linear-gradient(to bottom, $red 0%,$red 90%,$red 90%,#b1554b 90%,#b1554b 100%);
+    background: $red;
+    box-shadow: inset 0 -6px 0 $redDark;
+
+    font-size: $font-size-2;
+
+    &:hover {
+        box-shadow: inset 0 -4px 0 $redDark;
+    }
+
+    &:active {
+        box-shadow: inset 0 4px 0 $redDark;
+    }
 }
 
 .Button--time {
@@ -34,11 +51,21 @@
     background-size: auto 55%;
     background-position: center 20%;
 
+    box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.2);
+
     & span {
         position: absolute;
         width: 100%;
         left: 0;
-        bottom: 5%;
+        bottom: 10%;
+    }
+
+    &:hover {
+        box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    &:active {
+        box-shadow: inset 0 4px 0 rgba(0, 0, 0, 0.2);
     }
 }
 
@@ -59,14 +86,14 @@
 
 .Circle-or {
     @extend .caps--small;
-    $width: 2.666rem;
+    $width: 3rem;
     $border-width: 3px;
     box-sizing: border-box;
     display: block;
     width: $width;
     height: $width / 2;
-    padding-top: 0.2rem;
-    margin: -10px auto $width/-4 auto;
+    padding-top: 0.3rem;
+    margin: -10px auto $width/-8 auto;
     background: $mintLight;
     border-top-left-radius: $width;
     border-top-right-radius: $width;

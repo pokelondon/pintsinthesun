@@ -5,6 +5,7 @@
     border-radius: 6px;
     background-color: #e9e9e9;
     box-sizing: border-box;
+    background-color: $blueDark;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 .rc-slider * {
@@ -16,7 +17,7 @@
     left: 0;
     height: 4px;
     border-radius: 6px;
-    background-color: #abe2fb;
+    background-color: $blueDark;
     z-index: 1;
 }
 .rc-slider-handle {
@@ -27,8 +28,7 @@
     height: 14px;
     cursor: pointer;
     border-radius: 50%;
-    border: solid 2px #96dbfa;
-    background-color: #fff;
+    background-color: $blueDark;
     z-index: 2;
 }
 .rc-slider-handle:hover {
