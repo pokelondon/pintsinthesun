@@ -1,11 +1,20 @@
 .Footer {
     position: absolute;
     bottom: 0;
-    height: $footer-height;
+    //height: $footer-height;
     width: 100%;
     box-sizing: border-box;
     padding: 10px $padding;
 
     background: $blueDark;
     color: $mintLight;
+
+    &-madeByPoke{
+        float: left;
+    }
+
+    &-pokeLogo {
+        width: 15px;
+        float: right;
+    }
 }

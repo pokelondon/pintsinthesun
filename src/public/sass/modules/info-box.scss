@@ -1,0 +1,31 @@
+.InfoBox {
+    display: flex;
+    flex-direction: row;
+    x-justify-content: space-around;
+    x-align-items: stretch;
+    margin-top: 1rem;
+
+
+    &-arrow {
+        flex: 1 0 auto;
+        background: url(../img/arrow-left.svg) no-repeat right center;
+        background-size: 985.8px 24.2px; //natural svg size
+
+        &:last-of-type {
+            background-image: url(../img/arrow-right.svg);
+            background-position: left center;
+        }
+    }
+
+    &-btnContainer {
+
+        flex: 0 0 1.875rem;
+
+        & img {
+            display: block;
+            width: 1.875rem;
+        }
+
+
+    }
+}

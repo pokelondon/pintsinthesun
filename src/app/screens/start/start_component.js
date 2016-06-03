@@ -24,7 +24,7 @@ class Start extends React.Component {
                     <div className="Box Box-row no-padding">
                         <div className="Box-item no-padding">
                             <Link className="Button Button--primary" to='/pubs'>
-                                Find somewhere RIGHT NOW {this.props.date.toString()}
+                                Find the nearest sunny pub <img src="img/icons/search.svg" width="28" />
                             </Link>
                         </div>
                     </div>
@@ -51,6 +51,19 @@ class Start extends React.Component {
                                 <span>Evening</span>
                             </a>
                         </div>
+                    </div>
+
+                    <div className="InfoBox">
+                        <div className="InfoBox-arrow">
+
+                        </div>
+                        <div className="InfoBox-btnContainer">
+                            <img src="img/icons/info.svg" width="30" />
+                        </div>
+                        <div className="InfoBox-arrow">
+
+                        </div>
+
                     </div>
                 </div>
             </div>

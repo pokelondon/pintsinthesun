@@ -11,4 +11,10 @@
 .SearchLink {
     text-align: right;
     float: right;
+    width: 1.775rem;
+    height: 1.775rem;
+    margin: -0.2rem 0 -1rem 0; //counteract padding on header
+    background: url(../img/icons/search.svg) no-repeat;
+    background-size: 100%;
+    border: 0;
 }

@@ -42,7 +42,7 @@ $enable-flex: true;
 @import 'type',
         'layout',
         'components',
-        'utilities'; 
+        'utilities';
 
 // Modules
 @import 'modules/box';
@@ -53,6 +53,7 @@ $enable-flex: true;
 @import 'modules/footer';
 @import 'modules/pulldown';
 @import 'modules/location-marker';
+@import 'modules/info-box';
 
 html {
 }
@@ -61,5 +62,6 @@ body {
     color: $blueDark;
     background: $yellow;
     height: 100%;
+    -webkit-font-smoothing: antialiased;
 }
 textarea, input { outline: none; }

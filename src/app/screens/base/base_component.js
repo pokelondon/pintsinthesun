@@ -36,12 +36,12 @@ class Base extends React.Component {
         return (
             <div>
                 <header className="Header">
-                    <h1>
+                    <h1 className="LogoType">
                         <Link to="/">
                             <span title="Pints In (or Near) The Sun">Pints</span> in the Sun
                         </Link>
                     </h1>
-                    <a className="SearchLink" onClick={this.openPulldownMenu.bind(this, 'locationMenu')}>Search</a>
+                    <button className="SearchLink" onClick={this.openPulldownMenu.bind(this, 'locationMenu')}></button>
                 </header>
                 {this.props.children}
                 <Pulldown

@@ -5,7 +5,7 @@
     border-width: 0;
     border-color: $blueDark;
     border-style: solid;
-    border-bottom-width: 3px;
+    border-bottom-width: $borderWidth;
 }
 .Screen-main {
     padding: 0 $padding $padding;
@@ -18,8 +18,10 @@
     }
 }
 
+
 .Box {
-    border-width: 3px;
+    //border-width: 3px;
+    border-width: $borderWidth;
     border-color: $blueDark;
     border-style: solid;
     & + & {
@@ -33,7 +35,7 @@
     border-width: 0;
     border-color: $blueDark;
     border-style: solid;
-    border-left-width: 3px;
+    border-left-width: $borderWidth;
 
     &:first-child {
         border-left-width: 0;

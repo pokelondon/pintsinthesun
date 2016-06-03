@@ -1,12 +1,14 @@
 .PulldownMenu {
 
     position: absolute;
-    z-index: 1;
+    z-index: 10;
     top: 0;
     transform: translateY(-100%);
     transition: transform 1s;
     text-align: center;
-    height: 600px;
+    min-height: 100vh;
+    width: 100%;
+    background: $yellow;
 
     .inner {
         @include make-container();

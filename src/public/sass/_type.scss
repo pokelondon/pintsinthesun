@@ -10,12 +10,23 @@
 }
 
 
-$font-size-1: 1.5rem;
-$font-size-2: 1.333rem;
-$font-size-3: 1.25rem;
-$font-size-4: 1rem;
-$font-size-5: 0.833rem;
-$font-size-6: 0.75rem;
+
+//base 12px
+// $font-size-1: 1.5rem;
+// $font-size-2: 1.333rem;
+// $font-size-3: 1.25rem;
+// $font-size-4: 1rem;
+// $font-size-5: 0.833rem;
+// $font-size-6: 0.75rem;
+
+//base 16px
+$font-size-1: 1.125rem;
+$font-size-2: 0.999rem;
+$font-size-3: 0.9375rem;
+$font-size-4: 0.75rem;
+$font-size-5: 0.625rem;
+$font-size-6: 0.563rem;
+
 
 
 $font-family-heading: 'LeagueSpartan', sans-serif;
@@ -89,6 +100,7 @@ p {
     font-size: $font-size-4;
     font-family: $font-family-heading;
     text-transform: uppercase;
+    letter-spacing: 0.125rem;
 }
 
 .Heading--1 {
@@ -124,6 +136,7 @@ p {
     font-family: $font-family-heading;
     font-size: $font-size-6;
     text-transform: uppercase;
+    letter-spacing: 0.125rem;
 }
 
 .txt-suggestion {

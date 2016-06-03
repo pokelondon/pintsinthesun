@@ -11,18 +11,22 @@
     width: 100%;
     border: none;
     box-sizing: border-box;
-
-    // font-size: 1.9rem;
-    // font-weight: 700;
-
     text-align: center;
     background: $blue;
+
+    & img {
+        vertical-align: middle;
+        margin-left: 12px;
+    }
 }
 
 .Button--primary {
     @extend .btn-text--large;
+    min-height: 3.75rem;
     color: $white;
-    background: linear-gradient(to bottom, $red 0%,$red 90%,$red 90%,#b1554b 90%,#b1554b 100%);
+    background: $red;
+    @extend .inner-shadow;
+    //background: linear-gradient(to bottom, $red 0%,$red 95%,$red 95%, #b1554b 95%, #b1554b 100%);
 }
 
 .Button--time {
@@ -33,6 +37,7 @@
     background-repeat: no-repeat;
     background-size: auto 55%;
     background-position: center 20%;
+    @extend .inner-shadow;
 
     & span {
         position: absolute;
@@ -59,8 +64,8 @@
 
 .Circle-or {
     @extend .caps--small;
-    $width: 2.666rem;
-    $border-width: 3px;
+    $width: 2.333rem;
+    $border-width: $borderWidth;
     box-sizing: border-box;
     display: block;
     width: $width;
@@ -72,5 +77,5 @@
     border-top-right-radius: $width;
     border: $border-width solid $blueDark;
     border-bottom: 0;
-    transform: translateY(-100%);
+    transform: translateY(-99%);
 }
