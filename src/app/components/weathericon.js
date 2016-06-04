@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
+
 const Skycons = require('skycons')(window);
 
 
@@ -60,9 +63,29 @@ WeatherIcon.propTypes = {
         'SNOW',
         'WIND',
         'FOG'
-    ])
+    ]).isRequired
 }
 
-export default WeatherIcon;
 
+const mapStateToProps = (state, ownProps) => {
+    const { weatherNow, isFetching } = state.weather;
+    let icon = 'CLEAR_DAY';
+    if(weatherNow.icon && !isFetching) {
+        icon = weatherNow.icon.toUpperCase().replace(new RegExp('-', 'g'), '_');
+    }
+    return {
+        icon
+    }
+}
 
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+    }
+}
+
+const WeatherIconContainer = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(WeatherIcon)
+
+export default WeatherIconContainer;

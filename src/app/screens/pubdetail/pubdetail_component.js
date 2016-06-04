@@ -3,6 +3,8 @@ import Slider from 'rc-slider';
 
 import ThreeD from '../../components/threed';
 import WeatherIcon from '../../components/weathericon';
+import Suggestion from '../../components/suggestion';
+import Rational from '../../components/rational';
 
 
 class PubDetail extends React.Component {
@@ -19,18 +21,33 @@ class PubDetail extends React.Component {
     render() {
         if(this.props.isFetching) {
             return (
-                <p>Loading Detail</p>
+                <div className="Screen-header">
+                    <p className="Heading--1">Loading</p>
+                    <div className="Box Box-row">
+                        <p>Finding you somewhere</p>
+                    </div>
+                </div>
             )
         } else if(this.props.isLocating) {
             return (
-                <p>Locating</p>
+                <div className="Screen-header">
+                    <p className="Heading--1">Locating</p>
+                    <div className="Box Box-row">
+                        <p>Scrabbling around</p>
+                    </div>
+                </div>
             )
         } else if(!this.props.pub) {
             return (
-                <p>Error</p>
+                <div className="Screen-header">
+                    <p className="Heading--1">Error</p>
+                    <div className="Box Box-row">
+                        <p>Oh crap.</p>
+                    </div>
+                </div>
             )
         }
-        let { distance, location, name } = this.props.pub;
+        let { distance, location, name, neighbourhood } = this.props.pub;
         let [lng, lat] = location.coordinates;
         var distanceUnit = 'm';
         if (distance > 1000) {
@@ -40,21 +57,18 @@ class PubDetail extends React.Component {
         return (
             <div className="Screen">
                 <header className="Screen-header">
-                    <p className="Heading--1">
-                        <span className="txt-suggestion">Why dont you head down to </span>
-                        <span className="Pub-name">{name}</span>
-                    </p>
+                    <Suggestion name={name} />
                     <div className="Box Box-row">
                         <div className="Box-item">
-                            <span>Marylebone &mdash; {distance.toFixed(1)}{distanceUnit}</span>
+                            <span>{neighbourhood ? `${neighbourhood} &mdash; ` : ''}{distance.toFixed(1)}{distanceUnit} away</span>
                         </div>
                     </div>
                     <div className="Box Box-row">
                         <div className="Box-item">
-                            Best for sun: 13:32 - 17:23
+                            Best for sun: 13:32-17:23
                         </div>
                         <div className="Box-item">
-                            Weather now: <WeatherIcon icon='RAIN' />
+                            Weather now: <WeatherIcon />
                         </div>
                     </div>
                 </header>
@@ -65,21 +79,21 @@ class PubDetail extends React.Component {
                             date={this.props.date}
                         />
 
-                        <Slider
-                            min={6}
-                            max={21}
-                            step={1}
-                            included={false}
-                            defaultValue={this.props.date.getHours()}
-                            className='Slider'
-                            onChange={this.onSliderChange.bind(this)}
-                        />
+                        <div className="SliderContainer">
+                            <Slider
+                                min={6}
+                                max={21}
+                                step={1}
+                                included={false}
+                                defaultValue={this.props.date.getHours()}
+                                className='Slider'
+                                onChange={this.onSliderChange.bind(this)}
+                            />
+                        </div>
                     </div>
-                    <div className="Box Para--large">
-                        <p>Its good cos its got a roof terrace, it faces west, and the outside bit faces the sun at the time of day</p>
-                    </div>
+                    <Rational pub={this.props.pub} />
                     <div className="Box">
-                        <button className="Button--primary" onClick={this.props.incrementCurrentPub}>Next {this.props.filteredIndex +1}/{this.props.filteredPubs.length}</button>
+                        <button className="Button--primary" onClick={this.props.incrementCurrentPub}>Show me another {this.props.filteredIndex +1}/{this.props.filteredPubs.length}</button>
                     </div>
                 </div>
             </div>
@@ -97,6 +111,7 @@ PubDetail.propTypes = {
     incrementCurrentPub: React.PropTypes.func,
     filteredIndex: React.PropTypes.number.isRequired,
     pub: React.PropTypes.shape({
+        neighbourhoot: React.PropTypes.string,
         name: React.PropTypes.string.isRequired,
         location: React.PropTypes.shape([
             React.PropTypes.number, React.PropTypes.number

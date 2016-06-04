@@ -4,6 +4,9 @@ import { geocode } from '../../services/googlemaps.js';
 
 import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 
+import config from '../../config';
+console.log(config.MAP_CONFIG);
+
 
 class Locate extends React.Component {
 
@@ -11,20 +14,14 @@ class Locate extends React.Component {
         super(props);
         this.props = props;
 
-        this.state = {searchTerm: ''};
+        this.state = {
+            searchTerm: ''
+        };
     }
 
     onDragEnd() {
         let centre = this.map.props.map.getCenter();
         this.props.onCenterChanged({lat: centre.lat(), lng: centre.lng()});
-    }
-
-    componentWillReceiveProps(nextProps) {
-        //if(this.props.centre.lat != nextProps.centre.lat) {
-            //let { lat, lng } = nextProps.centre;
-            //let ll = new google.maps.LatLng(lat, lng);
-            //this.map.props.map.panTo(ll);
-        //}
     }
 
     onSearchChange(e) {
@@ -44,45 +41,46 @@ class Locate extends React.Component {
         return (
             <div class="Locate">
 
-                <form className="form-inline" onSubmit={this.doSearch.bind(this)}>
-                    <br />
-                    <div className="form-group">
-                        <input className="form-control" onChange={this.onSearchChange.bind(this)} type="search" value={this.state.searchTerm} placeholder="Postcode / Street name" />
-                        <button type="submit" className="btn btn-primary" onClick={this.doSearch.bind(this)}>Search</button>
+                <div className="Box">
+                    <form className="Box-row" onSubmit={this.doSearch.bind(this)}>
+                        <input className="Input--search Box-item--right" onChange={this.onSearchChange.bind(this)} type="search" value={this.state.searchTerm} placeholder="Postcode / Street name" />
+                        <button type="submit" className="Button Box-item--right" onClick={this.doSearch.bind(this)}>Search</button>
+                        <button className="Button--close" onClick={this.props.onClose}>&times;</button>
+                    </form>
+                </div>
+
+                <div className="Box">
+                    <div className="Map">
+                        <GoogleMapLoader
+                            containerElement={(
+                                <div
+                                    style={{
+                                        height: "100%",
+                                    }}
+                                />
+                            )}
+                            googleMapElement={
+                                <GoogleMap
+                                    ref={(map) => this.map = map}
+                                    defaultZoom={15}
+                                    defaultCenter={this.props.centre}
+                                    onDragend={this.onDragEnd.bind(this)}
+                                    center={this.props.centre}
+                                    options={{
+                                        mapTypeControl: false,
+                                        streetViewControl: false,
+                                        zoomControl: true,
+                                        styles: config.MAP_CONFIG
+                                    }}
+                                    >
+                                </GoogleMap>
+                            }
+                        />
+                        <div className="LocationMarker"></div>
                     </div>
-                    <br /><br />
-                </form>
+                </div>
 
-
-                <div className="Map">
-                    <GoogleMapLoader
-                        containerElement={(
-                            <div
-                                style={{
-                                    height: "100%",
-                                }}
-                            />
-                        )}
-                        googleMapElement={
-                            <GoogleMap
-                                ref={(map) => this.map = map}
-                                defaultZoom={15}
-                                defaultCenter={this.props.centre}
-                                onDragend={this.onDragEnd.bind(this)}
-                                center={this.props.centre}
-                                options={{
-                                    mapTypeControl: false,
-                                    streetViewControl: false,
-                                    zoomControl: true
-                                }}
-                                >
-                            </GoogleMap>
-                        }
-                    />
-
-                    <div className="LocationMarker"></div>
-
-                    <p></p>
+                <div className="Box">
                     <Link
                        onClick={this.props.onClose}
                        to='/pubs'
@@ -90,6 +88,8 @@ class Locate extends React.Component {
                        >
                        Find somewhere near here {this.props.filteredPubs.length}/{this.props.items.length}
                    </Link>
+               </div>
+                <div className="Box">
                     <button
                         className="Button"
                         onClick={this.props.fetchPosition}>

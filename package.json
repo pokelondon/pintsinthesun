@@ -37,6 +37,7 @@
     "redux": "^3.5.2",
     "redux-logger": "^2.6.1",
     "redux-thunk": "^1.0.0",
+    "skycons": "^1.0.0",
     "st": "^1.1.0",
     "three": "^0.76.1",
     "tween.js": "^16.3.4",
@@ -49,6 +50,7 @@
     "express": "~4.4.3",
     "isomorphic-fetch": "^2.2.1",
     "mongodb": "^2.1.7",
-    "react": "^15.0.2"
+    "react": "^15.0.2",
+    "apicache": "0.0.12"
   }
 }

@@ -20,9 +20,6 @@ export default class Pulldown extends React.Component {
         return (
             <div className={classes}>
                 <div className="inner">
-                    <div>
-                        <button className="PulldownMenu-closeBtn" onClick={this.props.onClose}>&times;</button>
-                    </div>
                     {this.props.pulldownMenu === 'locationMenu' ? <LocateContainer onClose={this.props.onClose} /> : null}
                 </div>
             </div>

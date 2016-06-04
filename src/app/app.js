@@ -20,7 +20,7 @@ const loggerMiddleware = createLogger();
 
 const createStoreWithMiddleware = applyMiddleware(
     thunkMiddleware,
-    loggerMiddleware,
+    //loggerMiddleware,
     routerMiddleware(hashHistory),
 )(createStore);
 const store = createStoreWithMiddleware(reducers);

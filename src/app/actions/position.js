@@ -1,5 +1,6 @@
 import { getLocation } from '../services/location';
 import { floorLatLng } from '../services/location';
+import { fetchWeather, filterWeather } from './weather';
 
 import config from '../config';
 
@@ -25,6 +26,7 @@ export function requestPosition() {
 export function responsePosition(centre) {
     return function(dispatch) {
         dispatch(fetchPubs(centre));
+        dispatch(fetchWeather(centre));
         dispatch({
             type: RESPONSE_POSITION,
             centre: centre,
@@ -34,9 +36,13 @@ export function responsePosition(centre) {
 }
 
 export function updateTime(date) {
-    return {
-        type: UPDATE_TIME,
-        date
+    return function(dispatch) {
+        dispatch({
+            type: UPDATE_TIME,
+            date
+        });
+        let hour = date.getHours();
+        dispatch(filterWeather(hour));
     }
 }
 

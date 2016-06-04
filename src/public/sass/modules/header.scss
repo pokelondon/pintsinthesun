@@ -3,6 +3,8 @@
     color: $mintLight;
     background: $blueDark;
     overflow: hidden;
+    position: relative;
+    z-index: 2; // to be above pulldown
     h1 {
         float: left;
     }
