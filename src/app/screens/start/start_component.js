@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-
+import Logo from '../../components/logo';
 
 class Start extends React.Component {
     constructor(props) {
@@ -14,7 +14,7 @@ class Start extends React.Component {
                 <header className="Screen-header">
                     <div className="Box Box-row">
                         <div className="Box-item no-padding">
-                            <img className="Logo--main" src="http://placehold.it/280x130?text=logo" />
+                            <Logo />
                         </div>
                     </div>
 

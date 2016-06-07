@@ -42,7 +42,8 @@ $enable-flex: true;
 @import 'type',
         'layout',
         'components',
-        'utilities';
+        'utilities',
+        'animations';
 
 // Modules
 @import 'modules/box';
@@ -54,6 +55,8 @@ $enable-flex: true;
 @import 'modules/pulldown';
 @import 'modules/location-marker';
 @import 'modules/info-box';
+@import 'modules/logo';
+
 
 html {
 }

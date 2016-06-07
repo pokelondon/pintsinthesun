@@ -44,6 +44,7 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
+    "apicache": "0.0.12",
     "body-parser": "^1.15.1",
     "classnames": "^2.2.5",
     "es6-promise": "^3.2.1",
@@ -51,6 +52,6 @@
     "isomorphic-fetch": "^2.2.1",
     "mongodb": "^2.1.7",
     "react": "^15.0.2",
-    "apicache": "0.0.12"
+    "react-svg-inline": "^1.1.0"
   }
 }

@@ -1,0 +1,85 @@
+@keyframes leftWave {
+    0% {
+        transform: translateX(10px);
+    }
+    50% {
+        transform: translateX(0px);
+    }
+    100% {
+        transform: translateX(10px);
+    }
+}
+
+@keyframes rightWave {
+    0% {
+        transform: translateX(-10px);
+    }
+    50% {
+        transform: translateX(0px);
+    }
+    100% {
+        transform: translateX(-10px);
+    }
+}
+
+@keyframes foldScale {
+    0% {
+        transform: scaleX(1.4);
+    }
+    50% {
+        transform: scaleX(1.0);
+    }
+    100% {
+        transform: scaleX(1.4);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes sunrise {
+    0% {
+        transform: translateY(20%);
+    }
+    100% {
+        transform: translateY(0%);
+    }
+}
+
+@keyframes bannerRise {
+    0% {
+        transform: translateY(100%);
+    }
+    25% {
+        transform: translateY(100%);
+    }
+    100% {
+        transform: translateY(0%);
+    }
+}
+
+@keyframes riseAndPop {
+    0% {
+        transform: translateY(400%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0%);
+        opacity: 1;
+    }
+}
+
+@keyframes cloudDrift {
+    0% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(1000%);
+    }
+}

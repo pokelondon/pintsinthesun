@@ -1,0 +1,191 @@
+.Logo {
+    width: 100%;
+    //height: 0;
+    //padding-bottom: 48%; //doing this in JS now
+    position: relative;
+    background: #7AC9C3;
+}
+
+.Logo-wrapper {
+    //padding-top: 3%;
+    background: $white;
+}
+
+.Logo-clipContainer {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position:absolute;
+    top: 0;
+    left: 0;
+}
+
+.Logo-banner {
+
+    position: relative;
+    height: 100%;
+    width: 90%;
+    margin: auto;
+    display: block;
+    z-index: 1;
+
+    animation-name: bannerRise;
+    animation-duration: 2.5s;
+    animation-fill-mode: forwards;
+
+    &-svg {
+        position: absolute;
+        bottom: 4%;
+
+        .st0{fill:#7BC9C3;stroke:#302D49;stroke-width:3;stroke-miterlimit:10;}
+        .st1{fill:#F5F6EB;stroke:#302D49;stroke-width:2.6479;stroke-miterlimit:5;}
+        .st2{fill:#302D49;stroke:#302D49;stroke-width:2.7213;stroke-miterlimit:1;}
+
+    }
+
+}
+
+
+.Logo-rays {
+    width: 100%;
+    height: 100%;
+    transform-origin: 50% 50%;
+    position: absolute;
+    transform: scale(1.2) translateY(-50%);
+
+    &-svg {
+        width: 100%;
+        position: absolute;
+        transform-origin: center;
+        animation-name: spin;
+        animation-duration: 300s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+
+        .st0{fill:none;stroke:#302D49;stroke-width:3;stroke-miterlimit:10;}
+    }
+}
+
+
+//wrapper to allow the sun to overlap at the top
+.Logo-sunContainer {
+    box-sizing: content-box;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    overflow: hidden;
+    height: 100%;
+    margin-top: -20px;
+    padding-bottom: 20px;
+}
+
+
+.Logo-sun {
+
+    &-svg {
+        width: 60%;
+        margin: auto;
+        display: block;
+        animation-name: sunrise;
+        animation-duration: 3s;
+        .st0{fill:#FFD15C;stroke:#302D49;stroke-width:3;stroke-miterlimit:10;}
+    }
+
+}
+
+.Logo-content {
+
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+
+
+    &-svg {
+        height: 67%;
+        margin: auto;
+        display: block;
+
+        .st0{fill:#302D49;}
+    	.st1{opacity:0.8;}
+    	.st2{fill:#F5F6EB;}
+    	.st3{font-family:'LeagueSpartan-Bold';}
+    	.st4{font-size:20px;}
+    	.st5{fill:#F5F6EB;stroke:#302D49;stroke-width:3;stroke-miterlimit:10;}
+    	.st6{fill:none;stroke:#302D49;stroke-width:3;stroke-miterlimit:10;}
+    	.st7{fill:#E9AF32;stroke:#302D49;stroke-width:3;stroke-miterlimit:10;}
+
+    }
+}
+
+
+.Logo-cloud {
+    position: absolute;
+    z-index: 1;
+    width: 15%;
+    animation-name: cloudDrift;
+    animation-duration: 300s;
+    animation-timing-function: linear;
+
+    &--1 {
+        top: 41%;
+        left: -5%;
+    }
+
+    &--2 {
+        top: 33%;
+        left: 73%;
+    }
+}
+
+
+/* Animations */
+.Logo-animation--banner {
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: cubic-bezier(.51,0,.63,.99);
+}
+.Logo-bannerEnd--left{
+    animation-name: leftWave;
+}
+.Logo-banner-fold--left {
+    transform-origin: left;
+    animation-name: foldScale;
+}
+.Logo-bannerEnd--right{
+    animation-name: rightWave;
+}
+.Logo-banner-fold--right {
+    transform-origin: right;
+    animation-name: foldScale;
+}
+
+.bubbleAnim {
+    animation-name: riseAndPop;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+
+    &:nth-child(2){
+        animation-delay: 0.1s;
+    }
+    &:nth-child(3){
+        animation-delay: 0.4s;
+    }
+    &:nth-child(4){
+        animation-delay: 0.3s;
+    }
+    &:nth-child(5){
+        animation-delay: 0.4s;
+    }
+    &:nth-child(6){
+        animation-delay: 0.5s;
+    }
+    &:nth-child(7){
+        animation-delay: 0.4s;
+    }
+    &:nth-child(8){
+        animation-delay: 0.7s;
+    }
+}
