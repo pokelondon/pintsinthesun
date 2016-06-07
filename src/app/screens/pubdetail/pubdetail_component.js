@@ -18,6 +18,10 @@ class PubDetail extends React.Component {
         this.props.updateTime(new Date(current.setHours(value)));
     }
 
+    sliderTipFormatter(value) {
+        return `${value}:00`;
+    }
+
     render() {
         if(this.props.isFetching) {
             return (
@@ -81,13 +85,15 @@ class PubDetail extends React.Component {
 
                         <div className="SliderContainer">
                             <Slider
-                                min={6}
+                                min={7}
                                 max={21}
                                 step={1}
                                 included={false}
                                 defaultValue={this.props.date.getHours()}
                                 className='Slider'
                                 onChange={this.onSliderChange.bind(this)}
+                                tipFormatter={this.sliderTipFormatter.bind(this)}
+                                marks={ {7: '7:00', 14: '14:00', 21: '21:00'} } 
                             />
                         </div>
                     </div>
@@ -121,4 +127,3 @@ PubDetail.propTypes = {
 }
 
 export default PubDetail;
-

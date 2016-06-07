@@ -21,6 +21,7 @@
 .Slider {
     background: url(../img/slider-track.svg);
     background-size: 9px;
+    height: 5px;
 
     .rc-slider-handle {
         margin-left: -12px;
@@ -29,6 +30,10 @@
         height: 24px;
         background: $red;
         border: 1px solid $mintLight;
+    }
+
+    .rc-slider-dot {
+        display: none;
     }
 }
 
