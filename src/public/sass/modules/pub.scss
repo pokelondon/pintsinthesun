@@ -18,10 +18,25 @@
     box-sizing: border-box;
 }
 
+.Slider {
+    background: url(../img/slider-track.svg);
+    background-size: 9px;
+
+    .rc-slider-handle {
+        margin-left: -12px;
+        margin-top: -10px;
+        width: 24px;
+        height: 24px;
+        background: $red;
+        border: 1px solid $mintLight;
+    }
+}
+
+
+
 .WeatherIcon {
     height: 1.5em;
     display: inline-block;
     vertical-align: middle;
     float: right;
 }
-

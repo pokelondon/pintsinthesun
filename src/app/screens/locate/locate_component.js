@@ -4,6 +4,8 @@ import { geocode } from '../../services/googlemaps.js';
 
 import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 
+import GA from 'react-ga';
+
 import config from '../../config';
 console.log(config.MAP_CONFIG);
 
@@ -17,6 +19,9 @@ class Locate extends React.Component {
         this.state = {
             searchTerm: ''
         };
+
+        GA.modalview('/locate');
+
     }
 
     onDragEnd() {
@@ -33,6 +38,12 @@ class Locate extends React.Component {
         geocode(this.state.searchTerm, (centre) => {
             this.props.onCenterChanged(centre);
         });
+
+        GA.event({
+            category: 'Filter',
+            action: 'Search'
+        });
+        GA.pageview(`/search?q=${this.state.searchTerm}`);
     }
 
     render() {

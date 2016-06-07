@@ -5,6 +5,7 @@ import * as positionActions from '../../actions/position';
 
 import PubDetail from './pubdetail_component';
 
+import GA from 'react-ga';
 
 const mapStateToProps = (state, ownProps) => {
     const {
@@ -38,6 +39,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         incrementCurrentPub: index => {
             boundPositionActions.incrementCurrentPub();
+            GA.event({
+                category: 'Filter',
+                action: 'Show Another'
+            });
         }
     }
 }
@@ -48,4 +53,3 @@ const PubDetailContainer = connect(
 )(PubDetail)
 
 export default PubDetailContainer;
-

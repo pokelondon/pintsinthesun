@@ -16,6 +16,8 @@ import Base from './screens/base/base_container';
 import AdminTool from './screens/admintool/admintool_component';
 import NoMatch from './screens/nomatch';
 
+import GA from 'react-ga';
+
 const loggerMiddleware = createLogger();
 
 const createStoreWithMiddleware = applyMiddleware(
@@ -25,10 +27,18 @@ const createStoreWithMiddleware = applyMiddleware(
 )(createStore);
 const store = createStoreWithMiddleware(reducers);
 
+if(window.location.hostname === 'pintsinthesun.co.uk'){
+    GA.initialize('UA-15712565-30');
+}
+
+function logPageView(){
+    GA.pageview(window.location.hash.split('?')[0].replace('#', ''));
+}
+
 ReactDOM.render((
     <Provider store={store}>
         <div>
-            <Router className="AppContainer" history={hashHistory}>
+            <Router onUpdate={logPageView} className="AppContainer" history={hashHistory}>
                 <Route path="/" component={Base}>
                     <IndexRoute component={Start} />
                     <Route path="/locate" component={Locate} />

@@ -6,6 +6,7 @@ import * as locateActions from '../../actions/locate';
 
 import Locate from './locate_component';
 
+import GA from 'react-ga';
 
 const mapStateToProps = (state, ownProps) => {
     const { centre, sun, items, filteredPubs, date, isLocating } = state.position;
@@ -30,6 +31,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         fetchPosition: () => {
             boundPositionActions.fetchPosition();
+            GA.event({
+                category: 'Location',
+                action: 'Locate Me'
+            });
         }
     }
 }
@@ -40,5 +45,3 @@ const LocateContainer = connect(
 )(Locate)
 
 export default LocateContainer;
-
-
