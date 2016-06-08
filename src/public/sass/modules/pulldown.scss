@@ -7,7 +7,7 @@
     height: 100%;
     top: -100%;
 
-    padding: $padding;
+    padding: 0 $padding;
 
     text-align: center;
     background: transparentize($blueDark, 0.1);
@@ -16,5 +16,13 @@
 
     &.is-visible {
         top: 2.4rem;
+    }
+
+    .inner {
+        padding: $padding;
+        background: $mintLight;
+        border: $borderWidth solid $blueDark;
+        border-top-width: 0;
+        box-sizing: border-box;
     }
 }

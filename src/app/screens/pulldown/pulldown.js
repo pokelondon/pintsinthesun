@@ -19,7 +19,7 @@ export default class Pulldown extends React.Component {
 
         return (
             <div className={classes}>
-                <div className="inner">
+                <div className="inner max-width">
                     {this.props.pulldownMenu === 'locationMenu' ? <LocateContainer onClose={this.props.onClose} /> : null}
                 </div>
             </div>

@@ -12,7 +12,7 @@ class Start extends React.Component {
         return (
             <div className="Screen">
                 <header className="Screen-header">
-                    <div className="Box Box-row">
+                    <div className="Box Box-row max-width">
                         <div className="Box-item no-padding">
                             <Logo />
                         </div>
@@ -21,21 +21,21 @@ class Start extends React.Component {
                 </header>
 
                 <div className="Screen-main">
-                    <div className="Box Box-row no-padding">
+                    <div className="Box Box-row max-width no-padding">
                         <div className="Box-item no-padding">
                             <Link className="Button Button--primary" to='/pubs'>
                                 Find the nearest sunny pub <img src="img/icons/search.svg" width="28" />
                             </Link>
                         </div>
                     </div>
-                    <div className="Box Box-row no-padding">
+                    <div className="Box Box-row max-width no-padding">
                         <div className="Box-item Para--large text-centre">
                             <span className="Circle-or">or</span>
                             Find nearby pubs that will be sunny in the&#8230;
                         </div>
                     </div>
 
-                    <div className="Box Box-row">
+                    <div className="Box Box-row max-width">
                         <div className="Box-item no-padding">
                             <a className="Button--morning" onClick={this.props.setMorning}>
                                 <span>Morning</span>
@@ -53,7 +53,7 @@ class Start extends React.Component {
                         </div>
                     </div>
 
-                    <div className="InfoBox">
+                    <div className="InfoBox max-width">
                         <div className="InfoBox-arrow">
 
                         </div>

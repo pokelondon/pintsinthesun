@@ -60,47 +60,59 @@ class PubDetail extends React.Component {
         }
         return (
             <div className="Screen">
+
                 <header className="Screen-header">
-                    <Suggestion name={name} />
-                    <div className="Box Box-row">
-                        <div className="Box-item">
-                            <span>{neighbourhood ? `${neighbourhood} &mdash; ` : ''}{distance.toFixed(1)}{distanceUnit} away</span>
+                    <div className="max-width">
+                        <Suggestion name={name} />
+                        <div className="Box Box-row">
+                            <div className="Box-item">
+                                <span>{neighbourhood ? `${neighbourhood} &mdash; ` : ''}{distance.toFixed(1)}{distanceUnit} away</span>
+                            </div>
                         </div>
-                    </div>
-                    <div className="Box Box-row">
-                        <div className="Box-item">
-                            Best for sun: 13:32-17:23
-                        </div>
-                        <div className="Box-item">
-                            Weather now: <WeatherIcon />
+                        <div className="Box Box-row">
+                            <div className="Box-item">
+                                Best for sun: 13:32-17:23
+                            </div>
+                            <div className="Box-item">
+                                Weather now: <WeatherIcon />
+                            </div>
                         </div>
                     </div>
                 </header>
-                <div className="Screen-main">
-                    <div className="Box">
-                        <ThreeD
-                            centre={{lat, lng}}
-                            date={this.props.date}
-                        />
 
-                        <div className="SliderContainer">
-                            <Slider
-                                min={7}
-                                max={21}
-                                step={1}
-                                included={false}
-                                defaultValue={this.props.date.getHours()}
-                                className='Slider'
-                                onChange={this.onSliderChange.bind(this)}
-                                tipFormatter={this.sliderTipFormatter.bind(this)}
-                                marks={ {7: '7:00', 14: '14:00', 21: '21:00'} } 
-                            />
+                <div className="Screen-main">
+                    <div className="max-width">
+                        <div className="Box Box-row Box-row--wrap no-padding">
+                            <div className="Box-item Box-item--halfCol">
+                                <ThreeD
+                                    centre={{lat, lng}}
+                                    date={this.props.date}
+                                />
+
+                                <div className="SliderContainer">
+                                    <Slider
+                                        min={7}
+                                        max={21}
+                                        step={1}
+                                        included={false}
+                                        defaultValue={this.props.date.getHours()}
+                                        className='Slider'
+                                        onChange={this.onSliderChange.bind(this)}
+                                        tipFormatter={this.sliderTipFormatter.bind(this)}
+                                        marks={ {7: '7:00', 14: '14:00', 21: '21:00'} }
+                                    />
+                                </div>
+                            </div>
+                            <Rational pub={this.props.pub} />
+                        </div>
+
+                        <div className="Box Box-row no-padding">
+                            <div className="Box-item no-padding">
+                                <button className="Button--primary" onClick={this.props.incrementCurrentPub}>Show me another {this.props.filteredIndex +1}/{this.props.filteredPubs.length}</button>
+                            </div>
                         </div>
                     </div>
-                    <Rational pub={this.props.pub} />
-                    <div className="Box">
-                        <button className="Button--primary" onClick={this.props.incrementCurrentPub}>Show me another {this.props.filteredIndex +1}/{this.props.filteredPubs.length}</button>
-                    </div>
+
                 </div>
             </div>
         )

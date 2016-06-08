@@ -1,6 +1,7 @@
 .Screen-header {
     background: $mintLight;
     padding: $padding $padding 0;
+    //padding: $padding+20 $padding 0;
 
     border-width: 0;
     border-color: $blueDark;
@@ -29,7 +30,7 @@
     border-color: $blueDark;
     border-style: solid;
     & + & {
-        border-top-width: 0;
+        border-top-width: 1;
     }
     p {
         padding: 10px;
@@ -54,8 +55,10 @@
     border-left-width: $borderWidth;
     box-sizing: border-box;
 
+
     &:first-child {
         border-left-width: 0;
+        border-top-width: 0;
     }
 
     &--right {
@@ -67,11 +70,43 @@
 }
 
 .Box-row {
+
     display: flex;
     flex-direction: row;
 
+    &--wrap{
+        flex-wrap: wrap;
+    }
+
+
     .Box-item {
+        //flex: 1 0 50%;
         flex: 1;
+
+
+        &--halfCol {
+            flex: 1 0 100%;
+            box-sizing: border-box;
+
+            border-left-width: 0;
+            border-top-width: $borderWidth;
+
+            &:first-child {
+                border-top-width: 0;
+            }
+
+            @include media-breakpoint-up(md) {
+                flex: 1 0 50%;
+                border-left-width: $borderWidth;
+                border-top-width: 0;
+
+                &:first-child {
+                    border-left-width: 0;
+                    border-top-width: 0;
+                }
+            }
+
+        }
     }
 
     & + & {

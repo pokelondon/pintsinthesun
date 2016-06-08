@@ -48,65 +48,80 @@ class Locate extends React.Component {
 
     render() {
 
+        var btnCopy;
+        if(this.props.filteredPubs.length){
+            btnCopy = `Find somewhere near here (${this.props.filteredPubs.length} found)`;
+        } else {
+            btnCopy = 'No pubs found near here :(';
+        }
+
         let { lat, lng } = this.props.centre;
         return (
-            <div class="Locate">
+            <div className="Locate">
 
-                <div className="Box">
-                    <form className="Box-row" onSubmit={this.doSearch.bind(this)}>
-                        <input className="Input--search Box-item--right" onChange={this.onSearchChange.bind(this)} type="search" value={this.state.searchTerm} placeholder="Postcode / Street name" />
-                        <button type="submit" className="Button Box-item--right" onClick={this.doSearch.bind(this)}>Search</button>
-                        <button className="Button--close" onClick={this.props.onClose}>&times;</button>
-                    </form>
-                </div>
+                <p className="Para--large">Search for your location, or drag the map</p>
 
-                <div className="Box">
-                    <div className="Map">
-                        <GoogleMapLoader
-                            containerElement={(
-                                <div
-                                    style={{
-                                        height: "100%",
-                                    }}
-                                />
-                            )}
-                            googleMapElement={
-                                <GoogleMap
-                                    ref={(map) => this.map = map}
-                                    defaultZoom={15}
-                                    defaultCenter={this.props.centre}
-                                    onDragend={this.onDragEnd.bind(this)}
-                                    center={this.props.centre}
-                                    options={{
-                                        mapTypeControl: false,
-                                        streetViewControl: false,
-                                        zoomControl: true,
-                                        styles: config.MAP_CONFIG
-                                    }}
-                                    >
-                                </GoogleMap>
-                            }
-                        />
-                        <div className="LocationMarker"></div>
+                <form className="Box Box-row no-padding" onSubmit={this.doSearch.bind(this)}>
+                        <input className="Input--search Box-item" onChange={this.onSearchChange.bind(this)} type="search" value={this.state.searchTerm} placeholder="Postcode / Street name" />
+                        <button type="submit" className="Button Box-item" onClick={this.doSearch.bind(this)}>Search</button>
+                </form>
+
+                <div className="Box Box-row no-padding">
+                    <div className="Box-item no-padding">
+
+                        <div className="Map">
+                            <GoogleMapLoader
+                                containerElement={(
+                                    <div
+                                        style={{
+                                            height: "100%",
+                                        }}
+                                    />
+                                )}
+                                googleMapElement={
+                                    <GoogleMap
+                                        ref={(map) => this.map = map}
+                                        defaultZoom={15}
+                                        defaultCenter={this.props.centre}
+                                        onDragend={this.onDragEnd.bind(this)}
+                                        center={this.props.centre}
+                                        options={{
+                                            mapTypeControl: false,
+                                            streetViewControl: false,
+                                            zoomControl: true,
+                                            styles: config.MAP_CONFIG
+                                        }}
+                                        >
+                                    </GoogleMap>
+                                }
+                            />
+                            <div className="LocationMarker"></div>
+                        </div>
                     </div>
                 </div>
 
-                <div className="Box">
-                    <Link
-                       onClick={this.props.onClose}
-                       to='/pubs'
-                       className="Button Button--primary"
-                       >
-                       Find somewhere near here {this.props.filteredPubs.length}/{this.props.items.length}
-                   </Link>
-               </div>
-                <div className="Box">
-                    <button
-                        className="Button"
-                        onClick={this.props.fetchPosition}>
-                        {(this.props.isLocating) ? 'Locating' : 'Locate Me'}
-                    </button>
+                <div className="Box Box-row no-padding">
+                    <div className="Box-item no-padding">
+                        <Link
+                           onClick={this.props.onClose}
+                           to='/pubs'
+                           className="Button Button--primary"
+                           >
+                           {btnCopy}
+                       </Link>
+                    </div>
                 </div>
+
+                <div className="Box Box-row no-padding">
+                    <div className="Box-item no-padding">
+                        <button
+                            className="Button"
+                            onClick={this.props.fetchPosition}>
+                            {(this.props.isLocating) ? 'Locating' : 'Locate Me'}
+                        </button>
+                    </div>
+                </div>
+
             </div>
         )
     }

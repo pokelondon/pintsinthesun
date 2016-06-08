@@ -257,10 +257,10 @@ export default class Logo extends React.Component {
                             </svg>
                         `} />
 
-                        {content}
+
 
                     </div>
-
+                    {content}
                 </div>
             </div>
 
