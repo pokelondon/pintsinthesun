@@ -46,15 +46,19 @@
     @extend .Button;
     background: $red;
 }
-.Button--time {
+.Button--secondary {
     @extend .Button;
+    background-color: $yellowLight;
+    color: $blueDark;
+}
+.Button--time {
+    @extend .Button--secondary;
     position: relative;
     min-height: 110px;
     background-color: $yellowLight;
     background-repeat: no-repeat;
     background-size: auto 55%;
     background-position: center 20%;
-    color: $blueDark;
 
     & span {
         position: absolute;

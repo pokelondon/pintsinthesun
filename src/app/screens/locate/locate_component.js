@@ -63,7 +63,7 @@ class Locate extends React.Component {
 
                 <form className="Box Box-row no-padding" onSubmit={this.doSearch.bind(this)}>
                         <input className="Input--search Box-item" onChange={this.onSearchChange.bind(this)} type="search" value={this.state.searchTerm} placeholder="Postcode / Street name" />
-                        <button type="submit" className="Button Box-item" onClick={this.doSearch.bind(this)}>Search</button>
+                        <button type="submit" className="Button--secondary Box-item" onClick={this.doSearch.bind(this)}>Search</button>
                 </form>
 
                 <div className="Box Box-row no-padding">
@@ -115,7 +115,7 @@ class Locate extends React.Component {
                 <div className="Box Box-row no-padding">
                     <div className="Box-item no-padding">
                         <button
-                            className="Button"
+                            className="Button--secondary"
                             onClick={this.props.fetchPosition}>
                             {(this.props.isLocating) ? 'Locating' : 'Locate Me'}
                         </button>
