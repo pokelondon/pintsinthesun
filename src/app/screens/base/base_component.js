@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Pulldown from '../pulldown/pulldown';
 
 
@@ -26,13 +27,19 @@ class Base extends React.Component {
         });
     }
 
-    closePulldownMenu(menu) {
+    closePulldownMenu() {
         this.setState({
             isPulldownOpen: false
         });
     }
 
     render() {
+        let headerButtons;
+        if(this.state.isPulldownOpen){
+            headerButtons = <button key="close" className="CloseLink" onClick={this.closePulldownMenu.bind(this)}></button>
+        } else {
+            headerButtons = <button key="search" className="SearchLink" onClick={this.openPulldownMenu.bind(this, 'locationMenu')}></button>
+        }
         return (
             <div>
                 <header className="Header">
@@ -41,7 +48,9 @@ class Base extends React.Component {
                             <span title="Pints In (or Near) The Sun">Pints</span> in the Sun
                         </Link>
                     </h1>
-                    <button className="SearchLink" onClick={this.openPulldownMenu.bind(this, 'locationMenu')}></button>
+                    <ReactCSSTransitionGroup transitionName="fadeIn"  transitionEnterTimeout={500} transitionLeave={false}>
+                        {headerButtons}
+                    </ReactCSSTransitionGroup>
                 </header>
                 {this.props.children}
                 <Pulldown

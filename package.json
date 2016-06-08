@@ -52,6 +52,7 @@
     "isomorphic-fetch": "^2.2.1",
     "mongodb": "^2.1.7",
     "react": "^15.0.2",
+    "react-addons-css-transition-group": "^15.1.0",
     "react-ga": "^1.4.1",
     "react-svg-inline": "^1.1.0"
   }
