@@ -1,3 +1,26 @@
+/*
+
+Header on the start page is  alittle different to the rest throughout the site,
+as it has to be contained within a max-size container (as some of its verttical
+margins are percentages, and thus need a horizontal containment so they
+dont go huge). But we need the BG to stretch across the whole viewport, so we
+wrap it in another container, stretched to 100%, and styled as the header
+Button would normally be (white bg, border at bottom)
+
+*/
+
+.Screen-headerWrapper{
+    background: $mintLight;
+    border-bottom: $borderWidth solid $blueDark;
+}
+
+.Screen-headerSizer{
+    max-width: $maxWidth + $borderWidth + $borderWidth;
+    padding: 0 $padding;
+    margin: auto;
+}
+
 .Screen-header--start {
-    padding-top: 9%; 
+    padding: 9% 0 0 0;
+    border-bottom: none;
 }

@@ -22,7 +22,19 @@
     }
 }
 
-@keyframes foldScale {
+@keyframes foldScaleLeft {
+    0% {
+        transform: scaleX(1.4);
+    }
+    50% {
+        transform: scaleX(1.0);
+    }
+    100% {
+        transform: scaleX(1.4);
+    }
+}
+
+@keyframes foldScaleRight {
     0% {
         transform: scaleX(1.4);
     }
@@ -66,11 +78,12 @@
 
 @keyframes riseAndPop {
     0% {
-        transform: translateY(400%);
+        //transform: translateY(400%);
+        transform: translateY(10px);
         opacity: 0;
     }
     100% {
-        transform: translateY(0%);
+        transform: translateY(0);
         opacity: 1;
     }
 }

@@ -34,8 +34,14 @@ $font-family-body: 'Karla', sans-serif;
 
 $font-size-root: 16px;
 
+
+
+
 html {
     font-size: $font-size-root;
+    @include media-breakpoint-up(md){
+        font-size: 18px;
+    }
 }
 body {
     line-height: $line-height;

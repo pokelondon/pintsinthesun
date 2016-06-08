@@ -43,14 +43,16 @@ class Base extends React.Component {
         return (
             <div>
                 <header className="Header">
-                    <h1 className="LogoType">
-                        <Link to="/">
-                            <span title="Pints In (or Near) The Sun">Pints</span> in the Sun
-                        </Link>
-                    </h1>
-                    <ReactCSSTransitionGroup transitionName="fadeIn"  transitionEnterTimeout={500} transitionLeave={false}>
-                        {headerButtons}
-                    </ReactCSSTransitionGroup>
+                    <div className="max-width">
+                        <h1 className="LogoType">
+                            <Link to="/">
+                                <span title="Pints In (or Near) The Sun">Pints</span> in the Sun
+                            </Link>
+                        </h1>
+                        <ReactCSSTransitionGroup transitionName="fadeIn"  transitionEnterTimeout={500} transitionLeave={false}>
+                            {headerButtons}
+                        </ReactCSSTransitionGroup>
+                    </div>
                 </header>
                 {this.props.children}
                 <Pulldown
