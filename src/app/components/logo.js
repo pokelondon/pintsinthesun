@@ -32,6 +32,7 @@ export default class Logo extends React.Component {
     render() {
         return (
 
+
             <div className="Logo-wrapper">
                 <div className="Logo js-logo">
 
@@ -263,6 +264,7 @@ export default class Logo extends React.Component {
                     {content}
                 </div>
             </div>
+
 
 
 

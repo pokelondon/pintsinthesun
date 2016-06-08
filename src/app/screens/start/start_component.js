@@ -10,8 +10,8 @@ class Start extends React.Component {
 
     render() {
         return (
-            <div className="Screen">
-                <header className="Screen-header">
+            <div className="Screen Screen--start">
+                <header className="Screen-header Screen-header--start">
                     <div className="Box Box-row max-width">
                         <div className="Box-item no-padding">
                             <Logo />
