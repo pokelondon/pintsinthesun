@@ -78,14 +78,12 @@
 
 
     .Box-item {
-        //flex: 1 0 50%;
+
         flex: 1;
 
+        &--responsiveBorders {
 
-        &--halfCol {
-            flex: 1 0 100%;
             box-sizing: border-box;
-
             border-left-width: 0;
             border-top-width: $borderWidth;
 
@@ -94,17 +92,27 @@
             }
 
             @include media-breakpoint-up(md) {
-                flex: 1 0 50%;
                 border-left-width: $borderWidth;
                 border-top-width: 0;
-
                 &:first-child {
                     border-left-width: 0;
                     border-top-width: 0;
                 }
             }
-
         }
+
+        &--halfCol {
+            flex: 1 0 100%;
+
+            @include media-breakpoint-up(md) {
+                flex: 1 0 50%;
+            }
+        }
+
+        &--halfCol--fixed {
+            flex: 1 0 50%;
+        }
+
     }
 
     & + & {

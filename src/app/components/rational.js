@@ -50,7 +50,7 @@ class Rational extends React.Component {
         let rational = this.state.rational.join(' ');
         let weatherStatement = this.getWeatherStatement();
         return (
-            <div className="Box Box-item Box-item--halfCol Para--large">
+            <div className="Box Box-item Box-item--halfCol Box-item--responsiveBorders Para--large">
                 <p dangerouslySetInnerHTML={{__html: rational}}></p>
                 <p dangerouslySetInnerHTML={{__html: weatherStatement}}></p>
             </div>
