@@ -119,6 +119,21 @@
     }
 }
 
+@keyframes drinkyShake {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    33% {
+        transform: scale(1.15) rotate(-8deg);
+    }
+    66% {
+        transform: scale(1.15    ) rotate(8deg);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+}
+
 
 /* react specific */
 .fadeIn-enter {
