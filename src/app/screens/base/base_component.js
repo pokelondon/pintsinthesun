@@ -36,9 +36,9 @@ class Base extends React.Component {
     render() {
         let headerButtons;
         if(this.state.isPulldownOpen){
-            headerButtons = <button key="close" className="CloseLink" onClick={this.closePulldownMenu.bind(this)}></button>
+            headerButtons = <button key="close" className="CloseLink rollover-scale" onClick={this.closePulldownMenu.bind(this)}></button>
         } else {
-            headerButtons = <button key="search" className="SearchLink" onClick={this.openPulldownMenu.bind(this, 'locateMenu')}></button>
+            headerButtons = <button key="search" className="SearchLink rollover-scale" onClick={this.openPulldownMenu.bind(this, 'locateMenu')}></button>
         }
         return (
             <div>
@@ -58,7 +58,7 @@ class Base extends React.Component {
                 <div className="InfoBox max-width">
                     <div className="InfoBox-arrow"></div>
                     <div className="InfoBox-btnContainer">
-                            <button onClick={this.openPulldownMenu.bind(this, 'info')} className="Button--info"><img src="img/icons/info.svg" /></button>
+                            <button onClick={this.openPulldownMenu.bind(this, 'info')} className="Button--info rollover-scale"><img src="img/icons/info.svg" /></button>
                     </div>
                     <div className="InfoBox-arrow"></div>
                 </div>

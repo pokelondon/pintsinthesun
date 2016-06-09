@@ -23,8 +23,8 @@ class Start extends React.Component {
                 <div className="Screen-main">
                     <div className="Box Box-row max-width no-padding">
                         <div className="Box-item no-padding">
-                            <Link className="Button Button--primary" to='/pubs'>
-                                Find the nearest sunny pub <img src="img/icons/search.svg" width="28" />
+                            <Link className="Button Button--primary Button--primary--search" to='/pubs'>
+                                Find the nearest sunny pub
                             </Link>
                         </div>
                     </div>
@@ -53,7 +53,7 @@ class Start extends React.Component {
                         </div>
                     </div>
 
-                    
+
                 </div>
             </div>
         )
