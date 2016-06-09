@@ -38,21 +38,30 @@ class Base extends React.Component {
         if(this.state.isPulldownOpen){
             headerButtons = <button key="close" className="CloseLink" onClick={this.closePulldownMenu.bind(this)}></button>
         } else {
-            headerButtons = <button key="search" className="SearchLink" onClick={this.openPulldownMenu.bind(this, 'locationMenu')}></button>
+            headerButtons = <button key="search" className="SearchLink" onClick={this.openPulldownMenu.bind(this, 'locateMenu')}></button>
         }
         return (
             <div>
                 <header className="Header">
-                    <h1 className="LogoType">
-                        <Link to="/">
-                            <span title="Pints In (or Near) The Sun">Pints</span> in the Sun
-                        </Link>
-                    </h1>
-                    <ReactCSSTransitionGroup transitionName="fadeIn"  transitionEnterTimeout={500} transitionLeave={false}>
-                        {headerButtons}
-                    </ReactCSSTransitionGroup>
+                    <div className="max-width">
+                        <h1 className="LogoType">
+                            <Link to="/">
+                                <span title="Pints In (or Near) The Sun">Pints</span> in the Sun
+                            </Link>
+                        </h1>
+                        <ReactCSSTransitionGroup transitionName="fadeIn"  transitionEnterTimeout={500} transitionLeave={false}>
+                            {headerButtons}
+                        </ReactCSSTransitionGroup>
+                    </div>
                 </header>
                 {this.props.children}
+                <div className="InfoBox max-width">
+                    <div className="InfoBox-arrow"></div>
+                    <div className="InfoBox-btnContainer">
+                            <button onClick={this.openPulldownMenu.bind(this, 'info')} className="Button--info"><img src="img/icons/info.svg" /></button>
+                    </div>
+                    <div className="InfoBox-arrow"></div>
+                </div>
                 <Pulldown
                     onClose={this.closePulldownMenu.bind(this)}
                     pulldownMenu={this.state.pulldownMenu}

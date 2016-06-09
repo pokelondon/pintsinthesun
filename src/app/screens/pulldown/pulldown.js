@@ -1,5 +1,6 @@
 import React from 'react';
-import LocateContainer from '../locate/locate_container';
+import LocateScreen from '../locate/locate_container';
+import InfoScreen from '../info/info_component';
 import classNames from 'classnames';
 
 export default class Pulldown extends React.Component {
@@ -11,6 +12,8 @@ export default class Pulldown extends React.Component {
 
     render() {
 
+        console.log('pulldown props', this.props);
+
         let classes = classNames({
             'PulldownMenu': true,
             'container': true,
@@ -20,7 +23,8 @@ export default class Pulldown extends React.Component {
         return (
             <div className={classes}>
                 <div className="inner max-width">
-                    {this.props.pulldownMenu === 'locationMenu' ? <LocateContainer onClose={this.props.onClose} /> : null}
+                    {this.props.pulldownMenu === 'locateMenu' ? <LocateScreen onClose={this.props.onClose} /> : null}
+                    {this.props.pulldownMenu === 'info' ? <InfoScreen onClose={this.props.onClose} /> : null}
                 </div>
             </div>
         )

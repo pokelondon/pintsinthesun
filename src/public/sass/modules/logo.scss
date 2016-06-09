@@ -9,6 +9,8 @@
 .Logo-wrapper {
     //padding-top: 3%;
     background: $white;
+    border: $borderWidth solid $blueDark;
+    border-bottom: none;
 }
 
 .Logo-clipContainer {
@@ -111,7 +113,7 @@
         .st0{fill:#302D49;}
     	.st1{opacity:0.8;}
     	.st2{fill:#F5F6EB;}
-    	.st3{font-family:'LeagueSpartan-Bold';}
+    	.st3{font-family:'LeagueSpartan';}
     	.st4{font-size:20px;}
     	.st5{fill:#F5F6EB;stroke:#302D49;stroke-width:3;stroke-miterlimit:10;}
     	.st6{fill:none;stroke:#302D49;stroke-width:3;stroke-miterlimit:10;}
@@ -149,17 +151,22 @@
 }
 .Logo-bannerEnd--left{
     animation-name: leftWave;
+    -moz-animation-name: none;
 }
 .Logo-banner-fold--left {
     transform-origin: left;
-    animation-name: foldScale;
+    animation-name: foldScaleLeft;
+    -moz-animation-name: none;
 }
 .Logo-bannerEnd--right{
+    transform-origin: right;
     animation-name: rightWave;
+    -moz-animation-name: none;
 }
 .Logo-banner-fold--right {
     transform-origin: right;
-    animation-name: foldScale;
+    animation-name: foldScaleRight;
+    -moz-animation-name: none;
 }
 
 .bubbleAnim {
@@ -167,6 +174,8 @@
     animation-duration: 1s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
+
+    //-moz-animation: none !important;
 
     &:nth-child(2){
         animation-delay: 0.1s;

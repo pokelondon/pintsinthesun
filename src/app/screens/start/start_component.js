@@ -11,14 +11,14 @@ class Start extends React.Component {
     render() {
         return (
             <div className="Screen Screen--start">
-                <header className="Screen-header Screen-header--start">
-                    <div className="Box Box-row max-width">
-                        <div className="Box-item no-padding">
-                            <Logo />
-                        </div>
-                    </div>
 
-                </header>
+                <div className="Screen-headerWrapper">
+                    <div className="Screen-headerSizer">
+                        <header className="Screen-header Screen-header--start">
+                            <Logo />
+                        </header>
+                    </div>
+                </div>
 
                 <div className="Screen-main">
                     <div className="Box Box-row max-width no-padding">
@@ -53,18 +53,7 @@ class Start extends React.Component {
                         </div>
                     </div>
 
-                    <div className="InfoBox max-width">
-                        <div className="InfoBox-arrow">
-
-                        </div>
-                        <div className="InfoBox-btnContainer">
-                            <img src="img/icons/info.svg" width="30" />
-                        </div>
-                        <div className="InfoBox-arrow">
-
-                        </div>
-
-                    </div>
+                    
                 </div>
             </div>
         )

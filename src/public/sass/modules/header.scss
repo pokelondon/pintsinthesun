@@ -1,9 +1,11 @@
 .Header {
+    box-sizing: border-box;
+    position: relative;
+    height: 2.3rem;
     padding: 10px $padding;
     color: $mintLight;
     background: $blueDark;
     overflow: hidden;
-    position: relative;
     z-index: 12; // to be above pulldown
     h1 {
         float: left;

@@ -3,7 +3,8 @@
     flex-direction: row;
     x-justify-content: space-around;
     x-align-items: stretch;
-    margin-top: 1rem;
+    //margin-top: 1rem;
+    padding: 0 $padding;
 
 
     &-arrow {
@@ -25,7 +26,6 @@
             display: block;
             width: 1.875rem;
         }
-
-
+        
     }
 }
