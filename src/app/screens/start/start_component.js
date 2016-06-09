@@ -53,18 +53,7 @@ class Start extends React.Component {
                         </div>
                     </div>
 
-                    <div className="InfoBox max-width">
-                        <div className="InfoBox-arrow">
-
-                        </div>
-                        <div className="InfoBox-btnContainer">
-                            <img src="img/icons/info.svg" width="30" />
-                        </div>
-                        <div className="InfoBox-arrow">
-
-                        </div>
-
-                    </div>
+                    
                 </div>
             </div>
         )

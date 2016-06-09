@@ -83,6 +83,13 @@
     background-image: url(../img/icons/evening-icon.svg);
 }
 
+.Button--info {
+    border: 0;
+    background: none;
+    width: 2.5rem;
+    height: 2.5rem; 
+}
+
 .Circle-or {
     @extend .caps--small;
     $border-width: $borderWidth;

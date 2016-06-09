@@ -123,6 +123,15 @@ h1,
     line-height: 1.75rem;
 }
 
+.Para--body {
+    font-size: $font-size-4;
+    line-height: 1.75rem;
+
+    &:nth-child(n+2){
+        margin-top: 1.5em;
+    }
+}
+
 .btn-text--large {
     font-size: $font-size-3;
     font-weight: 700;
