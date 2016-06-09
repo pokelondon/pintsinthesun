@@ -69,11 +69,11 @@ class PubDetail extends React.Component {
                                 <span>{neighbourhood ? `${neighbourhood} &mdash; ` : ''}{distance.toFixed(1)}{distanceUnit} away</span>
                             </div>
                         </div>
-                        <div className="Box Box-row">
-                            <div className="Box-item">
+                        <div className="Box Box-row flex-wrap">
+                            <div className="Box-item Box-item--halfCol--fixed">
                                 Best for sun: 13:32-17:23
                             </div>
-                            <div className="Box-item">
+                            <div className="Box-item Box-item--halfCol--fixed">
                                 Weather now: <WeatherIcon />
                             </div>
                         </div>
@@ -82,8 +82,8 @@ class PubDetail extends React.Component {
 
                 <div className="Screen-main">
                     <div className="max-width">
-                        <div className="Box Box-row Box-row--wrap no-padding">
-                            <div className="Box-item Box-item--halfCol">
+                        <div className="Box Box-row flex-wrap no-padding">
+                            <div className="Box-item Box-item--halfCol Box-item--responsiveBorders">
                                 <ThreeD
                                     centre={{lat, lng}}
                                     date={this.props.date}
