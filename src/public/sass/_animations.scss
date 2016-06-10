@@ -109,7 +109,6 @@
     }
 }
 
-
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -127,10 +126,21 @@
         transform: scale(1.15) rotate(-8deg);
     }
     66% {
-        transform: scale(1.15    ) rotate(8deg);
+        transform: scale(1.15) rotate(8deg);
     }
     100% {
         transform: scale(1) rotate(0deg);
+    }
+}
+
+@keyframes showTick {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
     }
 }
 

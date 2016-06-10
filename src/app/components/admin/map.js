@@ -46,7 +46,7 @@ export default class Map extends Component {
                         defaultCenter={this.props.centre}
                         onDragend={this.onDragEnd.bind(this)}
                         onZoomChanged={this.onZoomChanged.bind(this)}
-                        mapTypeId={google.maps.MapTypeId.SATELLITE}
+                        mapTypeId={google.maps.MapTypeId.HYBRID}
                         >
                         {this.getMarkers(this.props.locations)}
                     </GoogleMap>
@@ -92,7 +92,7 @@ export default class Map extends Component {
 
     onMarkerClick(locationObj) {
         this.props.onLocationSelect(locationObj);
-        this.setState({zoom: 19});
+        //this.setState({zoom: 19});
 
     }
 

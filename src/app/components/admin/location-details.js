@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-
+import classNames from 'classnames';
 
 
 export default class MyComponent extends Component {
@@ -10,50 +10,57 @@ export default class MyComponent extends Component {
 
         this.state = {
             hasTerrace: false,
-            buildingToTheWest: false
+            buildingToTheWest: false,
+            isSaved: false
         };
     }
-
-    // onTerraceChange(e) {
-    //     this.setState({hasTerrace: e.target.checked});
-    // }
-    //
-    // onBuildingToTheWestChange(e) {
-    //     this.setState({buildingToTheWest: e.target.checked});
-    // }
 
 
     onFormSubmit(e) {
         e.preventDefault();
     }
 
+    saveLocation() {
+        this.props.onSave();
+    }
+
     render() {
 
+        let btnClasses = classNames({
+            'Button--secondary': true,
+            'Button--confirmed': this.props.isSaved
+        });
 
         return (
 
             <form onSubmit={this.onFormSubmit}>
+                <h2 className="Heading--1">{this.props.location.name}</h2>
 
-                <h1>{this.props.location.name}</h1>
+                <div className="Box Box-row">
 
-                {this.props.angle} Angle <br />
+                    <div className="Box Box-item">
+                        <label>
+                            <input onChange={this.props.onFormChange} type="checkbox" name="has_terrace" value="true" checked={this.props.hasTerrace} /> Has outdoor terrace?
+                        </label>
+                    </div>
 
-                <div class="checkbox">
-                    <label>
-                        <input onChange={this.props.onFormChange} type="checkbox" name="has_terrace" value="true" checked={this.props.hasTerrace} /> Has outdoor terrace?
-                    </label>
+                    <div className="Box Box-item">
+                        <label>
+                            <input onChange={this.props.onFormChange} type="checkbox" name="building_to_the_west" value="true" checked={this.props.buildingToTheWest} /> Has building to the west?
+                        </label>
+                    </div>
+
+                    <div className="Box Box-item no-padding">
+                        <button onClick={this.saveLocation.bind(this)} className={btnClasses}>Save</button>
+                    </div>
+
                 </div>
 
-                <div class="checkbox">
-                    <label>
-                        <input onChange={this.props.onFormChange} type="checkbox" name="building_to_the_west" value="true" checked={this.props.buildingToTheWest} /> Has building to the west?
-                    </label>
+                <div className="Box Box-row">
+                    <div className="Box Box-item no-padding">
+                        <button onClick={this.props.onNextLocation} className="Button--primary">Choose another pub</button>
+                    </div>
                 </div>
-
-                <button onClick={this.props.onSave} className="btn btn-primary">Save</button>
-
-                <button onClick={this.props.onNextLocation} className="btn btn-primary">Next</button>
-
 
             </form>
         );

@@ -111,12 +111,35 @@ app.get('/near/:lat/:lng/:date?', function(req, res) {
     });
 });
 
+
+/**
+* Accept an array of foursquare IDs.
+* Return location objects that are in the database that match the incoming IDs
+*/
+app.post('/pub/exists', function(req, res) {
+    
+    var ids = req.body;
+    var cursor = pubs.find({"foursquare.id": { $in: ids} } );
+
+    var matching = [];
+    cursor.each(function(err, doc){
+        assert.equal(null, err);
+        if(doc != null){
+            matching.push(doc);
+        } else {
+            res.json(matching);
+        }
+    });
+});
+
 app.get('/pub/:id', function(req, res) {
     pubs.findOne({"foursquare.id": req.params.id}, function(err, pub) {
         assert.equal(null, err);
         res.json({pub: pub});
     })
 });
+
+
 
 app.post('/pub/:id', function(req, res) {
     var submittedData = req.body;
@@ -189,4 +212,3 @@ app.get('/weather/:lat/:lng', apimiddleware('10 minutes'), function(req, res) {
 httpServer.listen(bind, function () {
     console.log('Web Server listening at http://%s:%s', 'localhost', bind);
 });
-

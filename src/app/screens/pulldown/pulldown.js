@@ -12,8 +12,6 @@ export default class Pulldown extends React.Component {
 
     render() {
 
-        console.log('pulldown props', this.props);
-
         let classes = classNames({
             'PulldownMenu': true,
             'container': true,

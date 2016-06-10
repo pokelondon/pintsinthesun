@@ -1,18 +1,7 @@
 import config from '../config';
 import {addLocation as addLocationToLocal} from './local';
 
-/**
- * Save pub to the API
- * Also (for the moment) adding the location to local storage
- *
- * @param {String} locationID
- * @param {Boolean} hasTerrace
- * @param {Boolean} buildingToTheWest
- * @param {float} angle
- */
 export function savePub(locationID, hasTerrace, buildingToTheWest, angle) {
-
-    addLocationToLocal(locationID);
 
     const payload = {
         outdoor_angle: angle,
@@ -29,5 +18,27 @@ export function savePub(locationID, hasTerrace, buildingToTheWest, angle) {
         },
         body: data
     });
+
+}
+
+
+/**
+ * Returns list of locations that are in the database
+ *
+ * @param {Array} ids - array of place IDs we want to check
+ */
+export function checkPubsExist(ids) {
+
+    const data = JSON.stringify(ids);
+
+    return fetch(`${config.API}pub/exists/`, {
+        method: 'post',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: data
+    }).then(
+        data => data.json()
+    );
 
 }

@@ -4,7 +4,7 @@ import LocationDetails from '../../components/admin/location-details';
 import {getPubs} from '../../services/foursquare';
 import AngleMarker from '../../components/admin/AngleMarker';
 import {existsInLocalStorage} from '../../services/local';
-import {savePub} from '../../services/pintsinthesun';
+import {savePub, checkPubsExist} from '../../services/pintsinthesun';
 import {getDistance} from '../../utils/Geo';
 
 
@@ -20,6 +20,7 @@ export default class AdminTool extends Component {
             currentAngle: 0,
             currentHasTerrace: false,
             currentBuildingToWest: false,
+            currentIsSaved: false,
             centre: {lat: 51.523777, lng: -0.0781597}
         };
 
@@ -43,6 +44,7 @@ export default class AdminTool extends Component {
                 location={this.state.currentLocation}
                 hasTerrace={this.state.currentHasTerrace}
                 buildingToTheWest={this.state.currentBuildingToWest}
+                isSaved={this.state.currentIsSaved}
                 onSave={this.saveLocation.bind(this)}
                 angle={angle}
                 onLocationSave={this.onLocationSave.bind(this)}
@@ -55,27 +57,39 @@ export default class AdminTool extends Component {
                 onAngleChage={this.onAngleChange.bind(this)}
             />;
 
+        } else {
+            locationDetails = <LocationDetails location={{name: ''}}/>
         }
 
         return (
 
-            <div>
-                <div style={{height: 600, width: 600, position: 'relative'}}>
-                    <Map
-                        onCenterChanged={this.onMapCentreChanged.bind(this)}
-                        onLocationSelect={this.onLocationSelect.bind(this)}
-                        centre={this.state.centre}
-                        locations={this.state.locations}
-                        ref="Map"
-                    />
-                    {angleMarker}
+            <div className="Screen">
+
+                <header className="Screen-header">
+                    <div className="max-width">
+                        <h2>Add a pub</h2>
+                        <div class="Box Box-row">
+                            {locationDetails}
+                        </div>
+                    </div>
+                </header>
+
+                <div className="Screen-main max-width">
+                    <div className="Box Box-row no-padding">
+                        <div className="Map Box Box-item no-padding">
+                            <Map
+                                onCenterChanged={this.onMapCentreChanged.bind(this)}
+                                onLocationSelect={this.onLocationSelect.bind(this)}
+                                centre={this.state.centre}
+                                locations={this.state.locations}
+                                ref="Map"
+                            />
+                            {angleMarker}
+                        </div>
+                    </div>
                 </div>
 
-                <div className="col-xs-10 col-xs-offset-4">
-                    {locationDetails}
-                </div>
             </div>
-
         )
     }
 
@@ -89,6 +103,7 @@ export default class AdminTool extends Component {
             currentLocation: null,
             currentHasTerrace: false,
             currentBuildingToWest: false,
+            currentIsSaved: false,
             currentAngle: 0
         });
     }
@@ -100,7 +115,7 @@ export default class AdminTool extends Component {
      */
     onMapCentreChanged(centre) {
 
-        //If we are focussed on a location, and move the map more than 30m away,
+        //If we are focussed on a location, and move the map more than 100m away,
         //unfocus from it
         if(this.state.currentLocation){
             let changedDistance = getDistance(
@@ -110,33 +125,59 @@ export default class AdminTool extends Component {
                 centre.lng,
                 'K'
             );
-            if(changedDistance > 0.03){
+            if(changedDistance > 0.1){
                 this.resetMap();
             }
         }
 
         this.setState({centre: centre});
 
+
+        /* Get pubs near here from foursquare */
+        //TODO - flatten these promises!
         getPubs(centre).then((response) => {
+
             let locations = response.map( (location, index) => {
-
-                //save the index internally in the location so we can later find
-                //the next index (sort of link a linked list, but not)
                 location.index = index;
-
-                //mock this data as we know it wont exist (it might if data comes
-                //from the db instead of FSQ)
-                location.exists = existsInLocalStorage(location.id);
-                location.hasTerrace = false;
-                location.buildingToTheWest = false;
                 location.outdoorAngle = 0;
                 return location;
             });
-            this.setState({locations: locations});
-        });
+            return locations;
 
+        }).then((FSQLocations) => {
+
+            /* See if the pubs from foursquare already exist in the DB */
+            let IDsToTest = FSQLocations.map(function(o) { return o.id; });
+            checkPubsExist(IDsToTest).then( (DBLocations) => {
+                this.updateLocationData(FSQLocations, DBLocations)
+            });
+        });
     }
 
+
+    /**
+     * Once we have data from foursquare, and data from the DB, merge them
+     * here into one array, and then set that as the state.
+     * @param {Array} FSQLocations
+     * @param {Array} DBLocations
+     */
+    updateLocationData(FSQLocations, DBLocations) {
+
+        FSQLocations.forEach( (FSQLocation) => {
+            DBLocations.map( (DBLocation) => {
+                if(DBLocation.foursquare.id === FSQLocation.id){
+                    FSQLocation.exists = true;
+                    FSQLocation.hasTerrace = DBLocation.has_terrace;
+                    FSQLocation.buildingToTheWest = DBLocation.building_to_the_west;
+                    FSQLocation.outdoorAngle = DBLocation.outdoor_angle;
+                }
+            });
+
+        });
+
+        this.setState({locations: FSQLocations});
+        this.onLocationSelect(FSQLocations[0]);  //select the first one by default
+    }
 
     /**
      * Set the state to focus on a particular location object
@@ -150,7 +191,8 @@ export default class AdminTool extends Component {
             centre: locationObj.location,
             currentHasTerrace: locationObj.hasTerrace,
             currentBuildingToWest: locationObj.buildingToTheWest,
-            currentAngle: locationObj.outdoorAngle
+            currentAngle: locationObj.outdoorAngle,
+            currentIsSaved: locationObj.exists
         });
     }
 
@@ -161,11 +203,12 @@ export default class AdminTool extends Component {
 
 
     /**
-     * Force the map to re-render (an object in the locations array has changed
+     * Force the map to re-render on save (an object in the locations array has changed
      * and react wont be aware of that)
      *
      */
     onLocationSave() {
+        this.setState({currentIsSaved: true});
         this.forceUpdate();
     }
 
@@ -194,7 +237,7 @@ export default class AdminTool extends Component {
             nextIndex = 0;
         }
         let nextLocation = this.state.locations[this.state.currentLocation.index + 1];
-        this.onLocationSelect(nextLocation)
+        this.onLocationSelect(nextLocation);
 
     }
 
