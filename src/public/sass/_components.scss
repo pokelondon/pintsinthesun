@@ -162,6 +162,12 @@
     background: none;
     width: 2.5rem;
     height: 2.5rem;
+    display: inline-block;
+    padding: 0;
+
+    & > img {
+        display: inline-block;
+    }
 }
 
 .Circle-or {
