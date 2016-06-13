@@ -9,7 +9,9 @@
 .Logo-wrapper {
     //padding-top: 3%;
     background: $white;
-    border: $borderWidth solid $blueDark;
+    // border: $borderWidth solid $blueDark;
+    @extend .border-defaults;
+    border-style: solid;
     border-bottom: none;
 }
 

@@ -69,5 +69,12 @@ body {
     background: $yellow;
     height: 100%;
     -webkit-font-smoothing: antialiased;
+    border-width: 2px;
+
+    @include media-breakpoint-up(md) {
+        border-width: 3px;
+    }
+
+
 }
 textarea, input { outline: none; }

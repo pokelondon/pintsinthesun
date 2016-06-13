@@ -1,10 +1,10 @@
 .Screen-header {
     background: $mintLight;
     padding: $padding $padding 0;
-    border-width: 0;
-    border-color: $blueDark;
-    border-style: solid;
-    border-bottom-width: $borderWidth;
+
+    @extend .border-defaults;
+    border-style: hidden;
+    border-bottom-style: solid;
 
     p + .Box {
         margin-top: 1rem;
@@ -23,12 +23,11 @@
 
 
 .Box {
-    //border-width: 3px;
-    border-width: $borderWidth;
-    border-color: $blueDark;
+    @extend .border-defaults;
     border-style: solid;
+
     & + & {
-        border-top-width: 1;
+        border-top-style: hidden;
     }
     p {
         padding: 10px;
@@ -46,24 +45,20 @@
 
 .Box-item {
     padding: 10px;
-
-    border-width: 0;
-    border-color: $blueDark;
-    border-style: solid;
-    border-left-width: $borderWidth;
+    @extend .border-defaults;
+    border-style: hidden;
+    border-left-style: solid;
     box-sizing: border-box;
 
-
     &:first-child {
-        border-left-width: 0;
-        border-top-width: 0;
+        border-left-style: hidden;
+        border-top-style: hidden;
     }
 
     &--right {
-        border-width: 0;
-        border-color: $blueDark;
+        border-style: hidden;
         border-style: solid;
-        border-right-width: 3px;
+        border-right-style: solid;
     }
 }
 
@@ -84,19 +79,19 @@
         &--responsiveBorders {
 
             box-sizing: border-box;
-            border-left-width: 0;
-            border-top-width: $borderWidth;
+            border-left-style: hidden;
+            border-top-style: solid;
 
             &:first-child {
-                border-top-width: 0;
+                border-top-style: none;
             }
 
             @include media-breakpoint-up(md) {
-                border-left-width: $borderWidth;
-                border-top-width: 0;
+                border-left-style: solid;
+                border-top-style: hidden;
                 &:first-child {
-                    border-left-width: 0;
-                    border-top-width: 0;
+                    border-left-style: hidden;
+                    border-top-style: hidden;
                 }
             }
         }

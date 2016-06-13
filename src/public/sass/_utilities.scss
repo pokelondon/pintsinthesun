@@ -24,3 +24,12 @@
         transform: scale(1.2);
     }
 }
+
+.border-defaults {
+    border-width: $borderWidth;
+    border-color: $blueDark;
+
+    @include media-breakpoint-up(md) {
+        border-width: $borderWidthLarge;
+    }
+}

@@ -62,8 +62,8 @@ class ThreeD extends React.Component {
     }
 
     componentDidMount() {
-        this.WIDTH = 600;
-        this.HEIGHT = 600;
+        this.WIDTH = 300;
+        this.HEIGHT = 300;
 
             // set some camera attributes
         const ASPECT = this.WIDTH / this.HEIGHT;
