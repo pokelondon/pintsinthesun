@@ -7,7 +7,6 @@ import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 import GA from 'react-ga';
 
 import config from '../../config';
-console.log(config.MAP_CONFIG);
 
 
 class Locate extends React.Component {

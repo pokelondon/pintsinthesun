@@ -117,7 +117,7 @@ app.get('/near/:lat/:lng/:date?', function(req, res) {
 * Return location objects that are in the database that match the incoming IDs
 */
 app.post('/pub/exists', function(req, res) {
-    
+
     var ids = req.body;
     var cursor = pubs.find({"foursquare.id": { $in: ids} } );
 
