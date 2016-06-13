@@ -4,6 +4,10 @@ import config from '../config';
 
 import { floorLatLng } from './location';
 
+import promise from 'es6-promise';
+import 'isomorphic-fetch';
+promise.polyfill();
+
 
 /**
  * Get pubs around a certain location
