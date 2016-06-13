@@ -103,6 +103,7 @@
 
 .Button--time {
     @extend .Button--secondary;
+    padding: 1rem 0;
     position: relative;
     min-height: 110px;
     background-color: $yellowLight;

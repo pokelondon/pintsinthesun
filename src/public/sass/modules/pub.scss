@@ -13,13 +13,9 @@
         @extend .border-defaults;
         border-style: solid;
         border-radius: 100%;
-        // transform: scale(0.5) translate(-50%, -50%);
-        // margin-bottom: -300px;
-        // margin-right: -300px;
         transform-origin: 0 0;
         transform: scale(0.8);
         width: 100%;
-        //border: 6px solid $blueDark;
         box-sizing: border-box;
 
         @include media-breakpoint-up(sm) {
