@@ -4,3 +4,4 @@ s3_website.yml
 notebooks/.ipynb_checkpoints/
 npm-debug.log
 notebooks/*.npy
+*.pyc
