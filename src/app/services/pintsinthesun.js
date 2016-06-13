@@ -1,6 +1,10 @@
 import config from '../config';
 import {addLocation as addLocationToLocal} from './local';
 
+import promise from 'es6-promise';
+import 'isomorphic-fetch';
+promise.polyfill();
+
 export function savePub(locationID, hasTerrace, buildingToTheWest, angle) {
 
     const payload = {
