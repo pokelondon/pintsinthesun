@@ -9,11 +9,11 @@
 
     &-arrow {
         flex: 1 0 auto;
-        background: url(../img/arrow-left.svg) no-repeat right center;
+        background: url(/img/arrow-left.svg) no-repeat right center;
         background-size: 985.8px 24.2px; //natural svg size
 
         &:last-of-type {
-            background-image: url(../img/arrow-right.svg);
+            background-image: url(/img/arrow-right.svg);
             background-position: left center;
         }
     }
@@ -26,6 +26,6 @@
             display: block;
             width: 1.875rem;
         }
-        
+
     }
 }

@@ -58,7 +58,7 @@
     padding-right: 2.6rem;
 
     &:after {
-        content: url(../img/icons/search.svg);
+        content: url(/img/icons/search.svg);
         width: 1.666rem;
         display: inline-block;
         position: absolute;
@@ -129,7 +129,7 @@
     @extend .Button--time;
 
     &:before {
-        content: url(../img/icons/morning-icon.svg);
+        content: url(/img/icons/morning-icon.svg);
         width: 30px;
         top: -6px;
     }
@@ -140,7 +140,7 @@
     @extend .Button--time;
 
     &:before {
-        content: url(../img/icons/afternoon-icon.svg);
+        content: url(/img/icons/afternoon-icon.svg);
         width: 17px;
         top: -6px;
     }
@@ -150,7 +150,7 @@
     @extend .Button--time;
 
     &:before {
-        content: url(../img/icons/evening-icon.svg);
+        content: url(/img/icons/evening-icon.svg);
         width: 35px;
         top: -7px;
     }

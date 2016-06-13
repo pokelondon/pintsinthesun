@@ -58,7 +58,7 @@ class Base extends React.Component {
                 <div className="InfoBox max-width">
                     <div className="InfoBox-arrow"></div>
                     <div className="InfoBox-btnContainer">
-                            <button onClick={this.openPulldownMenu.bind(this, 'info')} className="Button--info rollover-scale"><img src="img/icons/info.svg" /></button>
+                            <button onClick={this.openPulldownMenu.bind(this, 'info')} className="Button--info rollover-scale"><img src="/img/icons/info.svg" /></button>
                     </div>
                     <div className="InfoBox-arrow"></div>
                 </div>

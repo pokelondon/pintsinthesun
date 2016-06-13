@@ -2,14 +2,14 @@ import React, { Component, PropTypes } from 'react';
 import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 
 const MARKER_IMG = {
-    url: "img/pint.png",
+    url: "/img/pint.png",
     scaledSize: new google.maps.Size(50, 50),
     origin: new google.maps.Point(0,0),
     anchor: new google.maps.Point(25, 50)
 };
 
 const MARKER_IMG_GREY = {
-    url: "img/pint-grey.png",
+    url: "/img/pint-grey.png",
     scaledSize: new google.maps.Size(50, 50),
     origin: new google.maps.Point(0,0),
     anchor: new google.maps.Point(25, 50)

@@ -87,6 +87,11 @@ export default class AdminTool extends Component {
                             {angleMarker}
                         </div>
                     </div>
+                    <div className="Box Box-row no-padding">
+                        <div className="Box Box-item no-padding">
+                            <button onClick={this.loadPubData.bind(this)} className="Button--primary">Load some pubs near here</button>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -117,25 +122,31 @@ export default class AdminTool extends Component {
 
         //If we are focussed on a location, and move the map more than 100m away,
         //unfocus from it
-        if(this.state.currentLocation){
-            let changedDistance = getDistance(
-                this.state.currentLocation.location.lat,
-                this.state.currentLocation.location.lng,
-                centre.lat,
-                centre.lng,
-                'K'
-            );
-            if(changedDistance > 0.1){
-                this.resetMap();
-            }
-        }
+        // if(this.state.currentLocation){
+        //     let changedDistance = getDistance(
+        //         this.state.currentLocation.location.lat,
+        //         this.state.currentLocation.location.lng,
+        //         centre.lat,
+        //         centre.lng,
+        //         'K'
+        //     );
+        //     if(changedDistance > 0.1){
+        //         this.resetMap();
+        //     }
+        // }
 
         this.setState({centre: centre});
 
+    }
 
-        /* Get pubs near here from foursquare */
-        //TODO - flatten these promises!
-        getPubs(centre).then((response) => {
+
+
+    /**
+     * Load some locations from foursquare near the current centre
+     *
+     */
+    loadPubData() {
+        getPubs(this.state.centre).then((response) => {
 
             let locations = response.map( (location, index) => {
                 location.index = index;
@@ -176,7 +187,6 @@ export default class AdminTool extends Component {
         });
 
         this.setState({locations: FSQLocations});
-        this.onLocationSelect(FSQLocations[0]);  //select the first one by default
     }
 
     /**

@@ -58,7 +58,7 @@ export default class MyComponent extends Component {
 
                 <div className="Box Box-row">
                     <div className="Box Box-item no-padding">
-                        <button onClick={this.props.onNextLocation} className="Button--primary">Choose another pub</button>
+                        <button onClick={this.props.onNextLocation} className="Button--primary">Select next pub</button>
                     </div>
                 </div>
 

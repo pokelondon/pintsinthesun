@@ -199,8 +199,8 @@ export default class Logo extends React.Component {
                             </svg>
                         `} />
 
-                        <img className="Logo-cloud Logo-cloud--1" src="img/logo/cloud.svg" />
-                        <img className="Logo-cloud Logo-cloud--2" src="img/logo/cloud.svg" />
+                        <img className="Logo-cloud Logo-cloud--1" src="/img/logo/cloud.svg" />
+                        <img className="Logo-cloud Logo-cloud--2" src="/img/logo/cloud.svg" />
 
                         {/* BANNER */}
                         <SVGInline className='Logo-banner js-logo-banner' svg={`
