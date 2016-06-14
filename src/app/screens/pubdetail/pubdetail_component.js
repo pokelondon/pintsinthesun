@@ -26,27 +26,33 @@ class PubDetail extends React.Component {
         if(this.props.isFetching) {
             return (
                 <div className="Screen-header">
-                    <p className="Heading--1">Loading</p>
-                    <div className="Box Box-row">
-                        <p>Finding you somewhere</p>
+                    <div className="max-width">
+                        <p className="Heading--1">Loading</p>
+                        <div className="Box Box-row">
+                            <p>Finding you somewhere</p>
+                        </div>
                     </div>
                 </div>
             )
         } else if(this.props.isLocating) {
             return (
                 <div className="Screen-header">
-                    <p className="Heading--1">Locating</p>
-                    <div className="Box Box-row">
-                        <p>Scrabbling around</p>
+                    <div className="max-width">
+                        <p className="Heading--1">Locating</p>
+                        <div className="Box Box-row">
+                            <p>Scrabbling around</p>
+                        </div>
                     </div>
                 </div>
             )
         } else if(!this.props.pub) {
             return (
                 <div className="Screen-header">
-                    <p className="Heading--1">Error</p>
-                    <div className="Box Box-row">
-                        <p>Oh crap.</p>
+                    <div className="max-width">
+                        <p className="Heading--1">Error</p>
+                        <div className="Box Box-row">
+                            <p>Oh crap.</p>
+                        </div>
                     </div>
                 </div>
             )

@@ -74,7 +74,9 @@ body {
     @include media-breakpoint-up(md) {
         border-width: 3px;
     }
+}
 
-
+#App {
+    padding-bottom: 1rem;    
 }
 textarea, input { outline: none; }

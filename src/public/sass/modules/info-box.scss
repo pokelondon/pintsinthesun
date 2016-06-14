@@ -1,10 +1,11 @@
 .InfoBox {
+    $buttonSize: 1.875rem;
     display: flex;
     flex-direction: row;
     x-justify-content: space-around;
     x-align-items: stretch;
-    //margin-top: 1rem;
     padding: 0 $padding;
+    height: $buttonSize;
 
 
     &-arrow {
@@ -20,11 +21,11 @@
 
     &-btnContainer {
 
-        flex: 0 0 1.875rem;
+        flex: 0 0 $buttonSize;
 
         & img {
-            display: block;
-            width: 1.875rem;
+            display: inline-block;
+            width: $buttonSize;
         }
 
     }

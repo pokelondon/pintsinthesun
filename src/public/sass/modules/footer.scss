@@ -5,6 +5,7 @@
     width: 100%;
     box-sizing: border-box;
     padding: 10px $padding;
+    
 
     background: $blueDark;
     color: $mintLight;
@@ -14,7 +15,8 @@
     }
 
     &-pokeLogo {
-        width: 15px;
+        width: 1rem;
+        height: 1rem;
         float: right;
     }
 }
