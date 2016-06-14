@@ -264,6 +264,13 @@ export default class AdminTool extends Component {
             this.state.currentHasTerrace,
             this.state.currentBuildingToWest,
             this.state.currentAngle
+        ).then(
+            function(){
+                console.log('saved pub');
+            },
+            function(err){
+                alert('error - pub not saved'); //TODO - handle this in UI properly
+            }
         );
 
         this.state.currentLocation.exists = true;
