@@ -1,5 +1,12 @@
 .InfoBox {
-    $buttonSize: 1.875rem;
+
+    $buttonSize: 1.875em;
+    //$buttonSizeDesktop: 2.5rem;
+
+    @include media-breakpoint-up(md) {
+        font-size: 1.4rem;
+    }
+
     display: flex;
     flex-direction: row;
     x-justify-content: space-around;
@@ -11,7 +18,7 @@
     &-arrow {
         flex: 1 0 auto;
         background: url(/img/arrow-left.svg) no-repeat right center;
-        background-size: 985.8px 24.2px; //natural svg size
+        background-size: 61.6125em 1.5125em;
 
         &:last-of-type {
             background-image: url(/img/arrow-right.svg);
@@ -25,8 +32,17 @@
 
         & img {
             display: inline-block;
-            width: $buttonSize;
+            //width: $buttonSize;
         }
+    }
+
+    @include media-breakpoint-up(md) {
+        // height: $buttonSizeDesktop;
+        //
+        // &-btnContainer {
+        //     flex: 0 0 $buttonSizeDesktop;
+        // }
+
 
     }
 }

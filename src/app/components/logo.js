@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import SVGInline from "react-svg-inline";
 
 var el;
+var rays;
 
 export default class Logo extends React.Component {
 
@@ -14,14 +15,21 @@ export default class Logo extends React.Component {
     componentDidMount() {
 
         el = document.querySelector('.js-logo');
+        rays = document.querySelector('.js-rays-svg');
         window.addEventListener('resize', this.handleResize.bind(this));
+
         this.handleResize();
 
     }
 
     handleResize() {
-        let height = el.clientWidth * 0.48;
+        //size the logo container. Fixed height for desktop.
+        let height = (window.innerWidth > 768) ? 290 : el.clientWidth * 0.48;
         el.style.height = `${height}px`;
+
+        //center rays vertically
+        let top = (rays.clientHeight / -2) + (height / 2);
+        rays.style.top = `${top}px`;
     }
 
     componentWillUnmount() {
@@ -35,6 +43,9 @@ export default class Logo extends React.Component {
 
             <div className="Logo-wrapper">
                 <div className="Logo js-logo">
+
+                {/* Cloud can bleed out the right */}
+                <img className="Logo-cloud Logo-cloud--2" src="/img/logo/cloud.svg" />
 
                     {/* Rays */}
                     <div className="Logo-clipContainer">
@@ -199,8 +210,8 @@ export default class Logo extends React.Component {
                             </svg>
                         `} />
 
+                        {/* Cloud contained within clip area */}
                         <img className="Logo-cloud Logo-cloud--1" src="/img/logo/cloud.svg" />
-                        <img className="Logo-cloud Logo-cloud--2" src="/img/logo/cloud.svg" />
 
                         {/* BANNER */}
                         <SVGInline className='Logo-banner js-logo-banner' svg={`
@@ -428,7 +439,7 @@ const content = <SVGInline className="Logo-content" svg={
     	</g>
     </g>
     <g>
-    	<text transform="matrix(1 0 0 1 132.8513 217.5559)" class="st0 st3 st4">in</text>
+    	<text transform="matrix(1 0 0 1 132.8513 217.5559)" class="st0 st3 st4">IN</text>
     </g>
     <g>
     	<g>

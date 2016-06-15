@@ -8,18 +8,11 @@
     font-weight: bold;
     font-style: normal;
 }
- 
 
 
-//base 12px
-// $font-size-1: 1.5rem;
-// $font-size-2: 1.333rem;
-// $font-size-3: 1.25rem;
-// $font-size-4: 1rem;
-// $font-size-5: 0.833rem;
-// $font-size-6: 0.75rem;
 
 //base 16px
+$font-size-default: 1rem;
 $font-size-1: 1.125rem;
 $font-size-2: 0.999rem;
 $font-size-3: 0.9375rem;
@@ -27,6 +20,10 @@ $font-size-4: 0.75rem;
 $font-size-5: 0.625rem;
 $font-size-6: 0.563rem;
 
+
+//desktop
+$font-size-lrg-1: 1.625rem; //26pt
+$font-size-lrg-2: 1.25rem;
 
 
 $font-family-heading: 'LeagueSpartan', sans-serif;
@@ -40,7 +37,7 @@ $font-size-root: 16px;
 html {
     font-size: $font-size-root;
     @include media-breakpoint-up(md){
-        font-size: 18px;
+        //font-size: 18px;
     }
 }
 body {
@@ -49,7 +46,7 @@ body {
     font-weight: normal;
     font-weight: 100;
     color: $purple-dark;
-    font-size: $font-size-4;
+    //font-size: $font-size-4;
 }
 
 h1,
@@ -121,6 +118,10 @@ h1,
     font-family: $font-family-heading;
     font-size: $font-size-2;
     line-height: 1.75rem;
+
+    @include media-breakpoint-up(md) {
+        font-size: $font-size-lrg-2;
+    }
 }
 
 .Para--body {
@@ -146,6 +147,10 @@ h1,
     font-family: $font-family-heading;
     font-size: $font-size-5;
     text-transform: uppercase;
+
+    @include media-breakpoint-up(md) {
+        font-size: $font-size-default;
+    }
 }
 
 .caps--smaller {
