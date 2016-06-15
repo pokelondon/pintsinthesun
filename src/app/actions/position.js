@@ -16,6 +16,9 @@ export const RESPONSE_PUB_DETAIL = 'response_pub_detail';
 
 export const INCREMENT_CURRENT_PUB = 'increment_current_pub';
 
+import { hashHistory } from 'react-router'
+
+
 
 export function requestPosition() {
     return {
@@ -63,7 +66,8 @@ export function fetchPosition() {
 export function getSuggestions(date, centre) {
     let { lat, lng } = floorLatLng(centre);
     const url = config.API + `near/${lat}/${lng}/${date.toISOString()}`;
-    return fetch(url).then(data => data.json());
+    return fetch(url).then(
+        data => data.json()).catch( handleError );
 }
 
 export function requestPubs() {
@@ -97,8 +101,8 @@ export function fetchPubs(centre) {
             .then(data => data.json())
             .then(data => {
                 dispatch(responsePubs(data));
-            });
-            // TODO handle promise error in UI too
+            }).catch( handleError );
+
     };
 }
 
@@ -110,8 +114,7 @@ export function fetchPubDetail(id) {
             .then(data => data.json())
             .then(data => {
                 dispatch(responsePubDetail(data));
-            });
-            // TODO handle promise error in UI too
+            }).catch( handleError );
     };
 }
 
@@ -128,4 +131,8 @@ export function incrementCurrentPub() {
     return {
         type: INCREMENT_CURRENT_PUB
     }
+}
+
+function handleError(err) {
+    hashHistory.push('/error');
 }

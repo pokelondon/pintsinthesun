@@ -4,9 +4,9 @@ import config from '../config';
 
 import { floorLatLng } from './location';
 
-import promise from 'es6-promise';
-import 'isomorphic-fetch';
-promise.polyfill();
+// import promise from 'es6-promise';
+// import 'isomorphic-fetch';
+// promise.polyfill();
 
 
 /**

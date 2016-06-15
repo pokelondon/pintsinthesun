@@ -15,8 +15,14 @@ import Locate from './screens/locate/locate_container';
 import Base from './screens/base/base_container';
 import AdminTool from './screens/admintool/admintool_component';
 import NoMatch from './screens/nomatch';
+import FatalError from './screens/error';
 
 import GA from 'react-ga';
+
+//fetch / promise polyfill
+import promise from 'es6-promise';
+import 'isomorphic-fetch';
+promise.polyfill();
 
 const loggerMiddleware = createLogger();
 
@@ -44,6 +50,7 @@ ReactDOM.render((
                     <Route path="/locate" component={Locate} />
                     <Route path="/pubs" component={PubDetail} />
                     <Route path="/admin" component={AdminTool} />
+                    <Route path="/error" component={FatalError} />
                     <Route path="*" component={NoMatch}/>
                 </Route>
             </Router>

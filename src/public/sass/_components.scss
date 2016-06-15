@@ -91,9 +91,6 @@
         background-color: $yellowLightFocus;
     }
 
-    @include media-breakpoint-up(md) {
-        min-height: 8rem;
-    }
 }
 
 .Button--confirmed {
@@ -140,6 +137,8 @@
     }
 
     @include media-breakpoint-up(md) {
+
+        min-height: 8rem;
 
         & span {
             width: auto;
@@ -218,6 +217,7 @@
     box-sizing: border-box;
     position: absolute;
     top: -1.5em;
+    left: 50%;
     width: 3em;
     margin-left: -1.5em;
     height: 1.5em;

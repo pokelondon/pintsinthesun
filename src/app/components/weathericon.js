@@ -70,7 +70,7 @@ WeatherIcon.propTypes = {
 const mapStateToProps = (state, ownProps) => {
     const { weatherNow, isFetching } = state.weather;
     let icon = 'CLEAR_DAY';
-    if(weatherNow.icon && !isFetching) {
+    if(weatherNow && weatherNow.icon && !isFetching) {
         icon = weatherNow.icon.toUpperCase().replace(new RegExp('-', 'g'), '_');
     }
     return {

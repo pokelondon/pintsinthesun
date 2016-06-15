@@ -107,7 +107,7 @@ Rational.TERRACE_SENTENCES = [
 const mapStateToProps = (state, ownProps) => {
     const { weatherNow, isFetching } = state.weather;
     let weather = 'CLEAR_DAY';
-    if(weatherNow.icon && !isFetching) {
+    if(weatherNow && weatherNow.icon && !isFetching) {
         weather = weatherNow.icon.toUpperCase().replace(new RegExp('-', 'g'), '_');
     }
     return {

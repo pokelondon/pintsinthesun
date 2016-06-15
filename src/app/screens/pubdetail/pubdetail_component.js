@@ -49,9 +49,9 @@ class PubDetail extends React.Component {
             return (
                 <div className="Screen-header">
                     <div className="max-width">
-                        <p className="Heading--1">Error</p>
+                        <p className="Heading--1">No pubs found</p>
                         <div className="Box Box-row">
-                            <p>Oh crap.</p>
+                            <p>No pubs found in this area. Maybe try <a>looking somewhere else</a>?</p>
                         </div>
                     </div>
                 </div>
@@ -86,6 +86,7 @@ class PubDetail extends React.Component {
                     </div>
                 </header>
 
+
                 <div className="Screen-main">
                     <div className="max-width">
                         <div className="Box Box-row flex-wrap no-padding">
@@ -117,8 +118,8 @@ class PubDetail extends React.Component {
                                 <button className="Button--primary" onClick={this.props.incrementCurrentPub}>Show me another {this.props.filteredIndex +1}/{this.props.filteredPubs.length}</button>
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
             </div>
         )

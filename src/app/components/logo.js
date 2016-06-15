@@ -28,18 +28,21 @@ export default class Logo extends React.Component {
         el.style.height = `${height}px`;
 
         //center rays vertically
-        let top = (rays.clientHeight / -2) + (height / 2);
+        let raysSize = el.clientWidth * 1.2;
+        rays.style.width = rays.style.height = `${raysSize}px`;
+        let top = (raysSize / -2) + (height / 2);
+        let left = -(raysSize - el.clientWidth) / 2;
         rays.style.top = `${top}px`;
+        rays.style.left = `${left}px`;
+
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.handleResize.bind(this));
     }
 
-
     render() {
         return (
-
 
             <div className="Logo-wrapper">
                 <div className="Logo js-logo">

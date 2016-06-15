@@ -1,6 +1,6 @@
-import promise from 'es6-promise';
-import 'isomorphic-fetch';
-promise.polyfill();
+// import promise from 'es6-promise';
+// import 'isomorphic-fetch';
+// promise.polyfill();
 
 /**
  * Prepare paths from overpass feature data.

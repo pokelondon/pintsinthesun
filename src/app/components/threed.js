@@ -126,8 +126,9 @@ class ThreeD extends React.Component {
 
     updateBuildings() {
         let { lat, lng } = this.props.centre;
+
         this.cancelablePromise = fetchBuildings(lat, lng);
-        this.cancelablePromise.promise.then(buildings => this.renderBuildings(buildings));
+        this.cancelablePromise.promise.then(buildings => this.renderBuildings(buildings))
         return this;
     }
 
@@ -216,6 +217,7 @@ class ThreeD extends React.Component {
     }
 
     renderBuilding({outlinePath, levels, isPub}) {
+
         var points = this.convertPoints(outlinePath);
         var shape = new THREE.Shape();
         var material = BUILDING_MATERIAL;

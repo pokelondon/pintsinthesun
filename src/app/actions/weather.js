@@ -24,6 +24,8 @@ export function fetchWeather(centre) {
             .then(data => data.json())
             .then(data => {
                 dispatch(responseWeather(data));
+            }).catch( () => {
+                //fail silently in UI - its only weather.
             });
     };
 }

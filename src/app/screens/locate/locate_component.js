@@ -34,8 +34,17 @@ class Locate extends React.Component {
 
     doSearch(e) {
         e.preventDefault();
-        geocode(this.state.searchTerm, (centre) => {
-            this.props.onCenterChanged(centre);
+        this.setState({errorMsg: null});
+
+        geocode(this.state.searchTerm, (result) => {
+            if(result.status === 'OK'){
+                this.props.onCenterChanged(result.centre);
+            } else
+            if(result.status == 'ZERO_RESULTS')
+                this.setState({errorMsg: 'No results :('});
+            else {
+                this.setState({errorMsg: 'Oops - Something went wrong. Please try again.'});
+            }
         });
 
         GA.event({
@@ -54,6 +63,13 @@ class Locate extends React.Component {
             btnCopy = 'No pubs found near here :(';
         }
 
+        var errorMsg;
+        if(this.state.errorMsg){
+            errorMsg = <div className="Box Box-row">
+                <div className="Box-item">{this.state.errorMsg}</div>
+            </div>
+        }
+
         let { lat, lng } = this.props.centre;
         return (
             <div className="Locate">
@@ -64,6 +80,8 @@ class Locate extends React.Component {
                         <input className="Input--search Box-item" onChange={this.onSearchChange.bind(this)} type="search" value={this.state.searchTerm} placeholder="Postcode / Street name" />
                         <button type="submit" className="Button--secondary Box-item" onClick={this.doSearch.bind(this)}>Search</button>
                 </form>
+
+                {errorMsg}
 
                 <div className="Box Box-row no-padding">
                     <div className="Box-item no-padding">
