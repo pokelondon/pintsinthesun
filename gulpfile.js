@@ -18,7 +18,9 @@ var autoprefixer = require('autoprefixer');
 var http = require('http');
 var st = require('st');
 var server = require('gulp-express');
-
+var streamify = require('gulp-streamify');
+var uglify = require('gulp-uglify');
+var cssmin = require('gulp-cssmin');
 
 
 // External dependencies you do not want to rebundle while developing,
@@ -39,7 +41,9 @@ gulp.task('scripts', function () {
 });
 
 gulp.task('deploy', function (){
+    process.env.NODE_ENV = 'production';
     bundleApp(true);
+    bundleSass(true);
 });
 
 gulp.task('watch', function () {
@@ -48,15 +52,8 @@ gulp.task('watch', function () {
 });
 
 gulp.task('sass', function () {
-    return gulp.src('./src/public/sass/main.scss')
-        .pipe(sourcemaps.init())
-        .pipe(sass().on('error', sass.logError))
-        .pipe(sourcemaps.write())
-        .pipe(postcss([autoprefixer({browsers: ['last 2 versions']})]))
-        .pipe(gulp.dest('./src/build/css'))
-        .pipe(server.notify());
+    bundleSass(false)
 });
-
 
 gulp.task('server', function(done) {
     var options = {
@@ -73,6 +70,27 @@ gulp.task('default', ['scripts','watch', 'server']);
 
 // Private Functions
 // ----------------------------------------------------------------------------
+function bundleSass(isProduction){
+    if(isProduction){
+
+        return gulp.src('./src/public/sass/main.scss')
+            .pipe(sass().on('error', sass.logError))
+            .pipe(postcss([autoprefixer({browsers: ['last 2 versions']})]))
+            .pipe(cssmin())
+            .pipe(gulp.dest('./src/build/css'));
+    } else {
+
+        return gulp.src('./src/public/sass/main.scss')
+            .pipe(sourcemaps.init())
+            .pipe(sass().on('error', sass.logError))
+            .pipe(sourcemaps.write())
+            .pipe(postcss([autoprefixer({browsers: ['last 2 versions']})]))
+            .pipe(gulp.dest('./src/build/css'))
+            .pipe(server.notify());
+    }
+}
+
+
 function bundleApp(isProduction) {
     scriptsCount++;
     // Browserify will bundle all our js files together in to one and will let
@@ -105,11 +123,22 @@ function bundleApp(isProduction) {
         })
     }
 
-    return appBundler
-        // transform ES6 and JSX to ES5 with babelify
-        .transform("babelify", {presets: ["es2015", "react", "stage-2"]})
-        .bundle()
-        .on('error', gutil.log)
-        .pipe(source('bundle.js'))
-        .pipe(gulp.dest('./src/build/js/'));
+    if(isProduction){
+        return appBundler
+            // transform ES6 and JSX to ES5 with babelify
+            .transform("babelify", {presets: ["es2015", "react", "stage-2"]})
+            .bundle()
+            .on('error', gutil.log)
+            .pipe(source('bundle.js'))
+            .pipe(streamify(uglify()))
+            .pipe(gulp.dest('./src/build/js/'));
+    } else {
+        return appBundler
+            // transform ES6 and JSX to ES5 with babelify
+            .transform("babelify", {presets: ["es2015", "react", "stage-2"]})
+            .bundle()
+            .on('error', gutil.log)
+            .pipe(source('bundle.js'))
+            .pipe(gulp.dest('./src/build/js/'));
+    }
 }
