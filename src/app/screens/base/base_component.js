@@ -20,26 +20,14 @@ class Base extends React.Component {
         this.props.fetchPosition();
     }
 
-    openPulldownMenu(menu) {
-        this.setState({
-            isPulldownOpen: true,
-            pulldownMenu: menu
-        });
-    }
-
-    closePulldownMenu() {
-        this.setState({
-            isPulldownOpen: false
-        });
-    }
-
     render() {
         let headerButtons;
-        if(this.state.isPulldownOpen){
-            headerButtons = <button key="close" className="CloseLink rollover-scale" onClick={this.closePulldownMenu.bind(this)}></button>
+        if(this.props.modal){
+            headerButtons = <button key="close" className="CloseLink rollover-scale" onClick={this.props.closeModal}></button>
         } else {
-            headerButtons = <button key="search" className="SearchLink rollover-scale" onClick={this.openPulldownMenu.bind(this, 'locateMenu')}></button>
+            headerButtons = <button key="search" className="SearchLink rollover-scale" onClick={this.props.launchLocationModal}></button>
         }
+
         return (
             <div>
                 <header className="Header">
@@ -58,14 +46,13 @@ class Base extends React.Component {
                 <div className="InfoBox max-width">
                     <div className="InfoBox-arrow"></div>
                     <div className="InfoBox-btnContainer">
-                            <button onClick={this.openPulldownMenu.bind(this, 'info')} className="Button--info rollover-scale"><img src="/img/icons/info.svg" /></button>
+                            <button onClick={this.props.launchInfoModal} className="Button--info rollover-scale"><img src="/img/icons/info.svg" /></button>
                     </div>
                     <div className="InfoBox-arrow"></div>
                 </div>
                 <Pulldown
-                    onClose={this.closePulldownMenu.bind(this)}
-                    pulldownMenu={this.state.pulldownMenu}
-                    isOpen={this.state.isPulldownOpen}
+                    onClose={this.props.closeModal}
+                    pulldownMenu={this.props.modal}
                 />
             </div>
         )

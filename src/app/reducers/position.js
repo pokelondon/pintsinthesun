@@ -9,7 +9,10 @@ import {
     RESPONSE_PUBS,
     REQUEST_PUB_DETAIL,
     RESPONSE_PUB_DETAIL,
-    INCREMENT_CURRENT_PUB
+    INCREMENT_CURRENT_PUB,
+    LAUNCH_LOCATION_MODAL,
+    LAUNCH_INFO_MODAL,
+    CLOSE_MODAL
 } from '../actions/position';
 
 const date = new Date();
@@ -36,11 +39,27 @@ const INITIAL_STATE = {
     filteredPubs : [],
     isFetching: false,
     currentPub: 0,
-    filteredIndex: 0
+    filteredIndex: 0,
+    modal: null
 }
 
 export default function position(state=INITIAL_STATE, action) {
     switch (action.type) {
+        case LAUNCH_LOCATION_MODAL:
+            return {
+                ...state,
+                modal: 'location'
+            }
+        case LAUNCH_INFO_MODAL:
+            return {
+                ...state,
+                modal: 'info'
+            }
+        case CLOSE_MODAL:
+                return {
+                    ...state,
+                    modal: null
+                }
         case UPDATE_TIME:
             var sun = SunCalc.getPosition(action.date, state.centre.lat, state.centre.lng);
             return {

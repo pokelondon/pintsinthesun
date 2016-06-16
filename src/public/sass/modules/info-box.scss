@@ -13,6 +13,7 @@
     x-align-items: stretch;
     padding: 0 $padding;
     height: $buttonSize;
+    margin-top: 1rem;
 
 
     &-arrow {
@@ -32,17 +33,8 @@
 
         & img {
             display: inline-block;
-            //width: $buttonSize;
         }
     }
 
-    @include media-breakpoint-up(md) {
-        // height: $buttonSizeDesktop;
-        //
-        // &-btnContainer {
-        //     flex: 0 0 $buttonSizeDesktop;
-        // }
 
-
-    }
 }

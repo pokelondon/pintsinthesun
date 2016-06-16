@@ -43,6 +43,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 category: 'Filter',
                 action: 'Show Another'
             });
+        },
+        launchLocationModal: () => {
+            boundPositionActions.launchLocationModal();
         }
     }
 }

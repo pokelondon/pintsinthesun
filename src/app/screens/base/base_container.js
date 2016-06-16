@@ -7,12 +7,13 @@ import Base from './base_component';
 
 
 const mapStateToProps = (state, ownProps) => {
-    const { date, isLocating, centre } = state.position;
+    const { date, isLocating, centre, modal } = state.position;
 
     return {
         isLocating,
         date,
-        centre
+        centre,
+        modal
     }
 }
 
@@ -23,6 +24,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         fetchPosition: () => {
             boundPositionActions.fetchPosition();
         },
+        launchLocationModal: () => {
+            boundPositionActions.launchLocationModal();
+        },
+        launchInfoModal: () => {
+            boundPositionActions.launchInfoModal();
+        },
+        closeModal: () => {
+            boundPositionActions.closeModal();
+        }
     }
 }
 

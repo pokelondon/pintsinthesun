@@ -22,6 +22,10 @@ class PubDetail extends React.Component {
         return `${value}:00`;
     }
 
+    launchLocationModal() {
+        this.props.launchLocationModal();
+    }
+
     render() {
         if(this.props.isFetching) {
             return (
@@ -51,7 +55,7 @@ class PubDetail extends React.Component {
                     <div className="max-width">
                         <p className="Heading--1">No pubs found</p>
                         <div className="Box Box-row">
-                            <p>No pubs found in this area. Maybe try <a>looking somewhere else</a>?</p>
+                            <p>No sunny pubs found in this area. Maybe try <a onClick={this.launchLocationModal.bind(this)}>looking somewhere else</a>?</p>
                         </div>
                     </div>
                 </div>

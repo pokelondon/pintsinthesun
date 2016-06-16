@@ -16,9 +16,37 @@ export const RESPONSE_PUB_DETAIL = 'response_pub_detail';
 
 export const INCREMENT_CURRENT_PUB = 'increment_current_pub';
 
+export const LAUNCH_LOCATION_MODAL = 'launch_location_modal';
+export const LAUNCH_INFO_MODAL = 'launch_info_modal';
+export const CLOSE_MODAL = 'close_modal';
+
 import { hashHistory } from 'react-router'
 
 
+
+export function launchLocationModal(){
+    return function(dispatch) {
+        dispatch({
+            type: LAUNCH_LOCATION_MODAL
+        });
+    }
+}
+
+export function launchInfoModal(){
+    return function(dispatch) {
+        dispatch({
+            type: LAUNCH_INFO_MODAL
+        });
+    }
+}
+
+export function closeModal(){
+    return function(dispatch) {
+        dispatch({
+            type: CLOSE_MODAL
+        });
+    }
+}
 
 export function requestPosition() {
     return {
