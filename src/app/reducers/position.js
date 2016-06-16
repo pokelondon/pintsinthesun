@@ -68,6 +68,7 @@ export default function position(state=INITIAL_STATE, action) {
                 date: action.date,
                 timeRange: action.timeRange,
                 filteredPubs: filterForAngle(sun, state.items),
+                filteredIndex: 0,
                 sun
             }
         case RESPONSE_POSITION:
@@ -78,6 +79,7 @@ export default function position(state=INITIAL_STATE, action) {
                 centre: action.centre,
                 isLocating: false,
                 filteredPubs: filterForAngle(sun, state.items),
+                filteredIndex: 0,
                 sun
             }
         case REQUEST_POSITION:
@@ -101,6 +103,7 @@ export default function position(state=INITIAL_STATE, action) {
                 isFetching: false,
                 items: action.items,
                 filteredPubs: filterForAngle(state.sun, action.items),
+                filteredIndex: 0,
                 currentPub: 0
             }
         case RESPONSE_PUB_DETAIL:
