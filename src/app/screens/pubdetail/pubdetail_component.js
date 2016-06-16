@@ -65,7 +65,6 @@ class PubDetail extends React.Component {
     }
 
     render() {
-
         if(this.props.isFetching) {
             return (
                 <div className="Screen-header">

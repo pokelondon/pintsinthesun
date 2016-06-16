@@ -69,11 +69,11 @@ export function responsePosition(centre) {
 export function updateTime(date, isNow = false) {
 
     let hours = date.getHours();
-    let timeRange = 'morning';
+    var timeRange = 'morning';
     if(hours >= 12 && hours < 18){
         timeRange = 'afternoon'
     }
-    if(hours > 5 && hours < 24){
+    if(hours > 17 && hours < 24){
         timeRange = 'evening';
     }
     if(isNow){
