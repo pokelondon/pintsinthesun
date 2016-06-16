@@ -1,5 +1,6 @@
 import React from 'react';
 import Slider from 'rc-slider';
+import { Link } from 'react-router';
 
 import ThreeD from '../../components/threed';
 import WeatherIcon from '../../components/weathericon';
@@ -22,7 +23,8 @@ class PubDetail extends React.Component {
         return `${value}:00`;
     }
 
-    launchLocationModal() {
+    launchLocationModal(e) {
+        e.nativeEvent.preventDefault();
         this.props.launchLocationModal();
     }
 
@@ -55,7 +57,7 @@ class PubDetail extends React.Component {
                     <div className="max-width">
                         <p className="Heading--1">No pubs found</p>
                         <div className="Box Box-row">
-                            <p>No sunny pubs found in this area. Maybe try <a onClick={this.launchLocationModal.bind(this)}>looking somewhere else</a>?</p>
+                            <p>No sunny pubs found in this area. Maybe try <a onClick={this.launchLocationModal.bind(this)} href="#">looking somewhere else</a>, or a <Link to="/">different time of day</Link>?</p>
                         </div>
                     </div>
                 </div>
@@ -117,11 +119,17 @@ class PubDetail extends React.Component {
                             <Rational pub={this.props.pub} />
                         </div>
 
-                        <div className="Box Box-row no-padding">
-                            <div className="Box-item no-padding">
-                                <button className="Button--primary" onClick={this.props.incrementCurrentPub}>Show me another {this.props.filteredIndex +1}/{this.props.filteredPubs.length}</button>
-                            </div>
-                        </div>
+                        { ( () => {
+                            if(this.props.filteredPubs.length){
+                                return (
+                                <div className="Box Box-row no-padding">
+                                    <div className="Box-item no-padding">
+                                        <button className="Button--primary" onClick={this.props.incrementCurrentPub}>Show me another {this.props.filteredIndex +1}/{this.props.filteredPubs.length}</button>
+                                    </div>
+                                </div>
+                                )
+                            }
+                        })() }
 
                     </div>
                 </div>

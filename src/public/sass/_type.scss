@@ -98,6 +98,10 @@ p {
     font-size: 1rem;
 }
 
+p a {
+    text-decoration: underline;
+}
+
 h1,
 .LogoType {
     font-size: $font-size-4;
