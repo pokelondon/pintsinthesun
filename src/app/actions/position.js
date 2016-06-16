@@ -73,7 +73,7 @@ export function updateTime(date, isNow = false) {
     if(hours >= 12 && hours < 18){
         timeRange = 'afternoon'
     }
-    if(hours > 18 && hours < 24){
+    if(hours > 5 && hours < 24){
         timeRange = 'evening';
     }
     if(isNow){

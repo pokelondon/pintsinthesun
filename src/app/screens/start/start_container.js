@@ -21,6 +21,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
     return {
         setNow: () => {
+            let date = new Date();
+            boundPositionActions.updateTime(date);
             dispatch(push('/pubs'));
 
             GA.event({
