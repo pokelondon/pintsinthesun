@@ -77,7 +77,7 @@ class Locate extends React.Component {
                 <p className="Para--large">Search for your location, or drag the map</p>
 
                 <form className="Box Box-row no-padding" onSubmit={this.doSearch.bind(this)}>
-                        <input className="Input--search Box-item" onChange={this.onSearchChange.bind(this)} type="search" value={this.state.searchTerm} placeholder="Postcode / Street name" />
+                        <input className="Input--search Box-item" onChange={this.onSearchChange.bind(this)} type="search" value={this.state.searchTerm} placeholder="Postcode / Place" />
                         <button type="submit" className="Button--secondary Box-item" onClick={this.doSearch.bind(this)}>Search</button>
                 </form>
 

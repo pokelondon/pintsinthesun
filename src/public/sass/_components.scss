@@ -206,13 +206,15 @@
 .Button--info {
     border: 0;
     background: none;
-    width: 100%;
-    height: 100%;
+    //width: 100%;
+    //height: 100%;
     display: inline-block;
     padding: 0;
 
     & > img {
         display: inline-block;
+        width: 1.875em;
+        height: 1.875em;
     }
 }
 
