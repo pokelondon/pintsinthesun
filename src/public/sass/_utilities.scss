@@ -2,6 +2,12 @@
     padding: 0 !important;
 }
 
+.negative-margin {
+    margin-left: -10px;
+    width: calc(100% + 20px);
+    margin-bottom: -10px;
+}
+
 .text-centre {
     text-align: center;
 }

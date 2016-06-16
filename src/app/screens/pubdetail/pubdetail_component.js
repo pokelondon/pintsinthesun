@@ -1,6 +1,7 @@
 import React from 'react';
 import Slider from 'rc-slider';
 import { Link } from 'react-router';
+import classnames from 'classnames';
 
 import ThreeD from '../../components/threed';
 import WeatherIcon from '../../components/weathericon';
@@ -12,11 +13,23 @@ class PubDetail extends React.Component {
     constructor(props) {
         super(props);
         this.props = props;
+
+    }
+
+    componentWillMount() {
+        this.setState({localDate: new Date(this.props.date.getTime())});
     }
 
     onSliderChange(value) {
-        var current = this.props.date;
-        this.props.updateTime(new Date(current.setHours(value)));
+        var current = this.state.localDate;
+        //dont modify globlly on change anymore. Do it on its own event instead.
+        //this.props.updateTime(new Date(current.setHours(value)));
+        this.setState({localDate: new Date(current.setHours(value)) });
+    }
+
+    applyLocalTimeToGlobal(){
+        this.props.updateTime(this.state.localDate);
+        this.setState({localDate: new Date(this.state.localDate.getTime())});
     }
 
     sliderTipFormatter(value) {
@@ -28,7 +41,31 @@ class PubDetail extends React.Component {
         this.props.launchLocationModal();
     }
 
+    weatherTime() {
+        const times = {
+            morning: 'this morning',
+            afternoon: 'this afternoon',
+            evening: 'this evening',
+            now: 'now'
+        }
+        return times[this.props.timeRange];
+    }
+
+    getTimeApplyButtonClassNames() {
+        return classnames({
+            'Button--secondary': true,
+            'Button--applyTime': true,
+            'negative-margin': true,
+            'Button--disabled': this.isLocalTimeGlobalTime()
+        });
+    }
+
+    isLocalTimeGlobalTime() {
+        return this.props.date.getHours() === this.state.localDate.getHours();
+    }
+
     render() {
+
         if(this.props.isFetching) {
             return (
                 <div className="Screen-header">
@@ -75,7 +112,7 @@ class PubDetail extends React.Component {
 
                 <header className="Screen-header">
                     <div className="max-width">
-                        <Suggestion name={name} />
+                        <Suggestion name={name} timeRange={this.props.timeRange} />
                         <div className="Box Box-row">
                             <div className="Box-item">
                                 <span>{neighbourhood ? `${neighbourhood} &mdash; ` : ''}{distance.toFixed(1)}{distanceUnit} away</span>
@@ -86,7 +123,7 @@ class PubDetail extends React.Component {
                                 Best for sun: 13:32-17:23
                             </div>
                             <div className="Box-item Box-item--halfCol--fixed">
-                                Weather now: <WeatherIcon />
+                                Weather {this.weatherTime()}: <WeatherIcon />
                             </div>
                         </div>
                     </div>
@@ -99,7 +136,8 @@ class PubDetail extends React.Component {
                             <div className="Box-item Box-item--halfCol Box-item--responsiveBorders">
                                 <ThreeD
                                     centre={{lat, lng}}
-                                    date={this.props.date}
+                                    _date={this.props.date}
+                                    date={this.state.localDate}
                                 />
 
                                 <div className="SliderContainer">
@@ -115,12 +153,13 @@ class PubDetail extends React.Component {
                                         marks={ {7: '7:00', 14: '14:00', 21: '21:00'} }
                                     />
                                 </div>
+                                <button disabled={this.isLocalTimeGlobalTime()} className={this.getTimeApplyButtonClassNames()} onClick={this.applyLocalTimeToGlobal.bind(this)}>What other pubs are good at {this.state.localDate.getHours()}:00?</button>
                             </div>
                             <Rational pub={this.props.pub} />
                         </div>
 
                         { ( () => {
-                            if(this.props.filteredPubs.length){
+                            if(this.props.filteredPubs.length > 1){
                                 return (
                                 <div className="Box Box-row no-padding">
                                     <div className="Box-item no-padding">
@@ -156,5 +195,7 @@ PubDetail.propTypes = {
         distance: React.PropTypes.number,
     })
 }
+
+
 
 export default PubDetail;

@@ -20,12 +20,21 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     const boundPositionActions = bindActionCreators(positionActions, dispatch);
 
     return {
+        setNow: () => {
+            dispatch(push('/pubs'));
+
+            GA.event({
+                category: 'Filter',
+                action: 'Set Time Range',
+                label: 'Now'
+            });
+        },
         setMorning: () => {
             let date = new Date();
             date.setHours(10);
             boundPositionActions.updateTime(date);
             dispatch(push('/pubs'));
-            
+
             GA.event({
                 category: 'Filter',
                 action: 'Set Time Range',

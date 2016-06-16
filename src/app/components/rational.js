@@ -99,8 +99,8 @@ Rational.BUIDLING_TO_THE_WEST_SENTENCES = [
 ]
 
 Rational.TERRACE_SENTENCES = [
-    'It has a <em>terrace</em>!',
-    'Checkout the <em>terrace</em>!',
+    'It has a <em>terrace!</em>',
+    'Checkout the <em>terrace!</em>',
     'Jackpot! There\'s a <em>terrace</em> here!'
 ]
 

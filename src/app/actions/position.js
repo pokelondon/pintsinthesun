@@ -66,11 +66,25 @@ export function responsePosition(centre) {
     }
 }
 
-export function updateTime(date) {
+export function updateTime(date, isNow = false) {
+
+    let hours = date.getHours();
+    let timeRange = 'morning';
+    if(hours >= 12 && hours < 18){
+        timeRange = 'afternoon'
+    }
+    if(hours > 18 && hours < 24){
+        timeRange = 'evening';
+    }
+    if(isNow){
+        timeRange = 'now';
+    }
+
     return function(dispatch) {
         dispatch({
             type: UPDATE_TIME,
-            date
+            date,
+            timeRange
         });
         let hour = date.getHours();
         dispatch(filterWeather(hour));

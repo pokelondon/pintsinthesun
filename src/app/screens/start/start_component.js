@@ -23,9 +23,9 @@ class Start extends React.Component {
                 <div className="Screen-main">
                     <div className="Box Box-row max-width no-padding">
                         <div className="Box-item no-padding">
-                            <Link className="Button Button--primary Button--primary--search" to='/pubs'>
+                            <a className="Button Button--primary Button--primary--search" onClick={this.props.setNow}>
                                 Find the nearest sunny pub
-                            </Link>
+                            </a>
                         </div>
                     </div>
                     <div className="Box Box-row max-width no-padding">

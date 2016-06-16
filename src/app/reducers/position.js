@@ -40,7 +40,8 @@ const INITIAL_STATE = {
     isFetching: false,
     currentPub: 0,
     filteredIndex: 0,
-    modal: null
+    modal: null,
+    timeRange: 'now'
 }
 
 export default function position(state=INITIAL_STATE, action) {
@@ -61,14 +62,18 @@ export default function position(state=INITIAL_STATE, action) {
                     modal: null
                 }
         case UPDATE_TIME:
+
             var sun = SunCalc.getPosition(action.date, state.centre.lat, state.centre.lng);
+            console.log('UPDATE_TIME', filterForAngle(sun, state.items));
             return {
                 ...state,
                 date: action.date,
+                timeRange: action.timeRange,
                 filteredPubs: filterForAngle(sun, state.items),
                 sun
             }
         case RESPONSE_POSITION:
+
             var sun = SunCalc.getPosition(state.date, action.centre.lat, action.centre.lng);
             return {
                 ...state,
@@ -101,6 +106,7 @@ export default function position(state=INITIAL_STATE, action) {
                 currentPub: 0
             }
         case RESPONSE_PUB_DETAIL:
+            console.log('RESPONSE_PUB_DETAIL', state);
             return {
                 ...state,
                 isFetching: false,

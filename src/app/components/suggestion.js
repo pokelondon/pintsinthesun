@@ -24,12 +24,12 @@ class Suggestion extends React.Component {
 
     render() {
         let [ first, last ] = this.state.suggestion;
-        last = (last) ? ' ' + last : '?';
+        //last = (last) ? ' ' + last : '?';
         return (
             <p className="Heading--1">
                 <span className="">{first} </span>
                 <span className="txt-suggestion">{this.props.name}</span>
-                <span className="">{last}</span>
+                <span className=""> {last} {Suggestion.TIMES[this.props.timeRange]}?</span>
             </p>
         )
     }
@@ -44,5 +44,12 @@ Suggestion.SUGGESTIONS = [
     ['How about'],
     ['Umm', 'might be good']
 ];
+
+Suggestion.TIMES = {
+    morning: 'this morning',
+    afternoon: 'this afternoon',
+    evening: 'this evening',
+    'now': 'now'
+}
 
 export default Suggestion;

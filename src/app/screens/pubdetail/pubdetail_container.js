@@ -15,7 +15,8 @@ const mapStateToProps = (state, ownProps) => {
         isLocating,
         currentPub,
         filteredPubs,
-        filteredIndex
+        filteredIndex,
+        timeRange,
     } = state.position;
 
     return {
@@ -26,7 +27,9 @@ const mapStateToProps = (state, ownProps) => {
         filteredPubs,
         currentPub,
         filteredIndex,
-        pub: items[currentPub]
+        timeRange,
+        //pub: items[currentPub]
+        pub: filteredPubs[filteredIndex]
     }
 }
 
