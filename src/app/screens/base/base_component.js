@@ -16,7 +16,6 @@ class Base extends React.Component {
     }
 
     componentDidMount() {
-        console.log('Requesting position');
         this.props.fetchPosition();
     }
 

@@ -62,9 +62,7 @@ export default function position(state=INITIAL_STATE, action) {
                     modal: null
                 }
         case UPDATE_TIME:
-
             var sun = SunCalc.getPosition(action.date, state.centre.lat, state.centre.lng);
-            console.log('UPDATE_TIME', filterForAngle(sun, state.items));
             return {
                 ...state,
                 date: action.date,
@@ -106,7 +104,6 @@ export default function position(state=INITIAL_STATE, action) {
                 currentPub: 0
             }
         case RESPONSE_PUB_DETAIL:
-            console.log('RESPONSE_PUB_DETAIL', state);
             return {
                 ...state,
                 isFetching: false,

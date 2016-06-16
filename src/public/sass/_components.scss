@@ -230,16 +230,16 @@
     position: absolute;
     top: -1.5em;
     left: 50%;
-    width: 3em;
+    width: 3.2em;
     margin-left: -1.5em;
     height: 1.5em;
-    padding-top: 0.3em;
+    padding-top: 0.4em;
     background: #f4f6eb;
     border-top-left-radius: 3em;
     border-top-right-radius: 3em;
     border: 2px solid #2f2c49;
     border-bottom: 0;
-    font-size: 1rem;
+    font-size: 0.8rem;
     line-height: 2em;
 
     @include media-breakpoint-up(md) {

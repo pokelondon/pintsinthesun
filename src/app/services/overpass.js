@@ -54,7 +54,7 @@ export function fetchBuildings(lat, lng) {
                lat + bound, lng + bound];
     let bounds = box.join(',');
 
-    return makeCancelable(fetch(`http://overpasscache.pintsinthesun.co.uk/api/interpreter?data=[out:json];((way(${bounds})[%22building%22]);(._;node(w);););out;`)
+    return makeCancelable(fetch(`https://d3uucvr9hc3v2b.cloudfront.net/api/interpreter?data=[out:json];((way(${bounds})[%22building%22]);(._;node(w);););out;`)
         .then(data => data.json())
         .then(data => {
             let nodes = data.elements.filter(item => 'node' === item.type);
