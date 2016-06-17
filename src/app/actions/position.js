@@ -56,6 +56,9 @@ export function requestPosition() {
 
 export function responsePosition(centre) {
     return function(dispatch) {
+        if(centre.error){
+            centre = {lat: 51.523661, lng: -0.077338}; //default to shoreditch when no location available 51.523661, -0.077338
+        }
         dispatch(fetchPubs(centre));
         dispatch(fetchWeather(centre));
         dispatch({
@@ -65,6 +68,8 @@ export function responsePosition(centre) {
         });
     }
 }
+
+
 
 export function updateTime(date, isNow = false) {
 
@@ -96,8 +101,8 @@ export function fetchPosition() {
         // Update UI to show spinner or something
         dispatch(requestPosition());
 
-        return getLocation().then(centre => {
-            dispatch(responsePosition(centre));
+        return getLocation().then(result => {
+            dispatch(responsePosition(result));
         });
     }
 }

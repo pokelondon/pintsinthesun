@@ -9,7 +9,11 @@ export function getLocation() {
         navigator.geolocation.getCurrentPosition(position => {
             let { latitude, longitude } = position.coords;
             resolve({lat: latitude, lng: longitude});
-        });
+        },
+        (err) => {
+            resolve({error: err});
+        }
+        );
     });
     return p;
 }

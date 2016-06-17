@@ -158,11 +158,17 @@ class PubDetail extends React.Component {
                         </div>
 
                         { ( () => {
+                            let pubsLeft = this.props.filteredPubs.length - this.props.filteredIndex - 1;
+                            let btnCopy = `Show me another one (${pubsLeft} more)`;
+                            if(pubsLeft == 0){
+                                btnCopy = 'Show me the first one again!';
+                            }
+
                             if(this.props.filteredPubs.length > 1){
                                 return (
                                 <div className="Box Box-row no-padding">
                                     <div className="Box-item no-padding">
-                                        <button className="Button--primary" onClick={this.props.incrementCurrentPub}>Show me another {this.props.filteredIndex +1}/{this.props.filteredPubs.length}</button>
+                                        <button className="Button--primary" onClick={this.props.incrementCurrentPub}>{btnCopy}</button>
                                     </div>
                                 </div>
                                 )

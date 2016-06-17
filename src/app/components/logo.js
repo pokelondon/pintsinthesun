@@ -20,14 +20,18 @@ export default class Logo extends React.Component {
 
         this.handleResize();
 
+        //refire this a moment later because of ios not always being ready
+        setTimeout(this.handleResize.bind(this), 300);
+
     }
 
     handleResize() {
+
         //size the logo container. Fixed height for desktop.
         let height = (window.innerWidth > 768) ? 290 : el.clientWidth * 0.48;
         el.style.height = `${height}px`;
 
-        //center rays vertically
+        //size + center rays
         let raysSize = el.clientWidth * 1.2;
         rays.style.width = rays.style.height = `${raysSize}px`;
         let top = (raysSize / -2) + (height / 2);
