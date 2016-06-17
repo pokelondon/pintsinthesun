@@ -33,7 +33,7 @@ const createStoreWithMiddleware = applyMiddleware(
 )(createStore);
 const store = createStoreWithMiddleware(reducers);
 
-if(window.location.hostname === 'pintsinthesun.co.uk'){
+if(window.location.hostname.indexOf('pintsinthesun.co.uk') != -1){
     GA.initialize('UA-15712565-30');
 }
 
