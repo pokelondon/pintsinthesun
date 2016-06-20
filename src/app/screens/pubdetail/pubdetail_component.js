@@ -107,7 +107,7 @@ class PubDetail extends React.Component {
             distanceUnit = 'Km';
         }
         return (
-            <div className="Screen">
+            <div className="Screen Pub-detail">
 
                 <header className="Screen-header">
                     <div className="max-width">
@@ -115,6 +115,7 @@ class PubDetail extends React.Component {
                         <div className="Box Box-row">
                             <div className="Box-item">
                                 <span>{neighbourhood ? `${neighbourhood} &mdash; ` : ''}{distance.toFixed(1)}{distanceUnit} away</span>
+                                <a className="Map-icon" target="_blank" href={`http://maps.google.com/?q=${lat},${lng}`}><img src="/img/icons/map-icon.svg" width="20" height="20" /></a>
                             </div>
                         </div>
                         <div className="Box Box-row flex-wrap">
