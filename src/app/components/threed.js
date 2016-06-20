@@ -1,11 +1,12 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import THREE from 'three';
 import SunCalc from '../lib/suncalc';
 import d3 from 'd3';
 import TWEEN from 'tween.js';
 
 import { fetchBuildings } from '../services/overpass';
-
+import classnames from 'classnames';
 
 const GREYDARK = 0x232A24;
 const RED = 0xf05440;
@@ -93,11 +94,14 @@ class ThreeD extends React.Component {
             .addTarget()
             .animate();
 
+        this.element = ReactDOM.findDOMNode(this);
+
     }
 
     componentDidUpdate(prevProps) {
         if(this.props.centre.lat !== prevProps.centre.lat) {
-            this.updateBuildings();
+            //this.updateBuildings();
+            this.animateCanvasOut();
         }
         this.updateSunPosition();
     }
@@ -111,20 +115,39 @@ class ThreeD extends React.Component {
     }
 
     render() {
+        let renderClasses = classnames({
+            'Render': true,
+            'Render--transition-left-out': (this.state.renderTransitionDirection === 'left-out'),
+            'Render--transition-left-in': (this.state.renderTransitionDirection === 'left-in'),
+            'Render--transition-right-out': (this.state.renderTransitionDirection === 'right-out'),
+            'Render--transition-right-in': (this.state.renderTransitionDirection === 'right-in'),
+        });
         return (
+
             <div
-                className={(this.state.isTransitioning) ? 'Render is-transitioning' : 'Render'}
+                className={renderClasses}
                 ref='canvas'
             />
         )
     }
 
     renderBuildings(buildings) {
-        this.clearBuildings();
         buildings.forEach(building => this.renderBuilding(building));
     }
 
+    animateCanvasOut() {
+        this.setState({renderTransitionDirection: this.props.renderTransitionDirection});
+        setTimeout(this.animateCanvasIn.bind(this), 300);
+    }
+
+    animateCanvasIn() {
+        this.updateBuildings();
+        let newAnimation = this.state.renderTransitionDirection.replace('out', 'in');
+        this.setState({renderTransitionDirection: newAnimation});
+    }
+
     updateBuildings() {
+        this.clearBuildings();
         let { lat, lng } = this.props.centre;
 
         this.cancelablePromise = fetchBuildings(lat, lng);

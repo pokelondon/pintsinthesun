@@ -1,8 +1,15 @@
+.Three-container {
+    position: relative;
+    overflow: hidden;
+}
+
 .Render {
     display: block;
-    width: 240px;
-    height: 240px;
+    width: 225px;
+    height: 225px;
     margin: 20px auto 0;
+
+
 
     @include media-breakpoint-up(sm) {
         width: 300px;
@@ -14,7 +21,7 @@
         border-style: solid;
         border-radius: 100%;
         transform-origin: 0 0;
-        transform: scale(0.8);
+        transform: scale(0.75);
         width: 100%;
         box-sizing: border-box;
 
@@ -22,6 +29,41 @@
             transform: scale(1);
         }
     }
+}
+
+.Render--transition-left-out{
+    animation: swipeLeftOut 0.3s;
+    animation-timing-function: ease-in;
+    animation-fill-mode: forwards;
+
+}
+.Render--transition-left-in{
+    animation: swipeLeftIn 0.3s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+.Render--transition-right-out{
+    animation: swipeRightOut 0.3s;
+    animation-timing-function: ease-in;
+    animation-fill-mode: forwards;
+}
+.Render--transition-right-in{
+    animation: swipeRightIn 0.3s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+
+.Button--pubNav--prev {
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.Button--pubNav--next {
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .SliderContainer {

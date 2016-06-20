@@ -134,11 +134,23 @@ class PubDetail extends React.Component {
                     <div className="max-width">
                         <div className="Box Box-row flex-wrap no-padding">
                             <div className="Box-item Box-item--halfCol Box-item--responsiveBorders">
-                                <ThreeD
-                                    centre={{lat, lng}}
-                                    _date={this.props.date}
-                                    date={this.state.localDate}
-                                />
+                                <div className="Three-container">
+                                    {(() => {
+                                        if(this.props.filteredPubs.length && this.props.filteredIndex !== 0){
+                                            return <button className="Button--pubNav Button--pubNav--prev" onClick={this.props.decrementCurrentPub}>&lt;</button>
+                                        }
+                                    })()}
+                                    <ThreeD
+                                        centre={{lat, lng}}
+                                        date={this.state.localDate}
+                                        renderTransitionDirection={this.props.renderTransitionDirection}
+                                    />
+                                    {(() => {
+                                        if(this.props.filteredPubs.length > 1 && this.props.filteredIndex !== this.props.filteredPubs.length -1){
+                                            return <button className="Button--pubNav Button--pubNav--next" onClick={this.props.incrementCurrentPub}>&gt;</button>
+                                        }
+                                    })()}
+                                </div>
 
                                 <div className="SliderContainer">
                                     <Slider

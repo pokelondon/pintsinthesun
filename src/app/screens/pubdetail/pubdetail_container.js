@@ -17,6 +17,7 @@ const mapStateToProps = (state, ownProps) => {
         filteredPubs,
         filteredIndex,
         timeRange,
+        renderTransitionDirection
     } = state.position;
 
     return {
@@ -28,6 +29,7 @@ const mapStateToProps = (state, ownProps) => {
         currentPub,
         filteredIndex,
         timeRange,
+        renderTransitionDirection,
         //pub: items[currentPub]
         pub: filteredPubs[filteredIndex]
     }
@@ -44,7 +46,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             boundPositionActions.incrementCurrentPub();
             GA.event({
                 category: 'Filter',
-                action: 'Show Another'
+                action: 'Next pub'
+            });
+        },
+        decrementCurrentPub: index => {
+            boundPositionActions.decrementCurrentPub();
+            GA.event({
+                category: 'Filter',
+                action: 'Previous Pub'
             });
         },
         launchLocationModal: () => {

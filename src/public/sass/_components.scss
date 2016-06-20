@@ -121,6 +121,18 @@
     border-top-style: solid;
 }
 
+.Button--pubNav {
+    background: none;
+    border: none;
+    width: 10%;
+    min-width: 25px;
+    height: 40px;
+
+    @include media-breakpoint-up(sm) {
+        font-size: 1.5rem;
+    }
+}
+
 
 .Button--time {
     @extend .Button--secondary;

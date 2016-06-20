@@ -15,6 +15,7 @@ export const REQUEST_PUB_DETAIL = 'request_pub_detail';
 export const RESPONSE_PUB_DETAIL = 'response_pub_detail';
 
 export const INCREMENT_CURRENT_PUB = 'increment_current_pub';
+export const DECREMENT_CURRENT_PUB = 'decrement_current_pub';
 
 export const LAUNCH_LOCATION_MODAL = 'launch_location_modal';
 export const LAUNCH_INFO_MODAL = 'launch_info_modal';
@@ -177,6 +178,12 @@ export function responsePubDetail(data) {
 export function incrementCurrentPub() {
     return {
         type: INCREMENT_CURRENT_PUB
+    }
+}
+
+export function decrementCurrentPub() {
+    return {
+        type: DECREMENT_CURRENT_PUB
     }
 }
 

@@ -10,6 +10,7 @@ import {
     REQUEST_PUB_DETAIL,
     RESPONSE_PUB_DETAIL,
     INCREMENT_CURRENT_PUB,
+    DECREMENT_CURRENT_PUB,
     LAUNCH_LOCATION_MODAL,
     LAUNCH_INFO_MODAL,
     CLOSE_MODAL
@@ -121,7 +122,22 @@ export default function position(state=INITIAL_STATE, action) {
             return {
                 ...state,
                 currentPub,
-                filteredIndex
+                filteredIndex,
+                renderTransitionDirection: 'left-out'
+            }
+        case DECREMENT_CURRENT_PUB:
+            {
+                let filteredIndex = state.filteredIndex - 1;
+                if(filteredIndex < 0) {
+                    filteredIndex = state.filteredPubs.length -1;
+                }
+                let currentPub = state.items.indexOf(state.filteredPubs[filteredIndex]);
+                return {
+                    ...state,
+                    currentPub,
+                    filteredIndex,
+                    renderTransitionDirection: 'right-out'
+                }
             }
         default:
             return state;

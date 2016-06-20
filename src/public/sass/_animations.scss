@@ -144,6 +144,46 @@
     }
 }
 
+@keyframes swipeLeftOut {
+    0% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+@keyframes swipeLeftIn {
+    0% {
+        transform: translateX(100%);
+        opacity: 0
+    }
+    100% {
+        transform: translateX(0%);
+        opacity: 1;
+    }
+}
+
+@keyframes swipeRightOut {
+    0% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+@keyframes swipeRightIn {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0
+    }
+    100% {
+        transform: translateX(0%);
+        opacity: 1;
+    }
+}
+
 
 /* react specific */
 .fadeIn-enter {
