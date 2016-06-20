@@ -36,17 +36,43 @@ export default class MyComponent extends Component {
             <form onSubmit={this.onFormSubmit}>
                 <h2 className="Heading--1">{this.props.location.name}</h2>
 
-                <div className="Box Box-row">
+                <div className="Box Box-row flex-wrap">
 
-                    <div className="Box Box-item">
+                    <div className="Box Box-item Property-option Property-option">
                         <label>
-                            <input onChange={this.props.onFormChange} type="checkbox" name="has_terrace" value="true" checked={this.props.hasTerrace} /> Has outdoor terrace?
+                            <input onChange={this.props.onFormChange} type="checkbox" name="hasGarden" value="true" checked={this.props.hasGarden} /> Garden
                         </label>
                     </div>
 
-                    <div className="Box Box-item">
+                    <div className="Box Box-item Property-option">
                         <label>
-                            <input onChange={this.props.onFormChange} type="checkbox" name="building_to_the_west" value="true" checked={this.props.buildingToTheWest} /> Has building to the west?
+                            <input onChange={this.props.onFormChange} type="checkbox" name="hasTerrace" value="true" checked={this.props.hasTerrace} /> Terrace
+                        </label>
+                    </div>
+
+                    <div className="Box Box-item Property-option">
+                        <label>
+                            <input onChange={this.props.onFormChange} type="checkbox" name="isInPark" value="true" checked={this.props.isInPark} /> In a park
+                        </label>
+                    </div>
+
+                    <div className="Box Box-item Property-option">
+                        <label>
+                            <input onChange={this.props.onFormChange} type="checkbox" name="isOnHill" value="true" checked={this.props.isOnHill} /> On a hill
+                        </label>
+                    </div>
+                </div>
+                <div className="Box Box-row flex-wrap">
+
+                    <div className="Box Box-item Property-option">
+                        <label>
+                            <input onChange={this.props.onFormChange} type="checkbox" name="isIsolated" value="true" checked={this.props.isIsolated} /> Isolated
+                        </label>
+                    </div>
+
+                    <div className="Box Box-item Property-option">
+                        <label>
+                            <input onChange={this.props.onFormChange} type="checkbox" name="buildingToTheWest" value="true" checked={this.props.buildingToTheWest} /> Building to the west
                         </label>
                     </div>
 

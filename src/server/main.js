@@ -30,7 +30,11 @@ var ANGLE_RANGE = 100;
 var SUBMIT_PROPS = {
     outdoor_angle: Number,
     has_terrace: Boolean,
-    building_to_the_west: Boolean
+    has_garden: Boolean,
+    is_isolated: Boolean,
+    is_in_park: Boolean,
+    is_on_hill: Boolean,
+    building_to_the_west: Boolean,
 }
 
 // Init

@@ -17,9 +17,9 @@ export default class AdminTool extends Component {
         this.state = {
             locations: [],
             currentLocation: null,
-            currentAngle: 0,
-            currentHasTerrace: false,
-            currentBuildingToWest: false,
+            outdoorAngle: 0,
+            hasTerrace: false,
+            buildingToTheWest: false,
             currentIsSaved: false,
             centre: {lat: 51.523777, lng: -0.0781597}
         };
@@ -38,22 +38,18 @@ export default class AdminTool extends Component {
 
         if(this.state.currentLocation){
 
-            let angle = this.state.currentLocation.outsideAngle || this.state.currentAngle;
-
             locationDetails = <LocationDetails
+                {...this.state}
                 location={this.state.currentLocation}
-                hasTerrace={this.state.currentHasTerrace}
-                buildingToTheWest={this.state.currentBuildingToWest}
                 isSaved={this.state.currentIsSaved}
                 onSave={this.saveLocation.bind(this)}
-                angle={angle}
                 onLocationSave={this.onLocationSave.bind(this)}
                 onFormChange={this.onFormChange.bind(this)}
                 onNextLocation={this.onNextLocation.bind(this)}
             />;
 
             angleMarker = <AngleMarker
-                angle={angle}
+                angle={this.state.outdoorAngle}
                 onAngleChage={this.onAngleChange.bind(this)}
             />;
 
@@ -63,7 +59,7 @@ export default class AdminTool extends Component {
 
         return (
 
-            <div className="Screen">
+            <div className="Screen Admin-tool">
 
                 <header className="Screen-header">
                     <div className="max-width">
@@ -103,15 +99,15 @@ export default class AdminTool extends Component {
      * Nullify some of the state so that the map shows no focussed location
      *
      */
-    resetMap() {
-        this.setState({
-            currentLocation: null,
-            currentHasTerrace: false,
-            currentBuildingToWest: false,
-            currentIsSaved: false,
-            currentAngle: 0
-        });
-    }
+    // resetMap() {
+    //     this.setState({
+    //         currentLocation: null,
+    //         hasTerrace: false,
+    //         buildingToTheWest: false,
+    //         currentIsSaved: false,
+    //         outdoorAngle: 0
+    //     });
+    // }
 
 
     /**
@@ -119,24 +115,7 @@ export default class AdminTool extends Component {
      *
      */
     onMapCentreChanged(centre) {
-
-        //If we are focussed on a location, and move the map more than 100m away,
-        //unfocus from it
-        // if(this.state.currentLocation){
-        //     let changedDistance = getDistance(
-        //         this.state.currentLocation.location.lat,
-        //         this.state.currentLocation.location.lng,
-        //         centre.lat,
-        //         centre.lng,
-        //         'K'
-        //     );
-        //     if(changedDistance > 0.1){
-        //         this.resetMap();
-        //     }
-        // }
-
         this.setState({centre: centre});
-
     }
 
 
@@ -177,8 +156,14 @@ export default class AdminTool extends Component {
         FSQLocations.forEach( (FSQLocation) => {
             DBLocations.map( (DBLocation) => {
                 if(DBLocation.foursquare.id === FSQLocation.id){
+                    //copy attributes from DB location data into the FSQ object
+                    //TODO refactor this translation into the service, shhouldnt be here
                     FSQLocation.exists = true;
                     FSQLocation.hasTerrace = DBLocation.has_terrace;
+                    FSQLocation.hasGarden = DBLocation.has_garden;
+                    FSQLocation.isIsolated = DBLocation.is_isolated;
+                    FSQLocation.isOnHill = DBLocation.is_on_hill;
+                    FSQLocation.isInPark = DBLocation.is_in_park;
                     FSQLocation.buildingToTheWest = DBLocation.building_to_the_west;
                     FSQLocation.outdoorAngle = DBLocation.outdoor_angle;
                 }
@@ -199,16 +184,20 @@ export default class AdminTool extends Component {
         this.setState({
             currentLocation: locationObj,
             centre: locationObj.location,
-            currentHasTerrace: locationObj.hasTerrace,
-            currentBuildingToWest: locationObj.buildingToTheWest,
-            currentAngle: locationObj.outdoorAngle,
+            hasTerrace: locationObj.hasTerrace,
+            buildingToTheWest: locationObj.buildingToTheWest,
+            outdoorAngle: locationObj.outdoorAngle,
+            hasGarden: locationObj.hasGarden,
+            isIsolated: locationObj.isIsolated,
+            isOnHill: locationObj.isOnHill,
+            isInPark: locationObj.isInPark,
             currentIsSaved: locationObj.exists
         });
     }
 
 
     onAngleChange(angle) {
-        this.setState({currentAngle: angle});
+        this.setState({outdoorAngle: angle});
     }
 
 
@@ -228,12 +217,10 @@ export default class AdminTool extends Component {
      * Handle events of controlled form fields
      */
     onFormChange(e) {
-        if(e.target.name === 'has_terrace'){
-            this.setState({currentHasTerrace: e.target.checked});
-        }
-        if(e.target.name === 'building_to_the_west'){
-            this.setState({currentBuildingToWest: e.target.checked});
-        }
+        let checkBox = e.target;
+        let tempState = Object.assign({}, this.state);
+        tempState[checkBox.name] = checkBox.checked;
+        this.setState(tempState);
     }
 
 
@@ -259,12 +246,8 @@ export default class AdminTool extends Component {
      */
     saveLocation() {
 
-        savePub(
-            this.state.currentLocation.id,
-            this.state.currentHasTerrace,
-            this.state.currentBuildingToWest,
-            this.state.currentAngle
-        ).then(
+        savePub(this.state.currentLocation.id, this.state)
+        .then(
             function(){
                 console.log('saved pub');
             },
@@ -276,9 +259,15 @@ export default class AdminTool extends Component {
         this.state.currentLocation.exists = true;
 
         //save into local copy of this location
-        this.state.currentLocation.hasTerrace = this.state.currentHasTerrace;
-        this.state.currentLocation.buildingToTheWest = this.state.currentBuildingToWest;
-        this.state.currentLocation.outdoorAngle = this.state.currentAngle;
+        //do this without Object.assign to avoid circular references
+        this.state.currentLocation.hasTerrace = this.state.hasTerrace;
+        this.state.currentLocation.hasGarden = this.state.hasGarden;
+        this.state.currentLocation.isIsolated = this.state.isIsolated;
+        this.state.currentLocation.isOnHill = this.state.isOnHill;
+        this.state.currentLocation.isInPark = this.state.isInPark;
+        this.state.currentLocation.buildingToTheWest = this.state.buildingToTheWest;
+        this.state.currentLocation.outdoorAngle = this.state.outdoorAngle;
+
         this.onLocationSave();
     }
 
