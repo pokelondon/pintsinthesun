@@ -8,11 +8,11 @@ export default class MyComponent extends Component {
         super(props);
         this.props = props;
 
-        this.state = {
-            hasTerrace: false,
-            buildingToTheWest: false,
-            isSaved: false
-        };
+        // this.state = {
+        //     hasTerrace: false,
+        //     buildingToTheWest: false,
+        //     isSaved: false
+        // };
     }
 
 
@@ -31,64 +31,74 @@ export default class MyComponent extends Component {
             'Button--confirmed': this.props.isSaved
         });
 
+        let uiBlocker;
+
+        if(this.props.location.name === ''){
+            uiBlocker = <div className="UI-blocker"></div>
+        }
+
         return (
 
-            <form onSubmit={this.onFormSubmit}>
-                <h2 className="Heading--1">{this.props.location.name}</h2>
+            <form className="Location-details" onSubmit={this.onFormSubmit}>
 
+
+                <div className="Box Box-row">
+                    <div className="Box Box-item">
+                        <h2 className="Heading--1">{this.props.location.name}</h2>
+                    </div>
+                </div>
                 <div className="Box Box-row flex-wrap">
 
-                    <div className="Box Box-item Property-option Property-option">
+                    <div className="Box Box-item Property-option no-padding Property-option">
                         <label>
                             <input onChange={this.props.onFormChange} type="checkbox" name="hasGarden" value="true" checked={this.props.hasGarden} /> Garden
                         </label>
                     </div>
 
-                    <div className="Box Box-item Property-option">
+                    <div className="Box Box-item Property-option no-padding">
                         <label>
                             <input onChange={this.props.onFormChange} type="checkbox" name="hasTerrace" value="true" checked={this.props.hasTerrace} /> Terrace
                         </label>
                     </div>
 
-                    <div className="Box Box-item Property-option">
+                    <div className="Box Box-item Property-option no-padding">
                         <label>
                             <input onChange={this.props.onFormChange} type="checkbox" name="isInPark" value="true" checked={this.props.isInPark} /> In a park
-                        </label>
-                    </div>
-
-                    <div className="Box Box-item Property-option">
-                        <label>
-                            <input onChange={this.props.onFormChange} type="checkbox" name="isOnHill" value="true" checked={this.props.isOnHill} /> On a hill
                         </label>
                     </div>
                 </div>
                 <div className="Box Box-row flex-wrap">
 
-                    <div className="Box Box-item Property-option">
+                    <div className="Box Box-item Property-option no-padding">
+                        <label>
+                            <input onChange={this.props.onFormChange} type="checkbox" name="isOnHill" value="true" checked={this.props.isOnHill} /> On a hill
+                        </label>
+                    </div>
+
+                    <div className="Box Box-item Property-option no-padding">
                         <label>
                             <input onChange={this.props.onFormChange} type="checkbox" name="isIsolated" value="true" checked={this.props.isIsolated} /> Isolated
                         </label>
                     </div>
 
-                    <div className="Box Box-item Property-option">
+                    <div className="Box Box-item Property-option no-padding">
                         <label>
                             <input onChange={this.props.onFormChange} type="checkbox" name="buildingToTheWest" value="true" checked={this.props.buildingToTheWest} /> Building to the west
                         </label>
                     </div>
+                </div>
 
+                <div className="Box Box-row">
                     <div className="Box Box-item no-padding">
                         <button onClick={this.saveLocation.bind(this)} className={btnClasses}>Save</button>
                     </div>
 
                 </div>
 
-                <div className="Box Box-row">
-                    <div className="Box Box-item no-padding">
-                        <button onClick={this.props.onNextLocation} className="Button--primary">Select next pub</button>
-                    </div>
-                </div>
-
+                {uiBlocker}
             </form>
+
+
         );
     }
 }

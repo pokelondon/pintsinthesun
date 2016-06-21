@@ -42,6 +42,7 @@ class AngleMarker extends React.Component {
 
     onMouseDown(e) {
         this.startDragPos = e.pageX;
+        this.startAngle = this.props.angle;
         this.setState({isDragging: true});
     }
 
@@ -51,9 +52,9 @@ class AngleMarker extends React.Component {
 
     onMouseMove(e) {
         let pxOffset = this.startDragPos - e.pageX;
-        let angle = pxOffset / 2;
-        if(angle >= 150) angle = 150;
-        if(angle <= -150) angle = -150;
+        let angle = (pxOffset / 2) + this.startAngle;
+        if(angle >= 179) angle = 179;
+        if(angle <= -179) angle = -179;
         this.props.onAngleChage(angle);
     }
 

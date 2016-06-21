@@ -63,7 +63,7 @@ export default class AdminTool extends Component {
 
                 <header className="Screen-header">
                     <div className="max-width">
-                        <h2>Add a pub</h2>
+                        <h2>Add pubs</h2>
                         <div class="Box Box-row">
                             {locationDetails}
                         </div>
@@ -157,7 +157,7 @@ export default class AdminTool extends Component {
             DBLocations.map( (DBLocation) => {
                 if(DBLocation.foursquare.id === FSQLocation.id){
                     //copy attributes from DB location data into the FSQ object
-                    //TODO refactor this translation into the service, shhouldnt be here
+                    //TODO refactor this translation into the service, shouldnt be here
                     FSQLocation.exists = true;
                     FSQLocation.hasTerrace = DBLocation.has_terrace;
                     FSQLocation.hasGarden = DBLocation.has_garden;

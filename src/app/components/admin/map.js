@@ -28,6 +28,11 @@ export default class Map extends Component {
 
     }
 
+    componentWillReceiveProps(newProps) {
+        if(this.map)
+            this.map.panTo(newProps.centre)
+    }
+
     render() {
 
         return (
@@ -42,7 +47,6 @@ export default class Map extends Component {
                         ref={(map) => this.map = map}
                         defaultZoom={this.state.zoom}
                         zoom={this.state.zoom}
-                        center={this.props.centre}
                         defaultCenter={this.props.centre}
                         onDragend={this.onDragEnd.bind(this)}
                         onZoomChanged={this.onZoomChanged.bind(this)}
