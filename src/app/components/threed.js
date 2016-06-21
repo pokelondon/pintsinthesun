@@ -4,6 +4,7 @@ import THREE from 'three';
 import SunCalc from '../lib/suncalc';
 import d3 from 'd3';
 import TWEEN from 'tween.js';
+import Hammer from 'hammerjs';
 
 import { fetchBuildings } from '../services/overpass';
 import classnames from 'classnames';
@@ -96,6 +97,16 @@ class ThreeD extends React.Component {
 
         this.element = ReactDOM.findDOMNode(this);
 
+        this.hammerTime = new Hammer(this.element);
+        this.hammerTime.on('swipe', (e) => {
+            if(e.direction === 2){
+                this.props.incrementCurrentPub();
+            }
+            if(e.direction === 4){
+                this.props.decrementCurrentPub();
+            }
+        });
+        
     }
 
     componentDidUpdate(prevProps) {
@@ -137,7 +148,7 @@ class ThreeD extends React.Component {
 
     animateCanvasOut() {
         this.setState({renderTransitionDirection: this.props.renderTransitionDirection});
-        setTimeout(this.animateCanvasIn.bind(this), 300);
+        setTimeout(this.animateCanvasIn.bind(this), 150);
     }
 
     animateCanvasIn() {

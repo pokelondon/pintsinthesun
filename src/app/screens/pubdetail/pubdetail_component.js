@@ -55,7 +55,6 @@ class PubDetail extends React.Component {
         return classnames({
             'Button--secondary': true,
             'Button--applyTime': true,
-            'negative-margin': true,
             'Button--disabled': this.isLocalTimeGlobalTime()
         });
     }
@@ -133,7 +132,7 @@ class PubDetail extends React.Component {
                 <div className="Screen-main">
                     <div className="max-width">
                         <div className="Box Box-row flex-wrap no-padding">
-                            <div className="Box-item Box-item--halfCol Box-item--responsiveBorders">
+                            <div className="Box-item Box-item--halfCol Box-item--responsiveBorders no-padding">
                                 <div className="Three-container">
                                     {(() => {
                                         if(this.props.filteredPubs.length && this.props.filteredIndex !== 0){
@@ -144,6 +143,8 @@ class PubDetail extends React.Component {
                                         centre={{lat, lng}}
                                         date={this.state.localDate}
                                         renderTransitionDirection={this.props.renderTransitionDirection}
+                                        incrementCurrentPub={this.props.incrementCurrentPub}
+                                        decrementCurrentPub={this.props.decrementCurrentPub}
                                     />
                                     {(() => {
                                         if(this.props.filteredPubs.length > 1 && this.props.filteredIndex !== this.props.filteredPubs.length -1){

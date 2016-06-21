@@ -7,9 +7,7 @@
     display: block;
     width: 225px;
     height: 225px;
-    margin: 20px auto 0;
-
-
+    margin: 20px auto 20px;
 
     @include media-breakpoint-up(sm) {
         width: 300px;
@@ -32,43 +30,43 @@
 }
 
 .Render--transition-left-out{
-    animation: swipeLeftOut 0.3s;
+    animation: swipeLeftOut 0.15s;
     animation-timing-function: ease-in;
     animation-fill-mode: forwards;
 
 }
 .Render--transition-left-in{
-    animation: swipeLeftIn 0.3s;
+    animation: swipeLeftIn 0.15s;
     animation-timing-function: ease-out;
     animation-fill-mode: forwards;
 }
 .Render--transition-right-out{
-    animation: swipeRightOut 0.3s;
+    animation: swipeRightOut 0.15s;
     animation-timing-function: ease-in;
     animation-fill-mode: forwards;
 }
 .Render--transition-right-in{
-    animation: swipeRightIn 0.3s;
+    animation: swipeRightIn 0.15s;
     animation-timing-function: ease-out;
     animation-fill-mode: forwards;
 }
 
 .Button--pubNav--prev {
     position: absolute;
-    left: -10px;
+    left: 0;
     top: 50%;
     transform: translateY(-50%);
 }
 .Button--pubNav--next {
     position: absolute;
-    right: -10px;
+    right: 0;
     top: 50%;
     transform: translateY(-50%);
 }
 
 .SliderContainer {
     width: 100%;
-    padding: 50px 30px 30px;
+    padding: 30px 30px 50px;
     box-sizing: border-box;
 }
 

@@ -127,6 +127,7 @@
     width: 10%;
     min-width: 25px;
     height: 40px;
+    padding: 0;
 
     @include media-breakpoint-up(sm) {
         font-size: 1.5rem;
