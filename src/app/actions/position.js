@@ -56,16 +56,19 @@ export function requestPosition() {
 }
 
 export function responsePosition(centre) {
+    let isRealPosition = true;
     return function(dispatch) {
         if(centre.error){
             centre = {lat: 51.523661, lng: -0.077338}; //default to shoreditch when no location available 51.523661, -0.077338
+            isRealPosition = false;
         }
         dispatch(fetchPubs(centre));
         dispatch(fetchWeather(centre));
         dispatch({
             type: RESPONSE_POSITION,
             centre: centre,
-            receivedAt: new Date()
+            receivedAt: new Date(),
+            isRealPosition
         });
     }
 }

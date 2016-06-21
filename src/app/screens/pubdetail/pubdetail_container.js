@@ -17,8 +17,12 @@ const mapStateToProps = (state, ownProps) => {
         filteredPubs,
         filteredIndex,
         timeRange,
-        renderTransitionDirection
+        renderTransitionDirection,
+        centre,
+        isRealPosition
     } = state.position;
+
+
 
     return {
         date,
@@ -30,6 +34,8 @@ const mapStateToProps = (state, ownProps) => {
         filteredIndex,
         timeRange,
         renderTransitionDirection,
+        centre,
+        isRealPosition,
         //pub: items[currentPub]
         pub: filteredPubs[filteredIndex]
     }

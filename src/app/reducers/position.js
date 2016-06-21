@@ -81,6 +81,7 @@ export default function position(state=INITIAL_STATE, action) {
                 isLocating: false,
                 filteredPubs: filterForAngle(sun, state.items),
                 filteredIndex: 0,
+                isRealPosition: action.isRealPosition,
                 sun
             }
         case REQUEST_POSITION:

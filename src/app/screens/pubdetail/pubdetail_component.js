@@ -119,7 +119,16 @@ class PubDetail extends React.Component {
                         <div className="Box Box-row">
                             <div className="Box-item">
                                 <span>{neighbourhood ? `${neighbourhood} &mdash; ` : ''}{distance.toFixed(1)}{distanceUnit} away</span>
-                                <a className="MapIcon" target="_blank" href={`http://maps.google.com/?q=${lat},${lng}`}><img src="/img/icons/map-icon.svg" width="20" height="20" alt="Map icon" title="Map link"/></a>
+
+                                { (() => {
+                                    //City mapper link only includes start position if its real
+                                    let positionStr = ``;
+                                    if(this.props.isRealPosition){
+                                        positionStr = `${this.props.centre.lat},${this.props.centre.lng}`;
+                                    }
+                                    return (<a className="MapIcon" target="_blank" href={`https://citymapper.com/directions?startcoord=${positionStr}&endcoord=${lat},${lng}&endname=${name}&arriveby=${this.state.localDate.toISOString()}`}><img src="/img/icons/map-icon.svg" width="20" height="20" alt="Map icon" title="Map link"/></a>);
+                                })()}
+
                             </div>
                         </div>
                         <div className="Box Box-row flex-wrap">
