@@ -119,7 +119,7 @@ class PubDetail extends React.Component {
                         <div className="Box Box-row">
                             <div className="Box-item">
                                 <span>{neighbourhood ? `${neighbourhood} &mdash; ` : ''}{distance.toFixed(1)}{distanceUnit} away</span>
-                                <a className="Map-icon" target="_blank" href={`http://maps.google.com/?q=${lat},${lng}`}><img src="http://placehold.it/20x20" width="20" height="20" alt="Map icon" title="Map link"/></a>
+                                <a className="MapIcon" target="_blank" href={`http://maps.google.com/?q=${lat},${lng}`}><img src="/img/icons/map-icon.svg" width="20" height="20" alt="Map icon" title="Map link"/></a>
                             </div>
                         </div>
                         <div className="Box Box-row flex-wrap">
