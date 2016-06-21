@@ -111,14 +111,22 @@
 
 .Button--disabled {
     color: rgba(100,100,100, 0.5);
-    &:hover {
-        background-color: $yellowLight;
-    }
 }
 
 .Button--applyTime {
-    @extend .border-defaults;
-    border-top-style: solid;
+    background: none;
+    border: none;
+    border-bottom: 2px solid $blueDark;
+
+    &:before {
+        content: url(/img/icons/clock-icon.svg);
+        position: relative;
+        top: 4px;
+        width: 1.3em;
+        height: 1.3em;
+        display: inline-block;
+        padding-right: 7px;
+    }
 }
 
 .Button--pubNav {

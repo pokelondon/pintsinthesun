@@ -14,6 +14,7 @@ class PubDetail extends React.Component {
         super(props);
         this.props = props;
 
+        this.isTimeApplyBtnVisible = false;
     }
 
     componentWillMount() {
@@ -28,6 +29,7 @@ class PubDetail extends React.Component {
     }
 
     applyLocalTimeToGlobal(){
+        this.isTimeApplyBtnVisible = false;
         this.props.updateTime(this.state.localDate);
         this.setState({localDate: new Date(this.state.localDate.getTime())});
     }
@@ -53,14 +55,17 @@ class PubDetail extends React.Component {
 
     getTimeApplyButtonClassNames() {
         return classnames({
-            'Button--secondary': true,
             'Button--applyTime': true,
-            'Button--disabled': this.isLocalTimeGlobalTime()
+            'visibility-hidden': (this.isLocalTimeGlobalTime() && !this.isTimeApplyBtnVisible)
         });
     }
 
     isLocalTimeGlobalTime() {
-        return this.props.date.getHours() === this.state.localDate.getHours();
+        if(this.props.date.getHours() === this.state.localDate.getHours()){
+            return true;
+        }
+        this.isTimeApplyBtnVisible = true;
+        return false;
     }
 
     render() {
@@ -114,7 +119,7 @@ class PubDetail extends React.Component {
                         <div className="Box Box-row">
                             <div className="Box-item">
                                 <span>{neighbourhood ? `${neighbourhood} &mdash; ` : ''}{distance.toFixed(1)}{distanceUnit} away</span>
-                                <a className="Map-icon" target="_blank" href={`http://maps.google.com/?q=${lat},${lng}`}><img src="/img/icons/map-icon.svg" width="20" height="20" alt="Map icon" title="Map link"/></a>
+                                <a className="Map-icon" target="_blank" href={`http://maps.google.com/?q=${lat},${lng}`}><img src="http://placehold.it/20x20" width="20" height="20" alt="Map icon" title="Map link"/></a>
                             </div>
                         </div>
                         <div className="Box Box-row flex-wrap">
@@ -132,7 +137,7 @@ class PubDetail extends React.Component {
                 <div className="Screen-main">
                     <div className="max-width">
                         <div className="Box Box-row flex-wrap no-padding">
-                            <div className="Box-item Box-item--halfCol Box-item--responsiveBorders no-padding">
+                            <div className="Box-item Box-item--halfCol Box-item--responsiveBorders">
                                 <div className="Three-container">
                                     {(() => {
                                         if(this.props.filteredPubs.length && this.props.filteredIndex !== 0){
@@ -166,7 +171,9 @@ class PubDetail extends React.Component {
                                         marks={ {7: '7:00', 14: '14:00', 21: '21:00'} }
                                     />
                                 </div>
-                                <button disabled={this.isLocalTimeGlobalTime()} className={this.getTimeApplyButtonClassNames()} onClick={this.applyLocalTimeToGlobal.bind(this)}>What other pubs are good at {this.state.localDate.getHours()}:00?</button>
+                                <div className="PubDetail-applyButtonContainer">
+                                    <button disabled={this.isLocalTimeGlobalTime()} className={this.getTimeApplyButtonClassNames()} onClick={this.applyLocalTimeToGlobal.bind(this)}>Search for pubs at {this.state.localDate.getHours()}:00</button>
+                                </div>
                             </div>
                             <Rational pub={this.props.pub} />
                         </div>

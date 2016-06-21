@@ -106,7 +106,7 @@ class ThreeD extends React.Component {
                 this.props.decrementCurrentPub();
             }
         });
-        
+
     }
 
     componentDidUpdate(prevProps) {
@@ -153,8 +153,10 @@ class ThreeD extends React.Component {
 
     animateCanvasIn() {
         this.updateBuildings();
-        let newAnimation = this.state.renderTransitionDirection.replace('out', 'in');
-        this.setState({renderTransitionDirection: newAnimation});
+        if(this.state.renderTransitionDirection){
+            let newAnimation = this.state.renderTransitionDirection.replace('out', 'in');
+            this.setState({renderTransitionDirection: newAnimation});
+        }
     }
 
     updateBuildings() {

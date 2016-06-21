@@ -99,23 +99,33 @@ export default class AdminTool extends Component {
      * Nullify some of the state so that the map shows no focussed location
      *
      */
-    // resetMap() {
-    //     this.setState({
-    //         currentLocation: null,
-    //         hasTerrace: false,
-    //         buildingToTheWest: false,
-    //         currentIsSaved: false,
-    //         outdoorAngle: 0
-    //     });
-    // }
+    resetMap() {
+        this.setState({
+            currentLocation: null,
+            hasTerrace: false,
+            hasGarden: false,
+            buildingToTheWest: false,
+            isOnHill: false,
+            isIsolated: false,
+            isInPark: false,
+            currentIsSaved: false,
+            outdoorAngle: 0
+        });
+    }
 
 
     /**
-     * Load pub list when the map has been dragged
+     * Set the state when dragged. If theyve dragged more than 200m, reset the map
      *
      */
     onMapCentreChanged(centre) {
         this.setState({centre: centre});
+        if(this.state.currentLocation){
+            let distance = getDistance(centre.lat, centre.lng, this.state.currentLocation.location.lat, this.state.currentLocation.location.lng);
+            if(distance > 0.20){
+                this.resetMap();
+            }
+        }
     }
 
 

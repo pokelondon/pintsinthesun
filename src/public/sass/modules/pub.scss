@@ -1,6 +1,9 @@
 .Three-container {
     position: relative;
     overflow: hidden;
+    //counteract parent padding of 20px
+    width: calc(100% + 20px);
+    margin-left: -10px;
 }
 
 .Render {
@@ -66,7 +69,7 @@
 
 .SliderContainer {
     width: 100%;
-    padding: 30px 30px 50px;
+    padding: 30px 30px 40px;
     box-sizing: border-box;
 }
 
@@ -87,6 +90,11 @@
     .rc-slider-dot {
         display: none;
     }
+}
+
+.PubDetail-applyButtonContainer {
+    text-align: center;
+    padding-bottom: 1.5rem;
 }
 
 
