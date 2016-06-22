@@ -5,13 +5,14 @@
     width: 100%;
     box-sizing: border-box;
     padding: 10px $padding;
-    
+
 
     background: $blueDark;
     color: $mintLight;
 
     &-madeByPoke{
         float: left;
+        line-height: 1rem;
     }
 
     &-pokeLogo {
