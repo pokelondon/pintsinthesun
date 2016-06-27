@@ -27,6 +27,7 @@
     }
 }
 
+
 .Button--primary {
     @extend .Button;
     @extend .btn-text--large;
@@ -237,6 +238,26 @@
         display: inline-block;
         width: 1.875em;
         height: 1.875em;
+    }
+}
+
+.Button--tab {
+    border-style: none;
+    @extend .border-defaults;
+    display: block;
+    flex: 1;
+    padding: 1rem 2rem;
+    border-bottom-style: solid;
+    background: $yellow;
+
+    & + & {
+        border-left-style: solid;
+    }
+
+    &--active {
+        border-bottom-style: hidden;
+        background: none !important;
+        box-shadow: none !important;
     }
 }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import classnames from 'classnames';
 
 class Suggestion extends React.Component {
 
@@ -18,15 +19,44 @@ class Suggestion extends React.Component {
         }
     }
 
+    componentDidUpdate(prevProps) {
+        if(prevProps.name !== this.props.name) {
+            this.animateCanvasOut();
+        }
+    }
+
+    animateCanvasOut() {
+        this.setState({renderTransitionDirection: this.props.renderTransitionDirection});
+        setTimeout(this.animateCanvasIn.bind(this), 150);
+    }
+
+    animateCanvasIn() {
+        if(this.state.renderTransitionDirection){
+            let newAnimation = this.state.renderTransitionDirection.replace('out', 'in');
+            this.setState({renderTransitionDirection: newAnimation});
+        }
+    }
+
+
     getSuggestionText() {
         return Suggestion.SUGGESTIONS[parseInt(Suggestion.SUGGESTIONS.length * Math.random())];
     }
 
     render() {
+
+        let renderClasses = classnames({
+            'Heading--1': true,
+            'Render--transition-left-out': (this.state.renderTransitionDirection === 'left-out'),
+            'Render--transition-left-in': (this.state.renderTransitionDirection === 'left-in'),
+            'Render--transition-right-out': (this.state.renderTransitionDirection === 'right-out'),
+            'Render--transition-right-in': (this.state.renderTransitionDirection === 'right-in'),
+        });
+        {renderClasses}
+
         let [ first, last ] = this.state.suggestion;
         //last = (last) ? ' ' + last : '?';
         return (
-            <p className="Heading--1">
+            <p className={renderClasses}>
                 <span className="">{first} </span>
                 <span className="txt-suggestion">{this.props.name}</span>
                 <span className=""> {last} {Suggestion.TIMES[this.props.timeRange]}?</span>

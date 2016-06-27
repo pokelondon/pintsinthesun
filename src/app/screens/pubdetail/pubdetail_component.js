@@ -7,7 +7,8 @@ import ThreeD from '../../components/threed';
 import WeatherIcon from '../../components/weathericon';
 import Suggestion from '../../components/suggestion';
 import Rational from '../../components/rational';
-
+import StaticMap from '../../components/static-map.js';
+import Hammer from 'hammerjs';
 
 class PubDetail extends React.Component {
     constructor(props) {
@@ -18,7 +19,22 @@ class PubDetail extends React.Component {
     }
 
     componentWillMount() {
-        this.setState({localDate: new Date(this.props.date.getTime())});
+        this.setState({
+            localDate: new Date(this.props.date.getTime()),
+            visibleTab: 'sun'
+        });
+    }
+
+    componentDidMount() {
+        this.hammerTime = new Hammer(document.querySelector('.js-suggestion-name'));
+        this.hammerTime.on('swipe', (e) => {
+            if(e.direction === 2){
+                this.props.incrementCurrentPub();
+            }
+            if(e.direction === 4){
+                this.props.decrementCurrentPub();
+            }
+        });
     }
 
     onSliderChange(value) {
@@ -68,6 +84,10 @@ class PubDetail extends React.Component {
         return false;
     }
 
+    showTab(tab){
+        this.setState({visibleTab: tab});
+    }
+
     render() {
         if(this.props.isFetching) {
             return (
@@ -115,7 +135,19 @@ class PubDetail extends React.Component {
 
                 <header className="Screen-header">
                     <div className="max-width">
-                        <Suggestion name={name} timeRange={this.props.timeRange} />
+                        <div className="SuggestionName js-suggestion-name">
+                            {(() => {
+                                if(this.props.filteredPubs.length && this.props.filteredIndex !== 0){
+                                    return <button className="Button--pubNav Button--pubNav--prev" onClick={this.props.decrementCurrentPub}>&lt;</button>
+                                }
+                            })()}
+                            <Suggestion renderTransitionDirection={this.props.renderTransitionDirection} name={name} timeRange={this.props.timeRange} />
+                            {(() => {
+                                if(this.props.filteredPubs.length > 1 && this.props.filteredIndex !== this.props.filteredPubs.length -1){
+                                    return <button className="Button--pubNav Button--pubNav--next" onClick={this.props.incrementCurrentPub}>&gt;</button>
+                                }
+                            })()}
+                        </div>
                         <div className="Box Box-row">
                             <div className="Box-item">
                                 <span>{neighbourhood ? `${neighbourhood} &mdash; ` : ''}{distance.toFixed(1)}{distanceUnit} away</span>
@@ -147,42 +179,66 @@ class PubDetail extends React.Component {
                     <div className="max-width">
                         <div className="Box Box-row flex-wrap no-padding">
                             <div className="Box-item Box-item--halfCol Box-item--responsiveBorders">
-                                <div className="Three-container">
-                                    {(() => {
-                                        if(this.props.filteredPubs.length && this.props.filteredIndex !== 0){
-                                            return <button className="Button--pubNav Button--pubNav--prev" onClick={this.props.decrementCurrentPub}>&lt;</button>
-                                        }
-                                    })()}
-                                    <ThreeD
-                                        centre={{lat, lng}}
-                                        date={this.state.localDate}
-                                        renderTransitionDirection={this.props.renderTransitionDirection}
-                                        incrementCurrentPub={this.props.incrementCurrentPub}
-                                        decrementCurrentPub={this.props.decrementCurrentPub}
-                                    />
-                                    {(() => {
-                                        if(this.props.filteredPubs.length > 1 && this.props.filteredIndex !== this.props.filteredPubs.length -1){
-                                            return <button className="Button--pubNav Button--pubNav--next" onClick={this.props.incrementCurrentPub}>&gt;</button>
-                                        }
-                                    })()}
+                                <div className="MapTabs">
+                                    <button className={(this.state.visibleTab === 'sun') ? 'Button--secondary Button--tab Button--tab--active' : 'Button--secondary Button--tab'} onClick={this.showTab.bind(this, 'sun')}>Sun position</button>
+                                    <button className={(this.state.visibleTab === 'map') ? 'Button--secondary Button--tab Button--tab--active' : 'Button--secondary Button--tab'} onClick={this.showTab.bind(this, 'map')}>Map</button>
                                 </div>
 
-                                <div className="SliderContainer">
-                                    <Slider
-                                        min={7}
-                                        max={21}
-                                        step={1}
-                                        included={false}
-                                        defaultValue={this.props.date.getHours()}
-                                        className='Slider'
-                                        onChange={this.onSliderChange.bind(this)}
-                                        tipFormatter={this.sliderTipFormatter.bind(this)}
-                                        marks={ {7: '7:00', 14: '14:00', 21: '21:00'} }
-                                    />
-                                </div>
-                                <div className="PubDetail-applyButtonContainer">
-                                    <button disabled={this.isLocalTimeGlobalTime()} className={this.getTimeApplyButtonClassNames()} onClick={this.applyLocalTimeToGlobal.bind(this)}>Search for pubs at {this.state.localDate.getHours()}:00</button>
-                                </div>
+                                { ( () => {
+                                    if(this.state.visibleTab === 'sun'){
+                                        return (
+                                            <div>
+                                                <div className="Three-container">
+                                                    {(() => {
+                                                        // if(this.props.filteredPubs.length && this.props.filteredIndex !== 0){
+                                                        //     return <button className="Button--pubNav Button--pubNav--prev" onClick={this.props.decrementCurrentPub}>&lt;</button>
+                                                        // }
+                                                    })()}
+                                                    <ThreeD
+                                                        centre={{lat, lng}}
+                                                        date={this.state.localDate}
+                                                        renderTransitionDirection={this.props.renderTransitionDirection}
+                                                        incrementCurrentPub={this.props.incrementCurrentPub}
+                                                        decrementCurrentPub={this.props.decrementCurrentPub}
+                                                    />
+                                                    {(() => {
+                                                        // if(this.props.filteredPubs.length > 1 && this.props.filteredIndex !== this.props.filteredPubs.length -1){
+                                                        //     return <button className="Button--pubNav Button--pubNav--next" onClick={this.props.incrementCurrentPub}>&gt;</button>
+                                                        // }
+                                                    })()}
+                                                </div>
+
+                                                <div className="SliderContainer">
+                                                    <Slider
+                                                        min={7}
+                                                        max={21}
+                                                        step={1}
+                                                        included={false}
+                                                        defaultValue={this.state.localDate.getHours()}
+                                                        className='Slider'
+                                                        onChange={this.onSliderChange.bind(this)}
+                                                        tipFormatter={this.sliderTipFormatter.bind(this)}
+                                                        marks={ {7: '7:00', 14: '14:00', 21: '21:00'} }
+                                                    />
+                                                </div>
+                                                <div className="PubDetail-applyButtonContainer">
+                                                    <button disabled={this.isLocalTimeGlobalTime()} className={this.getTimeApplyButtonClassNames()} onClick={this.applyLocalTimeToGlobal.bind(this)}>Search for pubs at {this.state.localDate.getHours()}:00</button>
+                                                </div>
+                                            </div>
+                                        );
+                                    }
+                                })()}
+
+                                { ( () => {
+                                    if(this.state.visibleTab === 'map') {
+                                        return (
+                                            <div className={(this.state.visibleTab === 'map') ? '' : 'display-none'}>
+                                                <StaticMap centre={{lat, lng}} />
+                                            </div>
+                                        )
+                                    }
+                                })()}
+
                             </div>
                             <Rational pub={this.props.pub} />
                         </div>

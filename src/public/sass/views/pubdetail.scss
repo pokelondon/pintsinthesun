@@ -1,7 +1,25 @@
 .Pub-detail {
 
+    .SuggestionName {
+        position: relative;
+        margin-bottom: 20px;
+        text-align: center;
+
+        & p {
+            width: 80%;
+            display: inline-block;
+        }
+    }
+
     .Map-icon {
         float: right;
     }
-    
+
+    .MapTabs {
+        display: flex;
+        flex-direction: row;
+        width: calc(100% + 20px);
+        margin: -10px 0 10px -10px;
+    }
+
 }
