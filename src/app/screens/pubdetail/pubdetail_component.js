@@ -25,18 +25,6 @@ class PubDetail extends React.Component {
         });
     }
 
-    componentDidMount() {
-        this.hammerTime = new Hammer(document.querySelector('.js-suggestion-name'));
-        this.hammerTime.on('swipe', (e) => {
-            if(e.direction === 2){
-                this.props.incrementCurrentPub();
-            }
-            if(e.direction === 4){
-                this.props.decrementCurrentPub();
-            }
-        });
-    }
-
     onSliderChange(value) {
         var current = this.state.localDate;
         //dont modify globlly on change anymore. Do it on its own event instead.
@@ -52,6 +40,21 @@ class PubDetail extends React.Component {
 
     sliderTipFormatter(value) {
         return `${value}:00`;
+    }
+
+    componentDidUpdate() {
+        let suggestionEl = document.querySelector('.js-suggestion-name');
+        if(suggestionEl){
+            this.hammerTime = new Hammer(suggestionEl);
+            this.hammerTime.on('swipe', (e) => {
+                if(e.direction === 2){
+                    this.props.incrementCurrentPub();
+                }
+                if(e.direction === 4){
+                    this.props.decrementCurrentPub();
+                }
+            });
+        }
     }
 
     launchLocationModal(e) {
