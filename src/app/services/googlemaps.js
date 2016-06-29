@@ -18,10 +18,25 @@ export function geocode(searchTerm, callback) {
             callback({status: 'ERROR'});
         }
 
+    });
+}
 
+export function reverseGeocode(location, callback) {
+    let geocoder = new google.maps.Geocoder();
+    geocoder.geocode({location: location}, (results, status) => {
+        if (status === google.maps.GeocoderStatus.OK) {
+            console.log(results[0]);
+            callback({
+                status: 'OK',
+                address: results[0].formatted_address
 
-
+            });
+        } else
+        if (status === google.maps.GeocoderStatus.ZERO_RESULTS) {
+            callback({status: 'ZERO_RESULTS'});
+        } else {
+            callback({status: 'ERROR'});
+        }
 
     });
-
 }

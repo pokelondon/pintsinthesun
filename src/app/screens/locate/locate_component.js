@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { geocode } from '../../services/googlemaps.js';
-
+import { geocode, reverseGeocode } from '../../services/googlemaps.js';
 import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 
 import GA from 'react-ga';
@@ -77,8 +76,9 @@ class Locate extends React.Component {
                 <p className="Para--large">Search for your location, or drag the map</p>
 
                 <form className="Box Box-row no-padding" onSubmit={this.doSearch.bind(this)}>
-                        <input className="Input--search Box-item" onChange={this.onSearchChange.bind(this)} type="search" value={this.state.searchTerm} placeholder="Postcode / Place" />
-                        <button type="submit" className="Button--secondary Box-item" onClick={this.doSearch.bind(this)}>Search</button>
+                        <button type="button" onClick={this.props.fetchPosition} className="Button--secondary Box-item Button--locateMe flex-none"></button>
+                        <input className="Input--search Box-item flex-2" onChange={this.onSearchChange.bind(this)} type="search" value={this.state.searchTerm} placeholder="Postcode / Place" />
+                        <button type="submit" className="Button--secondary Box-item flex-1" onClick={this.doSearch.bind(this)}>Search</button>
                 </form>
 
                 {errorMsg}
@@ -126,16 +126,6 @@ class Locate extends React.Component {
                            >
                            {btnCopy}
                        </Link>
-                    </div>
-                </div>
-
-                <div className="Box Box-row no-padding">
-                    <div className="Box-item no-padding">
-                        <button
-                            className="Button--secondary"
-                            onClick={this.props.fetchPosition}>
-                            {(this.props.isLocating) ? 'Locating' : 'Locate Me'}
-                        </button>
                     </div>
                 </div>
 

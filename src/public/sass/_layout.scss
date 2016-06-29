@@ -33,6 +33,23 @@ body {
     flex-wrap: wrap;
 }
 
+//overrides for flex
+.flex-none {
+    flex: none !important;
+}
+
+.flex-1 {
+    flex: 1 !important;
+}
+
+.flex-2 {
+    flex: 2 !important;
+}
+
+.flex-3 {
+    flex: 3 !important;
+}
+
 .AppContainer {
     background: orange;
     height: 200px;

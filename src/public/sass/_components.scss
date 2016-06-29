@@ -145,6 +145,21 @@
 }
 
 
+.Button--locateMe {
+    @extend .Button--secondary;
+    width: 3.5rem;
+
+    &:after {
+        content: url(/img/icons/locate-me-icon.svg);
+        width: 1.6em;
+        height: 1.6em;
+        display: inline-block;
+        position: relative;
+        top: 0.2em;
+    }
+
+}
+
 .Button--time {
     @extend .Button--secondary;
     padding: 1rem 0;
