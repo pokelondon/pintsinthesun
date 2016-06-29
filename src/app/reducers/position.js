@@ -13,7 +13,8 @@ import {
     DECREMENT_CURRENT_PUB,
     LAUNCH_LOCATION_MODAL,
     LAUNCH_INFO_MODAL,
-    CLOSE_MODAL
+    CLOSE_MODAL,
+    RESPONSE_ADDRESS
 } from '../actions/position';
 
 const date = new Date();
@@ -47,6 +48,11 @@ const INITIAL_STATE = {
 
 export default function position(state=INITIAL_STATE, action) {
     switch (action.type) {
+        case RESPONSE_ADDRESS:
+            return {
+                ...state,
+                address: action.address
+            }
         case LAUNCH_LOCATION_MODAL:
             return {
                 ...state,
@@ -82,6 +88,7 @@ export default function position(state=INITIAL_STATE, action) {
                 filteredPubs: filterForAngle(sun, state.items),
                 filteredIndex: 0,
                 isRealPosition: action.isRealPosition,
+                isGPSPosition: action.isGPSPosition,
                 sun
             }
         case REQUEST_POSITION:

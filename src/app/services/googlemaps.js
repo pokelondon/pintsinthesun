@@ -24,11 +24,14 @@ export function geocode(searchTerm, callback) {
 export function reverseGeocode(location, callback) {
     let geocoder = new google.maps.Geocoder();
     geocoder.geocode({location: location}, (results, status) => {
+        console.log('service', results);
         if (status === google.maps.GeocoderStatus.OK) {
+
+            //find the most appropriate address!
+
             callback({
                 status: 'OK',
                 address: results[0].formatted_address
-
             });
         } else
         if (status === google.maps.GeocoderStatus.ZERO_RESULTS) {
