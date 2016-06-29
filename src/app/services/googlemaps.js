@@ -25,7 +25,6 @@ export function reverseGeocode(location, callback) {
     let geocoder = new google.maps.Geocoder();
     geocoder.geocode({location: location}, (results, status) => {
         if (status === google.maps.GeocoderStatus.OK) {
-            console.log(results[0]);
             callback({
                 status: 'OK',
                 address: results[0].formatted_address

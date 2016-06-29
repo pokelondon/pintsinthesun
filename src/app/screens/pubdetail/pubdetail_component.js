@@ -7,7 +7,8 @@ import ThreeD from '../../components/threed';
 import WeatherIcon from '../../components/weathericon';
 import Suggestion from '../../components/suggestion';
 import Rational from '../../components/rational';
-import StaticMap from '../../components/static-map.js';
+import StaticMap from '../../components/static-map';
+import LocationIndicator from '../../components/location-indicator';
 import Hammer from 'hammerjs';
 
 class PubDetail extends React.Component {
@@ -120,7 +121,7 @@ class PubDetail extends React.Component {
                     <div className="max-width">
                         <p className="Heading--1">No pubs found</p>
                         <div className="Box Box-row">
-                            <p>No sunny pubs found in this area. Maybe try <a onClick={this.launchLocationModal.bind(this)} href="#">looking somewhere else</a>, or a <Link to="/">different time of day</Link>?</p>
+                            <p>No sunny pubs found in this area. Maybe try <Link to="/locate">looking somewhere else</Link>, or a <Link to="/">different time of day</Link>?</p>
                         </div>
                     </div>
                 </div>
@@ -138,34 +139,35 @@ class PubDetail extends React.Component {
 
                 <header className="Screen-header">
                     <div className="max-width">
+                        <LocationIndicator />
                         <div className="SuggestionName js-suggestion-name">
-                            {(() => {
-                                if(this.props.filteredPubs.length && this.props.filteredIndex !== 0){
-                                    return <button className="Button--pubNav Button--pubNav--prev" onClick={this.props.decrementCurrentPub}>&lt;</button>
-                                }
-                            })()}
                             <Suggestion renderTransitionDirection={this.props.renderTransitionDirection} name={name} timeRange={this.props.timeRange} />
-                            {(() => {
-                                if(this.props.filteredPubs.length > 1 && this.props.filteredIndex !== this.props.filteredPubs.length -1){
-                                    return <button className="Button--pubNav Button--pubNav--next" onClick={this.props.incrementCurrentPub}>&gt;</button>
-                                }
-                            })()}
                         </div>
+
+                        { ( () => {
+                            let pubsLeft = this.props.filteredPubs.length - this.props.filteredIndex - 1;
+                            let btnCopy = `Show me another one (${pubsLeft} more)`;
+                            if(pubsLeft == 0){
+                                btnCopy = 'Show me the first one again!';
+                            }
+
+                            if(this.props.filteredPubs.length > 1){
+                                return (
+                                <div className="Box Box-row no-padding">
+                                    <div className="Box-item no-padding">
+                                        <button className="Button--primary" onClick={this.props.incrementCurrentPub}>{btnCopy}</button>
+                                    </div>
+                                </div>
+                                )
+                            }
+                        })() }
+
                         <div className="Box Box-row">
                             <div className="Box-item">
                                 <span>{neighbourhood ? `${neighbourhood} &mdash; ` : ''}{distance.toFixed(1)}{distanceUnit} away</span>
-
-                                { (() => {
-                                    //City mapper link only includes start position if its real
-                                    let positionStr = ``;
-                                    if(this.props.isRealPosition){
-                                        positionStr = `${this.props.centre.lat},${this.props.centre.lng}`;
-                                    }
-                                    return (<a className="MapIcon" target="_blank" href={`https://citymapper.com/directions?startcoord=${positionStr}&endcoord=${lat},${lng}&endname=${name}&arriveby=${encodeURIComponent(this.state.localDate.toISOString())}`}><img src="/img/icons/map-icon.svg" width="20" height="20" alt="Map icon" title="Map link"/></a>);
-                                })()}
-
                             </div>
                         </div>
+
                         <div className="Box Box-row flex-wrap">
                             <div className="Box-item Box-item--halfCol--fixed">
                                 Best for sun: 13:32-17:23
@@ -192,11 +194,6 @@ class PubDetail extends React.Component {
                                         return (
                                             <div>
                                                 <div className="Three-container">
-                                                    {(() => {
-                                                        // if(this.props.filteredPubs.length && this.props.filteredIndex !== 0){
-                                                        //     return <button className="Button--pubNav Button--pubNav--prev" onClick={this.props.decrementCurrentPub}>&lt;</button>
-                                                        // }
-                                                    })()}
                                                     <ThreeD
                                                         centre={{lat, lng}}
                                                         date={this.state.localDate}
@@ -204,11 +201,6 @@ class PubDetail extends React.Component {
                                                         incrementCurrentPub={this.props.incrementCurrentPub}
                                                         decrementCurrentPub={this.props.decrementCurrentPub}
                                                     />
-                                                    {(() => {
-                                                        // if(this.props.filteredPubs.length > 1 && this.props.filteredIndex !== this.props.filteredPubs.length -1){
-                                                        //     return <button className="Button--pubNav Button--pubNav--next" onClick={this.props.incrementCurrentPub}>&gt;</button>
-                                                        // }
-                                                    })()}
                                                 </div>
 
                                                 <div className="SliderContainer">
@@ -243,26 +235,9 @@ class PubDetail extends React.Component {
                                 })()}
 
                             </div>
-                            <Rational pub={this.props.pub} />
+                            <Rational isRealPosition={this.props.isRealPosition} arrivalTime={this.state.localDate} centre={{lat, lng}} pub={this.props.pub} />
+
                         </div>
-
-                        { ( () => {
-                            let pubsLeft = this.props.filteredPubs.length - this.props.filteredIndex - 1;
-                            let btnCopy = `Show me another one (${pubsLeft} more)`;
-                            if(pubsLeft == 0){
-                                btnCopy = 'Show me the first one again!';
-                            }
-
-                            if(this.props.filteredPubs.length > 1){
-                                return (
-                                <div className="Box Box-row no-padding">
-                                    <div className="Box-item no-padding">
-                                        <button className="Button--primary" onClick={this.props.incrementCurrentPub}>{btnCopy}</button>
-                                    </div>
-                                </div>
-                                )
-                            }
-                        })() }
 
                     </div>
                 </div>
