@@ -146,8 +146,9 @@
 
 
 .Button--locateMe {
-    @extend .Button--secondary;
+
     width: 3.5rem;
+    padding: 0;
 
     &:after {
         content: url(/img/icons/locate-me-icon.svg);
@@ -279,6 +280,7 @@
 .Button--locationStatus {
     background: $greyLight;
     display: block;
+    padding-right: 3em !important;
     position: relative;
 
     &-label {

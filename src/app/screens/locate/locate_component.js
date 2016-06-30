@@ -76,7 +76,7 @@ class Locate extends React.Component {
                     <div className="max-width">
                         <p className="Para--large">Search for your location, or drag the map</p>
                         <form className="Box Box-row no-padding" onSubmit={this.doSearch.bind(this)}>
-                                <button type="button" onClick={this.props.fetchPosition} className="Button--secondary Box-item Button--locateMe flex-none"></button>
+                                <button type="button" onClick={this.props.fetchPosition} className="Button--secondary Button--locateMe flex-none"></button>
                                 <input className="Input--search Box-item flex-2" onChange={this.onSearchChange.bind(this)} type="search" value={this.state.searchTerm} placeholder="e.g E1 6LG" />
                                 <button type="submit" className="Button--secondary Box-item flex-1" onClick={this.doSearch.bind(this)}>Search</button>
                         </form>

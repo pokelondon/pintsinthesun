@@ -99,7 +99,7 @@ class PubDetail extends React.Component {
                     <div className="max-width">
                         <p className="Heading--1">Loading</p>
                         <div className="Box Box-row">
-                            <p>Finding you somewhere</p>
+                            <p className="Box-item">Finding you somewhere</p>
                         </div>
                     </div>
                 </div>
@@ -110,7 +110,7 @@ class PubDetail extends React.Component {
                     <div className="max-width">
                         <p className="Heading--1">Locating</p>
                         <div className="Box Box-row">
-                            <p>Scrabbling around</p>
+                            <p className="Box-item">Scrabbling around</p>
                         </div>
                     </div>
                 </div>
@@ -121,7 +121,7 @@ class PubDetail extends React.Component {
                     <div className="max-width">
                         <p className="Heading--1">No pubs found</p>
                         <div className="Box Box-row">
-                            <p>No sunny pubs found in this area. Maybe try <Link to="/locate">looking somewhere else</Link>, or a <Link to="/">different time of day</Link>?</p>
+                            <p className="Box-item">No sunny pubs found in this area. Maybe try <Link to="/locate">looking somewhere else</Link>, or a <Link to="/">different time of day</Link>?</p>
                         </div>
                     </div>
                 </div>

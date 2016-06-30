@@ -30,16 +30,17 @@
         border-top-style: hidden;
     }
     p {
-        padding: 10px;
+        //padding: 10px;
         padding-bottom: 0;
-        padding-top: 0;
+        padding-top: 10px;
 
         &:first-child {
-            padding-top: 10px;
+            //padding-top: 10px;
         }
         &:last-child {
             padding-bottom: 10px;
         }
+
     }
 }
 
@@ -59,6 +60,10 @@
         border-style: hidden;
         border-style: solid;
         border-right-style: solid;
+    }
+
+    @include media-breakpoint-up(sm) {
+        padding: 10px 20px;
     }
 }
 

@@ -34,9 +34,9 @@ class LocationStatus extends React.Component {
 
         return (
             <div className="Box Box-row">
-                <div className="Box Box-item Button--locationStatus">
-                    <Link to="/locate"><span className="Button--locationStatus-label">Start:</span> {locationTxt}</Link>
-                </div>
+                <Link to="/locate" className="Box Box-item Button--locationStatus">
+                    <span className="Button--locationStatus-label">Start:</span> {locationTxt}
+                </Link>
             </div>
         )
     }

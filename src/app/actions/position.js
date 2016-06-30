@@ -22,8 +22,8 @@ export const LAUNCH_LOCATION_MODAL = 'launch_location_modal';
 export const LAUNCH_INFO_MODAL = 'launch_info_modal';
 export const CLOSE_MODAL = 'close_modal';
 
-export const REQUEST_ADDRESS = 'request_address'
-export const RESPONSE_ADDRESS = 'response_address'
+export const REQUEST_ADDRESS = 'request_address';
+export const RESPONSE_ADDRESS = 'response_address';
 
 import { hashHistory } from 'react-router'
 

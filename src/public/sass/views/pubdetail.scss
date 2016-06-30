@@ -9,6 +9,11 @@
         flex-direction: row;
         width: calc(100% + 20px);
         margin: -10px 0 10px -10px;
+
+        @include media-breakpoint-up(sm) {
+            width: calc(100% + 40px);
+            margin-left: -20px;
+        }
     }
 
 }
