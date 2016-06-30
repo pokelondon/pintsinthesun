@@ -14,7 +14,8 @@ import {
     LAUNCH_LOCATION_MODAL,
     LAUNCH_INFO_MODAL,
     CLOSE_MODAL,
-    RESPONSE_ADDRESS
+    RESPONSE_ADDRESS,
+    REQUEST_ADDRESS
 } from '../actions/position';
 
 const date = new Date();
@@ -48,6 +49,11 @@ const INITIAL_STATE = {
 
 export default function position(state=INITIAL_STATE, action) {
     switch (action.type) {
+        case REQUEST_ADDRESS:
+            return {
+                ...state,
+                address: ''
+            }
         case RESPONSE_ADDRESS:
             return {
                 ...state,

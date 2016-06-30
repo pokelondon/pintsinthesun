@@ -77,7 +77,8 @@ export function responsePosition(centre, isGPSPosition = false) {
             centre: centre,
             receivedAt: new Date(),
             isRealPosition,
-            isGPSPosition
+            isGPSPosition,
+            address: null
         });
     }
 }
@@ -130,6 +131,11 @@ export function getSuggestions(date, centre) {
         data => data.json()).catch( handleError );
 }
 
+export function requestAddress() {
+    return {
+        type: REQUEST_ADDRESS
+    }
+}
 export function requestPubs() {
     return {
         type: REQUEST_PUBS,
@@ -154,9 +160,12 @@ export function responsePubs(data) {
 
 export function getAddress(centre) {
     return function (dispatch){
+        dispatch(requestAddress());
         reverseGeocode(centre, (result) => {
             if(result.status === 'OK'){
                 dispatch(responseAddress(result.address));
+            } else {
+                dispatch(responseAddress(null));
             }
         });
     }

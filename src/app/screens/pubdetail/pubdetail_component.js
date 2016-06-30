@@ -8,7 +8,7 @@ import WeatherIcon from '../../components/weathericon';
 import Suggestion from '../../components/suggestion';
 import Rational from '../../components/rational';
 import StaticMap from '../../components/static-map';
-import LocationIndicator from '../../components/location-indicator';
+import LocationIndicator from '../../components/location-status';
 import Hammer from 'hammerjs';
 
 class PubDetail extends React.Component {
@@ -139,10 +139,9 @@ class PubDetail extends React.Component {
 
                 <header className="Screen-header">
                     <div className="max-width">
+
                         <LocationIndicator />
-                        <div className="SuggestionName js-suggestion-name">
-                            <Suggestion renderTransitionDirection={this.props.renderTransitionDirection} name={name} timeRange={this.props.timeRange} />
-                        </div>
+                        <Suggestion renderTransitionDirection={this.props.renderTransitionDirection} name={name} timeRange={this.props.timeRange} />
 
                         { ( () => {
                             let pubsLeft = this.props.filteredPubs.length - this.props.filteredIndex - 1;

@@ -45,6 +45,7 @@ class Suggestion extends React.Component {
     render() {
 
         let renderClasses = classnames({
+            'js-suggestion-name': true,
             'Heading--1': true,
             'Render--transition-left-out': (this.state.renderTransitionDirection === 'left-out'),
             'Render--transition-left-in': (this.state.renderTransitionDirection === 'left-in'),
@@ -56,11 +57,15 @@ class Suggestion extends React.Component {
         let [ first, last ] = this.state.suggestion;
         //last = (last) ? ' ' + last : '?';
         return (
-            <p className={renderClasses}>
-                <span className="">{first} </span>
-                <span className="txt-suggestion">{this.props.name}</span>
-                <span className=""> {last} {Suggestion.TIMES[this.props.timeRange]}?</span>
-            </p>
+            <div className="Box Box-row">
+                <div className="Box Box-item">
+                    <span className={renderClasses}>
+                        <span className="">{first} </span>
+                        <span className="txt-suggestion">{this.props.name}</span>
+                        <span className=""> {last} {Suggestion.TIMES[this.props.timeRange]}?</span>
+                    </span>
+                </div>
+            </div>
         )
     }
 };

@@ -27,11 +27,21 @@ export function reverseGeocode(location, callback) {
         console.log('service', results);
         if (status === google.maps.GeocoderStatus.OK) {
 
-            //find the most appropriate address!
+            //find the most appropriate address format
+            let addressText;
+            //const addressFormatPreference = ['street_address', 'postal_code', 'train_station', 'point_of_interest'];
+            const addressFormatPreference = ['street_address'];
+            results.forEach( (address) => {
+                addressFormatPreference.forEach( (addressFormat) => {
+                    if(address.types.indexOf(addressFormat) != -1) {
+                        addressText = address.formatted_address;
+                    }
+                });
+            })
 
             callback({
                 status: 'OK',
-                address: results[0].formatted_address
+                address: addressText
             });
         } else
         if (status === google.maps.GeocoderStatus.ZERO_RESULTS) {

@@ -276,6 +276,30 @@
     }
 }
 
+.Button--locationStatus {
+    background: $greyLight;
+    display: block;
+    position: relative;
+
+    &-label {
+        color: #9999a0;
+    }
+
+    &:after {
+        content: url(/img/icons/location-status-icon.svg);
+        position: absolute;
+        width: 1.875em;
+        height: 1.875em;
+        right: 1em;
+        top: 50%;
+        transform: translateY(-50%);
+
+        @include media-breakpoint-up(sm) {
+            right: 1.875em;
+        }
+    }
+}
+
 .Prompt {
     position: relative;
 
