@@ -30,7 +30,6 @@
         border-top-style: hidden;
     }
     p {
-        //padding: 10px;
         padding-bottom: 0;
         padding-top: 10px;
 
@@ -45,7 +44,7 @@
 }
 
 .Box-item {
-    padding: 5px 10px;
+    padding: $padding-vert-sm $padding-horiz-sm;
     @extend .border-defaults;
     border-style: hidden;
     border-left-style: solid;
@@ -65,7 +64,7 @@
 
     @include media-breakpoint-up(sm) {
         font-size: $font-size-1;
-        padding: 7px 20px;
+        padding: $padding-vert-md $padding-horiz-md;
     }
 }
 
@@ -109,8 +108,6 @@
                 flex: 1;
             }
         }
-
-
     }
 
     & + & {

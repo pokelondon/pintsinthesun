@@ -149,10 +149,10 @@ class PubDetail extends React.Component {
 
                         <div className="Box Box-row PubPagination">
                             <div className="Box Box-item PubPagination-indicator">
-                                Result {this.props.filteredIndex + 1} of {this.props.filteredPubs.length}
+                                <div className="box-child-margin">Result {this.props.filteredIndex + 1} of {this.props.filteredPubs.length}</div>
                             </div>
-                            <div className="Box Box-item">
-                                <button className="Button--secondaryAlt negative-margin PubPagination-incrementor" onClick={this.props.incrementCurrentPub}>Show me another</button>
+                            <div className="Box Box-item no-padding">
+                                <button className="Button--secondaryAlt PubPagination-incrementor" onClick={this.props.incrementCurrentPub}>Show me another</button>
                             </div>
                         </div>
 
