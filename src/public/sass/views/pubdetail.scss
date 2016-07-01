@@ -31,18 +31,7 @@
 
         &-indicator{
             background: $yellow;
-
-            display: inline-block;
-            vertical-align: middle;
-
-            //centre vertically
-            &:before {
-                content: '';
-                display: inline-block;
-                height: 100%;
-                vertical-align: middle;
-            }
-
+            padding-top: 1em;
             @include media-breakpoint-up(sm) {
                 flex: 3;
             }

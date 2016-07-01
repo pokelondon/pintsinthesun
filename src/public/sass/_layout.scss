@@ -52,7 +52,7 @@ body {
 
 .negative-margin {
     width: calc(100% + 20px);
-    margin: -4px -10px -4px -10px;
+    margin: -5px -10px -5px -10px;
 
     @include media-breakpoint-up(sm) {
         width: calc(100% + 40px);

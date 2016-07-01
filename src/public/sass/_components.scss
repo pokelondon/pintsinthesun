@@ -296,7 +296,7 @@
 .Button--locationStatus {
     background: $greyLight;
     display: block;
-    padding-right: 3em !important;
+    padding-right: 4em !important;
     position: relative;
 
     &-label {
@@ -306,8 +306,8 @@
     &:after {
         content: url(/img/icons/location-status-icon.svg);
         position: absolute;
-        width: 1.875em;
-        height: 1.875em;
+        width: 1.6em;
+        height: 1.6em;
         right: 1em;
         top: 50%;
         transform: translateY(-50%);

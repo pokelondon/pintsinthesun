@@ -3,7 +3,7 @@
     $buttonSize: 1.875em;
     //$buttonSizeDesktop: 2.5rem;
 
-    @include media-breakpoint-up(md) {
+    @include media-breakpoint-up(sm) {
         font-size: 1.4rem;
     }
 
