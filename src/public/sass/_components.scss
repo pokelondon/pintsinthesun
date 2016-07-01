@@ -5,7 +5,7 @@
 }
 
 .Button {
-    padding: 1rem 2rem;
+    padding: 0.8rem 0.5rem;
     display: block;
     width: 100%;
     border: none;
@@ -13,6 +13,8 @@
     text-align: center;
     background: $blue;
     color: $mintLight;
+    overflow: auto;
+    -webkit-transform: translateZ(0);
     @extend .inner-shadow;
 
     border-width: 0;
@@ -25,6 +27,10 @@
         vertical-align: middle;
         margin-left: 12px;
     }
+
+    @include media-breakpoint-up(sm) {
+        padding: 1.2rem 2rem;
+    }
 }
 
 
@@ -36,7 +42,7 @@
     padding-bottom: 1.7rem;
     color: $white;
     background: $red;
-    font-size: $font-size-2;
+    font-size: $font-size-3;
     transition: background-color 0.3s;
 
     &:after {
@@ -60,7 +66,6 @@
 }
 
 .Button--primary--search {
-
     position: relative;
     padding-left: 2.6rem;
     padding-right: 2.6rem;
@@ -91,7 +96,17 @@
     &:hover {
         background-color: $yellowLightFocus;
     }
+}
 
+.Button--secondaryAlt {
+    @extend .Button;
+    background-color: $red;
+    color: $white;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: $redFocus;
+    }
 }
 
 .Button--confirmed {
@@ -146,7 +161,6 @@
 
 
 .Button--locateMe {
-
     width: 3.5rem;
     padding: 0;
 
@@ -188,7 +202,6 @@
     }
 
     @include media-breakpoint-up(md) {
-
         min-height: 8rem;
 
         & span {
@@ -216,8 +229,8 @@
 
     &:before {
         content: url(/img/icons/morning-icon.svg);
-        width: 1.875em;
-        top: -0.375em;
+        width: 1.875rem;
+        top: -0.375rem;
     }
 
 }
@@ -227,8 +240,8 @@
 
     &:before {
         content: url(/img/icons/afternoon-icon.svg);
-        width: 1.0625em; //17px
-        top: -0.375em;
+        width: 1.0625rem; //17px
+        top: -0.375rem;
     }
 }
 
@@ -237,8 +250,8 @@
 
     &:before {
         content: url(/img/icons/evening-icon.svg);
-        width: 2.1875em;
-        top: -0.4375em;
+        width: 2.1875rem;
+        top: -0.4375rem;
     }
 }
 
@@ -258,22 +271,20 @@
 }
 
 .Button--tab {
-    border-style: none;
-    @extend .border-defaults;
     display: block;
     flex: 1;
-    padding: 1rem 2rem;
-    border-bottom-style: solid;
-    background: none;
-
-    & + & {
-        border-left-style: solid;
-    }
+    padding: 0.5rem 2rem;
+    background: #e0e2db;
+    color: #9999a1;
 
     &--active {
-        border-bottom-style: hidden;
+        color: #a5a5aa;
         background: none !important;
         box-shadow: none !important;
+    }
+
+    @include media-breakpoint-up(sm) {
+        padding: 1rem 2rem;
     }
 }
 
@@ -306,7 +317,12 @@
     position: relative;
 
     .inner {
-        padding: 1rem;
+        padding: 0.3em 2em;
+        font-size: $font-size-3;
+
+        @include media-breakpoint-up(md) {
+            font-size: $font-size-lrg-2;
+        }
     }
 }
 

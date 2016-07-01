@@ -1,19 +1,63 @@
 .Pub-detail {
 
-    .Map-icon {
-        float: right;
+    .Suggestion {
+        overflow: hidden;
+        .inner {
+            display: block;
+            padding: 0.9em 0;
+            font-size: $font-size-lrg-2;
+            @include media-breakpoint-up(sm) {
+                font-size: $font-size-lrg-3;
+            }
+        }
     }
 
     .MapTabs {
         display: flex;
         flex-direction: row;
-        width: calc(100% + 20px);
-        margin: -10px 0 10px -10px;
+        margin-bottom: 20px;
+    }
 
-        @include media-breakpoint-up(sm) {
-            width: calc(100% + 40px);
-            margin-left: -20px;
+    .Rational {
+        p {
+            font-size: $font-size-default;
+            @include media-breakpoint-up(md) {
+                font-size: $font-size-lrg-4;
+            }
         }
     }
+
+    .PubPagination {
+
+        &-indicator{
+            background: $yellow;
+
+            display: inline-block;
+            vertical-align: middle;
+
+            //centre vertically
+            &:before {
+                content: '';
+                display: inline-block;
+                height: 100%;
+                vertical-align: middle;
+            }
+
+            @include media-breakpoint-up(sm) {
+                flex: 3;
+            }
+        }
+        &-incrementor {
+            white-space: nowrap;
+        }
+    }
+
+    .DetailsHeading {
+        font-size: $font-size-1;
+        color: #a4813b;
+        margin: 1.5em 0 0.5em 0;
+    }
+
+
 
 }

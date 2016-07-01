@@ -16,7 +16,7 @@
         background: $mintLight;
         &:first-child {
             border-top-width: 0;
-            padding-top: 10px;
+            //padding-top: 10px;
         }
     }
 }
@@ -45,11 +45,12 @@
 }
 
 .Box-item {
-    padding: 10px;
+    padding: 4px 10px;
     @extend .border-defaults;
     border-style: hidden;
     border-left-style: solid;
     box-sizing: border-box;
+    font-size: $font-size-4;
 
     &:first-child {
         border-left-style: hidden;
@@ -63,6 +64,7 @@
     }
 
     @include media-breakpoint-up(sm) {
+        font-size: $font-size-1;
         padding: 10px 20px;
     }
 }

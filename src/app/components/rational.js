@@ -50,9 +50,9 @@ class Rational extends React.Component {
         let rational = this.state.rational.join(' ');
         let weatherStatement = this.getWeatherStatement();
         return (
-            <div className="Box Box-item Box-item--halfCol Box-item--responsiveBorders Para--large">
-                <p dangerouslySetInnerHTML={{__html: rational}}></p>
-                <p dangerouslySetInnerHTML={{__html: weatherStatement}}></p>
+            <div className="Box Box-item Box-item--halfCol Box-item--responsiveBorders">
+                <p className="Para--large" dangerouslySetInnerHTML={{__html: rational}}></p>
+                <p className="Para--large" dangerouslySetInnerHTML={{__html: weatherStatement}}></p>
 
                 { (() => {
                     //City mapper link only includes start position if its real
@@ -60,7 +60,7 @@ class Rational extends React.Component {
                     if(this.props.isRealPosition){
                         positionStr = `${this.props.centre.lat},${this.props.centre.lng}`;
                     }
-                    return (<p><a target="_blank" href={`https://citymapper.com/directions?startcoord=${positionStr}&endcoord=${this.props.pub.location.coordinates.lat},${this.props.pub.location.coordinates.lng}&endname=${this.props.pub.name}&arriveby=${encodeURIComponent(this.props.arrivalTime.toISOString())}`}>Citymapper link</a></p>);
+                    return (<p className="Para--large"><a target="_blank" href={`https://citymapper.com/directions?startcoord=${positionStr}&endcoord=${this.props.pub.location.coordinates.lat},${this.props.pub.location.coordinates.lng}&endname=${this.props.pub.name}&arriveby=${encodeURIComponent(this.props.arrivalTime.toISOString())}`}>Citymapper link</a></p>);
                 })()}
 
             </div>

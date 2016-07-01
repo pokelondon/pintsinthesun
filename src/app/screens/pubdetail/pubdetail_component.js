@@ -121,7 +121,7 @@ class PubDetail extends React.Component {
                     <div className="max-width">
                         <p className="Heading--1">No pubs found</p>
                         <div className="Box Box-row">
-                            <p className="Box-item">No sunny pubs found in this area. Maybe try <Link to="/locate">looking somewhere else</Link>, or a <Link to="/">different time of day</Link>?</p>
+                            <p className="Box-item">No sunny pubs found in this area. Maybe try <Link className="no-text-wrap" to="/locate">looking somewhere else</Link>, or a <Link className="no-text-wrap" to="/">different time of day</Link>?</p>
                         </div>
                     </div>
                 </div>
@@ -139,27 +139,24 @@ class PubDetail extends React.Component {
 
                 <header className="Screen-header">
                     <div className="max-width">
-
                         <LocationIndicator />
                         <Suggestion renderTransitionDirection={this.props.renderTransitionDirection} name={name} timeRange={this.props.timeRange} />
+                    </div>
+                </header>
 
-                        { ( () => {
-                            let pubsLeft = this.props.filteredPubs.length - this.props.filteredIndex - 1;
-                            let btnCopy = `Show me another one (${pubsLeft} more)`;
-                            if(pubsLeft == 0){
-                                btnCopy = 'Show me the first one again!';
-                            }
+                <div className="Screen-main">
+                    <div className="max-width">
 
-                            if(this.props.filteredPubs.length > 1){
-                                return (
-                                <div className="Box Box-row no-padding">
-                                    <div className="Box-item no-padding">
-                                        <button className="Button--primary" onClick={this.props.incrementCurrentPub}>{btnCopy}</button>
-                                    </div>
-                                </div>
-                                )
-                            }
-                        })() }
+                        <div className="Box Box-row PubPagination">
+                            <div className="Box Box-item PubPagination-indicator">
+                                Result {this.props.filteredIndex + 1} of {this.props.filteredPubs.length}
+                            </div>
+                            <div className="Box Box-item">
+                                <button className="Button--secondaryAlt negative-margin PubPagination-incrementor" onClick={this.props.incrementCurrentPub}>Show me another</button>
+                            </div>
+                        </div>
+
+                        <h2 className="DetailsHeading">Details</h2>
 
                         <div className="Box Box-row">
                             <div className="Box-item">
@@ -175,17 +172,12 @@ class PubDetail extends React.Component {
                                 Weather {this.weatherTime()}: <WeatherIcon />
                             </div>
                         </div>
-                    </div>
-                </header>
 
-
-                <div className="Screen-main">
-                    <div className="max-width">
-                        <div className="Box Box-row flex-wrap no-padding">
+                        <div className="Box Box-row flex-wrap">
                             <div className="Box-item Box-item--halfCol Box-item--responsiveBorders">
-                                <div className="MapTabs">
-                                    <button className={(this.state.visibleTab === 'sun') ? 'Button--secondary Button--tab Button--tab--active' : 'Button--secondary Button--tab'} onClick={this.showTab.bind(this, 'sun')}>Sun position</button>
-                                    <button className={(this.state.visibleTab === 'map') ? 'Button--secondary Button--tab Button--tab--active' : 'Button--secondary Button--tab'} onClick={this.showTab.bind(this, 'map')}>Map</button>
+                                <div className="MapTabs negative-margin">
+                                    <button className={(this.state.visibleTab === 'sun') ? 'Button Button--tab Button--tab--active' : 'Button Button--tab'} onClick={this.showTab.bind(this, 'sun')}>Sun position</button>
+                                    <button className={(this.state.visibleTab === 'map') ? 'Button Button--tab Button--tab--active' : 'Button Button--tab'} onClick={this.showTab.bind(this, 'map')}>Map</button>
                                 </div>
 
                                 { ( () => {
@@ -226,14 +218,13 @@ class PubDetail extends React.Component {
                                 { ( () => {
                                     if(this.state.visibleTab === 'map') {
                                         return (
-                                            <div className={(this.state.visibleTab === 'map') ? '' : 'display-none'}>
-                                                <StaticMap centre={{lat, lng}} />
-                                            </div>
+                                            <StaticMap centre={{lat, lng}} />
                                         )
                                     }
                                 })()}
 
                             </div>
+
                             <Rational isRealPosition={this.props.isRealPosition} arrivalTime={this.state.localDate} centre={{lat, lng}} pub={this.props.pub} />
 
                         </div>

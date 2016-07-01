@@ -29,9 +29,9 @@ class Start extends React.Component {
                         </div>
                     </div>
                     <div className="Box Box-row max-width no-padding">
-                        <div className="Box-item Para--large Prompt text-centre">
+                        <div className="Box-item Prompt text-centre">
                             <span className="Circle-or caps--small">OR</span>
-                            <div className="inner">Find nearby pubs that will be sunny in the&#8230;</div>
+                            <div className="Para--large inner">Find nearby pubs that will be sunny in the&#8230;</div>
                         </div>
                     </div>
 

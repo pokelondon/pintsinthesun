@@ -50,6 +50,16 @@ body {
     flex: 3 !important;
 }
 
+.negative-margin {
+    width: calc(100% + 20px);
+    margin: -4px -10px -4px -10px;
+
+    @include media-breakpoint-up(sm) {
+        width: calc(100% + 40px);
+        margin: -10px -20px -10px -20px;
+    }
+}
+
 .AppContainer {
     background: orange;
     height: 200px;
