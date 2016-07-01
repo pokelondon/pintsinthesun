@@ -57,7 +57,7 @@
         }
     }
 
-    @include media-breakpoint-up(md) {
+    @include media-breakpoint-up(sm) {
         min-height: 8rem;
         font-size: $font-size-lrg-1;
         padding-top: 2.6rem;
@@ -92,9 +92,14 @@
     background-color: $yellowLight;
     color: $blueDark;
     transition: background-color 0.3s;
+    font-size: $font-size-4;
 
     &:hover {
         background-color: $yellowLightFocus;
+    }
+
+    @include media-breakpoint-up(sm) {
+        font-size: $font-size-1;
     }
 }
 
@@ -161,7 +166,7 @@
 
 
 .Button--locateMe {
-    width: 3.5rem;
+    width: 3.5em;
     padding: 0;
 
     &:after {
