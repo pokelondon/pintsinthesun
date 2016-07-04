@@ -14,12 +14,9 @@
     background: $blue;
     color: $mintLight;
     @extend .inner-shadow;
-
     border-width: 0;
     transition: box-shadow 100ms ease;
     cursor: pointer;
-
-    box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.2);
 
     & img {
         vertical-align: middle;
@@ -30,7 +27,6 @@
         padding: 1.2rem 2rem;
     }
 }
-
 
 .Button--primary {
     @extend .Button;
@@ -81,11 +77,6 @@
         height: 1.666em;
     }
 
-}
-
-.Button--close {
-    @extend .Button;
-    background: $red;
 }
 
 .Button--secondary {
@@ -185,7 +176,6 @@
         position: relative;
         top: 0.2em;
     }
-
 }
 
 .Button--time {
@@ -205,7 +195,7 @@
 
     &:before {
         content: '';
-        height: 4em;
+        height: 5.5em;
         background-size: 100%;
         margin: auto;
         display: block;

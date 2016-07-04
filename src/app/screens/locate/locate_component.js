@@ -78,8 +78,8 @@ class Locate extends React.Component {
                         <form className="Box Box-row" onSubmit={this.doSearch.bind(this)}>
                                 <button type="button" onClick={this.props.fetchPosition} className="Button--secondary Button--locateMe flex-none"></button>
                                 <input className="Input--search Box-item flex-2" onChange={this.onSearchChange.bind(this)} type="search" value={this.state.searchTerm} placeholder="e.g E1 6LG" />
-                                <div className="Box-item flex-1">
-                                    <button type="submit" className="Button--secondary negative-margin" onClick={this.doSearch.bind(this)}>Search</button>
+                                <div className="Box-item Box-item--noPadding flex-1">
+                                    <button type="submit" className="Button--secondary" onClick={this.doSearch.bind(this)}>Search</button>
                                 </div>
                         </form>
                         {errorMsg}

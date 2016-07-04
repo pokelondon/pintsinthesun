@@ -3,7 +3,7 @@
     padding: $padding $padding 0;
 
     @extend .border-defaults;
-    border-style: hidden;
+    border-style: none;
     border-bottom-style: solid;
 
     p + .Box {
@@ -13,10 +13,9 @@
 .Screen-main {
     padding: 0 $padding;
     .Box {
-        background: $mintLight;
+        //background: $mintLight;
         &:first-child {
             border-top-width: 0;
-            //padding-top: 10px;
         }
     }
 }
@@ -24,20 +23,17 @@
 
 .Box {
     @extend .border-defaults;
+    background: $mintLight;
     border-style: solid;
 
     & + & {
-        border-top-style: hidden;
+        border-top-style: none;
     }
     p {
-        padding-bottom: 0;
-        padding-top: 10px;
+        padding: 0.6em 0 0 0;
 
-        &:first-child {
-            //padding-top: 10px;
-        }
         &:last-child {
-            padding-bottom: 10px;
+            padding-bottom: 0.6em;
         }
 
     }
@@ -47,25 +43,19 @@
     padding: $padding-vert-sm $padding-horiz-sm;
     flex: 1;
     @extend .border-defaults;
-    border-style: hidden;
+    border-style: none;
     border-left-style: solid;
     box-sizing: border-box;
     font-size: $font-size-4;
 
     &:first-child {
-        border-left-style: hidden;
-        border-top-style: hidden;
-    }
-
-    &--right {
-        border-style: hidden;
-        border-style: solid;
-        border-right-style: solid;
+        border-left-style: none;
+        border-top-style: none;
     }
 
     &--responsiveBorders {
         box-sizing: border-box;
-        border-left-style: hidden;
+        border-left-style: none;
         border-top-style: solid;
 
         &:first-child {
@@ -74,10 +64,10 @@
 
         @include media-breakpoint-up(md) {
             border-left-style: solid;
-            border-top-style: hidden;
+            border-top-style: none;
             &:first-child {
-                border-left-style: hidden;
-                border-top-style: hidden;
+                border-left-style: none;
+                border-top-style: none;
             }
         }
     }

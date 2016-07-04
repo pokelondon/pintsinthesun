@@ -8,7 +8,7 @@ import WeatherIcon from '../../components/weathericon';
 import Suggestion from '../../components/suggestion';
 import Rational from '../../components/rational';
 import StaticMap from '../../components/static-map';
-import LocationIndicator from '../../components/location-status';
+import LocationStatus from '../../components/location-status';
 import Hammer from 'hammerjs';
 
 class PubDetail extends React.Component {
@@ -99,7 +99,7 @@ class PubDetail extends React.Component {
                     <div className="max-width">
                         <p className="Heading--1">Loading</p>
                         <div className="Box Box-row">
-                            <p className="Box-item">Finding you somewhere</p>
+                            <div className="Box-item">Finding you somewhere</div>
                         </div>
                     </div>
                 </div>
@@ -110,7 +110,7 @@ class PubDetail extends React.Component {
                     <div className="max-width">
                         <p className="Heading--1">Locating</p>
                         <div className="Box Box-row">
-                            <p className="Box-item">Scrabbling around</p>
+                            <div className="Box-item">Scrabbling around</div>
                         </div>
                     </div>
                 </div>
@@ -121,7 +121,7 @@ class PubDetail extends React.Component {
                     <div className="max-width">
                         <p className="Heading--1">No pubs found</p>
                         <div className="Box Box-row">
-                            <p className="Box-item">No sunny pubs found in this area. Maybe try <Link className="no-text-wrap" to="/locate">looking somewhere else</Link>, or a <Link className="no-text-wrap" to="/">different time of day</Link>?</p>
+                            <div className="Box-item">No sunny pubs found in this area. Maybe try <Link className="no-text-wrap" to="/locate">looking somewhere else</Link>, or a <Link className="no-text-wrap" to="/">different time of day</Link>?</div>
                         </div>
                     </div>
                 </div>
@@ -139,7 +139,7 @@ class PubDetail extends React.Component {
 
                 <header className="Screen-header">
                     <div className="max-width">
-                        <LocationIndicator />
+                        <LocationStatus />
                         <Suggestion renderTransitionDirection={this.props.renderTransitionDirection} name={name} timeRange={this.props.timeRange} />
                     </div>
                 </header>

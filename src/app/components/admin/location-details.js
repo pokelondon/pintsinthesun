@@ -89,7 +89,7 @@ export default class MyComponent extends Component {
                 </div>
 
                 <div className="Box Box-row">
-                    <div className="Box Box-item no-padding">
+                    <div className="Box Box-item Box-item--noPadding">
                         <button onClick={this.saveLocation.bind(this)} className={btnClasses}>Save</button>
                     </div>
 

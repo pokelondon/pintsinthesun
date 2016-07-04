@@ -71,8 +71,8 @@ export default class AdminTool extends Component {
                 </header>
 
                 <div className="Screen-main max-width">
-                    <div className="Box Box-row no-padding">
-                        <div className="Map Box Box-item no-padding">
+                    <div className="Box Box-row">
+                        <div className="Map Box Box-item Box-item--noPadding">
                             <Map
                                 onCenterChanged={this.onMapCentreChanged.bind(this)}
                                 onLocationSelect={this.onLocationSelect.bind(this)}
@@ -83,8 +83,8 @@ export default class AdminTool extends Component {
                             {angleMarker}
                         </div>
                     </div>
-                    <div className="Box Box-row no-padding">
-                        <div className="Box Box-item no-padding">
+                    <div className="Box Box-row">
+                        <div className="Box Box-item Box-item--noPadding">
                             <button onClick={this.loadPubData.bind(this)} className="Button--primary">Load some pubs near here</button>
                         </div>
                     </div>
