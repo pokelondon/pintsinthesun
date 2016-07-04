@@ -32,7 +32,10 @@ export default class StaticMap extends React.Component {
                             options={{
                                 mapTypeControl: false,
                                 streetViewControl: false,
-                                zoomControl: true,
+                                zoomControl: false,
+                                draggable: false,
+                                scrollwheel: false,
+                                disableDoubleClickZoom: true,
                                 styles: config.MAP_CONFIG
                             }}>
                             <Marker
