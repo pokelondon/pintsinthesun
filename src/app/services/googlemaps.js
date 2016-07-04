@@ -1,8 +1,8 @@
 //const geocoder = new google.maps.Geocoder();
 
-export function geocode(searchTerm, callback) {
-    let geocoder = new google.maps.Geocoder();
-    geocoder.geocode({address: searchTerm}, (results, status) => {
+export function geocode(searchTerm, bounds, callback) {
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({address: searchTerm, bounds: bounds}, (results, status) => {
         if (status === google.maps.GeocoderStatus.OK) {
             callback({
                 status: 'OK',
@@ -22,9 +22,8 @@ export function geocode(searchTerm, callback) {
 }
 
 export function reverseGeocode(location, callback) {
-    let geocoder = new google.maps.Geocoder();
+    const geocoder = new google.maps.Geocoder();
     geocoder.geocode({location: location}, (results, status) => {
-
         if (status === google.maps.GeocoderStatus.OK) {
             //find the most appropriate address format (higher index = more prefereable)
             let addressText;

@@ -35,7 +35,7 @@ class Locate extends React.Component {
         e.preventDefault();
         this.setState({errorMsg: null});
 
-        geocode(this.state.searchTerm, (result) => {
+        geocode(this.state.searchTerm, this.map.props.map.getBounds(), (result) => {
             if(result.status === 'OK'){
                 this.props.onCenterChanged(result.centre);
             } else
