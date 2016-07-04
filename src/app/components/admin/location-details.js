@@ -49,19 +49,19 @@ export default class MyComponent extends Component {
                 </div>
                 <div className="Box Box-row flex-wrap">
 
-                    <div className="Box Box-item Property-option no-padding Property-option">
+                    <div className="Box Box-item Box-item--noPadding Property-option">
                         <label>
                             <input onChange={this.props.onFormChange} type="checkbox" name="hasGarden" value="true" checked={this.props.hasGarden} /> Garden
                         </label>
                     </div>
 
-                    <div className="Box Box-item Property-option no-padding">
+                    <div className="Box Box-item Box-item--noPadding Property-option">
                         <label>
                             <input onChange={this.props.onFormChange} type="checkbox" name="hasTerrace" value="true" checked={this.props.hasTerrace} /> Terrace
                         </label>
                     </div>
 
-                    <div className="Box Box-item Property-option no-padding">
+                    <div className="Box Box-item Box-item--noPadding Property-option">
                         <label>
                             <input onChange={this.props.onFormChange} type="checkbox" name="isInPark" value="true" checked={this.props.isInPark} /> In a park
                         </label>
@@ -69,19 +69,19 @@ export default class MyComponent extends Component {
                 </div>
                 <div className="Box Box-row flex-wrap">
 
-                    <div className="Box Box-item Property-option no-padding">
+                    <div className="Box Box-item Box-item--noPadding Property-option">
                         <label>
                             <input onChange={this.props.onFormChange} type="checkbox" name="isOnHill" value="true" checked={this.props.isOnHill} /> On a hill
                         </label>
                     </div>
 
-                    <div className="Box Box-item Property-option no-padding">
+                    <div className="Box Box-item Box-item--noPadding Property-option">
                         <label>
                             <input onChange={this.props.onFormChange} type="checkbox" name="isIsolated" value="true" checked={this.props.isIsolated} /> Isolated
                         </label>
                     </div>
 
-                    <div className="Box Box-item Property-option no-padding">
+                    <div className="Box Box-item Box-item--noPadding Property-option">
                         <label>
                             <input onChange={this.props.onFormChange} type="checkbox" name="buildingToTheWest" value="true" checked={this.props.buildingToTheWest} /> Building to the west
                         </label>
