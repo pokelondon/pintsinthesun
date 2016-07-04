@@ -24,21 +24,18 @@ export function geocode(searchTerm, callback) {
 export function reverseGeocode(location, callback) {
     let geocoder = new google.maps.Geocoder();
     geocoder.geocode({location: location}, (results, status) => {
-        console.log('service', results);
-        if (status === google.maps.GeocoderStatus.OK) {
 
-            //find the most appropriate address format
+        if (status === google.maps.GeocoderStatus.OK) {
+            //find the most appropriate address format (higher index = more prefereable)
             let addressText;
-            //const addressFormatPreference = ['street_address', 'postal_code', 'train_station', 'point_of_interest'];
-            const addressFormatPreference = ['street_address'];
-            results.forEach( (address) => {
-                addressFormatPreference.forEach( (addressFormat) => {
+            const addressFormatPreference = ['postal_code', 'train_station', 'street_address'];
+            addressFormatPreference.forEach( (addressFormat) => {
+                results.forEach( (address) => {
                     if(address.types.indexOf(addressFormat) != -1) {
                         addressText = address.formatted_address;
                     }
                 });
-            })
-
+            });
             callback({
                 status: 'OK',
                 address: addressText
