@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
+import CitymapperLink from './citymapper';
 
 class Rational extends React.Component {
 
@@ -54,14 +55,7 @@ class Rational extends React.Component {
                 <p className="Para--large" dangerouslySetInnerHTML={{__html: rational}}></p>
                 <p className="Para--large" dangerouslySetInnerHTML={{__html: weatherStatement}}></p>
 
-                { (() => {
-                    //City mapper link only includes start position if its real
-                    let positionStr = ``;
-                    if(this.props.isRealPosition){
-                        positionStr = `${this.props.centre.lat},${this.props.centre.lng}`;
-                    }
-                    return (<p className="Para--large"><a target="_blank" href={`https://citymapper.com/directions?startcoord=${positionStr}&endcoord=${this.props.pub.location.coordinates.lat},${this.props.pub.location.coordinates.lng}&endname=${this.props.pub.name}&arriveby=${encodeURIComponent(this.props.arrivalTime.toISOString())}`}>Citymapper link</a></p>);
-                })()}
+                <CitymapperLink />
 
             </div>
         )
