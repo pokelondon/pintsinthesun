@@ -26,7 +26,7 @@
         margin-left: 12px;
     }
 
-    @include media-breakpoint-up(sm) {
+    @include media-breakpoint-up(md) {
         padding: 1.2rem 2rem;
     }
 }
@@ -295,7 +295,7 @@
         box-shadow: none !important;
     }
 
-    @include media-breakpoint-up(sm) {
+    @include media-breakpoint-up(md) {
         padding: 1rem 2rem;
     }
 }

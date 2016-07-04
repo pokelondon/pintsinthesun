@@ -87,7 +87,7 @@ input {
     box-sizing: border-box;
     padding: 1em;
 }
-
+ 
 
 /****/
 
@@ -120,7 +120,7 @@ h1,
     font-family: $font-family-heading;
     font-size: $font-size-default;
 
-    @include media-breakpoint-up(sm) {
+    @include media-breakpoint-up(md) {
         font-size: $font-size-lrg-4;
     }
 }

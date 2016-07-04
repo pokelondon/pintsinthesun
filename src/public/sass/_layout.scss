@@ -55,7 +55,7 @@ body {
     width: calc(100% + #{$totalHorizPadding});
     margin: #{-$padding-vert-sm} #{-$padding-horiz-sm} #{-$padding-vert-sm} #{-$padding-horiz-sm};
 
-    @include media-breakpoint-up(sm) {
+    @include media-breakpoint-up(md) {
         $totalHorizPadding: $padding-horiz-md * 2;
         width: calc(100% + #{$totalHorizPadding});
         margin: #{-$padding-vert-md} #{-$padding-horiz-md} #{-$padding-vert-md} #{-$padding-horiz-md};
@@ -67,7 +67,7 @@ body {
 //and others not
 .box-child-margin {
     margin: $padding-vert-sm $padding-horiz-sm $padding-vert-sm $padding-horiz-sm;
-    @include media-breakpoint-up(sm) {
+    @include media-breakpoint-up(md) {
         margin: $padding-vert-md $padding-horiz-md $padding-vert-md $padding-horiz-md;
     }
 }
