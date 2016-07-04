@@ -45,6 +45,7 @@
 
 .Box-item {
     padding: $padding-vert-sm $padding-horiz-sm;
+    flex: 1;
     @extend .border-defaults;
     border-style: hidden;
     border-left-style: solid;
@@ -62,11 +63,43 @@
         border-right-style: solid;
     }
 
+    &--responsiveBorders {
+        box-sizing: border-box;
+        border-left-style: hidden;
+        border-top-style: solid;
+
+        &:first-child {
+            border-top-style: none;
+        }
+
+        @include media-breakpoint-up(md) {
+            border-left-style: solid;
+            border-top-style: hidden;
+            &:first-child {
+                border-left-style: hidden;
+                border-top-style: hidden;
+            }
+        }
+    }
+
+    &--halfCol {
+        flex: 1 1 100%;
+
+        @include media-breakpoint-up(md) {
+            flex: 1;
+        }
+    }
+
     @include media-breakpoint-up(sm) {
         font-size: $font-size-1;
         padding: $padding-vert-md $padding-horiz-md;
     }
+
+    &--noPadding {
+        padding: 0;
+    }
 }
+
 
 .Box-row {
 
@@ -78,37 +111,7 @@
     }
 
 
-    .Box-item {
 
-        flex: 1;
-
-        &--responsiveBorders {
-            box-sizing: border-box;
-            border-left-style: hidden;
-            border-top-style: solid;
-
-            &:first-child {
-                border-top-style: none;
-            }
-
-            @include media-breakpoint-up(md) {
-                border-left-style: solid;
-                border-top-style: hidden;
-                &:first-child {
-                    border-left-style: hidden;
-                    border-top-style: hidden;
-                }
-            }
-        }
-
-        &--halfCol {
-            flex: 1 1 100%;
-
-            @include media-breakpoint-up(md) {
-                flex: 1;
-            }
-        }
-    }
 
     & + & {
         border-top-width: 0;

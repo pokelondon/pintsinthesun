@@ -13,8 +13,6 @@
     text-align: center;
     background: $blue;
     color: $mintLight;
-    overflow: auto;
-    -webkit-transform: translateZ(0);
     @extend .inner-shadow;
 
     border-width: 0;
@@ -57,7 +55,7 @@
         }
     }
 
-    @include media-breakpoint-up(sm) {
+    @include media-breakpoint-up(md) {
         min-height: 8rem;
         font-size: $font-size-lrg-1;
         padding-top: 2.6rem;
@@ -67,17 +65,20 @@
 
 .Button--primary--search {
     position: relative;
-    padding-left: 2.6rem;
-    padding-right: 2.6rem;
+    padding-left: 2.8em;
+    padding-right: 2.8em;
 
     &:after {
-        content: url(/img/icons/search.svg);
-        width: 1.666em;
+        content: '';
         display: inline-block;
         position: absolute;
         right: 1.111em;
         top: 50%;
         margin-top: -0.8333em;
+        background: url(/img/icons/search.svg) no-repeat;
+        background-size: 100%;
+        width: 1.666em;
+        height: 1.666em;
     }
 
 }
@@ -98,7 +99,7 @@
         background-color: $yellowLightFocus;
     }
 
-    @include media-breakpoint-up(sm) {
+    @include media-breakpoint-up(md) {
         font-size: $font-size-1;
     }
 }
@@ -111,6 +112,26 @@
 
     &:hover {
         background-color: $redFocus;
+    }
+
+    @include media-breakpoint-up(md) {
+        font-size: $font-size-1;
+    }
+}
+
+.Button--next {
+    position: relative;
+    padding-right: 2.5em;
+    &:after {
+        content: '';
+        width: 1.2em;
+        height: 1em;
+        position: absolute;
+        right: 1em;
+        top: 50%;
+        background: url(/img/icons/arrow-icon.svg) no-repeat;
+        background-size: 100%;
+        transform: translateY(-50%);
     }
 }
 
@@ -151,28 +172,15 @@
     }
 }
 
-.Button--pubNav {
-    background: none;
-    border: none;
-    width: 10%;
-    min-width: 25px;
-    height: 40px;
-    padding: 0;
-
-    @include media-breakpoint-up(sm) {
-        font-size: 1.5rem;
-    }
-}
-
-
 .Button--locateMe {
     width: 3.5em;
     padding: 0;
 
     &:after {
-        content: url(/img/icons/locate-me-icon.svg);
+        content: '';
+        background: url(/img/icons/locate-me-icon.svg) no-repeat;
         width: 1.6em;
-        height: 1.6em;
+        height: 1.7em;
         display: inline-block;
         position: relative;
         top: 0.2em;
@@ -187,7 +195,6 @@
     min-height: 110px;
     background-color: $yellowLight;
 
-
     & span {
         position: absolute;
         width: 100%;
@@ -197,6 +204,9 @@
     }
 
     &:before {
+        content: '';
+        height: 4em;
+        background-size: 100%;
         margin: auto;
         display: block;
         position: relative;
@@ -228,12 +238,11 @@
     }
 }
 
-
 .Button--morning {
     @extend .Button--time;
 
     &:before {
-        content: url(/img/icons/morning-icon.svg);
+        background: url(/img/icons/morning-icon.svg) no-repeat;
         width: 1.875rem;
         top: -0.375rem;
     }
@@ -244,8 +253,8 @@
     @extend .Button--time;
 
     &:before {
-        content: url(/img/icons/afternoon-icon.svg);
-        width: 1.0625rem; //17px
+        background: url(/img/icons/afternoon-icon.svg) no-repeat;
+        width: 1.0625rem;
         top: -0.375rem;
     }
 }
@@ -254,7 +263,7 @@
     @extend .Button--time;
 
     &:before {
-        content: url(/img/icons/evening-icon.svg);
+        background: url(/img/icons/evening-icon.svg) no-repeat;
         width: 2.1875rem;
         top: -0.4375rem;
     }
@@ -263,8 +272,6 @@
 .Button--info {
     border: 0;
     background: none;
-    //width: 100%;
-    //height: 100%;
     display: inline-block;
     padding: 0;
 
@@ -304,7 +311,8 @@
     }
 
     &:after {
-        content: url(/img/icons/location-status-icon.svg);
+        content: '';
+        background: url(/img/icons/location-status-icon.svg) no-repeat;
         position: absolute;
         width: 1.6em;
         height: 1.6em;
@@ -312,7 +320,7 @@
         top: 50%;
         transform: translateY(-50%);
 
-        @include media-breakpoint-up(sm) {
+        @include media-breakpoint-up(md) {
             right: 1.875em;
         }
     }

@@ -40,10 +40,9 @@ $enable-flex: true;
 
 // General
 @import 'type',
-        //'layout',
         'components',
-        'utilities',
-        'animations';
+        'animations',
+        'utilities';
 
 // Modules
 @import 'modules/box';
@@ -57,7 +56,10 @@ $enable-flex: true;
 @import 'modules/info-box';
 @import 'modules/logo';
 
+
+//layout
 @import 'layout';
+
 
 //views
 @import 'views/start';

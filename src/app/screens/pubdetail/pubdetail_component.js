@@ -151,8 +151,8 @@ class PubDetail extends React.Component {
                             <div className="Box Box-item PubPagination-indicator">
                                 <div className="box-child-margin">Result {this.props.filteredIndex + 1} of {this.props.filteredPubs.length}</div>
                             </div>
-                            <div className="Box Box-item no-padding">
-                                <button className="Button--secondaryAlt PubPagination-incrementor" onClick={this.props.incrementCurrentPub}>Show me another</button>
+                            <div className="Box Box-item Box-item--noPadding">
+                                <button className="Button--secondaryAlt Button--next PubPagination-incrementor" onClick={this.props.incrementCurrentPub}>Show me another</button>
                             </div>
                         </div>
 
@@ -168,8 +168,8 @@ class PubDetail extends React.Component {
                             <div className="Box-item Box-item--halfCol--fixed">
                                 Best for sun: 13:32-17:23
                             </div>
-                            <div className="Box-item Box-item--halfCol--fixed">
-                                Weather {this.weatherTime()}: <WeatherIcon />
+                            <div className="WeatherIndicator Box-item Box-item--halfCol--fixed">
+                                <div className="WeatherIndicator-label">Weather {this.weatherTime()}:</div> <WeatherIcon />
                             </div>
                         </div>
 

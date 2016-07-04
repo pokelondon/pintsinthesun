@@ -75,7 +75,7 @@ class Locate extends React.Component {
                 <header className="Screen-header">
                     <div className="max-width">
                         <p className="Para--large">Search for your location, or drag the map</p>
-                        <form className="Box Box-row no-padding" onSubmit={this.doSearch.bind(this)}>
+                        <form className="Box Box-row" onSubmit={this.doSearch.bind(this)}>
                                 <button type="button" onClick={this.props.fetchPosition} className="Button--secondary Button--locateMe flex-none"></button>
                                 <input className="Input--search Box-item flex-2" onChange={this.onSearchChange.bind(this)} type="search" value={this.state.searchTerm} placeholder="e.g E1 6LG" />
                                 <div className="Box-item flex-1">
@@ -88,8 +88,8 @@ class Locate extends React.Component {
 
                 <div className="Screen-main">
                     <div className="max-width">
-                        <div className="Box Box-row no-padding">
-                            <div className="Box-item no-padding">
+                        <div className="Box Box-row">
+                            <div className="Box-item Box-item--noPadding">
 
                                 <div className="Map">
                                     <GoogleMapLoader
@@ -121,8 +121,8 @@ class Locate extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="Box Box-row no-padding">
-                            <div className="Box-item no-padding">
+                        <div className="Box Box-row">
+                            <div className="Box-item Box-item--noPadding">
                                 <Link
                                    onClick={this.props.onClose}
                                    to='/pubs'
