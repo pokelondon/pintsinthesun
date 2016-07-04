@@ -111,8 +111,10 @@ class ThreeD extends React.Component {
 
     componentDidUpdate(prevProps) {
         if(this.props.centre.lat !== prevProps.centre.lat) {
-            //this.updateBuildings();
-            this.animateCanvasOut();
+            this.updateBuildings();
+
+            //no animations on render change right now, but leaving this in in case we want them
+            //this.animateCanvasOut();
         }
         this.updateSunPosition();
     }
