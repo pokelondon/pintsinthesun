@@ -95,6 +95,7 @@ export default function position(state=INITIAL_STATE, action) {
                 filteredIndex: 0,
                 isRealPosition: action.isRealPosition,
                 isGPSPosition: action.isGPSPosition,
+                address: action.address,
                 sun
             }
         case REQUEST_POSITION:

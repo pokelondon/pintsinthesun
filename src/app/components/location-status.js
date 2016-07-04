@@ -19,17 +19,15 @@ class LocationStatus extends React.Component {
 
     render() {
 
-        let locationTxt;
+        let locationTxt = 'Set location';
         if(this.props.address){
             locationTxt = this.props.address;
-        } else
+        }
         if(this.props.isGPSPosition){
             locationTxt = 'Current Location';
-        } else
+        }
         if(!this.props.isRealPosition){
             locationTxt = 'Shoreditch, London'
-        } else {
-            locationTxt = 'Set location'
         }
 
         return (
