@@ -37,9 +37,6 @@ const mapStateToProps = (state, ownProps) => {
         isRealPosition
     } = state.position;
 
-    console.log('filteredPubs', filteredPubs);
-    console.log('filteredIndex', filteredIndex);
-
 
     return {
         date,
