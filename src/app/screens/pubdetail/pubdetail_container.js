@@ -19,7 +19,8 @@ const mapStateToProps = (state, ownProps) => {
         timeRange,
         renderTransitionDirection,
         centre,
-        isRealPosition
+        isRealPosition,
+        locationHasBeenRequested
     } = state.position;
 
 
@@ -36,6 +37,7 @@ const mapStateToProps = (state, ownProps) => {
         renderTransitionDirection,
         centre,
         isRealPosition,
+        locationHasBeenRequested,
         //pub: items[currentPub]
         pub: filteredPubs[filteredIndex]
     }
@@ -64,6 +66,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         launchLocationModal: () => {
             boundPositionActions.launchLocationModal();
+        },
+        fetchPosition: () => {
+            boundPositionActions.fetchPosition();
         }
     }
 }

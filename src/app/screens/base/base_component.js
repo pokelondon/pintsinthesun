@@ -16,7 +16,7 @@ class Base extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetchPosition();
+        //this.props.fetchPosition();
     }
 
     render() {

@@ -20,6 +20,11 @@ class PubDetail extends React.Component {
     }
 
     componentWillMount() {
+
+        if(!this.props.locationHasBeenRequested) {
+            this.props.fetchPosition();
+        }
+
         this.setState({
             localDate: new Date(this.props.date.getTime()),
             visibleTab: 'sun'

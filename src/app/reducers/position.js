@@ -44,7 +44,8 @@ const INITIAL_STATE = {
     currentPub: 0,
     filteredIndex: 0,
     modal: null,
-    timeRange: 'now'
+    timeRange: 'now',
+    locationHasBeenRequested: false
 }
 
 export default function position(state=INITIAL_STATE, action) {
@@ -101,6 +102,7 @@ export default function position(state=INITIAL_STATE, action) {
         case REQUEST_POSITION:
             return {
                 ...state,
+                locationHasBeenRequested: true,
                 isLocating: true
             }
         case REQUEST_PUBS:
