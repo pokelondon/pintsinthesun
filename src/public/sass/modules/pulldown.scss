@@ -7,10 +7,6 @@
     height: 100%;
     top: -100%;
     overflow: scroll;
-
-    padding: 0 $padding;
-
-    text-align: center;
     background: transparentize($blueDark, 0.1);
 
     transition: top 1s;

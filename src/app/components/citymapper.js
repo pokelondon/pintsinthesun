@@ -20,10 +20,11 @@ class Citymapper extends React.Component {
             positionStr = `${this.props.centre.lat},${this.props.centre.lng}`;
         }
         return (
-            <p className="Para--large">
-                <a target="_blank" href={`https://citymapper.com/directions?startcoord=${positionStr}&endcoord=${lat},${lng}&endname=${this.props.pub.name}&arriveby=${encodeURIComponent(this.props.date.toISOString())}`}>
-                Citymapper link</a>
-            </p>);
+            <div className="CitymapperLink">
+                <a className="Button--secondary" target="_blank" href={`https://citymapper.com/directions?startcoord=${positionStr}&endcoord=${lat},${lng}&endname=${encodeURIComponent(this.props.pub.name)}&arriveby=${encodeURIComponent(this.props.date.toISOString())}`}>
+                View on Citymapper</a>
+            </div>
+        );
     }
 }
 

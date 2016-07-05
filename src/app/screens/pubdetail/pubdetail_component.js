@@ -161,7 +161,7 @@ class PubDetail extends React.Component {
                             </div>
                         </div>
 
-                        <h2 className="DetailsHeading">Details</h2>
+                        <h2 className="Heading--2 DetailsHeading">Details</h2>
 
                         <div className="Box Box-row">
                             <div className="Box-item">
@@ -179,17 +179,18 @@ class PubDetail extends React.Component {
                         </div>
 
                         <div className="Box Box-row flex-wrap">
-                            <div className="Box-item Box-item--halfCol Box-item--responsiveBorders">
-                                <div className="MapTabs negative-margin">
+                            <div className="Box-item Box-item--noPadding Box-item--halfCol Box-item--responsiveBorders">
+                                <div className="MapTabs">
                                     <button className={(this.state.visibleTab === 'sun') ? 'Button Button--tab Button--tab--active' : 'Button Button--tab'} onClick={this.showTab.bind(this, 'sun')}>Sun position</button>
                                     <button className={(this.state.visibleTab === 'map') ? 'Button Button--tab Button--tab--active' : 'Button Button--tab'} onClick={this.showTab.bind(this, 'map')}>Map</button>
                                 </div>
 
-                                { ( () => {
-                                    if(this.state.visibleTab === 'sun'){
-                                        return (
-                                            <div>
-                                                <div className="Three-container">
+                                <div className="PubTabContent">
+
+                                    { ( () => {
+                                        if(this.state.visibleTab === 'sun'){
+                                            return (
+                                                <div>
                                                     <ThreeD
                                                         centre={{lat, lng}}
                                                         date={this.state.localDate}
@@ -197,36 +198,37 @@ class PubDetail extends React.Component {
                                                         incrementCurrentPub={this.props.incrementCurrentPub}
                                                         decrementCurrentPub={this.props.decrementCurrentPub}
                                                     />
-                                                </div>
 
-                                                <div className="SliderContainer">
-                                                    <Slider
-                                                        min={7}
-                                                        max={21}
-                                                        step={1}
-                                                        included={false}
-                                                        defaultValue={this.state.localDate.getHours()}
-                                                        className='Slider'
-                                                        onChange={this.onSliderChange.bind(this)}
-                                                        tipFormatter={this.sliderTipFormatter.bind(this)}
-                                                        marks={ {7: '7:00', 14: '14:00', 21: '21:00'} }
-                                                    />
+                                                    <div className="SliderContainer">
+                                                        <Slider
+                                                            min={7}
+                                                            max={21}
+                                                            step={1}
+                                                            included={false}
+                                                            defaultValue={this.state.localDate.getHours()}
+                                                            className='Slider'
+                                                            onChange={this.onSliderChange.bind(this)}
+                                                            tipFormatter={this.sliderTipFormatter.bind(this)}
+                                                            marks={ {7: '7:00', 14: '14:00', 21: '21:00'} }
+                                                        />
+                                                    </div>
+                                                    <div className="PubDetail-applyButtonContainer">
+                                                        <button disabled={this.isLocalTimeGlobalTime()} className={this.getTimeApplyButtonClassNames()} onClick={this.applyLocalTimeToGlobal.bind(this)}>Search for pubs at {this.state.localDate.getHours()}:00</button>
+                                                    </div>
                                                 </div>
-                                                <div className="PubDetail-applyButtonContainer">
-                                                    <button disabled={this.isLocalTimeGlobalTime()} className={this.getTimeApplyButtonClassNames()} onClick={this.applyLocalTimeToGlobal.bind(this)}>Search for pubs at {this.state.localDate.getHours()}:00</button>
-                                                </div>
-                                            </div>
-                                        );
-                                    }
-                                })()}
+                                            );
+                                        }
+                                    })()}
 
-                                { ( () => {
-                                    if(this.state.visibleTab === 'map') {
-                                        return (
-                                            <StaticMap centre={{lat, lng}} />
-                                        )
-                                    }
-                                })()}
+                                    { ( () => {
+                                        if(this.state.visibleTab === 'map') {
+                                            return (
+                                                <StaticMap centre={{lat, lng}} />
+                                            )
+                                        }
+                                    })()}
+
+                                </div>
 
                             </div>
 
