@@ -126,7 +126,7 @@ class ThreeD extends React.Component {
         return (
             <div className={renderClasses}>
                 <div className="Render-canvas" ref='canvas'></div>
-                <img className="Render-spinner" src="/img/loading.svg" />
+                <img className="Render-spinner" src="/img/loading.gif" />
             </div>
         )
     }
