@@ -9,7 +9,7 @@ import Suggestion from '../../components/suggestion';
 import Rational from '../../components/rational';
 import StaticMap from '../../components/static-map';
 import LocationStatus from '../../components/location-status';
-import Hammer from 'hammerjs';
+//import Hammer from 'hammerjs';
 
 class PubDetail extends React.Component {
     constructor(props) {

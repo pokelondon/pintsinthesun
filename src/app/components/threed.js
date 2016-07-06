@@ -2,9 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import THREE from 'three';
 import SunCalc from '../lib/suncalc';
-import d3 from 'd3';
+//import d3 from 'd3';
+import {geoMercator} from 'd3-geo';
 import TWEEN from 'tween.js';
-import Hammer from 'hammerjs';
+//import Hammer from 'hammerjs';
 
 import { fetchBuildings } from '../services/overpass';
 import classnames from 'classnames';
@@ -155,7 +156,7 @@ class ThreeD extends React.Component {
         let { lat, lng } = this.props.centre;
 
         this.cancelablePromise = fetchBuildings(lat, lng);
-        this.cancelablePromise.promise.then(buildings => this.renderBuildings(buildings))
+        this.cancelablePromise.promise.then(buildings => this.renderBuildings(buildings), (e) => {console.log('Error', e);})
         return this;
     }
 
@@ -301,7 +302,12 @@ class ThreeD extends React.Component {
     getProjection() {
         const centre = [this.props.centre.lng, this.props.centre.lat];
         const TILESIZE = 128;
-        return d3.geo.mercator()
+        // return d3.geo.mercator()
+        //     .center(centre)
+        //     .translate([0, 0])
+        //     .scale(TILESIZE << ZOOM);
+
+        return geoMercator()
             .center(centre)
             .translate([0, 0])
             .scale(TILESIZE << ZOOM);
