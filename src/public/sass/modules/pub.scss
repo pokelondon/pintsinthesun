@@ -21,14 +21,8 @@
         @extend .border-defaults;
         border-style: solid;
         border-radius: 100%;
-        transform-origin: 0 0;
-        transform: scale(0.75);
         width: 100%;
         box-sizing: border-box;
-
-        @include media-breakpoint-up(sm) {
-            transform: scale(1);
-        }
     }
 }
 

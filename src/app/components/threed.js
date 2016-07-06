@@ -81,7 +81,7 @@ class ThreeD extends React.Component {
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
         this.camera.rotation.z = Math.PI;
 
-        this.renderer.setSize(this.WIDTH, this.HEIGHT);
+        this.renderer.setSize(this.WIDTH, this.HEIGHT, false);
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.soft = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
