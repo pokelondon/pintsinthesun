@@ -1,0 +1,15 @@
+<svg width="39" height="54" xmlns="http://www.w3.org/2000/svg">
+ <style type="text/css">.st0{fill:#4CC3D9;}</style>
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="8.81681" width="6.92325" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g id="svg_1" stroke="null">
+   <path class="st0" d="m37.79999,19.39999c0,10.16146 -18.39999,34.18444 -18.39999,34.18444s-18.39999,-24.02297 -18.39999,-34.18444c0,-10.16146 8.23853,-18.39999 18.39999,-18.39999c10.16146,0 18.39999,8.23853 18.39999,18.39999z" id="svg_2" stroke="null"/>
+  </g>
+  <ellipse stroke="#000" fill="#fff" stroke-width="0" cx="18.99589" cy="19.36348" id="svg_3" rx="8.59853" ry="8.59853"/>
+ </g>
+</svg>

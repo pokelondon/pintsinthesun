@@ -2,6 +2,13 @@ import React from 'react';
 import config from '../config';
 import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 
+const MARKER_IMG = {
+    url: "/img/icons/map-pin.svg",
+    scaledSize: new google.maps.Size(28.8, 40),
+    origin: new google.maps.Point(0,0),
+    anchor: new google.maps.Point(14.4, 50)
+};
+
 export default class StaticMap extends React.Component {
 
     constructor(props) {
@@ -40,6 +47,7 @@ export default class StaticMap extends React.Component {
                             }}>
                             <Marker
                                 position={this.props.centre}
+                                icon={MARKER_IMG}
                             />
                         </GoogleMap>
                     }
