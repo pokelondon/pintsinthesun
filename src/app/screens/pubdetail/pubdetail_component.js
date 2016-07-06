@@ -48,21 +48,6 @@ class PubDetail extends React.Component {
         return `${value}:00`;
     }
 
-    componentDidUpdate() {
-        let suggestionEl = document.querySelector('.js-suggestion-name');
-        if(suggestionEl){
-            this.hammerTime = new Hammer(suggestionEl);
-            this.hammerTime.on('swipe', (e) => {
-                if(e.direction === 2){
-                    this.props.incrementCurrentPub();
-                }
-                if(e.direction === 4){
-                    this.props.decrementCurrentPub();
-                }
-            });
-        }
-    }
-
     launchLocationModal(e) {
         e.nativeEvent.preventDefault();
         this.props.launchLocationModal();

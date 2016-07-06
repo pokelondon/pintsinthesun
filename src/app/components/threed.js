@@ -94,19 +94,6 @@ class ThreeD extends React.Component {
             .updateBuildings()
             .addTarget()
             .animate();
-
-        this.element = ReactDOM.findDOMNode(this);
-
-        this.hammerTime = new Hammer(this.element);
-        this.hammerTime.on('swipe', (e) => {
-            if(e.direction === 2){
-                this.props.incrementCurrentPub();
-            }
-            if(e.direction === 4){
-                this.props.decrementCurrentPub();
-            }
-        });
-
     }
 
     componentDidUpdate(prevProps) {

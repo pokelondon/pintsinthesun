@@ -50,6 +50,7 @@
 
 .SliderContainer {
     width: 100%;
+    overflow: hidden;
     padding: 20px 30px 40px;
     box-sizing: border-box;
 }
@@ -70,6 +71,11 @@
 
     .rc-slider-dot {
         display: none;
+    }
+
+    .rc-slider-mark {
+        overflow: hidden;
+        max-width: 100%;
     }
 }
 
