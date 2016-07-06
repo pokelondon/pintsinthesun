@@ -121,17 +121,18 @@ class ThreeD extends React.Component {
             'Render--transition-left-in': (this.state.renderTransitionDirection === 'left-in'),
             'Render--transition-right-out': (this.state.renderTransitionDirection === 'right-out'),
             'Render--transition-right-in': (this.state.renderTransitionDirection === 'right-in'),
+            'Render--loading': (this.state.isTransitioning)
         });
         return (
-
-            <div
-                className={renderClasses}
-                ref='canvas'
-            />
+            <div className={renderClasses}>
+                <div className="Render-canvas" ref='canvas'></div>
+                <img className="Render-spinner" src="/img/loading.svg" />
+            </div>
         )
     }
 
     renderBuildings(buildings) {
+        this.setState({isTransitioning: false});
         buildings.forEach(building => this.renderBuilding(building));
     }
 
@@ -149,6 +150,7 @@ class ThreeD extends React.Component {
     }
 
     updateBuildings() {
+        this.setState({isTransitioning: true});
         this.clearBuildings();
         let { lat, lng } = this.props.centre;
 

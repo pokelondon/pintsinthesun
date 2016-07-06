@@ -8,6 +8,7 @@
 
 .Render {
     display: block;
+    position: relative;
     width: 225px;
     height: 225px;
     margin: 20px auto 20px;
@@ -23,6 +24,23 @@
         border-radius: 100%;
         width: 100%;
         box-sizing: border-box;
+    }
+
+    &-spinner {
+        display: none;
+    }
+
+    &--loading {
+        .Render-canvas {
+            visibility: hidden;
+        }
+        .Render-spinner {
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -24px;
+        }
     }
 }
 
