@@ -18,7 +18,6 @@ class Locate extends React.Component {
             searchTerm: ''
         };
 
-        GA.modalview('/locate');
 
     }
 

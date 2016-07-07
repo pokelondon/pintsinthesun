@@ -3,12 +3,21 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import * as positionActions from '../actions/position';
+import GA from 'react-ga';
 
 class Citymapper extends React.Component {
 
     constructor(props) {
         super(props);
         this.props = props;
+    }
+
+    onLinkClick() {
+        GA.event({
+            category: 'Navigation',
+            action: 'External link',
+            label: 'Citymapper'
+        });
     }
 
     render() {
@@ -21,7 +30,7 @@ class Citymapper extends React.Component {
         }
         return (
             <div className="CitymapperLink">
-                <a className="Button--secondary" target="_blank" href={`https://citymapper.com/directions?startcoord=${positionStr}&endcoord=${lat},${lng}&endname=${encodeURIComponent(this.props.pub.name)}&arriveby=${encodeURIComponent(this.props.date.toISOString())}`}>
+                <a onClick={this.onLinkClick.bind(this)} className="Button--secondary" target="_blank" href={`https://citymapper.com/directions?startcoord=${positionStr}&endcoord=${lat},${lng}&endname=${encodeURIComponent(this.props.pub.name)}&arriveby=${encodeURIComponent(this.props.date.toISOString())}`}>
                 View on Citymapper</a>
             </div>
         );

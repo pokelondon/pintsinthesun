@@ -9,7 +9,7 @@ import Suggestion from '../../components/suggestion';
 import Rational from '../../components/rational';
 import StaticMap from '../../components/static-map';
 import LocationStatus from '../../components/location-status';
-//import Hammer from 'hammerjs';
+import GA from 'react-ga';
 
 class PubDetail extends React.Component {
     constructor(props) {
@@ -42,6 +42,11 @@ class PubDetail extends React.Component {
         this.isTimeApplyBtnVisible = false;
         this.props.updateTime(this.state.localDate);
         this.setState({localDate: new Date(this.state.localDate.getTime())});
+        GA.event({
+            category: 'Filter',
+            action: 'Set Time Range',
+            label: 'Slider'
+        });
     }
 
     sliderTipFormatter(value) {
@@ -80,6 +85,11 @@ class PubDetail extends React.Component {
 
     showTab(tab){
         this.setState({visibleTab: tab});
+        GA.event({
+            category: 'UI',
+            action: 'Toggle pub tab',
+            label: tab
+        });
     }
 
     render() {
