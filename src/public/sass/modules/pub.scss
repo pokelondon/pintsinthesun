@@ -32,7 +32,7 @@
 
     &--loading {
         .Render-canvas {
-            visibility: hidden;
+            display: none;
         }
         .Render-spinner {
             display: block;
