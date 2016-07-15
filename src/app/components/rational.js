@@ -30,7 +30,7 @@ class Rational extends React.Component {
                 response.push(Rational.TERRACE_SENTENCES[parseInt(Rational.TERRACE_SENTENCES.length * Math.random(), 10)]);
             }
 
-            let building_to_the_west_sentences = Rational.BUIDLING_TO_THE_WEST_SENTENCES[this.props.pub.building_to_the_west ? 1 : 0];
+            let building_to_the_west_sentences = Rational.BUILDING_TO_THE_WEST_SENTENCES[this.props.pub.building_to_the_west ? 1 : 0];
             if(building_to_the_west_sentences) {
                 response.push(building_to_the_west_sentences[parseInt(building_to_the_west_sentences.length * Math.random(), 10)]);
             }
@@ -93,9 +93,9 @@ Rational.WEATHER_SENTENCES = {
     'FOG': ['But it\'s <em>foggy.</em>']
 }
 
-Rational.BUIDLING_TO_THE_WEST_SENTENCES = [
-    ['there\'s nothing much blocking the sun <em>to the west</em>.', 'no buidlings <em>west of here.</em> to get in the way', 'not much <em>over the street</em> to block the sun.'],
-    ['but there is a buidling next door, it might block the sun.', 'Look out for <em>shadows from over the road</em>.']
+Rational.BUILDING_TO_THE_WEST_SENTENCES = [
+    ['there\'s nothing much blocking the sun <em>to the west</em>.', 'no buildings <em>west of here.</em> to get in the way', 'not much <em>over the street</em> to block the sun.'],
+    ['but there is a building next door, it might block the sun.', 'Look out for <em>shadows from over the road</em>.']
 ]
 
 Rational.TERRACE_SENTENCES = [
