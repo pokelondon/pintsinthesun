@@ -3,10 +3,10 @@ import config from '../config';
 import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 
 const MARKER_IMG = {
-    url: "/img/icons/map-pin.svg",
+    url: "/img/icons/map-pin.png",
     scaledSize: new google.maps.Size(28.8, 40),
     origin: new google.maps.Point(0,0),
-    anchor: new google.maps.Point(14.4, 50)
+    anchor: new google.maps.Point(14.4, 40)
 };
 
 export default class StaticMap extends React.Component {
