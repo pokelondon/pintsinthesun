@@ -1,5 +1,6 @@
 import { getLocation } from '../services/location';
 import { floorLatLng } from '../services/location';
+import { reverseGeocode } from '../services/googlemaps';
 import { fetchWeather, filterWeather } from './weather';
 
 import config from '../config';
@@ -20,6 +21,9 @@ export const DECREMENT_CURRENT_PUB = 'decrement_current_pub';
 export const LAUNCH_LOCATION_MODAL = 'launch_location_modal';
 export const LAUNCH_INFO_MODAL = 'launch_info_modal';
 export const CLOSE_MODAL = 'close_modal';
+
+export const REQUEST_ADDRESS = 'request_address';
+export const RESPONSE_ADDRESS = 'response_address';
 
 import { hashHistory } from 'react-router'
 
@@ -55,20 +59,26 @@ export function requestPosition() {
     }
 }
 
-export function responsePosition(centre) {
+export function responsePosition(centre, isGPSPosition = false) {
     let isRealPosition = true;
     return function(dispatch) {
-        if(centre.error){
+
+        if(centre.error){ //user denied location access
             centre = {lat: 51.523661, lng: -0.077338}; //default to shoreditch when no location available 51.523661, -0.077338
             isRealPosition = false;
+            isGPSPosition = false;
         }
+
         dispatch(fetchPubs(centre));
         dispatch(fetchWeather(centre));
+
         dispatch({
             type: RESPONSE_POSITION,
             centre: centre,
             receivedAt: new Date(),
-            isRealPosition
+            isRealPosition,
+            isGPSPosition,
+            address: null
         });
     }
 }
@@ -106,7 +116,7 @@ export function fetchPosition() {
         dispatch(requestPosition());
 
         return getLocation().then(result => {
-            dispatch(responsePosition(result));
+            dispatch(responsePosition(result, true));
         });
     }
 }
@@ -121,6 +131,11 @@ export function getSuggestions(date, centre) {
         data => data.json()).catch( handleError );
 }
 
+export function requestAddress() {
+    return {
+        type: REQUEST_ADDRESS
+    }
+}
 export function requestPubs() {
     return {
         type: REQUEST_PUBS,
@@ -140,6 +155,19 @@ export function responsePubs(data) {
         items: data.items,
         receivedAt: new Date(),
         isLoading: false
+    }
+}
+
+export function getAddress(centre) {
+    return function (dispatch){
+        dispatch(requestAddress());
+        reverseGeocode(centre, (result) => {
+            if(result.status === 'OK'){
+                dispatch(responseAddress(result.address));
+            } else {
+                dispatch(responseAddress(null));
+            }
+        });
     }
 }
 
@@ -167,6 +195,13 @@ export function fetchPubDetail(id) {
                 dispatch(responsePubDetail(data));
             }).catch( handleError );
     };
+}
+
+export function responseAddress(address) {
+    return {
+        type: RESPONSE_ADDRESS,
+        address: address
+    }
 }
 
 export function responsePubDetail(data) {

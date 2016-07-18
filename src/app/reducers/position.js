@@ -13,7 +13,9 @@ import {
     DECREMENT_CURRENT_PUB,
     LAUNCH_LOCATION_MODAL,
     LAUNCH_INFO_MODAL,
-    CLOSE_MODAL
+    CLOSE_MODAL,
+    RESPONSE_ADDRESS,
+    REQUEST_ADDRESS
 } from '../actions/position';
 
 const date = new Date();
@@ -42,11 +44,22 @@ const INITIAL_STATE = {
     currentPub: 0,
     filteredIndex: 0,
     modal: null,
-    timeRange: 'now'
+    timeRange: 'now',
+    locationHasBeenRequested: false
 }
 
 export default function position(state=INITIAL_STATE, action) {
     switch (action.type) {
+        case REQUEST_ADDRESS:
+            return {
+                ...state,
+                address: ''
+            }
+        case RESPONSE_ADDRESS:
+            return {
+                ...state,
+                address: action.address
+            }
         case LAUNCH_LOCATION_MODAL:
             return {
                 ...state,
@@ -82,11 +95,14 @@ export default function position(state=INITIAL_STATE, action) {
                 filteredPubs: filterForAngle(sun, state.items),
                 filteredIndex: 0,
                 isRealPosition: action.isRealPosition,
+                isGPSPosition: action.isGPSPosition,
+                address: action.address,
                 sun
             }
         case REQUEST_POSITION:
             return {
                 ...state,
+                locationHasBeenRequested: true,
                 isLocating: true
             }
         case REQUEST_PUBS:

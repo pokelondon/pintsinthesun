@@ -8,6 +8,7 @@
 
 .Render {
     display: block;
+    position: relative;
     width: 225px;
     height: 225px;
     margin: 20px auto 20px;
@@ -21,13 +22,24 @@
         @extend .border-defaults;
         border-style: solid;
         border-radius: 100%;
-        transform-origin: 0 0;
-        transform: scale(0.75);
         width: 100%;
         box-sizing: border-box;
+    }
 
-        @include media-breakpoint-up(sm) {
-            transform: scale(1);
+    &-spinner {
+        display: none;
+    }
+
+    &--loading {
+        .Render-canvas {
+            display: none;
+        }
+        .Render-spinner {
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -24px;
         }
     }
 }
@@ -54,22 +66,11 @@
     animation-fill-mode: forwards;
 }
 
-.Button--pubNav--prev {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-}
-.Button--pubNav--next {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
 .SliderContainer {
     width: 100%;
-    padding: 30px 30px 40px;
+    max-width: 100%;
+    overflow: hidden;
+    padding: 20px 30px 40px;
     box-sizing: border-box;
 }
 
@@ -90,6 +91,8 @@
     .rc-slider-dot {
         display: none;
     }
+
+
 }
 
 .PubDetail-applyButtonContainer {
@@ -107,10 +110,79 @@
     }
 }
 
-
 .WeatherIcon {
     height: 1.5em;
     display: inline-block;
     vertical-align: middle;
     float: right;
+}
+
+.Suggestion {
+    overflow: hidden;
+    .inner {
+        display: block;
+        padding: 0.6em 0;
+        font-size: $font-size-lrg-2;
+        @include media-breakpoint-up(md) {
+            font-size: $font-size-lrg-3;
+        }
+    }
+}
+
+.MapTabs {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0;
+}
+
+.PubTabContent {
+    padding: $padding-horiz-sm;
+    @include media-breakpoint-up(md) {
+        padding: $padding-vert-md;
+    }
+}
+
+.Rational {
+    position: relative;
+    padding-bottom: 4em;
+    p {
+        font-size: $font-size-default;
+        @include media-breakpoint-up(md) {
+            font-size: $font-size-lrg-4;
+        }
+    }
+}
+
+.CitymapperLink {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    @extend .border-defaults;
+    border-top-style: solid;
+    width: 100%;
+}
+
+.PubPagination {
+
+    &-indicator{
+        background: $yellow;
+        padding: 0.6em 0 0 0;
+        @include media-breakpoint-up(sm) {
+            flex: 3;
+        }
+    }
+    &-incrementor {
+        white-space: nowrap;
+    }
+}
+
+.DetailsHeading {
+    margin: 1.5em 0 0.5em 0;
+}
+
+.WeatherIndicator {
+    &-label {
+        float: left;
+        width: 60%;
+    }
 }

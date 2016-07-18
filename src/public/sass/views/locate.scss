@@ -5,5 +5,9 @@
 
     .Input--search {
         width: 50%;
+
+        //fix rounded corners on ios
+        border-radius: 0;
+        -webkit-appearance: none;
     }
 }

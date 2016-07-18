@@ -8,6 +8,7 @@ class Start extends React.Component {
         this.props = props;
     }
 
+
     render() {
         return (
             <div className="Screen Screen--start">
@@ -21,32 +22,32 @@ class Start extends React.Component {
                 </div>
 
                 <div className="Screen-main">
-                    <div className="Box Box-row max-width no-padding">
-                        <div className="Box-item no-padding">
+                    <div className="Box Box-row max-width">
+                        <div className="Box-item Box-item--noPadding">
                             <a className="Button Button--primary Button--primary--search" onClick={this.props.setNow}>
-                                Find the nearest sunny pub
+                                Find the nearest sunny&nbsp;pub
                             </a>
                         </div>
                     </div>
-                    <div className="Box Box-row max-width no-padding">
-                        <div className="Box-item Para--large Prompt text-centre">
+                    <div className="Box Box-row max-width">
+                        <div className="Box-item Prompt text-centre">
                             <span className="Circle-or caps--small">OR</span>
-                            <div className="inner">Find nearby pubs that will be sunny in the&#8230;</div>
+                            <div className="Para--large inner">Find nearby pubs that will be sunny&nbsp;in&nbsp;the&#8230;</div>
                         </div>
                     </div>
 
                     <div className="Box Box-row max-width">
-                        <div className="Box-item no-padding">
+                        <div className="Box-item Box-item--noPadding">
                             <a className="Button--morning" onClick={this.props.setMorning}>
                                 <span>Morning</span>
                             </a>
                         </div>
-                        <div className="Box-item no-padding">
+                        <div className="Box-item Box-item--noPadding">
                             <a className="Button--afternoon" onClick={this.props.setAfternoon}>
                                 <span>Afternoon</span>
                             </a>
                         </div>
-                        <div className="Box-item no-padding">
+                        <div className="Box-item Box-item--noPadding">
                             <a className="Button--evening" onClick={this.props.setEvening}>
                                 <span>Evening</span>
                             </a>

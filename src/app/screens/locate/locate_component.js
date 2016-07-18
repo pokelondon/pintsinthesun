@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { geocode } from '../../services/googlemaps.js';
-
+import { geocode, reverseGeocode } from '../../services/googlemaps.js';
 import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 
 import GA from 'react-ga';
@@ -19,7 +18,6 @@ class Locate extends React.Component {
             searchTerm: ''
         };
 
-        GA.modalview('/locate');
 
     }
 
@@ -36,7 +34,7 @@ class Locate extends React.Component {
         e.preventDefault();
         this.setState({errorMsg: null});
 
-        geocode(this.state.searchTerm, (result) => {
+        geocode(this.state.searchTerm, this.map.props.map.getBounds(), (result) => {
             if(result.status === 'OK'){
                 this.props.onCenterChanged(result.centre);
             } else
@@ -72,72 +70,71 @@ class Locate extends React.Component {
 
         let { lat, lng } = this.props.centre;
         return (
-            <div className="Locate">
+            <div className="Screen Locate">
+                <header className="Screen-header">
+                    <div className="max-width">
+                        <p className="Para--large">Search for your location, or drag the map</p>
+                        <form className="Box Box-row" onSubmit={this.doSearch.bind(this)}>
+                                <button type="button" onClick={this.props.fetchPosition} className="Button--secondary Button--locateMe flex-none"></button>
+                                <input className="Input--search Box-item flex-2" onChange={this.onSearchChange.bind(this)} type="search" value={this.state.searchTerm} placeholder="e.g E1 6LG" />
+                                <div className="Box-item Box-item--noPadding flex-1">
+                                    <button type="submit" className="Button--secondary" onClick={this.doSearch.bind(this)}>Search</button>
+                                </div>
+                        </form>
+                        {errorMsg}
+                    </div>
+                </header>
 
-                <p className="Para--large">Search for your location, or drag the map</p>
+                <div className="Screen-main">
+                    <div className="max-width">
+                        <div className="Box Box-row">
+                            <div className="Box-item Box-item--noPadding">
 
-                <form className="Box Box-row no-padding" onSubmit={this.doSearch.bind(this)}>
-                        <input className="Input--search Box-item" onChange={this.onSearchChange.bind(this)} type="search" value={this.state.searchTerm} placeholder="Postcode / Place" />
-                        <button type="submit" className="Button--secondary Box-item" onClick={this.doSearch.bind(this)}>Search</button>
-                </form>
-
-                {errorMsg}
-
-                <div className="Box Box-row no-padding">
-                    <div className="Box-item no-padding">
-
-                        <div className="Map">
-                            <GoogleMapLoader
-                                containerElement={(
-                                    <div
-                                        style={{
-                                            height: "100%",
-                                        }}
+                                <div className="Map">
+                                    <GoogleMapLoader
+                                        containerElement={(
+                                            <div
+                                                style={{
+                                                    height: "100%",
+                                                }}
+                                            />
+                                        )}
+                                        googleMapElement={
+                                            <GoogleMap
+                                                ref={(map) => this.map = map}
+                                                defaultZoom={15}
+                                                defaultCenter={this.props.centre}
+                                                onDragend={this.onDragEnd.bind(this)}
+                                                center={this.props.centre}
+                                                options={{
+                                                    mapTypeControl: false,
+                                                    streetViewControl: false,
+                                                    zoomControl: true,
+                                                    styles: config.MAP_CONFIG
+                                                }}
+                                                >
+                                            </GoogleMap>
+                                        }
                                     />
-                                )}
-                                googleMapElement={
-                                    <GoogleMap
-                                        ref={(map) => this.map = map}
-                                        defaultZoom={15}
-                                        defaultCenter={this.props.centre}
-                                        onDragend={this.onDragEnd.bind(this)}
-                                        center={this.props.centre}
-                                        options={{
-                                            mapTypeControl: false,
-                                            streetViewControl: false,
-                                            zoomControl: true,
-                                            styles: config.MAP_CONFIG
-                                        }}
-                                        >
-                                    </GoogleMap>
-                                }
-                            />
-                            <div className="LocationMarker"></div>
+                                    <div className="LocationMarker"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="Box Box-row">
+                            <div className="Box-item Box-item--noPadding">
+                                <Link
+                                   onClick={this.props.onClose}
+                                   to='/pubs'
+                                   className="Button Button--primary"
+                                   >
+                                   {btnCopy}
+                               </Link>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div className="Box Box-row no-padding">
-                    <div className="Box-item no-padding">
-                        <Link
-                           onClick={this.props.onClose}
-                           to='/pubs'
-                           className="Button Button--primary"
-                           >
-                           {btnCopy}
-                       </Link>
-                    </div>
-                </div>
 
-                <div className="Box Box-row no-padding">
-                    <div className="Box-item no-padding">
-                        <button
-                            className="Button--secondary"
-                            onClick={this.props.fetchPosition}>
-                            {(this.props.isLocating) ? 'Locating' : 'Locate Me'}
-                        </button>
-                    </div>
-                </div>
 
             </div>
         )

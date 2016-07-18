@@ -16,7 +16,7 @@ class Base extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetchPosition();
+        //this.props.fetchPosition();
     }
 
     render() {
@@ -24,7 +24,7 @@ class Base extends React.Component {
         if(this.props.modal){
             headerButtons = <button key="close" className="CloseLink rollover-scale" onClick={this.props.closeModal}></button>
         } else {
-            headerButtons = <button key="search" className="SearchLink rollover-scale" onClick={this.props.launchLocationModal}></button>
+            //headerButtons = <button key="search" className="SearchLink rollover-scale" onClick={this.props.launchLocationModal}></button>
         }
 
         return (

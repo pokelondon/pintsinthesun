@@ -3,7 +3,7 @@
     padding: $padding $padding 0;
 
     @extend .border-defaults;
-    border-style: hidden;
+    border-style: none;
     border-bottom-style: solid;
 
     p + .Box {
@@ -13,10 +13,9 @@
 .Screen-main {
     padding: 0 $padding;
     .Box {
-        background: $mintLight;
+        //background: $mintLight;
         &:first-child {
             border-top-width: 0;
-            padding-top: 10px;
         }
     }
 }
@@ -24,43 +23,73 @@
 
 .Box {
     @extend .border-defaults;
+    background: $mintLight;
     border-style: solid;
 
     & + & {
-        border-top-style: hidden;
+        border-top-style: none;
     }
     p {
-        padding: 10px;
-        padding-bottom: 0;
-        padding-top: 0;
+        padding-top: 0.6em;
 
-        &:first-child {
-            padding-top: 10px;
-        }
         &:last-child {
-            padding-bottom: 10px;
+            padding-bottom: 0.6em;
         }
+
     }
 }
 
 .Box-item {
-    padding: 10px;
+    padding: $padding-vert-sm $padding-horiz-sm;
+    flex: 1;
     @extend .border-defaults;
-    border-style: hidden;
+    border-style: none;
     border-left-style: solid;
     box-sizing: border-box;
+    font-size: $font-size-4;
 
     &:first-child {
-        border-left-style: hidden;
-        border-top-style: hidden;
+        border-left-style: none;
+        border-top-style: none;
     }
 
-    &--right {
-        border-style: hidden;
-        border-style: solid;
-        border-right-style: solid;
+    &--responsiveBorders {
+        box-sizing: border-box;
+        border-left-style: none;
+        border-top-style: solid;
+
+        &:first-child {
+            border-top-style: none;
+        }
+
+        @include media-breakpoint-up(md) {
+            border-left-style: solid;
+            border-top-style: none;
+            &:first-child {
+                border-left-style: none;
+                border-top-style: none;
+            }
+        }
+    }
+
+    &--halfCol {
+        flex: 1 1 100%;
+
+        @include media-breakpoint-up(md) {
+            flex: 1;
+        }
+    }
+
+    @include media-breakpoint-up(md) {
+        font-size: $font-size-1;
+        padding: $padding-vert-md $padding-horiz-md;
+    }
+
+    &--noPadding {
+        padding: 0;
     }
 }
+
 
 .Box-row {
 
@@ -69,42 +98,6 @@
 
     &--wrap{
         flex-wrap: wrap;
-    }
-
-
-    .Box-item {
-
-        flex: 1;
-
-        &--responsiveBorders {
-
-            box-sizing: border-box;
-            border-left-style: hidden;
-            border-top-style: solid;
-
-            &:first-child {
-                border-top-style: none;
-            }
-
-            @include media-breakpoint-up(md) {
-                border-left-style: solid;
-                border-top-style: hidden;
-                &:first-child {
-                    border-left-style: hidden;
-                    border-top-style: hidden;
-                }
-            }
-        }
-
-        &--halfCol {
-            flex: 1 1 100%;
-
-            @include media-breakpoint-up(md) {
-                flex: 1;
-            }
-        }
-
-
     }
 
     & + & {

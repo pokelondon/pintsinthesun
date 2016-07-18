@@ -1,10 +1,13 @@
 import React from 'react';
+import GA from 'react-ga';
 
 export default class Info extends React.Component{
 
     constructor(props) {
         super(props);
         this.props = props;
+
+        GA.modalview('/info');
     }
 
     render() {

@@ -24,6 +24,8 @@ $font-size-6: 0.563rem;
 //desktop
 $font-size-lrg-1: 1.625rem; //26pt
 $font-size-lrg-2: 1.25rem;
+$font-size-lrg-3: 2.1875rem;
+$font-size-lrg-4: 1.875rem;
 
 
 $font-family-heading: 'LeagueSpartan', sans-serif;
@@ -36,9 +38,6 @@ $font-size-root: 16px;
 
 html {
     font-size: $font-size-root;
-    @include media-breakpoint-up(md){
-        //font-size: 18px;
-    }
 }
 body {
     line-height: $line-height;
@@ -92,12 +91,6 @@ input {
 
 /****/
 
-
-
-p {
-    font-size: 1rem;
-}
-
 p a {
     text-decoration: underline;
 }
@@ -115,16 +108,23 @@ h1,
     font-family: $font-family-heading;
     text-transform: uppercase;
     font-size: $font-size-1;
-    line-height: 1.958rem;
+}
+
+.Heading--2 {
+    font-family: $font-family-heading;
+    font-size: $font-size-2;
+
+    @include media-breakpoint-up(md) {
+        font-size: $font-size-lrg-2;
+    }
 }
 
 .Para--large {
     font-family: $font-family-heading;
-    font-size: $font-size-2;
-    line-height: 1.75rem;
+    font-size: $font-size-default;
 
     @include media-breakpoint-up(md) {
-        font-size: $font-size-lrg-2;
+        font-size: $font-size-lrg-4;
     }
 }
 

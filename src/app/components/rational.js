@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
+import CitymapperLink from './citymapper';
 
 class Rational extends React.Component {
 
@@ -50,9 +51,12 @@ class Rational extends React.Component {
         let rational = this.state.rational.join(' ');
         let weatherStatement = this.getWeatherStatement();
         return (
-            <div className="Box Box-item Box-item--halfCol Box-item--responsiveBorders Para--large">
-                <p dangerouslySetInnerHTML={{__html: rational}}></p>
-                <p dangerouslySetInnerHTML={{__html: weatherStatement}}></p>
+            <div className="Rational Box Box-item Box-item--noPadding Box-item--halfCol Box-item--responsiveBorders">
+                <div className="box-child-margin">
+                    <p className="Para--large" dangerouslySetInnerHTML={{__html: rational}}></p>
+                    <p className="Para--large" dangerouslySetInnerHTML={{__html: weatherStatement}}></p>
+                </div>
+                <CitymapperLink />
             </div>
         )
     }

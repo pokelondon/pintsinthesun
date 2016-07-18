@@ -43,6 +43,7 @@ $mintLight: #f4f6eb;
 $yellowLight: #FFD05A;
 $yellowLightFocus: #fde4a6;
 $yellowLightDark: darken($yellowLight, 10);
+$greyLight: #e0e1da;
 
 $green: #7bc8a4;
 $yellow: #f3bc26;
@@ -52,6 +53,12 @@ $orange: #f16745;
 $blue: #4cc3d9;
 
 $padding: 20px;
+
+//default box padding
+$padding-vert-sm: 5px;
+$padding-vert-md: 8px;
+$padding-horiz-sm: 10px;
+$padding-horiz-md: 27px;
 
 $borderWidth: 2px;
 $borderWidthLarge: 3px;

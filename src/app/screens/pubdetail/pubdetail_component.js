@@ -7,7 +7,9 @@ import ThreeD from '../../components/threed';
 import WeatherIcon from '../../components/weathericon';
 import Suggestion from '../../components/suggestion';
 import Rational from '../../components/rational';
-
+import StaticMap from '../../components/static-map';
+import LocationStatus from '../../components/location-status';
+import GA from 'react-ga';
 
 class PubDetail extends React.Component {
     constructor(props) {
@@ -18,7 +20,15 @@ class PubDetail extends React.Component {
     }
 
     componentWillMount() {
-        this.setState({localDate: new Date(this.props.date.getTime())});
+
+        if(!this.props.locationHasBeenRequested) {
+            this.props.fetchPosition();
+        }
+
+        this.setState({
+            localDate: new Date(this.props.date.getTime()),
+            visibleTab: 'sun'
+        });
     }
 
     onSliderChange(value) {
@@ -32,6 +42,11 @@ class PubDetail extends React.Component {
         this.isTimeApplyBtnVisible = false;
         this.props.updateTime(this.state.localDate);
         this.setState({localDate: new Date(this.state.localDate.getTime())});
+        GA.event({
+            category: 'Filter',
+            action: 'Set Time Range',
+            label: 'Slider'
+        });
     }
 
     sliderTipFormatter(value) {
@@ -68,6 +83,15 @@ class PubDetail extends React.Component {
         return false;
     }
 
+    showTab(tab){
+        this.setState({visibleTab: tab});
+        GA.event({
+            category: 'UI',
+            action: 'Toggle pub tab',
+            label: tab
+        });
+    }
+
     render() {
         if(this.props.isFetching) {
             return (
@@ -75,7 +99,7 @@ class PubDetail extends React.Component {
                     <div className="max-width">
                         <p className="Heading--1">Loading</p>
                         <div className="Box Box-row">
-                            <p>Finding you somewhere</p>
+                            <div className="Box-item"><p>Finding you somewhere</p></div>
                         </div>
                     </div>
                 </div>
@@ -86,7 +110,7 @@ class PubDetail extends React.Component {
                     <div className="max-width">
                         <p className="Heading--1">Locating</p>
                         <div className="Box Box-row">
-                            <p>Scrabbling around</p>
+                            <div className="Box-item"><p>Scrabbling around</p></div>
                         </div>
                     </div>
                 </div>
@@ -97,7 +121,7 @@ class PubDetail extends React.Component {
                     <div className="max-width">
                         <p className="Heading--1">No pubs found</p>
                         <div className="Box Box-row">
-                            <p>No sunny pubs found in this area. Maybe try <a onClick={this.launchLocationModal.bind(this)} href="#">looking somewhere else</a>, or a <Link to="/">different time of day</Link>?</p>
+                            <div className="Box-item"><p>No sunny pubs found in this area. Maybe try <Link to="/locate">looking somewhere else</Link>, or a <Link to="/">different time of day</Link>?</p></div>
                         </div>
                     </div>
                 </div>
@@ -115,95 +139,97 @@ class PubDetail extends React.Component {
 
                 <header className="Screen-header">
                     <div className="max-width">
-                        <Suggestion name={name} timeRange={this.props.timeRange} />
+                        <LocationStatus />
+                        <Suggestion renderTransitionDirection={this.props.renderTransitionDirection} name={name} timeRange={this.props.timeRange} />
+                    </div>
+                </header>
+
+                <div className="Screen-main">
+                    <div className="max-width">
+
+                        <div className="Box Box-row PubPagination">
+                            <div className="Box Box-item PubPagination-indicator">
+                                <div className="box-child-margin">Result {this.props.filteredIndex + 1} of {this.props.filteredPubs.length}</div>
+                            </div>
+                            <div className="Box Box-item Box-item--noPadding">
+                                <button className="Button--secondaryAlt Button--next PubPagination-incrementor" onClick={this.props.incrementCurrentPub}>Show me another</button>
+                            </div>
+                        </div>
+
+                        <h2 className="Heading--2 DetailsHeading">Details</h2>
+
                         <div className="Box Box-row">
                             <div className="Box-item">
                                 <span>{neighbourhood ? `${neighbourhood} &mdash; ` : ''}{distance.toFixed(1)}{distanceUnit} away</span>
-
-                                { (() => {
-                                    //City mapper link only includes start position if its real
-                                    let positionStr = ``;
-                                    if(this.props.isRealPosition){
-                                        positionStr = `${this.props.centre.lat},${this.props.centre.lng}`;
-                                    }
-                                    return (<a className="MapIcon" target="_blank" href={`https://citymapper.com/directions?startcoord=${positionStr}&endcoord=${lat},${lng}&endname=${name}&arriveby=${encodeURIComponent(this.state.localDate.toISOString())}`}><img src="/img/icons/map-icon.svg" width="20" height="20" alt="Map icon" title="Map link"/></a>);
-                                })()}
-
                             </div>
                         </div>
+
                         <div className="Box Box-row flex-wrap">
                             <div className="Box-item Box-item--halfCol--fixed">
                                 Best for sun: 13:32-17:23
                             </div>
-                            <div className="Box-item Box-item--halfCol--fixed">
-                                Weather {this.weatherTime()}: <WeatherIcon />
+                            <div className="WeatherIndicator Box-item Box-item--halfCol--fixed">
+                                <div className="WeatherIndicator-label">Weather {this.weatherTime()}:</div> <WeatherIcon />
                             </div>
                         </div>
-                    </div>
-                </header>
 
+                        <div className="Box Box-row flex-wrap">
+                            <div className="Box-item Box-item--noPadding Box-item--halfCol Box-item--responsiveBorders">
+                                <div className="MapTabs">
+                                    <button className={(this.state.visibleTab === 'sun') ? 'Button Button--tab Button--tab--active' : 'Button Button--tab'} onClick={this.showTab.bind(this, 'sun')}>Sun position</button>
+                                    <button className={(this.state.visibleTab === 'map') ? 'Button Button--tab Button--tab--active' : 'Button Button--tab'} onClick={this.showTab.bind(this, 'map')}>Map</button>
+                                </div>
 
-                <div className="Screen-main">
-                    <div className="max-width">
-                        <div className="Box Box-row flex-wrap no-padding">
-                            <div className="Box-item Box-item--halfCol Box-item--responsiveBorders">
-                                <div className="Three-container">
-                                    {(() => {
-                                        if(this.props.filteredPubs.length && this.props.filteredIndex !== 0){
-                                            return <button className="Button--pubNav Button--pubNav--prev" onClick={this.props.decrementCurrentPub}>&lt;</button>
+                                <div className="PubTabContent">
+
+                                    { ( () => {
+                                        if(this.state.visibleTab === 'sun'){
+                                            return (
+                                                <div>
+                                                    <ThreeD
+                                                        centre={{lat, lng}}
+                                                        date={this.state.localDate}
+                                                        renderTransitionDirection={this.props.renderTransitionDirection}
+                                                        incrementCurrentPub={this.props.incrementCurrentPub}
+                                                        decrementCurrentPub={this.props.decrementCurrentPub}
+                                                    />
+
+                                                    <div className="SliderContainer">
+                                                        <Slider
+                                                            min={7}
+                                                            max={21}
+                                                            step={1}
+                                                            included={false}
+                                                            defaultValue={this.state.localDate.getHours()}
+                                                            className='Slider'
+                                                            onChange={this.onSliderChange.bind(this)}
+                                                            tipFormatter={this.sliderTipFormatter.bind(this)}
+                                                            marks={ {7: '7:00', 14: '14:00', 21: '21:00'} }
+                                                        />
+                                                    </div>
+                                                    <div className="PubDetail-applyButtonContainer">
+                                                        <button disabled={this.isLocalTimeGlobalTime()} className={this.getTimeApplyButtonClassNames()} onClick={this.applyLocalTimeToGlobal.bind(this)}>Search for pubs at {this.state.localDate.getHours()}:00</button>
+                                                    </div>
+                                                </div>
+                                            );
                                         }
                                     })()}
-                                    <ThreeD
-                                        centre={{lat, lng}}
-                                        date={this.state.localDate}
-                                        renderTransitionDirection={this.props.renderTransitionDirection}
-                                        incrementCurrentPub={this.props.incrementCurrentPub}
-                                        decrementCurrentPub={this.props.decrementCurrentPub}
-                                    />
-                                    {(() => {
-                                        if(this.props.filteredPubs.length > 1 && this.props.filteredIndex !== this.props.filteredPubs.length -1){
-                                            return <button className="Button--pubNav Button--pubNav--next" onClick={this.props.incrementCurrentPub}>&gt;</button>
+
+                                    { ( () => {
+                                        if(this.state.visibleTab === 'map') {
+                                            return (
+                                                <StaticMap centre={{lat, lng}} />
+                                            )
                                         }
                                     })()}
+
                                 </div>
 
-                                <div className="SliderContainer">
-                                    <Slider
-                                        min={7}
-                                        max={21}
-                                        step={1}
-                                        included={false}
-                                        defaultValue={this.props.date.getHours()}
-                                        className='Slider'
-                                        onChange={this.onSliderChange.bind(this)}
-                                        tipFormatter={this.sliderTipFormatter.bind(this)}
-                                        marks={ {7: '7:00', 14: '14:00', 21: '21:00'} }
-                                    />
-                                </div>
-                                <div className="PubDetail-applyButtonContainer">
-                                    <button disabled={this.isLocalTimeGlobalTime()} className={this.getTimeApplyButtonClassNames()} onClick={this.applyLocalTimeToGlobal.bind(this)}>Search for pubs at {this.state.localDate.getHours()}:00</button>
-                                </div>
                             </div>
-                            <Rational pub={this.props.pub} />
+
+                            <Rational isRealPosition={this.props.isRealPosition} arrivalTime={this.state.localDate} centre={{lat, lng}} pub={this.props.pub} />
+
                         </div>
-
-                        { ( () => {
-                            let pubsLeft = this.props.filteredPubs.length - this.props.filteredIndex - 1;
-                            let btnCopy = `Show me another one (${pubsLeft} more)`;
-                            if(pubsLeft == 0){
-                                btnCopy = 'Show me the first one again!';
-                            }
-
-                            if(this.props.filteredPubs.length > 1){
-                                return (
-                                <div className="Box Box-row no-padding">
-                                    <div className="Box-item no-padding">
-                                        <button className="Button--primary" onClick={this.props.incrementCurrentPub}>{btnCopy}</button>
-                                    </div>
-                                </div>
-                                )
-                            }
-                        })() }
 
                     </div>
                 </div>

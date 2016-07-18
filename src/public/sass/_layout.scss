@@ -33,6 +33,45 @@ body {
     flex-wrap: wrap;
 }
 
+//overrides for flex
+.flex-none {
+    flex: none !important;
+}
+
+.flex-1 {
+    flex: 1 !important;
+}
+
+.flex-2 {
+    flex: 2 !important;
+}
+
+.flex-3 {
+    flex: 3 !important;
+}
+
+.negative-margin {
+    $totalHorizPadding: $padding-horiz-sm * 2;
+    width: calc(100% + #{$totalHorizPadding});
+    margin: #{-$padding-vert-sm} #{-$padding-horiz-sm} #{-$padding-vert-sm} #{-$padding-horiz-sm};
+
+    @include media-breakpoint-up(md) {
+        $totalHorizPadding: $padding-horiz-md * 2;
+        width: calc(100% + #{$totalHorizPadding});
+        margin: #{-$padding-vert-md} #{-$padding-horiz-md} #{-$padding-vert-md} #{-$padding-horiz-md};
+    }
+}
+
+//add margin to child element of box, instead of box having padding.
+//This is because flexbox doesnt play nicely with some children having padding,
+//and others not
+.box-child-margin {
+    margin: $padding-vert-sm $padding-horiz-sm $padding-vert-sm $padding-horiz-sm;
+    @include media-breakpoint-up(md) {
+        margin: $padding-vert-md $padding-horiz-md $padding-vert-md $padding-horiz-md;
+    }
+}
+
 .AppContainer {
     background: orange;
     height: 200px;

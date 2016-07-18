@@ -2,9 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import THREE from 'three';
 import SunCalc from '../lib/suncalc';
-import d3 from 'd3';
+//import d3 from 'd3';
+import {geoMercator} from 'd3-geo';
 import TWEEN from 'tween.js';
-import Hammer from 'hammerjs';
+//import Hammer from 'hammerjs';
 
 import { fetchBuildings } from '../services/overpass';
 import classnames from 'classnames';
@@ -81,7 +82,7 @@ class ThreeD extends React.Component {
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
         this.camera.rotation.z = Math.PI;
 
-        this.renderer.setSize(this.WIDTH, this.HEIGHT);
+        this.renderer.setSize(this.WIDTH, this.HEIGHT, false);
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.soft = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -94,25 +95,14 @@ class ThreeD extends React.Component {
             .updateBuildings()
             .addTarget()
             .animate();
-
-        this.element = ReactDOM.findDOMNode(this);
-
-        this.hammerTime = new Hammer(this.element);
-        this.hammerTime.on('swipe', (e) => {
-            if(e.direction === 2){
-                this.props.incrementCurrentPub();
-            }
-            if(e.direction === 4){
-                this.props.decrementCurrentPub();
-            }
-        });
-
     }
 
     componentDidUpdate(prevProps) {
         if(this.props.centre.lat !== prevProps.centre.lat) {
-            //this.updateBuildings();
-            this.animateCanvasOut();
+            this.updateBuildings();
+
+            //no animations on render change right now, but leaving this in in case we want them
+            //this.animateCanvasOut();
         }
         this.updateSunPosition();
     }
@@ -132,17 +122,18 @@ class ThreeD extends React.Component {
             'Render--transition-left-in': (this.state.renderTransitionDirection === 'left-in'),
             'Render--transition-right-out': (this.state.renderTransitionDirection === 'right-out'),
             'Render--transition-right-in': (this.state.renderTransitionDirection === 'right-in'),
+            'Render--loading': (this.state.isTransitioning)
         });
         return (
-
-            <div
-                className={renderClasses}
-                ref='canvas'
-            />
+            <div className={renderClasses}>
+                <div className="Render-canvas" ref='canvas'></div>
+                <img className="Render-spinner" src="/img/loading.gif" />
+            </div>
         )
     }
 
     renderBuildings(buildings) {
+        this.setState({isTransitioning: false});
         buildings.forEach(building => this.renderBuilding(building));
     }
 
@@ -160,11 +151,12 @@ class ThreeD extends React.Component {
     }
 
     updateBuildings() {
+        this.setState({isTransitioning: true});
         this.clearBuildings();
         let { lat, lng } = this.props.centre;
 
         this.cancelablePromise = fetchBuildings(lat, lng);
-        this.cancelablePromise.promise.then(buildings => this.renderBuildings(buildings))
+        this.cancelablePromise.promise.then(buildings => this.renderBuildings(buildings), (e) => {console.log('Error', e);})
         return this;
     }
 
@@ -310,7 +302,12 @@ class ThreeD extends React.Component {
     getProjection() {
         const centre = [this.props.centre.lng, this.props.centre.lat];
         const TILESIZE = 128;
-        return d3.geo.mercator()
+        // return d3.geo.mercator()
+        //     .center(centre)
+        //     .translate([0, 0])
+        //     .scale(TILESIZE << ZOOM);
+
+        return geoMercator()
             .center(centre)
             .translate([0, 0])
             .scale(TILESIZE << ZOOM);
