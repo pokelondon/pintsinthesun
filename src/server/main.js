@@ -13,12 +13,36 @@ var assert = require('assert');
 var bodyParser = require('body-parser');
 var apicache = require('apicache').options({ debug: true });
 var apimiddleware = apicache.middleware;
+
+var passport = require('passport');
+var Strategy = require('passport-local').Strategy;
+var mongoose = require('mongoose');
+
+var PubModel = require('./models/pub');
+
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
 
 var SunCalc = require('../app/lib/suncalc')
 
 var config = require('./config');
+
+
+//config passport
+// passport.use(new LocalStrategy(
+//   function(username, password, done) {
+//     User.findOne({ username: username }, function(err, user) {
+//       if (err) { return done(err); }
+//       if (!user) {
+//         return done(null, false, { message: 'Incorrect username.' });
+//       }
+//       if (!user.validPassword(password)) {
+//         return done(null, false, { message: 'Incorrect password.' });
+//       }
+//       return done(null, user);
+//     });
+//   }
+// ));
 
 
 // Configs
@@ -57,10 +81,18 @@ app.use(express.static('../public'));
 
 var pubs;
 
-MongoClient.connect('mongodb://localhost/pintsinthesun2_' + ENV, function(err, db) {
-    assert.equal(null, err);
-    pubs = db.collection('pubs');
-    console.log("Connected to Mongodb");
+// MongoClient.connect('mongodb://localhost/pintsinthesun2_' + ENV, function(err, db) {
+//     assert.equal(null, err);
+//     pubs = db.collection('pubs');
+//     console.log("Connected to Mongodb");
+// });
+//
+mongoose.connect('mongodb://localhost/pintsinthesun2_' + ENV);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  // we're connected!
+  console.log("Connected to Mongodb through mongoose");
 });
 
 // State
@@ -90,7 +122,8 @@ app.get('/near/:lat/:lng/:date?', function(req, res) {
         query.outdoor_angle = { $gt: angleRange[0], $lt: angleRange[1] };
     }
 
-    pubs.aggregate([
+    //pubs.aggregate([
+    PubModel.collection.aggregate([
         {
             $geoNear: {
                 near: { type: 'Point', coordinates: [ lng, lat ] },
@@ -123,7 +156,7 @@ app.get('/near/:lat/:lng/:date?', function(req, res) {
 app.post('/pub/exists', function(req, res) {
 
     var ids = req.body;
-    var cursor = pubs.find({"foursquare.id": { $in: ids} } );
+    var cursor = PubModel.collection.find({"foursquare.id": { $in: ids} } );
 
     var matching = [];
     cursor.each(function(err, doc){
@@ -136,13 +169,18 @@ app.post('/pub/exists', function(req, res) {
     });
 });
 
+// app.get('/pub/:id', function(req, res) {
+//     pubs.findOne({"foursquare.id": req.params.id}, function(err, pub) {
+//         assert.equal(null, err);
+//         res.json({pub: pub});
+//     })
+// });
 app.get('/pub/:id', function(req, res) {
-    pubs.findOne({"foursquare.id": req.params.id}, function(err, pub) {
+    PubModel.findOne({"foursquare.id": req.params.id}, function(err, pub) {
         assert.equal(null, err);
         res.json({pub: pub});
     })
 });
-
 
 
 app.post('/pub/:id', function(req, res) {
@@ -172,7 +210,8 @@ app.post('/pub/:id', function(req, res) {
             //res.json(pub);
             return pub
         }).then(function(pub) {
-            pubs.update({
+
+            PubModel.collection.update({
                 "foursquare.id": req.params.id},
                 pub,
                 {upsert: true},
