@@ -11,14 +11,17 @@ var MongoClient = require('mongodb').MongoClient;
 var http = require('http');
 var assert = require('assert');
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var expressSession = require('express-session');
 var apicache = require('apicache').options({ debug: true });
 var apimiddleware = apicache.middleware;
 
 var passport = require('passport');
-var Strategy = require('passport-local').Strategy;
+var LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
 
 var PubModel = require('./models/pub');
+var UserModel = require('./models/user');
 
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
@@ -27,22 +30,6 @@ var SunCalc = require('../app/lib/suncalc')
 
 var config = require('./config');
 
-
-//config passport
-// passport.use(new LocalStrategy(
-//   function(username, password, done) {
-//     User.findOne({ username: username }, function(err, user) {
-//       if (err) { return done(err); }
-//       if (!user) {
-//         return done(null, false, { message: 'Incorrect username.' });
-//       }
-//       if (!user.validPassword(password)) {
-//         return done(null, false, { message: 'Incorrect password.' });
-//       }
-//       return done(null, user);
-//     });
-//   }
-// ));
 
 
 // Configs
@@ -73,26 +60,62 @@ var allowCrossDomain = function(req, res, next) {
 
     next();
 }
+
 app.use(allowCrossDomain);
 app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(expressSession({secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true, secure : false}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static('../build'));
 app.use(express.static('../public'));
 
 
+//config passport
+passport.use(new LocalStrategy(
+    function(username, password, done) {
+        UserModel.findOne({ username: username }, function (err, user) {
+            if (err) { return done(err); }
+            if (!user) {
+                return done(null, false, { message: 'Incorrect username.' });
+            }
+            if (!user.validPassword(password)) {
+                return done(null, false, { message: 'Incorrect password.' });
+            }
+            return done(null, user);
+        });
+    }
+));
+
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+    UserModel.findById(id, function(err, user) {
+        done(err, user);
+    });
+});
+
+//check authentication middleware on authenticated API calls
+var checkAuthentication = function(req, res, next) {
+    if(!req.isAuthenticated()){
+        res.json(401, {status: 'bad_auth'});
+        return;
+    } else {
+        next();
+    }
+}
+
+
+
 var pubs;
 
-// MongoClient.connect('mongodb://localhost/pintsinthesun2_' + ENV, function(err, db) {
-//     assert.equal(null, err);
-//     pubs = db.collection('pubs');
-//     console.log("Connected to Mongodb");
-// });
-//
 mongoose.connect('mongodb://localhost/pintsinthesun2_' + ENV);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-  // we're connected!
-  console.log("Connected to Mongodb through mongoose");
+    console.log("Connected to Mongodb through mongoose");
 });
 
 // State
@@ -108,6 +131,13 @@ function getAngleRange(date, lat, lng) {
 
 // Views + endpoints
 // ================================================================
+app.post('/auth',
+    passport.authenticate('local'),
+    function(req, res) {
+        res.json({status: 'auth_ok'});
+    }
+);
+
 app.get('/near/:lat/:lng/:date?', function(req, res) {
     var date, angleRange;
     var lat = Number(req.params.lat);
@@ -122,7 +152,6 @@ app.get('/near/:lat/:lng/:date?', function(req, res) {
         query.outdoor_angle = { $gt: angleRange[0], $lt: angleRange[1] };
     }
 
-    //pubs.aggregate([
     PubModel.collection.aggregate([
         {
             $geoNear: {
@@ -152,78 +181,85 @@ app.get('/near/:lat/:lng/:date?', function(req, res) {
 /**
 * Accept an array of foursquare IDs.
 * Return location objects that are in the database that match the incoming IDs
+* Requires auth
 */
-app.post('/pub/exists', function(req, res) {
+app.post('/pub/exists',
+    checkAuthentication,
+    function(req, res) {
+        var ids = req.body;
+        var cursor = PubModel.collection.find({"foursquare.id": { $in: ids} } );
 
-    var ids = req.body;
-    var cursor = PubModel.collection.find({"foursquare.id": { $in: ids} } );
-
-    var matching = [];
-    cursor.each(function(err, doc){
-        assert.equal(null, err);
-        if(doc != null){
-            matching.push(doc);
-        } else {
-            res.json(matching);
-        }
-    });
-});
-
-// app.get('/pub/:id', function(req, res) {
-//     pubs.findOne({"foursquare.id": req.params.id}, function(err, pub) {
-//         assert.equal(null, err);
-//         res.json({pub: pub});
-//     })
-// });
-app.get('/pub/:id', function(req, res) {
-    PubModel.findOne({"foursquare.id": req.params.id}, function(err, pub) {
-        assert.equal(null, err);
-        res.json({pub: pub});
-    })
-});
-
-
-app.post('/pub/:id', function(req, res) {
-    var submittedData = req.body;
-    var foursquareID = req.params.id;
-    var pub = {}
-
-    for(var key in SUBMIT_PROPS) {
-        if (submittedData.hasOwnProperty(key)) {
-            pub[key] = SUBMIT_PROPS[key](submittedData[key]);
-        }
-    }
-
-    fetch(config.FOURSQUARE_VENUE_URL + foursquareID + config.FOURSQUARE_CREDS)
-        .then(function(response) {
-            return response.json();
-        }).then(function(data) {
-            pub.foursquare = {id: foursquareID};
-            pub.name = data.response.venue.name;
-            pub.location = {
-                type: 'Point',
-                coordinates: [
-                    data.response.venue.location.lng,
-                    data.response.venue.location.lat
-                ]
-            };
-            //res.json(pub);
-            return pub
-        }).then(function(pub) {
-
-            PubModel.collection.update({
-                "foursquare.id": req.params.id},
-                pub,
-                {upsert: true},
-                function(err, num, obj) {
-                    assert.equal(null, err);
-                    res.json({pub: pub, res: num});
-                }
-            );
-        }).catch(function(err) {
-            console.error(err);
+        var matching = [];
+        cursor.each(function(err, doc){
+            assert.equal(null, err);
+            if(doc != null){
+                matching.push(doc);
+            } else {
+                res.json(matching);
+            }
         });
-});
+    });
+
+
+/**
+ * Get details about a pub from foursquare ID
+ *
+ */
+app.get('/pub/:id',
+    function(req, res) {
+        PubModel.findOne({"foursquare.id": req.params.id}, function(err, pub) {
+            assert.equal(null, err);
+            res.json({pub: pub});
+        })
+    });
+
+
+/**
+ *  Save pub details. Requires auth.
+ *
+ */
+app.post('/pub/:id',
+    checkAuthentication,
+    function(req, res) {
+        var submittedData = req.body;
+        var foursquareID = req.params.id;
+        var pub = {}
+
+        for(var key in SUBMIT_PROPS) {
+            if (submittedData.hasOwnProperty(key)) {
+                pub[key] = SUBMIT_PROPS[key](submittedData[key]);
+            }
+        }
+
+        fetch(config.FOURSQUARE_VENUE_URL + foursquareID + config.FOURSQUARE_CREDS)
+            .then(function(response) {
+                return response.json();
+            }).then(function(data) {
+                pub.foursquare = {id: foursquareID};
+                pub.name = data.response.venue.name;
+                pub.location = {
+                    type: 'Point',
+                    coordinates: [
+                        data.response.venue.location.lng,
+                        data.response.venue.location.lat
+                    ]
+                };
+                return pub
+            }).then(function(pub) {
+
+                PubModel.collection.update({
+                    "foursquare.id": req.params.id},
+                    pub,
+                    {upsert: true},
+                    function(err, num, obj) {
+                        assert.equal(null, err);
+                        res.json({pub: pub, res: num});
+                    }
+                );
+            }).catch(function(err) {
+                console.error(err);
+            });
+    });
 
 app.get('/weather/:lat/:lng', apimiddleware('10 minutes'), function(req, res) {
     var lat = Number(req.params.lat);
@@ -245,7 +281,6 @@ app.get('/weather/:lat/:lng', apimiddleware('10 minutes'), function(req, res) {
                     icon: point.icon
                 };
             });
-            console.log(ret);
             res.json(ret);
         });
 });

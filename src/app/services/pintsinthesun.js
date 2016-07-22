@@ -5,9 +5,20 @@ import {addLocation as addLocationToLocal} from './local';
 // import 'isomorphic-fetch';
 // promise.polyfill();
 
-export function savePub(locationID, pubDetails) {
+export function login(username, password) {
+    const payload = {username: username, password: password};
 
-    console.log('pubDetails (which is state)', pubDetails);
+    return fetch(`${config.API}auth`, {
+        method: 'post',
+        body: JSON.stringify(payload),
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: 'same-origin'
+    });
+}
+
+export function savePub(locationID, pubDetails) {
 
     const payload = {
         outdoor_angle: pubDetails.outdoorAngle,
@@ -20,8 +31,6 @@ export function savePub(locationID, pubDetails) {
 
     };
 
-    console.log('payload', payload);
-
     const data = JSON.stringify(payload);
 
     return fetch(`${config.API}pub/${locationID}`, {
@@ -29,7 +38,8 @@ export function savePub(locationID, pubDetails) {
         headers: {
             "Content-Type": "application/json"
         },
-        body: data
+        body: data,
+        credentials: 'same-origin'
     });
 
 }
@@ -49,7 +59,8 @@ export function checkPubsExist(ids) {
         headers: {
             "Content-Type": "application/json"
         },
-        body: data
+        body: data,
+        credentials: 'same-origin'
     }).then(
         data => data.json()
     );

@@ -6,9 +6,14 @@ import AngleMarker from '../../components/admin/AngleMarker';
 import {existsInLocalStorage} from '../../services/local';
 import {savePub, checkPubsExist} from '../../services/pintsinthesun';
 import {getDistance} from '../../utils/Geo';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
+import * as userActions from '../../actions/user';
+import { hashHistory } from 'react-router';
 
 
-export default class AdminTool extends Component {
+
+class AdminTool extends Component {
 
     constructor(props) {
         super(props);
@@ -23,6 +28,7 @@ export default class AdminTool extends Component {
             currentIsSaved: false,
             centre: {lat: 51.523777, lng: -0.0781597}
         };
+
 
     }
 
@@ -150,6 +156,8 @@ export default class AdminTool extends Component {
             let IDsToTest = FSQLocations.map(function(o) { return o.id; });
             checkPubsExist(IDsToTest).then( (DBLocations) => {
                 this.updateLocationData(FSQLocations, DBLocations)
+            }).catch( (err) => {
+                console.log('error', err);
             });
         });
     }
@@ -282,3 +290,34 @@ export default class AdminTool extends Component {
     }
 
 }
+
+
+
+
+
+
+const mapStateToProps = (state, ownProps) => {
+    const { isAuthed } = state.user;
+
+    return {
+        isAuthed
+    }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    const boundUserActions = bindActionCreators(userActions, dispatch);
+
+    return {
+        authUser: () => {
+            boundUserActions.authUser();
+        }
+    }
+}
+
+const AdminContainer = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(AdminTool)
+
+export default AdminContainer;
+

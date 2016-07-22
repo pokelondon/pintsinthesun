@@ -61,6 +61,7 @@ gulp.task('server', function(done) {
     }
     options.env = process.env;
     options.env.NODE_ENV = 'development';
+    options.env.SESSION_SECRET = 'development-secret';
 
     server.run(['main.js'], options, 35729);
 });

@@ -25,7 +25,7 @@ export const CLOSE_MODAL = 'close_modal';
 export const REQUEST_ADDRESS = 'request_address';
 export const RESPONSE_ADDRESS = 'response_address';
 
-import { hashHistory } from 'react-router'
+import { hashHistory } from 'react-router';
 
 
 

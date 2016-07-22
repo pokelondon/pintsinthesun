@@ -8,12 +8,15 @@ import { routerMiddleware } from 'react-router-redux'
 import createLogger from "redux-logger";
 
 import reducers from './reducers';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
 
 import Start from './screens/start/start_container';
 import PubDetail from './screens/pubdetail/pubdetail_container';
 import Locate from './screens/locate/locate_container';
 import Base from './screens/base/base_container';
 import AdminTool from './screens/admintool/admintool_component';
+import Login from './screens/admintool/login_component';
 import NoMatch from './screens/nomatch';
 import FatalError from './screens/error';
 
@@ -41,6 +44,15 @@ function logPageView(){
     GA.pageview(window.location.hash.split('?')[0].replace('#', ''));
 }
 
+function requireAuth(nextState, replace) {
+    if (!store.getState().user.isAuthed) {
+        replace({
+            pathname: '/login',
+            state: { nextPathname: nextState.location.pathname }
+        })
+    }
+}
+
 ReactDOM.render((
     <Provider store={store}>
         <div>
@@ -49,7 +61,8 @@ ReactDOM.render((
                     <IndexRoute component={Start} />
                     <Route path="/locate" component={Locate} />
                     <Route path="/pubs" component={PubDetail} />
-                    <Route path="/admin" component={AdminTool} />
+                    <Route path="/admin" component={AdminTool} onEnter={requireAuth} />
+                    <Route path="/login" component={Login} />
                     <Route path="/error" component={FatalError} />
                     <Route path="*" component={NoMatch}/>
                 </Route>
