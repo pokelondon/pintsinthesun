@@ -2,6 +2,11 @@ var FOURSQUARE_VENUE_URL = 'https://d310g5te00bhi.cloudfront.net/v2/venues/'
 var FOURSQUARE_CREDS = '\?client_id\=FNJEOV4QV4YBMJ4J5EQNKQTCQXOQBCUSIIYIZAXWMKLY5XPN\&client_secret\=NEKCZ4IFX4SOJEPDY2E1ZIV4NTAYZ3GWQHWKKPSQF3KOZKCS\&v\=20140806\&m\=foursquare';
 var DARK_SKY_KEY = '951df0b0941c7048a5eff283100eb5ab';
 
+
+var GOOGLE_PLACES_API_KEY = 'AIzaSyA5nLOqJgUmjcilh1se2a8aogAEWDfqy3w';
+var GOOGLE_PLACES_API = 'https://maps.googleapis.com/maps/api/place/details/json?key=' + GOOGLE_PLACES_API_KEY;
+
 module.exports.FOURSQUARE_VENUE_URL = FOURSQUARE_VENUE_URL;
 module.exports.FOURSQUARE_CREDS = FOURSQUARE_CREDS;
 module.exports.DARK_SKY_KEY = DARK_SKY_KEY;
+module.exports.GOOGLE_PLACES_API = GOOGLE_PLACES_API;

@@ -6,7 +6,7 @@ import AngleMarker from '../../components/admin/AngleMarker';
 import { existsInLocalStorage } from '../../services/local';
 import { savePub, checkPubsExist } from '../../services/pintsinthesun';
 import { getDistance } from '../../utils/Geo';
-import { hashHistory } from 'react-router';
+import { hashHistory, Link } from 'react-router';
 
 
 export default class AdminToolComponent extends Component {
@@ -16,52 +16,66 @@ export default class AdminToolComponent extends Component {
         this.props = props;
 
         this.state = {
-        //     locations: [],
-        //     currentLocation: null,
             outdoorAngle: 0,
-        //     hasTerrace: false,
-        //     buildingToTheWest: false,
-        //     currentIsSaved: false,
-        //     centre: {lat: 51.523777, lng: -0.0781597}
+            hasGarden: false,
+            hasOutsideSpace: false,
+            isSaved: false,
+            hasError: false
         };
 
     }
 
-
+    /**
+    * On mount, if there is no current pub to add in redux, redirect to the add view
+    */
     componentDidMount() {
         if(!this.props.pubToAdd){
             hashHistory.push('/add');
         }
     }
 
+    /**
+    * Get markup for top panel
+    * @return {JSX} the markup
+    */
+    getTopPanel() {
+        if(this.state.isSaved){
+            return (
+                <div className="Box Box-row"><div className="Box Box-item"><p>Thanks for suggesting a sunny pub! Fancy <Link to="/add">suggesting another</Link>?</p></div></div>
+            )
+        }
+        if(this.state.hasError){
+            return (
+                <div className="Box Box-row"><div className="Box Box-item"><p>Oops, something went wrong.</p></div></div>
+            )
+        }
 
+        return (
+            <LocationDetails
+                name={this.props.pubToAdd.name}
+                onSave={this.saveLocation.bind(this)}
+                onFormChange={this.onFormChange.bind(this)}
+                hasGarden={this.state.hasGarden}
+                hasOutsideSpace={this.state.hasOutsideSpace}
+            />
+        )
+    }
+
+
+    /**
+    * React render method
+    */
     render() {
 
         if(!this.props.pubToAdd){
             return null;
         }
 
-        // let locationDetails, angleMarker, slider;
-        //
-        // if(this.state.currentLocation){
-
-        const locationDetails = <LocationDetails
-                name={this.props.pubToAdd.name}
-                onSave={this.saveLocation.bind(this)}
-                onLocationSave={this.onLocationSave.bind(this)}
-                onFormChange={this.onFormChange.bind(this)}
-                onNextLocation={this.onNextLocation.bind(this)}
-
-            />;
-        //
         const angleMarker = <AngleMarker
             angle={this.state.outdoorAngle}
             onAngleChage={this.onAngleChange.bind(this)}
         />;
-        //
-        // } else {
-        //     locationDetails = <LocationDetails location={{name: ''}}/>
-        // }
+
 
         return (
 
@@ -69,9 +83,7 @@ export default class AdminToolComponent extends Component {
 
                 <header className="Screen-header">
                     <div className="max-width">
-                        <div class="Box Box-row">
-                            {locationDetails}
-                        </div>
+                        {this.getTopPanel()}
                     </div>
                 </header>
 
@@ -97,136 +109,18 @@ export default class AdminToolComponent extends Component {
 
 
     /**
-     * Nullify some of the state so that the map shows no focussed location
-     *
-     */
-    // resetMap() {
-    //     this.setState({
-    //         currentLocation: null,
-    //         hasTerrace: false,
-    //         hasGarden: false,
-    //         buildingToTheWest: false,
-    //         isOnHill: false,
-    //         isIsolated: false,
-    //         isInPark: false,
-    //         currentIsSaved: false,
-    //         outdoorAngle: 0
-    //     });
-    // }
-
-
-    /**
-     * Set the state when dragged. If theyve dragged more than 200m, reset the map
-     *
-     */
-    // onMapCentreChanged(centre) {
-    //     this.setState({centre: centre});
-    //     if(this.state.currentLocation){
-    //         let distance = getDistance(centre.lat, centre.lng, this.state.currentLocation.location.lat, this.state.currentLocation.location.lng);
-    //         if(distance > 0.20){
-    //             this.resetMap();
-    //         }
-    //     }
-    // }
-
-
-
-    /**
-     * Load some locations from foursquare near the current centre
-     *
-     */
-    // loadPubData() {
-    //     getPubs(this.state.centre).then((response) => {
-    //
-    //         let locations = response.map( (location, index) => {
-    //             location.index = index;
-    //             location.outdoorAngle = 0;
-    //             return location;
-    //         });
-    //         return locations;
-    //
-    //     }).then((FSQLocations) => {
-    //
-    //         /* See if the pubs from foursquare already exist in the DB */
-    //         let IDsToTest = FSQLocations.map(function(o) { return o.id; });
-    //         checkPubsExist(IDsToTest).then( (DBLocations) => {
-    //             this.updateLocationData(FSQLocations, DBLocations)
-    //         });
-    //     });
-    // }
-
-
-    /**
-     * Once we have data from foursquare, and data from the DB, merge them
-     * here into one array, and then set that as the state.
-     * @param {Array} FSQLocations
-     * @param {Array} DBLocations
-     */
-    // updateLocationData(FSQLocations, DBLocations) {
-    //
-    //     FSQLocations.forEach( (FSQLocation) => {
-    //         DBLocations.map( (DBLocation) => {
-    //             if(DBLocation.foursquare.id === FSQLocation.id){
-    //                 //copy attributes from DB location data into the FSQ object
-    //                 //TODO refactor this translation into the service, shouldnt be here
-    //                 FSQLocation.exists = true;
-    //                 FSQLocation.hasTerrace = DBLocation.has_terrace;
-    //                 FSQLocation.hasGarden = DBLocation.has_garden;
-    //                 FSQLocation.isIsolated = DBLocation.is_isolated;
-    //                 FSQLocation.isOnHill = DBLocation.is_on_hill;
-    //                 FSQLocation.isInPark = DBLocation.is_in_park;
-    //                 FSQLocation.buildingToTheWest = DBLocation.building_to_the_west;
-    //                 FSQLocation.outdoorAngle = DBLocation.outdoor_angle;
-    //             }
-    //         });
-    //
-    //     });
-    //
-    //     this.setState({locations: FSQLocations});
-    // }
-
-    /**
-     * Set the state to focus on a particular location object
-     *
-     * @param {Object} locationObj
-     */
-    // onLocationSelect(locationObj) {
-    //
-    //     this.setState({
-    //         currentLocation: locationObj,
-    //         centre: locationObj.location,
-    //         hasTerrace: locationObj.hasTerrace,
-    //         buildingToTheWest: locationObj.buildingToTheWest,
-    //         outdoorAngle: locationObj.outdoorAngle,
-    //         hasGarden: locationObj.hasGarden,
-    //         isIsolated: locationObj.isIsolated,
-    //         isOnHill: locationObj.isOnHill,
-    //         isInPark: locationObj.isInPark,
-    //         currentIsSaved: locationObj.exists
-    //     });
-    // }
-
-
+    * Event handler for when angle marker changes
+    * @param {number} angle - the angle in degrees
+    */
     onAngleChange(angle) {
         this.setState({outdoorAngle: angle});
     }
 
 
     /**
-     * Force the map to re-render on save (an object in the locations array has changed
-     * and react wont be aware of that)
-     *
-     */
-    onLocationSave() {
-        // this.setState({currentIsSaved: true});
-        // this.forceUpdate();
-    }
-
-
-    /**
-     *
-     * Handle events of controlled form fields
-     */
+    * Handle events of controlled form fields
+    * @param {SyntheticEvent} e - the event from the checkboxes
+    */
     onFormChange(e) {
         let checkBox = e.target;
         let tempState = Object.assign({}, this.state);
@@ -236,50 +130,20 @@ export default class AdminToolComponent extends Component {
 
 
     /**
-     * Move the current selected location index to the next one
-     *
-     */
-    onNextLocation() {
-        let nextIndex = this.state.currentLocation.index + 1;
-        if(nextIndex === this.state.locations.length -1){
-            nextIndex = 0;
-        }
-        let nextLocation = this.state.locations[this.state.currentLocation.index + 1];
-        this.onLocationSelect(nextLocation);
-
-    }
-
-
-    /**
      * Persist data through the service to the API
-     * Also modify our local object optimisitically to reflect these changes
-     *
      */
     saveLocation() {
 
-        savePub(this.state.currentLocation.id, this.state)
+        savePub(this.props.pubToAdd.place_id, this.state)
         .then(
-            function(){
-                console.log('saved pub');
+            () => {
+                this.setState({isSaved: true});
             },
-            function(err){
-                alert('error - pub not saved'); //TODO - handle this in UI properly
+            (err) => {
+                this.setState({hasError: true});
             }
         );
 
-        this.state.currentLocation.exists = true;
-
-        //save into local copy of this location
-        //do this without Object.assign to avoid circular references
-        this.state.currentLocation.hasTerrace = this.state.hasTerrace;
-        this.state.currentLocation.hasGarden = this.state.hasGarden;
-        this.state.currentLocation.isIsolated = this.state.isIsolated;
-        this.state.currentLocation.isOnHill = this.state.isOnHill;
-        this.state.currentLocation.isInPark = this.state.isInPark;
-        this.state.currentLocation.buildingToTheWest = this.state.buildingToTheWest;
-        this.state.currentLocation.outdoorAngle = this.state.outdoorAngle;
-
-        this.onLocationSave();
     }
 
 }

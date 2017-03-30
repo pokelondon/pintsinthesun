@@ -5,26 +5,19 @@ import {addLocation as addLocationToLocal} from './local';
 // import 'isomorphic-fetch';
 // promise.polyfill();
 
-export function savePub(locationID, pubDetails) {
+export function savePub(placeID, pubDetails) {
 
     console.log('pubDetails (which is state)', pubDetails);
 
     const payload = {
         outdoor_angle: pubDetails.outdoorAngle,
-        has_terrace: pubDetails.hasTerrace,
-        has_garden: pubDetails.hasGarden,
-        is_isolated: pubDetails.isIsolated,
-        is_on_hill: pubDetails.isOnHill,
-        is_in_park: pubDetails.isInPark,
-        building_to_the_west: pubDetails.buildingToTheWest,
-
+        has_outside_space: pubDetails.hasOutsideSpace,
+        has_garden: pubDetails.hasGarden
     };
-
-    console.log('payload', payload);
 
     const data = JSON.stringify(payload);
 
-    return fetch(`${config.API}pub/${locationID}`, {
+    return fetch(`${config.API}pub/${placeID}`, {
         method: 'post',
         headers: {
             "Content-Type": "application/json"

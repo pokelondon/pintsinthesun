@@ -7,12 +7,6 @@ export default class LocationDetails extends Component {
     constructor(props) {
         super(props);
         this.props = props;
-
-        // this.state = {
-        //     hasTerrace: false,
-        //     buildingToTheWest: false,
-        //     isSaved: false
-        // };
     }
 
 
@@ -30,12 +24,6 @@ export default class LocationDetails extends Component {
             'Button--secondary': true
         });
 
-        // let uiBlocker;
-        //
-        // if(this.props.location.name === ''){
-        //     uiBlocker = <div className="UI-blocker"></div>
-        // }
-
         return (
 
             <form className="Location-details" onSubmit={this.onFormSubmit}>
@@ -46,16 +34,14 @@ export default class LocationDetails extends Component {
                     </div>
                 </div>
                 <div className="Box Box-row flex-wrap">
-
+                    <div className="Box Box-item Box-item--noPadding Property-option">
+                        <label>
+                            <input onChange={this.props.onFormChange} type="checkbox" name="hasOutsideSpace" value="true" checked={this.props.hasOutsideSpace} /> Outside space
+                        </label>
+                    </div>
                     <div className="Box Box-item Box-item--noPadding Property-option">
                         <label>
                             <input onChange={this.props.onFormChange} type="checkbox" name="hasGarden" value="true" checked={this.props.hasGarden} /> Garden
-                        </label>
-                    </div>
-
-                    <div className="Box Box-item Box-item--noPadding Property-option">
-                        <label>
-                            <input onChange={this.props.onFormChange} type="checkbox" name="hasTerrace" value="true" checked={this.props.hasTerrace} /> Terrace
                         </label>
                     </div>
                 </div>

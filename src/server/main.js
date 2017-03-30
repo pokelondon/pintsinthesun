@@ -29,12 +29,8 @@ var ANGLE_RANGE = 100;
 
 var SUBMIT_PROPS = {
     outdoor_angle: Number,
-    has_terrace: Boolean,
-    has_garden: Boolean,
-    is_isolated: Boolean,
-    is_in_park: Boolean,
-    is_on_hill: Boolean,
-    building_to_the_west: Boolean,
+    has_outside_space: Boolean,
+    has_garden: Boolean
 }
 
 // Init
@@ -144,10 +140,14 @@ app.get('/pub/:id', function(req, res) {
 });
 
 
-
+/**
+* Save a pub
+*/
 app.post('/pub/:id', function(req, res) {
     var submittedData = req.body;
-    var foursquareID = req.params.id;
+
+    var googlePlaceID = req.params.id;
+
     var pub = {}
 
     for(var key in SUBMIT_PROPS) {
@@ -156,24 +156,24 @@ app.post('/pub/:id', function(req, res) {
         }
     }
 
-    fetch(config.FOURSQUARE_VENUE_URL + foursquareID + config.FOURSQUARE_CREDS)
+
+    fetch(config.GOOGLE_PLACES_API + '&placeid=' + googlePlaceID)
         .then(function(response) {
             return response.json();
         }).then(function(data) {
-            pub.foursquare = {id: foursquareID};
-            pub.name = data.response.venue.name;
+            pub.googleplaces = {id: googlePlaceID};
+            pub.name = data.result.name;
             pub.location = {
                 type: 'Point',
                 coordinates: [
-                    data.response.venue.location.lng,
-                    data.response.venue.location.lat
+                    data.result.geometry.location.lng,
+                    data.result.geometry.location.lat,
                 ]
             };
-            //res.json(pub);
             return pub
         }).then(function(pub) {
             pubs.update({
-                "foursquare.id": req.params.id},
+                "googleplaces.id": req.params.id},
                 pub,
                 {upsert: true},
                 function(err, num, obj) {
