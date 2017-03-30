@@ -13,7 +13,8 @@ import Start from './screens/start/start_container';
 import PubDetail from './screens/pubdetail/pubdetail_container';
 import Locate from './screens/locate/locate_container';
 import Base from './screens/base/base_container';
-import AdminTool from './screens/admintool/admintool_component';
+import AdminTool from './screens/admintool/admintool_container';
+import Add from './screens/addpub/addpub_container';
 import NoMatch from './screens/nomatch';
 import FatalError from './screens/error';
 
@@ -28,7 +29,7 @@ const loggerMiddleware = createLogger();
 
 const createStoreWithMiddleware = applyMiddleware(
     thunkMiddleware,
-    //loggerMiddleware,
+    loggerMiddleware,
     routerMiddleware(hashHistory),
 )(createStore);
 const store = createStoreWithMiddleware(reducers);
@@ -50,6 +51,7 @@ ReactDOM.render((
                     <Route path="/locate" component={Locate} />
                     <Route path="/pubs" component={PubDetail} />
                     <Route path="/admin" component={AdminTool} />
+                    <Route path="/add" component={Add} />
                     <Route path="/error" component={FatalError} />
                     <Route path="*" component={NoMatch}/>
                 </Route>

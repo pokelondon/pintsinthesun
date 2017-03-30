@@ -4,17 +4,8 @@ const OVERPASS_BOUND = 0.0011;
 const ROADS = false;
 const FS_PRECISION = 1000;
 const API = '/';
-
+const ACCEPTED_PLACE_TYPES = ['art_gallery', 'bar', 'cafe', 'casino', 'liquor_store', 'movie_theater', 'night_club', 'restaurant', 'stadium', 'food', 'premise'];
 const MAP_CONFIG = [
-    {
-        "featureType": "poi",
-        "elementType": "all",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
     {
         "featureType": "administrative.neighborhood",
         "elementType": "labels",
@@ -207,6 +198,7 @@ const config = {
     FS_PRECISION,
     API,
     MAP_CONFIG,
+    ACCEPTED_PLACE_TYPES
 }
 
 export default config;

@@ -15,7 +15,7 @@ const MARKER_IMG_GREY = {
     anchor: new google.maps.Point(25, 50)
 };
 
-const DEFAULT_ZOOM = 15;
+const DEFAULT_ZOOM = 18;
 
 
 export default class Map extends Component {
@@ -34,7 +34,6 @@ export default class Map extends Component {
     }
 
     render() {
-
         return (
 
             <GoogleMapLoader
@@ -44,21 +43,28 @@ export default class Map extends Component {
 
                 googleMapElement={
                     <GoogleMap
-                        ref={(map) => this.map = map}
-                        defaultZoom={this.state.zoom}
-                        zoom={this.state.zoom}
+                        ref={(map) => {
+                            this.map = map;
+                            if(this.props.setMapRef)this.props.setMapRef(map);
+                        }}
                         defaultCenter={this.props.centre}
                         onDragend={this.onDragEnd.bind(this)}
                         onZoomChanged={this.onZoomChanged.bind(this)}
+                        defaultZoom={this.state.zoom}
+                        zoom={this.state.zoom}
                         mapTypeId={google.maps.MapTypeId.HYBRID}
                         >
-                        {this.getMarkers(this.props.locations)}
+                        <Marker
+                            position={this.props.centre}
+                            icon={MARKER_IMG}
+                        />
                     </GoogleMap>
                 }
             />
 
         )
     }
+
 
 
     /**
@@ -89,8 +95,8 @@ export default class Map extends Component {
 
 
     onDragEnd() {
-        let centre = this.map.getCenter();
-        this.props.onCenterChanged({lat: centre.lat(), lng: centre.lng()});
+        // let centre = this.map.getCenter();
+        // this.props.onCenterChanged({lat: centre.lat(), lng: centre.lng()});
     }
 
 

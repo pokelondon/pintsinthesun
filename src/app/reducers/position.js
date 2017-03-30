@@ -15,7 +15,8 @@ import {
     LAUNCH_INFO_MODAL,
     CLOSE_MODAL,
     RESPONSE_ADDRESS,
-    REQUEST_ADDRESS
+    REQUEST_ADDRESS,
+    ADD_PUB
 } from '../actions/position';
 
 const date = new Date();
@@ -50,6 +51,11 @@ const INITIAL_STATE = {
 
 export default function position(state=INITIAL_STATE, action) {
     switch (action.type) {
+        case ADD_PUB:
+            return {
+                ...state,
+                pubToAdd: action.pubDetails
+            }
         case REQUEST_ADDRESS:
             return {
                 ...state,

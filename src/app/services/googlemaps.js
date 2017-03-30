@@ -1,4 +1,5 @@
 //const geocoder = new google.maps.Geocoder();
+const autoCompleteService = new google.maps.places.AutocompleteService();
 
 export function geocode(searchTerm, bounds, callback) {
     const geocoder = new google.maps.Geocoder();
@@ -46,5 +47,28 @@ export function reverseGeocode(location, callback) {
             callback({status: 'ERROR'});
         }
 
+    });
+}
+
+
+export function searchPubs(searchTerm, bounds, callback) {
+    if(!searchTerm){
+        return;
+    }
+
+    autoCompleteService.getPlacePredictions({input: searchTerm, bounds: bounds}, (predictions, status) => {
+        if(status === google.maps.places.PlacesServiceStatus.OK) {
+            callback(predictions);
+        }
+    });
+}
+
+
+export function getLocationData(placeID, map, callback) {
+    const placesService = new google.maps.places.PlacesService(document.createElement('div'));
+    placesService.getDetails({placeId: placeID}, (result, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            callback(result);
+        }
     });
 }

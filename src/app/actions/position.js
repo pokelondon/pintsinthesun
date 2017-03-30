@@ -25,6 +25,8 @@ export const CLOSE_MODAL = 'close_modal';
 export const REQUEST_ADDRESS = 'request_address';
 export const RESPONSE_ADDRESS = 'response_address';
 
+export const ADD_PUB = 'add_pub';
+
 import { hashHistory } from 'react-router'
 
 
@@ -49,6 +51,15 @@ export function closeModal(){
     return function(dispatch) {
         dispatch({
             type: CLOSE_MODAL
+        });
+    }
+}
+
+export function addPub(pubDetails) {
+    return function(dispatch) {
+        dispatch({
+            type: ADD_PUB,
+            pubDetails
         });
     }
 }
