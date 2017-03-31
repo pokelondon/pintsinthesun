@@ -29,4 +29,7 @@ MongoClient.connect('mongodb://localhost/pintsinthesun2_' + ENV, function(err, d
 
     console.log('Creating 2dsphere index');
     pubs.createIndex( { location : "2dsphere" } );
+
+    console.log('Creating google places unique index');
+    pubs.createIndex( { "googleplaces.id": 1 }, { unique: true });
 });

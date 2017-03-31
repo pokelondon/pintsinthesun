@@ -145,9 +145,7 @@ app.get('/pub/:id', function(req, res) {
 */
 app.post('/pub/:id', function(req, res) {
     var submittedData = req.body;
-
     var googlePlaceID = req.params.id;
-
     var pub = {}
 
     for(var key in SUBMIT_PROPS) {
@@ -156,25 +154,34 @@ app.post('/pub/:id', function(req, res) {
         }
     }
 
-
     fetch(config.GOOGLE_PLACES_API + '&placeid=' + googlePlaceID)
         .then(function(response) {
             return response.json();
         }).then(function(data) {
-            pub.googleplaces = {id: googlePlaceID};
-            pub.name = data.result.name;
-            pub.location = {
-                type: 'Point',
-                coordinates: [
-                    data.result.geometry.location.lng,
-                    data.result.geometry.location.lat,
-                ]
-            };
-            return pub
-        }).then(function(pub) {
             pubs.update({
                 "googleplaces.id": req.params.id},
-                pub,
+                {
+                    $set: {
+                        googleplaces: {
+                            id: googlePlaceID
+                        },
+                        has_outside_space: submittedData.has_outside_space,
+                        has_garden: submittedData.has_garden,
+                        outdoor_angle: submittedData.outdoor_angle,
+                        name: data.result.name,
+                        location: {
+                            type: 'Point',
+                            coordinates: [
+                                data.result.geometry.location.lng,
+                                data.result.geometry.location.lat,
+                            ]
+                        },
+                        approved: false,
+                    },
+                    $currentDate: {
+                        lastModified: true
+                    }
+                },
                 {upsert: true},
                 function(err, num, obj) {
                     assert.equal(null, err);
