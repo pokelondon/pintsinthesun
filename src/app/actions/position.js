@@ -26,10 +26,28 @@ export const REQUEST_ADDRESS = 'request_address';
 export const RESPONSE_ADDRESS = 'response_address';
 
 export const ADD_PUB = 'add_pub';
+export const SHOW_DIALOG = 'show_dialog';
+export const CLOSE_DIALOG = 'close_dialog';
 
 import { hashHistory } from 'react-router'
 
 
+export function showDialog(message){
+    return function(dispatch) {
+        dispatch({
+            type: SHOW_DIALOG,
+            message
+        });
+    }
+}
+
+export function closeDialog(){
+    return function(dispatch) {
+        dispatch({
+            type: CLOSE_DIALOG
+        });
+    }
+}
 
 export function launchLocationModal(){
     return function(dispatch) {
@@ -94,8 +112,6 @@ export function responsePosition(centre, isGPSPosition = false) {
     }
 }
 
-
-
 export function updateTime(date, isNow = false) {
 
     let hours = date.getHours();
@@ -147,12 +163,14 @@ export function requestAddress() {
         type: REQUEST_ADDRESS
     }
 }
+
 export function requestPubs() {
     return {
         type: REQUEST_PUBS,
         isLoading: true
     }
 }
+
 export function requestPubDetail() {
     return {
         type: REQUEST_PUB_DETAIL,

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Pulldown from '../pulldown/pulldown';
-
+import Dialog from '../../components/dialog';
 
 class Base extends React.Component {
     constructor(props) {
@@ -17,6 +17,18 @@ class Base extends React.Component {
 
     componentDidMount() {
         //this.props.fetchPosition();
+    }
+
+    getDialog(){
+        if(this.props.dialogVisible){
+            return (
+                <Dialog
+                    message={this.props.dialogMessage}
+                    buttonText="Ok"
+                    onButtonClick={this.props.closeDialog}
+                />
+            )
+        }
     }
 
     render() {
@@ -53,6 +65,7 @@ class Base extends React.Component {
                     onClose={this.props.closeModal}
                     pulldownMenu={this.props.modal}
                 />
+                {this.getDialog()}
             </div>
         )
     }

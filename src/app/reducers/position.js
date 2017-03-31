@@ -16,7 +16,9 @@ import {
     CLOSE_MODAL,
     RESPONSE_ADDRESS,
     REQUEST_ADDRESS,
-    ADD_PUB
+    ADD_PUB,
+    SHOW_DIALOG,
+    CLOSE_DIALOG,
 } from '../actions/position';
 
 const date = new Date();
@@ -51,6 +53,17 @@ const INITIAL_STATE = {
 
 export default function position(state=INITIAL_STATE, action) {
     switch (action.type) {
+        case SHOW_DIALOG :
+            return {
+                ...state,
+                dialogVisible: true,
+                dialogMessage: action.message
+            }
+        case CLOSE_DIALOG :
+            return {
+                ...state,
+                dialogVisible: false
+            }
         case ADD_PUB:
             return {
                 ...state,

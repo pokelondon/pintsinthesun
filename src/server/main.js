@@ -116,24 +116,31 @@ app.get('/near/:lat/:lng/:date?', function(req, res) {
 * Accept an array of foursquare IDs.
 * Return location objects that are in the database that match the incoming IDs
 */
-app.post('/pub/exists', function(req, res) {
+// app.post('/pub/exists', function(req, res) {
+//
+//     var ids = req.body;
+//     var cursor = pubs.find({"foursquare.id": { $in: ids} } );
+//
+//     var matching = [];
+//     cursor.each(function(err, doc){
+//         assert.equal(null, err);
+//         if(doc != null){
+//             matching.push(doc);
+//         } else {
+//             res.json(matching);
+//         }
+//     });
+// });
 
-    var ids = req.body;
-    var cursor = pubs.find({"foursquare.id": { $in: ids} } );
-
-    var matching = [];
-    cursor.each(function(err, doc){
-        assert.equal(null, err);
-        if(doc != null){
-            matching.push(doc);
-        } else {
-            res.json(matching);
-        }
-    });
-});
+// app.get('/pub/:id', function(req, res) {
+//     pubs.findOne({"foursquare.id": req.params.id}, function(err, pub) {
+//         assert.equal(null, err);
+//         res.json({pub: pub});
+//     })
+// });
 
 app.get('/pub/:id', function(req, res) {
-    pubs.findOne({"foursquare.id": req.params.id}, function(err, pub) {
+    pubs.findOne({"googleplaces.id": req.params.id}, function(err, pub) {
         assert.equal(null, err);
         res.json({pub: pub});
     })
@@ -177,6 +184,7 @@ app.post('/pub/:id', function(req, res) {
                             ]
                         },
                         approved: false,
+                        rejected: false,
                     },
                     $currentDate: {
                         lastModified: true

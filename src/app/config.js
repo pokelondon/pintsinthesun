@@ -4,7 +4,7 @@ const OVERPASS_BOUND = 0.0011;
 const ROADS = false;
 const FS_PRECISION = 1000;
 const API = '/';
-const ACCEPTED_PLACE_TYPES = ['art_gallery', 'bar', 'cafe', 'casino', 'liquor_store', 'movie_theater', 'night_club', 'restaurant', 'stadium', 'food', 'premise'];
+const ACCEPTED_PLACE_TYPES = ['establishment', 'art_gallery', 'bar', 'cafe', 'casino', 'liquor_store', 'movie_theater', 'night_club', 'restaurant', 'stadium', 'food', 'premise'];
 const MAP_CONFIG = [
     {
         "featureType": "administrative.neighborhood",

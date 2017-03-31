@@ -7,13 +7,15 @@ import Base from './base_component';
 
 
 const mapStateToProps = (state, ownProps) => {
-    const { date, isLocating, centre, modal } = state.position;
+    const { date, isLocating, centre, modal, dialogVisible, dialogMessage } = state.position;
 
     return {
         isLocating,
         date,
         centre,
-        modal
+        modal,
+        dialogVisible,
+        dialogMessage
     }
 }
 
@@ -32,6 +34,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         closeModal: () => {
             boundPositionActions.closeModal();
+        },
+        closeDialog: () => {
+            boundPositionActions.closeDialog();
         }
     }
 }

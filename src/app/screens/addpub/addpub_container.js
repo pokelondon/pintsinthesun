@@ -18,6 +18,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         addPub: (pubDetails) => {
             hashHistory.push('/admin');
             boundActions.addPub(pubDetails);
+        },
+        showDialog: (message) => {
+            boundActions.showDialog(message);
         }
     }
 }

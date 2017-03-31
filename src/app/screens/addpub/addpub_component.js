@@ -1,5 +1,6 @@
 import React from 'react';
 import { searchPubs, getLocationData } from '../../services/googlemaps';
+import { getPub } from '../../services/pintsinthesun';
 import StaticMap from '../../components/static-map';
 import hashHistory from 'react-router'
 import classNames from 'classNames';
@@ -43,6 +44,7 @@ export default class AddPubComponent extends React.Component {
         //get the bounds of the current map, so the search weights on this area
         const bounds = this.mapRef.getBounds();
         searchPubs(term, bounds, (results) => {
+            console.log('search results', results);
             this.setState({
                 searchResults: results
             });
@@ -59,23 +61,43 @@ export default class AddPubComponent extends React.Component {
         if(!placeID){
             return;
         }
-        getLocationData(placeID, this.googleMapRef, (result) => {
-            console.log('plce data', result);
-            this.setState({
-                locationLat: result.geometry.location.lat(),
-                locationLng: result.geometry.location.lng(),
-                placeID: placeID,
-                locationData: result,
-                locationIsPub: this.testIsPub(result.types),
-                searchResults: null,
-                textFieldIsFocussed: null
-            });
-        });
+
+        //check if its in the DB already
+        getPub(placeID).then((response) => {
+            return response.json();
+        }).then((data) => {
+            //its not - find out more about the place and the focus the map on it
+            if(!data.pub){
+                getLocationData(placeID, this.googleMapRef, (result) => {
+                    this.setState({
+                        locationLat: result.geometry.location.lat(),
+                        locationLng: result.geometry.location.lng(),
+                        placeID: placeID,
+                        locationData: result,
+                        locationIsPub: this.testIsPub(result.types),
+                        searchResults: null,
+                        textFieldIsFocussed: null
+                    });
+                });
+            } else {
+                //exists in the database already
+                if(data.pub.rejected){
+                    this.props.showDialog('That pub has already been suggested, but we didn\'t think it was sunny enough&hellip;');
+                } else {
+                    this.props.showDialog('Thanks, but that pub has already been suggested!');
+                }
+            }
+
+        })
+
+
     }
 
 
     /**
     * Check if the list of types is classed as a pub
+    * This is now deliberately vague and accepts 'establishment' as a pub, because the
+    * types returned from google autocomplete is not as detailed as a full place lookup
     * @param {Array} typeArray - the array of types returned by google
     * @return {boolean} Whether we deem it a pub or not
     */
@@ -198,7 +220,8 @@ export default class AddPubComponent extends React.Component {
             const results = this.state.searchResults.map ( (result, idx) => {
                 const classes = classNames({
                     'Search-result': true,
-                    'Search-result--active': idx === this.state.selectedSearchResultIndex
+                    'Search-result--active': idx === this.state.selectedSearchResultIndex,
+                    'Search-result--isPub': this.testIsPub(result.types)
                 });
                 return <div className={classes} onMouseOver={this.onSearchResultRollover.bind(this, idx)} onClick={this.focusOnLocation.bind(this, result.place_id)} key={result.place_id}>{result.description}</div>
             });

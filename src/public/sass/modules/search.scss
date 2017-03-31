@@ -16,6 +16,12 @@
         &--active {
             background: $redFocus;
         }
+        &--isPub {
+            &:before {
+                content: '+';
+                margin-right: 5px;
+            }
+        }
 
         @include media-breakpoint-up(md) {
             padding: $padding-vert-md $padding-horiz-md;

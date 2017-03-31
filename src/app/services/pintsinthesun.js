@@ -1,13 +1,7 @@
 import config from '../config';
 import {addLocation as addLocationToLocal} from './local';
 
-// import promise from 'es6-promise';
-// import 'isomorphic-fetch';
-// promise.polyfill();
-
 export function savePub(placeID, pubDetails) {
-
-    console.log('pubDetails (which is state)', pubDetails);
 
     const payload = {
         outdoor_angle: pubDetails.outdoorAngle,
@@ -28,23 +22,32 @@ export function savePub(placeID, pubDetails) {
 }
 
 
+export function getPub(placeID) {
+    return fetch(`${config.API}pub/${placeID}`, {
+        method: 'get',
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+}
+
 /**
  * Returns list of locations that are in the database
  *
  * @param {Array} ids - array of place IDs we want to check
  */
-export function checkPubsExist(ids) {
-
-    const data = JSON.stringify(ids);
-
-    return fetch(`${config.API}pub/exists/`, {
-        method: 'post',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: data
-    }).then(
-        data => data.json()
-    );
-
-}
+// export function checkPubsExist(ids) {
+//
+//     const data = JSON.stringify(ids);
+//
+//     return fetch(`${config.API}pub/exists/`, {
+//         method: 'post',
+//         headers: {
+//             "Content-Type": "application/json"
+//         },
+//         body: data
+//     }).then(
+//         data => data.json()
+//     );
+//
+// }
