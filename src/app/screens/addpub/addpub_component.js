@@ -44,7 +44,6 @@ export default class AddPubComponent extends React.Component {
         //get the bounds of the current map, so the search weights on this area
         const bounds = this.mapRef.getBounds();
         searchPubs(term, bounds, (results) => {
-            console.log('search results', results);
             this.setState({
                 searchResults: results
             });
@@ -102,13 +101,9 @@ export default class AddPubComponent extends React.Component {
     * @return {boolean} Whether we deem it a pub or not
     */
     testIsPub(typeArray){
-        let isPub = false;
-        typeArray.forEach( (type) => {
-            if(config.ACCEPTED_PLACE_TYPES.indexOf(type) != -1){
-                isPub = true;
-            }
+        return typeArray.some((type) => {
+            return config.ACCEPTED_PLACE_TYPES.indexOf(type) >= 0;
         });
-        return isPub;
     }
 
     /**

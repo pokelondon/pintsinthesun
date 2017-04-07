@@ -45,15 +45,14 @@ export default class LocationDetails extends Component {
                         </label>
                     </div>
                 </div>
-
-
                 <div className="Box Box-row">
                     <div className="Box Box-item Box-item--noPadding">
-                        <button onClick={this.saveLocation.bind(this)} className={btnClasses}>Save</button>
+                        <button onClick={this.props.onCancel} className={btnClasses}>Cancel</button>
                     </div>
-
+                    <div className="Box Box-item Box-item--noPadding">
+                        <button onClick={this.props.onSave} className={btnClasses}>Save</button>
+                    </div>
                 </div>
-
 
             </form>
 

@@ -16,8 +16,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     const boundActions = bindActionCreators(positionActions, dispatch);
     return {
         addPub: (pubDetails) => {
-            hashHistory.push('/admin');
             boundActions.addPub(pubDetails);
+            hashHistory.push('/confirm');
         },
         showDialog: (message) => {
             boundActions.showDialog(message);

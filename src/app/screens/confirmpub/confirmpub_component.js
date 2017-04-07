@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import Map from '../../components/admin/map';
-import LocationDetails from '../../components/admin/location-details';
 import { getPubs } from '../../services/foursquare';
 import AngleMarker from '../../components/admin/AngleMarker';
 import { existsInLocalStorage } from '../../services/local';
@@ -41,23 +40,66 @@ export default class AdminToolComponent extends Component {
     getTopPanel() {
         if(this.state.isSaved){
             return (
-                <div className="Box Box-row"><div className="Box Box-item"><p>Thanks for suggesting a sunny pub! Fancy <Link to="/add">suggesting another</Link>?</p></div></div>
+                <form className="Location-details">
+                    <div className="Box Box-row">
+                        <div className="Box Box-item">
+                            <h2 className="Heading--1">{this.props.pubToAdd.name}</h2>
+                        </div>
+                    </div>
+                    <div className="Box Box-row">
+                        <div className="Box Box-item">
+                            <p>Thanks for suggesting a sunny pub! Fancy <Link to="/add">suggesting another</Link>?</p>
+                        </div>
+                    </div>
+                </form>
             )
         }
         if(this.state.hasError){
             return (
-                <div className="Box Box-row"><div className="Box Box-item"><p>Oops, something went wrong.</p></div></div>
+                <form className="Location-details">
+                    <div className="Box Box-row">
+                        <div className="Box Box-item">
+                            <h2 className="Heading--1">{this.props.pubToAdd.name}</h2>
+                        </div>
+                    </div>
+                    <div className="Box Box-row">
+                        <div className="Box Box-item"><p>Oops, something went wrong.</p></div>
+                    </div>
+                </form>
             )
         }
 
+
         return (
-            <LocationDetails
-                name={this.props.pubToAdd.name}
-                onSave={this.saveLocation.bind(this)}
-                onFormChange={this.onFormChange.bind(this)}
-                hasGarden={this.state.hasGarden}
-                hasOutsideSpace={this.state.hasOutsideSpace}
-            />
+            <form className="Location-details">
+
+                <div className="Box Box-row">
+                    <div className="Box Box-item">
+                        <h2 className="Heading--1">{this.props.pubToAdd.name}</h2>
+                    </div>
+                </div>
+                <div className="Box Box-row flex-wrap">
+                    <div className="Box Box-item Box-item--noPadding Property-option">
+                        <label>
+                            <input onChange={this.onFormChange.bind(this)} type="checkbox" name="hasOutsideSpace" value="true" checked={this.props.hasOutsideSpace} /> Outside space
+                        </label>
+                    </div>
+                    <div className="Box Box-item Box-item--noPadding Property-option">
+                        <label>
+                            <input onChange={this.onFormChange.bind(this)} type="checkbox" name="hasGarden" value="true" checked={this.props.hasGarden} /> Garden
+                        </label>
+                    </div>
+                </div>
+                <div className="Box Box-row">
+                    <div className="Box Box-item Box-item--noPadding">
+                        <button onClick={this.cancel.bind(this)} className='Button--secondary'>Cancel</button>
+                    </div>
+                    <div className="Box Box-item Box-item--noPadding">
+                        <button onClick={this.saveLocation.bind(this)} className='Button--secondary'>Save</button>
+                    </div>
+                </div>
+
+            </form>
         )
     }
 
@@ -145,5 +187,14 @@ export default class AdminToolComponent extends Component {
         );
 
     }
+
+
+    /**
+    * Cancel adding this pub
+    */
+    cancel() {
+        hashHistory.push('/add');
+    }
+
 
 }

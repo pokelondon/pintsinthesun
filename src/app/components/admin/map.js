@@ -1,19 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 
-const MARKER_IMG = {
-    url: "/img/pint.png",
-    scaledSize: new google.maps.Size(50, 50),
-    origin: new google.maps.Point(0,0),
-    anchor: new google.maps.Point(25, 50)
-};
 
-const MARKER_IMG_GREY = {
-    url: "/img/pint-grey.png",
-    scaledSize: new google.maps.Size(50, 50),
-    origin: new google.maps.Point(0,0),
-    anchor: new google.maps.Point(25, 50)
-};
 
 const DEFAULT_ZOOM = 18;
 
@@ -53,11 +41,12 @@ export default class Map extends Component {
                         defaultZoom={this.state.zoom}
                         zoom={this.state.zoom}
                         mapTypeId={google.maps.MapTypeId.HYBRID}
+                        options={{
+                            draggable: false,
+                            scrollwheel: false,
+                            disableDoubleClickZoom: true,
+                        }}
                         >
-                        <Marker
-                            position={this.props.centre}
-                            icon={MARKER_IMG}
-                        />
                     </GoogleMap>
                 }
             />
