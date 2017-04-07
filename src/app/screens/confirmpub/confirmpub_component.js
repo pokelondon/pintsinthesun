@@ -71,11 +71,16 @@ export default class AdminToolComponent extends Component {
 
 
         return (
-            <form className="Location-details">
+            <form className="Location-details" onSubmit={(e) => {e.preventDefault();}}>
 
                 <div className="Box Box-row">
                     <div className="Box Box-item">
                         <h2 className="Heading--1">{this.props.pubToAdd.name}</h2>
+                    </div>
+                </div>
+                <div className="Box Box-row">
+                    <div className="Box Box-item">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec mi non odio tempor consectetur. Duis rhoncus urna nec libero dignissim facilisis.</p>
                     </div>
                 </div>
                 <div className="Box Box-row flex-wrap">
@@ -174,8 +179,8 @@ export default class AdminToolComponent extends Component {
     /**
      * Persist data through the service to the API
      */
-    saveLocation() {
-
+    saveLocation(e) {
+        e.preventDefault();
         savePub(this.props.pubToAdd.place_id, this.state)
         .then(
             () => {
@@ -192,7 +197,8 @@ export default class AdminToolComponent extends Component {
     /**
     * Cancel adding this pub
     */
-    cancel() {
+    cancel(e) {
+        e.preventDefault();
         hashHistory.push('/add');
     }
 
