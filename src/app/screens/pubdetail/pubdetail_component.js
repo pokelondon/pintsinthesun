@@ -151,9 +151,12 @@ class PubDetail extends React.Component {
                             <div className="Box Box-item PubPagination-indicator">
                                 <div className="box-child-margin">Result {this.props.filteredIndex + 1} of {this.props.filteredPubs.length}</div>
                             </div>
-                            <div className="Box Box-item Box-item--noPadding">
-                                <button className="Button--secondaryAlt Button--next PubPagination-incrementor" onClick={this.props.incrementCurrentPub}>Show me another</button>
-                            </div>
+                            {this.props.filteredPubs.length > 1 &&
+
+                                <div className="Box Box-item Box-item--noPadding">
+                                    <button className="Button--secondaryAlt Button--next PubPagination-incrementor" onClick={this.props.incrementCurrentPub}>Show me another</button>
+                                </div>    
+                            }
                         </div>
 
                         <h2 className="Heading--2 DetailsHeading">Details</h2>
