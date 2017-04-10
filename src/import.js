@@ -1,8 +1,33 @@
-var data = require('./public/data/results.json');
+//var data = require('./public/data/results.json');
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 
 var ENV = (process.env.ENV || 'dev');
+
+var data = {
+    "items": [
+        {
+            "googleplaces": { "id" : "ChIJy4q69s0adkgRLSZ4NUqrXjY" },
+            "has_outside_space": true,
+            "has_garden": false,
+            "outdoor_angle" : -97,
+            "name": "The Gunmakers",
+            "location": { "type" : "Point", "coordinates" : [ -0.1531723, 51.519231 ] },
+            "approved": false,
+            "rejected": false,
+        },
+        {
+            "googleplaces": { "id" : "ChIJo4s4080adkgRZXhdFhSl-ww" },
+            "has_outside_space" : true,
+            "has_garden" : false,
+            "outdoor_angle": -14,
+            "name": "THE BARLEY MOW",
+            "location": { "type" : "Point", "coordinates" : [ -0.1556608, 51.5196788 ] },
+            "approved": false,
+            "rejected": false,
+        }
+    ]
+};
 
 MongoClient.connect('mongodb://localhost/pintsinthesun2_' + ENV, function(err, db) {
     assert.equal(null, err);
@@ -22,14 +47,14 @@ MongoClient.connect('mongodb://localhost/pintsinthesun2_' + ENV, function(err, d
         });
     });
 
-    console.log('Querying');
-    pubs.find().toArray(function(err, data) {
-        console.log(data);
-    });
-
     console.log('Creating 2dsphere index');
     pubs.createIndex( { location : "2dsphere" } );
 
     console.log('Creating google places unique index');
     pubs.createIndex( { "googleplaces.id": 1 }, { unique: true });
+
+    console.log('Querying');
+    pubs.find().toArray(function(err, data) {
+        console.log(data);
+    });
 });
