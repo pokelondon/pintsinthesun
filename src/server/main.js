@@ -27,11 +27,6 @@ var bind = (process.env.WEBSERVER_PORT || 8080);
 var ENV = (process.env.ENV || 'dev');
 var ANGLE_RANGE = 100;
 
-var SUBMIT_PROPS = {
-    outdoor_angle: Number,
-    has_outside_space: Boolean,
-    has_garden: Boolean
-}
 
 // Init
 // ================================================================
@@ -98,6 +93,9 @@ app.get('/near/:lat/:lng/:date?', function(req, res) {
         },
         {
             $sort: { distance: 1 }
+        },
+        {
+            $match: {approved: true}
         }
     ], function(err, docs) {
         if(err) {
@@ -112,33 +110,10 @@ app.get('/near/:lat/:lng/:date?', function(req, res) {
 });
 
 
+
 /**
-* Accept an array of foursquare IDs.
-* Return location objects that are in the database that match the incoming IDs
+* Return one pub by its google ID
 */
-// app.post('/pub/exists', function(req, res) {
-//
-//     var ids = req.body;
-//     var cursor = pubs.find({"foursquare.id": { $in: ids} } );
-//
-//     var matching = [];
-//     cursor.each(function(err, doc){
-//         assert.equal(null, err);
-//         if(doc != null){
-//             matching.push(doc);
-//         } else {
-//             res.json(matching);
-//         }
-//     });
-// });
-
-// app.get('/pub/:id', function(req, res) {
-//     pubs.findOne({"foursquare.id": req.params.id}, function(err, pub) {
-//         assert.equal(null, err);
-//         res.json({pub: pub});
-//     })
-// });
-
 app.get('/pub/:id', function(req, res) {
     pubs.findOne({"googleplaces.id": req.params.id}, function(err, pub) {
         assert.equal(null, err);
@@ -155,12 +130,6 @@ app.post('/pub/:id', function(req, res) {
     var googlePlaceID = req.params.id;
     var pub = {}
 
-    for(var key in SUBMIT_PROPS) {
-        if (submittedData.hasOwnProperty(key)) {
-            pub[key] = SUBMIT_PROPS[key](submittedData[key]);
-        }
-    }
-
     fetch(config.GOOGLE_PLACES_API + '&placeid=' + googlePlaceID)
         .then(function(response) {
             return response.json();
@@ -170,7 +139,8 @@ app.post('/pub/:id', function(req, res) {
                 {
                     $set: {
                         googleplaces: {
-                            id: googlePlaceID
+                            id: googlePlaceID,
+                            url: data.result.url
                         },
                         has_outside_space: submittedData.has_outside_space,
                         has_garden: submittedData.has_garden,
@@ -201,6 +171,10 @@ app.post('/pub/:id', function(req, res) {
         });
 });
 
+
+/**
+* Get weather
+*/
 app.get('/weather/:lat/:lng', apimiddleware('10 minutes'), function(req, res) {
     var lat = Number(req.params.lat);
     var lng = Number(req.params.lng);
@@ -221,7 +195,6 @@ app.get('/weather/:lat/:lng', apimiddleware('10 minutes'), function(req, res) {
                     icon: point.icon
                 };
             });
-            console.log(ret);
             res.json(ret);
         });
 });
