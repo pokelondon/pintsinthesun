@@ -118,10 +118,13 @@ export default class AdminToolComponent extends Component {
             return null;
         }
 
-        const angleMarker = <AngleMarker
-            angle={this.state.outdoorAngle}
-            onAngleChage={this.onAngleChange.bind(this)}
-        />;
+        let angleMarker;
+        if(!this.state.isSaved) {
+            angleMarker = <AngleMarker
+                angle={this.state.outdoorAngle}
+                onAngleChage={this.onAngleChange.bind(this)}
+            />;
+        }
 
 
         return (
