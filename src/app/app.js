@@ -15,8 +15,10 @@ import Locate from './screens/locate/locate_container';
 import Base from './screens/base/base_container';
 import ConfirmPub from './screens/confirmpub/confirmpub_container';
 import Add from './screens/addpub/addpub_container';
+import Admin from './screens/admin/admin_component';
 import NoMatch from './screens/nomatch';
 import FatalError from './screens/error';
+
 
 import GA from 'react-ga';
 
@@ -53,6 +55,7 @@ ReactDOM.render((
                     <Route path="/confirm" component={ConfirmPub} />
                     <Route path="/add" component={Add} />
                     <Route path="/error" component={FatalError} />
+                    <Route path="/admin" component={Admin} />
                     <Route path="*" component={NoMatch}/>
                 </Route>
             </Router>

@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import Map from '../../components/admin/map';
 import { getPubs } from '../../services/foursquare';
-import AngleMarker from '../../components/admin/AngleMarker';
+import AngleMarker from '../../components/admin/anglemarker';
 import { existsInLocalStorage } from '../../services/local';
 import { savePub, checkPubsExist } from '../../services/pintsinthesun';
 import { getDistance } from '../../utils/Geo';
 import { hashHistory, Link } from 'react-router';
+import LocationDetails from '../../components/admin/location_details'
 
 
 export default class AdminToolComponent extends Component {
@@ -69,43 +70,15 @@ export default class AdminToolComponent extends Component {
             )
         }
 
-
         return (
-            <form className="Location-details" onSubmit={(e) => {e.preventDefault();}}>
+            <LocationDetails
+                name={this.props.pubToAdd.name}
+                onSave={this.saveLocation.bind(this)}
+                onFormChange={this.onFormChange.bind(this)}
+                hasOutsideSpace={this.props.pubToAdd.has_outside_space}
+                hasGarden={this.props.pubToAdd.has_garden}
+            />)
 
-                <div className="Box Box-row">
-                    <div className="Box Box-item">
-                        <h2 className="Heading--1">{this.props.pubToAdd.name}</h2>
-                    </div>
-                </div>
-                <div className="Box Box-row">
-                    <div className="Box Box-item">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec mi non odio tempor consectetur. Duis rhoncus urna nec libero dignissim facilisis.</p>
-                    </div>
-                </div>
-                <div className="Box Box-row flex-wrap">
-                    <div className="Box Box-item Box-item--noPadding Property-option">
-                        <label>
-                            <input onChange={this.onFormChange.bind(this)} type="checkbox" name="hasOutsideSpace" value="true" checked={this.props.hasOutsideSpace} /> Outside space
-                        </label>
-                    </div>
-                    <div className="Box Box-item Box-item--noPadding Property-option">
-                        <label>
-                            <input onChange={this.onFormChange.bind(this)} type="checkbox" name="hasGarden" value="true" checked={this.props.hasGarden} /> Garden
-                        </label>
-                    </div>
-                </div>
-                <div className="Box Box-row">
-                    <div className="Box Box-item Box-item--noPadding">
-                        <button onClick={this.cancel.bind(this)} className='Button--secondary'>Cancel</button>
-                    </div>
-                    <div className="Box Box-item Box-item--noPadding">
-                        <button onClick={this.saveLocation.bind(this)} className='Button--secondary'>Save</button>
-                    </div>
-                </div>
-
-            </form>
-        )
     }
 
 
@@ -122,7 +95,7 @@ export default class AdminToolComponent extends Component {
         if(!this.state.isSaved) {
             angleMarker = <AngleMarker
                 angle={this.state.outdoorAngle}
-                onAngleChage={this.onAngleChange.bind(this)}
+                onAngleChange={this.onAngleChange.bind(this)}
             />;
         }
 
@@ -173,9 +146,9 @@ export default class AdminToolComponent extends Component {
     */
     onFormChange(e) {
         let checkBox = e.target;
-        let tempState = Object.assign({}, this.state);
-        tempState[checkBox.name] = checkBox.checked;
-        this.setState(tempState);
+        let newState = {...this.state};
+        newState[checkBox.name] = checkBox.checked;
+        this.setState(newState);
     }
 
 

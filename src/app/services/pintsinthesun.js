@@ -31,6 +31,48 @@ export function getPub(placeID) {
     });
 }
 
+
+export function getUnapprovedPubs() {
+    return fetch(`${config.API}pubs/?approved=false&rejected=false`, {
+        method: 'get',
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+}
+
+
+export function approvePub(id) {
+    const payload = {
+        approved: true,
+        rejected: false
+    };
+
+    const data = JSON.stringify(payload);
+
+    return fetch(`${config.API}pub/${id}`, {
+        method: 'post',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: data
+    });
+}
+
+
+export function updatePub(id, values) {
+
+    const data = JSON.stringify(values);
+
+    return fetch(`${config.API}pub/${id}`, {
+        method: 'PATCH',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: data
+    });
+}
+
 /**
  * Returns list of locations that are in the database
  *

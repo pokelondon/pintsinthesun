@@ -2,13 +2,9 @@ import React from 'react';
 
 class AngleMarker extends React.Component {
 
-
     constructor(props) {
         super(props)
-        this.props = props;
-
         this.startDragPos;
-
         this.state = {
             isDragging: false
         }
@@ -55,7 +51,7 @@ class AngleMarker extends React.Component {
         let angle = (pxOffset / 2) + this.startAngle;
         if(angle >= 179) angle = 179;
         if(angle <= -179) angle = -179;
-        this.props.onAngleChage(angle);
+        this.props.onAngleChange(angle);
     }
 
 }

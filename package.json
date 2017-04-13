@@ -31,6 +31,7 @@
     "gulp-util": "^3.0.7",
     "jquery": "^2.2.3",
     "moment": "^2.13.0",
+    "prop-types": "^15.5.8",
     "rc-slider": "^3.6.2",
     "react-dom": "^15.0.2",
     "react-google-maps": "^4.10.1",

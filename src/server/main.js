@@ -8,6 +8,7 @@
 var express = require('express');
 
 var MongoClient = require('mongodb').MongoClient;
+var ObjectID = require('mongodb').ObjectID;
 var http = require('http');
 var assert = require('assert');
 var bodyParser = require('body-parser');
@@ -26,6 +27,15 @@ var config = require('./config');
 var bind = (process.env.WEBSERVER_PORT || 8080);
 var ENV = (process.env.ENV || 'dev');
 var ANGLE_RANGE = 100;
+
+
+var SUBMIT_PROPS = {
+    outdoor_angle: Number,
+    has_outside_space: Boolean,
+    has_garden: Boolean,
+    approved: Boolean,
+    rejected: Boolean
+}
 
 
 // Init
@@ -122,6 +132,25 @@ app.get('/pub/:id', function(req, res) {
 });
 
 
+
+/**
+* Return lots of pubs (max 10)
+*/
+app.get('/pubs', function (req, res) {
+    const approved = req.query.approved === 'true';
+    const rejected = req.query.rejected === 'true';
+    pubs.find({
+        approved: approved,
+        rejected: rejected
+    }).limit(10)
+    .toArray(function(err, results){
+        if(!err){
+            res.send(results);
+        }
+    });
+});
+
+
 /**
 * Save a pub
 */
@@ -169,6 +198,36 @@ app.post('/pub/:id', function(req, res) {
         }).catch(function(err) {
             console.error(err);
         });
+});
+
+
+/**
+* Update a pub
+*/
+app.patch('/pub/:id', function (req, res) {
+    //TODO - requires auth!
+    var submittedData = req.body;
+    var id = req.params.id;
+    var pub = {};
+
+    for(var key in SUBMIT_PROPS) {
+        if (submittedData.hasOwnProperty(key)) {
+            pub[key] = SUBMIT_PROPS[key](submittedData[key]);
+        }
+    }
+
+    pubs.update(
+        {
+            _id: ObjectID(id)
+        },
+        {
+            $set : pub
+        },
+        function(err, num, obj) {
+            assert.equal(null, err);
+            res.json({pub: pub, num: num});
+        }
+    );
 });
 
 
