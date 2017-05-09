@@ -63,10 +63,10 @@ class LocationDetails extends Component {
 }
 
 LocationDetails.propTypes = {
-    name: PropTypes.string.isRequired,
-    onFormChange: PropTypes.func.isRequired,
-    hasOutsideSpace: PropTypes.bool,
-    hasGarden: PropTypes.bool
+    name: React.PropTypes.string.isRequired,
+    onFormChange: React.PropTypes.func.isRequired,
+    hasOutsideSpace: React.PropTypes.bool,
+    hasGarden: React.PropTypes.bool
 }
 
 export default LocationDetails;
