@@ -13,7 +13,6 @@ import Start from './screens/start/start_container';
 import PubDetail from './screens/pubdetail/pubdetail_container';
 import Locate from './screens/locate/locate_container';
 import Base from './screens/base/base_container';
-import ConfirmPub from './screens/confirmpub/confirmpub_container';
 import Add from './screens/addpub/addpub_container';
 import Admin from './screens/admin/admin_component';
 import NoMatch from './screens/nomatch';
@@ -52,7 +51,6 @@ ReactDOM.render((
                     <IndexRoute component={Start} />
                     <Route path="/locate" component={Locate} />
                     <Route path="/pubs" component={PubDetail} />
-                    <Route path="/confirm" component={ConfirmPub} />
                     <Route path="/add" component={Add} />
                     <Route path="/error" component={FatalError} />
                     <Route path="/admin" component={Admin} />
