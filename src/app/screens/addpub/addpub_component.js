@@ -1,23 +1,61 @@
 import React from 'react';
 import { searchPubs, getLocationData } from '../../services/googlemaps';
-import { getPub } from '../../services/pintsinthesun';
+import { savePub, getPub } from '../../services/pintsinthesun';
 import StaticMap from '../../components/static-map';
 import PubSearch from '../../components/PubSearch';
+import LocationDetails from '../../components/admin/LocationDetails';
+import PubSuggestionConfirm from '../../components/PubSuggestionConfirm';
 import hashHistory from 'react-router'
 import classNames from 'classNames';
 import config from '../../config';
 import { testIsPub } from '../../utils/pintsUtils';
+
+const DEFAULT_STATE = {
+    placeID: null,
+    locationData: null,
+    hasOutsideSpace: false,
+    hasGarden: false,
+    isSaved: false,
+    hasError: false
+}
 
 export default class AddPubComponent extends React.Component {
 
     constructor(props){
         super(props);
         this.state = {
-            placeID: null,
+            ...DEFAULT_STATE,
             locationLat: this.props.centre.lat,
             locationLng: this.props.centre.lng,
-            locationData: null,
         }
+
+        this.onLocationDetailsChange = this.onLocationDetailsChange.bind(this);
+        this.savePub = this.savePub.bind(this);
+        this.resetForm = this.resetForm.bind(this);
+    }
+
+    /**
+    * set the state back to default
+    */
+
+    resetForm() {
+        this.setState(DEFAULT_STATE);
+    }
+
+    /**
+     * Persist data through the service to the API
+     */
+    savePub(e) {
+        e.preventDefault();
+        savePub(this.state.placeID, this.state)
+        .then(
+            () => {
+                this.setState({isSaved: true});
+            },
+            (err) => {
+                this.setState({hasError: true});
+            }
+        );
     }
 
 
@@ -62,27 +100,13 @@ export default class AddPubComponent extends React.Component {
 
 
     /**
-    * Get the JSX needed to create the pub detail card
-    * @return {jsx} the markup
+    * Handle change of location details form
     */
-    getPubDetails() {
-        if(this.state.locationData && this.state.locationIsPub){
-            return (
-                <div>
-                    <div className="Box Box-row">
-                        <div className="Box Box-item">
-                            <h2 className="Heading--2">{this.state.locationData.name}</h2>
-                            <p>{this.state.locationData.formatted_address}</p>
-                        </div>
-                    </div>
-                    <div className="Box Box-row">
-                        <div className="Box Box-item Box-item--noPadding">
-                            <button onClick={this.props.addPub.bind(this, this.state.locationData)} className="Button--secondary">Add this pub</button>
-                        </div>
-                    </div>
-                </div>
-            )
-        }
+    onLocationDetailsChange(e) {
+        const checkBox = e.target;
+        let newState = {...this.state};
+        newState[checkBox.name] = checkBox.checked;
+        this.setState(newState);
     }
 
 
@@ -97,6 +121,10 @@ export default class AddPubComponent extends React.Component {
                 <header className="Screen-header">
                     <div className="max-width">
                         <p className="Heading--1">Recommend a pub in the sun</p>
+                        {/*
+                            Search component composes its header component, because
+                            divs need to be siblings in order for styling to not break
+                        */}
                         <PubSearch
                             getMapRef={() => this.mapRef}
                             focusOnLocation={this.focusOnLocation.bind(this)}
@@ -111,9 +139,31 @@ export default class AddPubComponent extends React.Component {
                 </header>
 
                 <div className="Screen-main max-width">
+                    {this.state.locationData && this.state.locationIsPub &&
+                        <div className="LocationDetailsWrapper">
+                            <div className="LocationDetailsWrapper-floatingContainer">
+                                {this.state.isSaved ||
+                                    <LocationDetails
+                                        name={this.state.locationData.name}
+                                        hasOutsideSpace={this.state.hasOutsideSpace}
+                                        hasGarden={this.state.hasGarden}
+                                        onFormChange={this.onLocationDetailsChange}
+                                        onSave={this.savePub}
+                                    />
+                                }
+                                {this.state.isSaved &&
+                                    <PubSuggestionConfirm
+                                        onAddAnother={this.resetForm}
+                                        onCancel={this.resetForm}
+                                    />
+                                }
+                            </div>
+                        </div>
+                    }
                     <div className="Box Box-row">
                         <div className="Box Box-item Box-item--noPadding">
                             <StaticMap
+                                offsetPin
                                 centre={{
                                     lat: this.state.locationLat,
                                     lng: this.state.locationLng
@@ -126,7 +176,6 @@ export default class AddPubComponent extends React.Component {
                             />
                         </div>
                     </div>
-                    {this.getPubDetails()}
                 </div>
             </div>
         )

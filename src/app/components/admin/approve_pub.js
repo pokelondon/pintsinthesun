@@ -1,6 +1,6 @@
 import React from 'react';
 import AngleMarker from './anglemarker';
-import LocationDetails from './location_details';
+import LocationDetails from './LocationDetails';
 import { updatePub } from '../../services/pintsinthesun';
 import Map from './map';
 

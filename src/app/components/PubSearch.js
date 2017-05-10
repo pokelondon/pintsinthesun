@@ -19,7 +19,6 @@ class PubSearch extends React.Component {
 
         this.onSearchFormSubmit = this.onSearchFormSubmit.bind(this);
         this.onSearchFocus = this.onSearchFocus.bind(this);
-        this.onSearchBlur = this.onSearchBlur.bind(this);
         this.onSearchKeyDown = this.onSearchKeyDown.bind(this);
         this.onSearchChange = this.onSearchChange.bind(this);
     }
@@ -69,14 +68,6 @@ class PubSearch extends React.Component {
     */
     onSearchFocus(){
         this.setState({isActive: true});
-    }
-
-
-    /**
-    * Handle blur of search field
-    */
-    onSearchBlur(){
-        //this.setState({isActive: false});
     }
 
 
@@ -161,7 +152,6 @@ class PubSearch extends React.Component {
                         type="search"
                         className="Input--search Box-item flex-2"
                         onFocus={this.onSearchFocus}
-                        onBlur={this.onSearchBlur}
                         onKeyDown={this.onSearchKeyDown}
                         onChange={this.onSearchChange}
                         value={this.state.searchTerm}
@@ -170,7 +160,6 @@ class PubSearch extends React.Component {
                     <div className="Box-item Box-item--noPadding flex-1">
                         <button className="Button--secondary">Search</button>
                     </div>
-
                 </form>
                 {this.getResultList()}
             </div>

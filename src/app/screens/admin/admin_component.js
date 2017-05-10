@@ -3,7 +3,6 @@ import { getUnapprovedPubs, updatePub } from '../../services/pintsinthesun';
 import Map from '../../components/admin/map';
 import AngleMarker from '../../components/admin/anglemarker';
 import ApprovePub from '../../components/admin/approve_pub';
-import LocationDetails from '../../components/admin/location_details';
 
 export default class Admin extends React.Component {
 

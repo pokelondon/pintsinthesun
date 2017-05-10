@@ -4,7 +4,7 @@ import {addLocation as addLocationToLocal} from './local';
 export function savePub(placeID, pubDetails) {
 
     const payload = {
-        outdoor_angle: pubDetails.outdoorAngle,
+        outdoor_angle: pubDetails.outdoorAngle || 0,
         has_outside_space: pubDetails.hasOutsideSpace,
         has_garden: pubDetails.hasGarden
     };
@@ -73,23 +73,3 @@ export function updatePub(id, values) {
     });
 }
 
-/**
- * Returns list of locations that are in the database
- *
- * @param {Array} ids - array of place IDs we want to check
- */
-// export function checkPubsExist(ids) {
-//
-//     const data = JSON.stringify(ids);
-//
-//     return fetch(`${config.API}pub/exists/`, {
-//         method: 'post',
-//         headers: {
-//             "Content-Type": "application/json"
-//         },
-//         body: data
-//     }).then(
-//         data => data.json()
-//     );
-//
-// }

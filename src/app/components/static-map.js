@@ -10,16 +10,40 @@ const MARKER_IMG = {
     anchor: new google.maps.Point(14.4, 40)
 };
 
-export default class StaticMap extends React.Component {
+class StaticMap extends React.Component {
 
     constructor(props) {
         super(props);
         this.props = props;
     }
 
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps.centre, this.props.centre);
+        if(nextProps.centre.lat !== this.props.centre.lat && nextProps.centre.lng !== this.props.centre.lng) {
+            setTimeout(() => {
+                this.offsetMap();
+            }, 100);
+        }
+    }
+
     onMapClick(e){
         if(this.props.onPlaceClick){
             this.props.onPlaceClick(e.placeId);
+        }
+    }
+
+    setMapRef(ref) {
+        this.map = ref;
+        if(this.props.setMapRef)this.props.setMapRef(ref);
+    }
+
+    offsetMap() {
+        if(this.props.offsetPin) {
+            if(window.matchMedia("(min-width: 400px)").matches) {
+                this.map.panBy(-200, 0);
+            } else {
+                this.map.panBy(0, -50);
+            }
         }
     }
 
@@ -39,16 +63,13 @@ export default class StaticMap extends React.Component {
                     )}
                     googleMapElement={
                         <GoogleMap
-                            ref={(ref) => {
-                                this.map = ref;
-                                if(this.props.setMapRef)this.props.setMapRef(ref);
-                            }}
+                            ref={(ref) => this.setMapRef(ref)}
                             defaultZoom={15}
                             defaultCenter={this.props.centre}
                             center={this.props.centre}
                             onClick={this.onMapClick.bind(this)}
                             options={{
-                                mapTypeControl: controllable,
+                                mapTypeControl: false,
                                 streetViewControl: controllable,
                                 zoomControl: controllable,
                                 draggable: controllable,
@@ -69,3 +90,9 @@ export default class StaticMap extends React.Component {
         )
     }
 }
+
+StaticMap.defaultProps = {
+    offsetPin: false
+}
+
+export default StaticMap;

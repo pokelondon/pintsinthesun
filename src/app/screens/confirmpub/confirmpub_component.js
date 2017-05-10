@@ -6,7 +6,7 @@ import { existsInLocalStorage } from '../../services/local';
 import { savePub, checkPubsExist } from '../../services/pintsinthesun';
 import { getDistance } from '../../utils/Geo';
 import { hashHistory, Link } from 'react-router';
-import LocationDetails from '../../components/admin/location_details'
+import LocationDetails from '../../components/admin/LocationDetails'
 
 
 export default class AdminToolComponent extends Component {
