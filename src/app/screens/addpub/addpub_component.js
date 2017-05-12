@@ -2,7 +2,7 @@ import React from 'react';
 import { searchPubs, getLocationData } from '../../services/googlemaps';
 import { savePub, getPub } from '../../services/pintsinthesun';
 import StaticMap from '../../components/static-map';
-import PubSearch from '../../components/PubSearch';
+import PubSearchContainer from '../../components/PubSearch/PubSearchContainer';
 import LocationDetails from '../../components/admin/LocationDetails';
 import PubSuggestionConfirm from '../../components/PubSuggestionConfirm';
 import hashHistory from 'react-router'
@@ -28,87 +28,11 @@ export default class AddPubComponent extends React.Component {
             locationLat: this.props.centre.lat,
             locationLng: this.props.centre.lng,
         }
-
-        this.onLocationDetailsChange = this.onLocationDetailsChange.bind(this);
-        this.savePub = this.savePub.bind(this);
-        this.resetForm = this.resetForm.bind(this);
     }
 
-    /**
-    * set the state back to default
-    */
-
-    resetForm() {
-        this.setState(DEFAULT_STATE);
+    componentWillUnmount() {
+        this.props.resetForm();
     }
-
-    /**
-     * Persist data through the service to the API
-     */
-    savePub(e) {
-        e.preventDefault();
-        savePub(this.state.placeID, this.state)
-        .then(
-            () => {
-                this.setState({isSaved: true});
-            },
-            (err) => {
-                this.setState({hasError: true});
-            }
-        );
-    }
-
-
-    /**
-    * Focus on a new location once its selected from the search results or map
-    * @param {string} placeID - the google place_id of the location to focus on
-    * @return null
-    */
-    focusOnLocation(placeID) {
-
-        if(!placeID){
-            return;
-        }
-
-        //check if its in the DB already
-        getPub(placeID).then((response) => {
-            return response.json();
-        }).then((data) => {
-            //its not - find out more about the place and the focus the map on it
-            if(!data.pub){
-                getLocationData(placeID, this.googleMapRef, (result) => {
-                    this.setState({
-                        locationLat: result.geometry.location.lat(),
-                        locationLng: result.geometry.location.lng(),
-                        placeID: placeID,
-                        locationData: result,
-                        locationIsPub: testIsPub(result.types),
-                        searchResults: null,
-                        textFieldIsFocussed: null
-                    });
-                });
-            } else {
-                //exists in the database already
-                if(data.pub.rejected){
-                    this.props.showDialog('That pub has already been suggested, but we didn\'t think it was sunny enough&hellip;');
-                } else {
-                    this.props.showDialog('Thanks, but that pub has already been suggested!');
-                }
-            }
-        })
-    }
-
-
-    /**
-    * Handle change of location details form
-    */
-    onLocationDetailsChange(e) {
-        const checkBox = e.target;
-        let newState = {...this.state};
-        newState[checkBox.name] = checkBox.checked;
-        this.setState(newState);
-    }
-
 
     /**
     * React render method
@@ -125,36 +49,35 @@ export default class AddPubComponent extends React.Component {
                             Search component composes its header component, because
                             divs need to be siblings in order for styling to not break
                         */}
-                        <PubSearch
+                        <PubSearchContainer
                             getMapRef={() => this.mapRef}
-                            focusOnLocation={this.focusOnLocation.bind(this)}
                         >
                             <div className="Box Box-row">
                                 <div className="Box Box-item">
                                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean faucibus tincidunt ipsum eu venenatis. Sed consequat in mi vitae elementum.</p>
                                 </div>
                             </div>
-                        </PubSearch>
+                        </PubSearchContainer>
                     </div>
                 </header>
 
                 <div className="Screen-main max-width">
-                    {this.state.locationData && this.state.locationIsPub &&
+                    {this.props.placeID && this.props.locationIsPub &&
                         <div className="LocationDetailsWrapper">
                             <div className="LocationDetailsWrapper-floatingContainer">
-                                {this.state.isSaved ||
+                                {this.props.isSaved ||
                                     <LocationDetails
-                                        name={this.state.locationData.name}
-                                        hasOutsideSpace={this.state.hasOutsideSpace}
-                                        hasGarden={this.state.hasGarden}
-                                        onFormChange={this.onLocationDetailsChange}
-                                        onSave={this.savePub}
+                                        name={this.props.placeName}
+                                        hasOutsideSpace={this.props.hasOutsideSpace}
+                                        hasGarden={this.props.hasGarden}
+                                        onFormChange={this.props.onLocationDetailsChange}
+                                        onSave={this.props.savePub}
                                     />
                                 }
-                                {this.state.isSaved &&
+                                {this.props.isSaved &&
                                     <PubSuggestionConfirm
-                                        onAddAnother={this.resetForm}
-                                        onCancel={this.resetForm}
+                                        onAddAnother={this.props.resetForm}
+                                        onCancel={this.props.resetForm}
                                     />
                                 }
                             </div>
@@ -165,14 +88,15 @@ export default class AddPubComponent extends React.Component {
                             <StaticMap
                                 offsetPin
                                 centre={{
-                                    lat: this.state.locationLat,
-                                    lng: this.state.locationLng
+                                    lat: this.props.centre.lat,
+                                    lng: this.props.centre.lng
                                 }}
                                 setMapRef={(ref) => {
                                     this.mapRef = ref;
                                 }}
                                 controllable={true}
-                                onPlaceClick={this.focusOnLocation.bind(this)}
+                                onPlaceClick={this.props.focusOnLocation}
+                                onCenterChanged={this.props.onCenterChanged}
                             />
                         </div>
                     </div>

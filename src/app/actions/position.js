@@ -10,6 +10,8 @@ export const FETCH_POSITION = 'fetch_position';
 export const REQUEST_POSITION = 'request_position';
 export const RESPONSE_POSITION = 'response_position';
 
+export const SET_POSITION = 'SET_POSITION';
+
 export const REQUEST_PUBS = 'request_pubs';
 export const RESPONSE_PUBS = 'response_pubs';
 export const REQUEST_PUB_DETAIL = 'request_pub_detail';
@@ -109,6 +111,13 @@ export function responsePosition(centre, isGPSPosition = false) {
             isGPSPosition,
             address: null
         });
+    }
+}
+
+export function setPosition(centre) {
+    return {
+        type: SET_POSITION,
+        centre
     }
 }
 

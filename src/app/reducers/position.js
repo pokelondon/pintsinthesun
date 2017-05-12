@@ -19,6 +19,7 @@ import {
     ADD_PUB,
     SHOW_DIALOG,
     CLOSE_DIALOG,
+    SET_POSITION,
 } from '../actions/position';
 
 const date = new Date();
@@ -175,6 +176,12 @@ export default function position(state=INITIAL_STATE, action) {
                     renderTransitionDirection: 'right-out'
                 }
             }
+        case SET_POSITION:
+            return {
+                ...state,
+                centre: action.centre
+            }
+
         default:
             return state;
     }

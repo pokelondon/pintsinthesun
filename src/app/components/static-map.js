@@ -14,7 +14,8 @@ class StaticMap extends React.Component {
 
     constructor(props) {
         super(props);
-        this.props = props;
+
+        this.onDragend = this.onDragend.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -47,6 +48,11 @@ class StaticMap extends React.Component {
         }
     }
 
+    onDragend() {
+        let centre = this.map.props.map.getCenter();
+        this.props.onCenterChanged({lat: centre.lat(), lng: centre.lng()});
+    }
+
     render() {
         const controllable = this.props.controllable || false;
         const classes = classNames('Map', this.props.className);
@@ -68,6 +74,7 @@ class StaticMap extends React.Component {
                             defaultCenter={this.props.centre}
                             center={this.props.centre}
                             onClick={this.onMapClick.bind(this)}
+                            onDragend={this.onDragend}
                             options={{
                                 mapTypeControl: false,
                                 streetViewControl: controllable,
