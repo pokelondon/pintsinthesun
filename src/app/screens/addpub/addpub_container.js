@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import AddPubComponent from './addpub_component';
 import * as positionActions from '../../actions/position';
 import * as addPubActions from '../../actions/addPub';
+import * as uiActions from '../../actions/ui';
 import { bindActionCreators } from 'redux';
 import { hashHistory } from 'react-router';
 
@@ -29,7 +30,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             hashHistory.push('/confirm');
         },
         showDialog: (message) => {
-            boundActions.showDialog(message);
+            dispatch(uiActions.showDialog(message));
         },
         onLocationDetailsChange: (e) => {
             const checkBox = e.target;

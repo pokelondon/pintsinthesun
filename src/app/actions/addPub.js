@@ -1,6 +1,7 @@
 import { searchPubs, getLocationData } from '../services/googlemaps';
 import { savePub as savePubAPICall, getPub } from '../services/pintsinthesun';
-import { showDialog, setPosition } from './position';
+import { setPosition } from './position';
+import { showDialog } from './ui';
 
 export const SEARCH_PUB = 'SEARCH_PUB';
 export const RECEIVE_SEARCH_PUB_RESULTS = 'RECEIVE_SEARCH_PUB_RESULTS';

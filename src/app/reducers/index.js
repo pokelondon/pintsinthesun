@@ -4,11 +4,13 @@ import position from './position';
 import locate from './locate';
 import weather from './weather';
 import addPub from './addPub';
+import ui from './ui';
 
 
 export default combineReducers({
     weather,
     position,
     locate,
-    addPub
+    addPub,
+    ui
 });

@@ -20,60 +20,14 @@ export const RESPONSE_PUB_DETAIL = 'response_pub_detail';
 export const INCREMENT_CURRENT_PUB = 'increment_current_pub';
 export const DECREMENT_CURRENT_PUB = 'decrement_current_pub';
 
-export const LAUNCH_LOCATION_MODAL = 'launch_location_modal';
-export const LAUNCH_INFO_MODAL = 'launch_info_modal';
-export const CLOSE_MODAL = 'close_modal';
-
 export const REQUEST_ADDRESS = 'request_address';
 export const RESPONSE_ADDRESS = 'response_address';
 
 export const ADD_PUB = 'add_pub';
-export const SHOW_DIALOG = 'show_dialog';
-export const CLOSE_DIALOG = 'close_dialog';
 
 import { hashHistory } from 'react-router'
 
 
-export function showDialog(message){
-    return function(dispatch) {
-        dispatch({
-            type: SHOW_DIALOG,
-            message
-        });
-    }
-}
-
-export function closeDialog(){
-    return function(dispatch) {
-        dispatch({
-            type: CLOSE_DIALOG
-        });
-    }
-}
-
-export function launchLocationModal(){
-    return function(dispatch) {
-        dispatch({
-            type: LAUNCH_LOCATION_MODAL
-        });
-    }
-}
-
-export function launchInfoModal(){
-    return function(dispatch) {
-        dispatch({
-            type: LAUNCH_INFO_MODAL
-        });
-    }
-}
-
-export function closeModal(){
-    return function(dispatch) {
-        dispatch({
-            type: CLOSE_MODAL
-        });
-    }
-}
 
 export function addPub(pubDetails) {
     return function(dispatch) {

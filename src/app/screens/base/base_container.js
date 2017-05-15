@@ -2,12 +2,14 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 
 import * as positionActions from '../../actions/position';
+import * as uiActions from '../../actions/ui';
 
 import Base from './base_component';
 
 
 const mapStateToProps = (state, ownProps) => {
-    const { date, isLocating, centre, modal, dialogVisible, dialogMessage } = state.position;
+    const { date, isLocating, centre } = state.position;
+    const { dialogVisible, dialogMessage, modal } = state.ui;
 
     return {
         isLocating,
@@ -15,7 +17,7 @@ const mapStateToProps = (state, ownProps) => {
         centre,
         modal,
         dialogVisible,
-        dialogMessage
+        dialogMessage,
     }
 }
 
@@ -30,13 +32,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             boundPositionActions.launchLocationModal();
         },
         launchInfoModal: () => {
-            boundPositionActions.launchInfoModal();
+            dispatch(uiActions.launchInfoModal());
         },
         closeModal: () => {
-            boundPositionActions.closeModal();
+            dispatch(uiActions.closeModal());
         },
         closeDialog: () => {
-            boundPositionActions.closeDialog();
+            dispatch(uiActions.closeDialog());
         }
     }
 }
