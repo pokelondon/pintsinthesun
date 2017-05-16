@@ -152,6 +152,27 @@ app.get('/pubs', function (req, res) {
 
 
 /**
+* Accept an array of google place_ids.
+* Return location objects that are in the database that match the incoming IDs
+*/
+app.post('/pub/exists', function(req, res) {
+
+    var ids = req.body;
+    var cursor = pubs.find({"googleplaces.id": { $in: ids} } );
+
+    var matching = [];
+    cursor.each(function(err, doc){
+        assert.equal(null, err);
+        if(doc != null){
+            matching.push(doc.googleplaces.id);
+        } else {
+            res.json(matching);
+        }
+    });
+});
+
+
+/**
 * Save a pub
 */
 app.post('/pub/:id', function(req, res) {

@@ -73,3 +73,25 @@ export function updatePub(id, values) {
     });
 }
 
+
+/**
+ * Returns array placeIDs that exist already in the DB
+ *
+ * @param {Array} ids - array of place IDs we want to check
+ */
+export function checkPubsExist(ids) {
+
+    const data = JSON.stringify(ids);
+
+    return fetch(`${config.API}pub/exists/`, {
+        method: 'post',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: data
+    }).then(
+        data => data.json()
+    );
+
+}
+

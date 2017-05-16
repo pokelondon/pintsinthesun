@@ -11,11 +11,14 @@ import {
     RESET_SEARCH_FORM,
     FOCUS_ON_SEARCH_INPUT,
     SET_SEARCH_IS_ACTIVE,
+    RECEIVE_EXISTING_PUBS,
+    FILTER_EXISTING_PUBS,
 } from '../actions/addPub';
 
 const INITIAL_STATE = {
     searchTerm: '',
     searchResults: null,
+    existingPubs: [],
     selectedSearchResultIndex: -1,
 
     placeID: null,
@@ -39,7 +42,14 @@ export default (state = INITIAL_STATE, action) => {
         case RECEIVE_SEARCH_PUB_RESULTS:
             return {
                 ...state,
-                searchResults: action.searchResults.slice()
+                searchResults: action.searchResults.map((result) => {
+                    return {
+                        place_id: result.place_id,
+                        types: result.types.slice(),
+                        description: result.description,
+                        alreadyExists: state.existingPubs.indexOf(result.place_id) !== -1
+                    }
+                })
             }
 
         case MOVE_SELECTED_SEARCH_RESULT:
@@ -98,6 +108,31 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isSearchActive: true
+            }
+
+        case RECEIVE_EXISTING_PUBS:
+            //merge existing pubs from the XHR call into our state (if they arent in already)
+            return {
+                ...state,
+                existingPubs: [
+                    ...state.existingPubs,
+                    ...action.existingPubs.filter((newExistingPub) => {
+                        return state.existingPubs.indexOf(newExistingPub) === -1;
+                    })
+                ]
+            }
+
+        case FILTER_EXISTING_PUBS:
+            return {
+                ...state,
+                searchResults: state.searchResults.map((result) => {
+                    return {
+                        ...result,
+                        alreadyExists: state.existingPubs.some((existingPub) => {
+                            return existingPub === result.place_id
+                        })
+                    }
+                })
             }
 
         default:

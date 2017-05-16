@@ -1,5 +1,5 @@
 import { searchPubs, getLocationData } from '../services/googlemaps';
-import { savePub as savePubAPICall, getPub } from '../services/pintsinthesun';
+import { savePub as savePubAPI, getPub, checkPubsExist } from '../services/pintsinthesun';
 import { setPosition } from './position';
 import { showDialog } from './ui';
 
@@ -14,6 +14,8 @@ export const PUB_SAVED = 'PUB_SAVED';
 export const RESET_SEARCH_FORM = 'RESET_SEARCH_FORM';
 export const SET_SEARCH_IS_ACTIVE = 'SET_SEARCH_IS_ACTIVE';
 export const FOCUS_ON_SEARCH_INPUT = 'FOCUS_ON_SEARCH_INPUT';
+export const RECEIVE_EXISTING_PUBS = 'RECEIVE_EXISTING_PUBS';
+export const FILTER_EXISTING_PUBS = 'FILTER_EXISTING_PUBS';
 
 export const searchPub = (searchTerm) => {
     return {
@@ -26,6 +28,7 @@ export const fetchSearchPubResults = (searchTerm, bounds) => {
     return (dispatch) => {
         searchPubs(searchTerm, bounds, (results) => {
             dispatch(receiveSearchPubResults(results));
+            dispatch(fetchExistingPubs(results));
         });
     }
 }
@@ -51,6 +54,10 @@ export const setSelectedSearchResult = (index) => {
     }
 }
 
+
+/**
+* Focus on the location that is currently selected
+*/
 export const focusOnLocationByKey = () => {
     return (dispatch, getState) => {
         const selectedSearchResultIndex = getState().addPub.selectedSearchResultIndex;
@@ -61,6 +68,10 @@ export const focusOnLocationByKey = () => {
     }
 }
 
+
+/**
+* Focus on a given location
+*/
 export const focusOnLocation = (placeID) => {
     return (dispatch) => {
         //check if its in the DB already
@@ -117,7 +128,7 @@ export const savePub = () => {
             hasGarden: state.hasGarden,
             hasOutsideSpace: state.hasOutsideSpace
         }
-        savePubAPICall(state.placeID, details)
+        savePubAPI(state.placeID, details)
             .then(() => {
                 dispatch(pubSaved(true))
             })
@@ -150,5 +161,58 @@ export const setSearchIsActive = (value) => {
     return {
         type: SET_SEARCH_IS_ACTIVE,
         value
+    }
+}
+
+
+/**
+* Take the placeIDs of the search results, and fetch a list of pub objects
+* that are already in the DB to see if they exist already.
+* Debounced to limit server hit.
+*/
+export const fetchExistingPubs = (searchResults) => {
+    const thunk = (dispatch, getState) => {
+
+        const placeIDs = searchResults.map((result) => {
+            return result.place_id;
+        });
+
+        checkPubsExist(placeIDs)
+            .then((existingPubs) => {
+                dispatch(receiveExistingPubs(existingPubs));
+                dispatch(filterExistingPubs())
+            })
+            .catch((err) => {
+                //TODO - handle error
+            });
+    }
+
+    thunk.meta = {
+        debounce: {
+            time: 300,
+            key: 'DEBOUNCE_EXISTING_PUBS'
+        }
+    }
+
+    return thunk;
+}
+
+
+/**
+* Receive the pubs that already exist in the DB
+*/
+export const receiveExistingPubs = (existingPubs) => {
+    return {
+        type: RECEIVE_EXISTING_PUBS,
+        existingPubs
+    }
+}
+
+/**
+* Separate action to merge the existing pub data into the current search results
+*/
+export const filterExistingPubs = () => {
+    return {
+        type: FILTER_EXISTING_PUBS
     }
 }

@@ -22,10 +22,17 @@
                 margin-right: 5px;
             }
         }
+        &--exists {
+            opacity: 0.3;
+        }
 
         @include media-breakpoint-up(md) {
             padding: $padding-vert-md $padding-horiz-md;
         }
 
     }
+}
+
+.Search-result--active.Search-result--exists {
+    background: none;
 }

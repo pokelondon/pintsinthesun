@@ -39,6 +39,7 @@ class StaticMap extends React.Component {
     }
 
     offsetMap() {
+        return; //FIXME - offset isnt working properly at the moment
         if(this.props.offsetPin) {
             if(window.matchMedia("(min-width: 400px)").matches) {
                 this.map.panBy(-200, 0);
@@ -49,6 +50,7 @@ class StaticMap extends React.Component {
     }
 
     onDragend() {
+        return; //FIXME - we cant really change the global centre by dragging the map
         let centre = this.map.props.map.getCenter();
         this.props.onCenterChanged({lat: centre.lat(), lng: centre.lng()});
     }
