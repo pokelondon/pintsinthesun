@@ -155,7 +155,7 @@ class PubDetail extends React.Component {
 
                                 <div className="Box Box-item Box-item--noPadding">
                                     <button className="Button--secondaryAlt Button--next PubPagination-incrementor" onClick={this.props.incrementCurrentPub}>Show me another</button>
-                                </div>    
+                                </div>
                             }
                         </div>
 

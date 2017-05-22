@@ -27,9 +27,12 @@ function getAngleRange(position) {
 }
 
 function filterForAngle(sun, items) {
-    let [ min, max ] = getAngleRange(sun);
-    const res = items.filter(item => (item.outdoor_angle >= min && item.outdoor_angle <= max));
-    return res;
+    //TODO - clean this up - no longer filtering for time
+    console.log('items', items);
+    return items;
+    // let [ min, max ] = getAngleRange(sun);
+    // const res = items.filter(item => (item.outdoor_angle >= min && item.outdoor_angle <= max));
+    // return res;
 }
 
 const INITIAL_STATE = {

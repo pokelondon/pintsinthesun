@@ -77,46 +77,63 @@ function getAngleRange(date, lat, lng) {
 
 // Views + endpoints
 // ================================================================
-app.get('/near/:lat/:lng/:date?', function(req, res) {
-    var date, angleRange;
+
+/**
+* Look up set of pubs from foursquare near a certain lat/lng
+* Cross reference with our DB to generate a merged data set
+*/
+app.get('/near/:lat/:lng', function(req, res) {
+
     var lat = Number(req.params.lat);
     var lng = Number(req.params.lng);
-    var query = {
-        "location.type": "Point"
-    }
 
-    if(req.params.date) {
-        date = new Date(req.params.date);
-        angleRange = getAngleRange(date, lat, lng);
-        query.outdoor_angle = { $gt: angleRange[0], $lt: angleRange[1] };
-    }
+    //get pubs around this lat/lng from foursquare
+    var url = config.FOURSQUARE_SEARCH_URL + '&ll=' + lat + ',' + lng;
+    var pubsResult = fetch(url)
+        .then(data => data.json())
+        .then(data => data.response.venues)
+        .then((foursquarePubs) => {
+            //get pubs from the db that match the foursquare IDs we've just obtained
+            var foursquareIDs = foursquarePubs.map( pub => pub.id);
 
-    pubs.aggregate([
-        {
-            $geoNear: {
-                near: { type: 'Point', coordinates: [ lng, lat ] },
-                maxDistance: 3000,
-                distanceField: 'distance',
-                spherical: true,
-                query: query
-            },
-        },
-        {
-            $sort: { distance: 1 }
-        },
-        {
-            $match: {approved: true}
-        }
-    ], function(err, docs) {
-        if(err) {
-            res.json({error: err.errmsg}, 500);
-        }
-        var results = {items: docs};
-        if(date) {
-            results.date = date.toISOString();
-        }
-        res.json(results);
-    });
+            var cursor = pubs.find({"foursquare.id": { $in: foursquareIDs} } );
+
+            var knownPubs = {};
+            cursor.each(function(err, dbPub){
+                assert.equal(null, err);
+                if(dbPub != null){
+                    //store pub using its foursquare id as a key for use in next step
+                    knownPubs[dbPub.foursquare.id] = dbPub;
+                } else {
+                    //we have the full list of matching pubs
+                    //merge the 2 data sets and return a custom data data structure
+                    var results = foursquarePubs.map((foursquarePub) => {
+                        var pubApiResult = {
+                            foursquareID: foursquarePub.id,
+                            name: foursquarePub.name,
+                            location: {type: "Point", "coordinates": [ foursquarePub.location.lng, foursquarePub.location.lat ] },
+                            distance: foursquarePub.location.distance
+                        }
+
+                        //if there is a known pub, cherry pick some data from it and merge
+                        var knownPub = knownPubs[foursquarePub.id] || null;
+                        if(knownPub) {
+                            pubApiResult.has_garden = knownPub.has_garden,
+                            pubApiResult.has_outside_space = knownPub.has_outside_space,
+                            pubApiResult.approved = knownPub.approved,
+                            pubApiResult.rejected = knownPub.rejected
+                        }
+                        return pubApiResult;
+                    });
+
+                    res.json({status: 'ok', items: results});
+
+                }
+            });
+        })
+        .catch( (err) => {
+            res.json({status: 'error'});
+        });
 });
 
 
@@ -170,6 +187,8 @@ app.post('/pub/exists', function(req, res) {
         }
     });
 });
+
+
 
 
 /**

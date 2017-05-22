@@ -7,22 +7,18 @@ var ENV = (process.env.ENV || 'dev');
 var data = {
     "items": [
         {
-            "googleplaces": { "id" : "ChIJy4q69s0adkgRLSZ4NUqrXjY" },
+            "foursquare": { "id" : "51605f56e4b024efa71a9873" },
             "has_outside_space": true,
             "has_garden": false,
-            "outdoor_angle" : -97,
-            "name": "The Gunmakers",
-            "location": { "type" : "Point", "coordinates" : [ -0.1531723, 51.519231 ] },
+            "suggest_count": 1,
             "approved": false,
             "rejected": false,
         },
         {
-            "googleplaces": { "id" : "ChIJo4s4080adkgRZXhdFhSl-ww" },
+            "foursquare": { "id" : "507dde91e412203dde77efb6" },
             "has_outside_space" : true,
             "has_garden" : false,
-            "outdoor_angle": -14,
-            "name": "THE BARLEY MOW",
-            "location": { "type" : "Point", "coordinates" : [ -0.1556608, 51.5196788 ] },
+            "suggest_count": 1,
             "approved": false,
             "rejected": false,
         }
@@ -40,18 +36,19 @@ MongoClient.connect('mongodb://localhost/pintsinthesun2_' + ENV, function(err, d
     console.log(`Inserting ${data.items.length} items`);
 
     var res = pubs.insert(data.items).then(function(err, res) {
-        console.log(res, err);
+        console.log('Result', res, err);
     }).catch(function(err) {
+        console.log('error', err);
         err.writeErrors.forEach(function(error) {
             console.error(error.errmsg);
         });
     });
 
-    console.log('Creating 2dsphere index');
-    pubs.createIndex( { location : "2dsphere" } );
+    // console.log('Creating 2dsphere index');
+    // pubs.createIndex( { location : "2dsphere" } );
 
-    console.log('Creating google places unique index');
-    pubs.createIndex( { "googleplaces.id": 1 }, { unique: true });
+    console.log('Creating foursquare places unique index');
+    pubs.createIndex( { "foursquare.id": 1 }, { unique: true });
 
     console.log('Querying');
     pubs.find().toArray(function(err, data) {
