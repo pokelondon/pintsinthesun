@@ -118,10 +118,11 @@ app.get('/near/:lat/:lng', function(req, res) {
                         //if there is a known pub, cherry pick some data from it and merge
                         var knownPub = knownPubs[foursquarePub.id] || null;
                         if(knownPub) {
-                            pubApiResult.has_garden = knownPub.has_garden,
-                            pubApiResult.has_outside_space = knownPub.has_outside_space,
-                            pubApiResult.approved = knownPub.approved,
-                            pubApiResult.rejected = knownPub.rejected
+                            pubApiResult.has_garden = knownPub.has_garden;
+                            pubApiResult.has_outside_space = knownPub.has_outside_space;
+                            pubApiResult.approved = knownPub.approved;
+                            pubApiResult.rejected = knownPub.rejected;
+                            pubApiResult.known = true;
                         }
                         return pubApiResult;
                     });

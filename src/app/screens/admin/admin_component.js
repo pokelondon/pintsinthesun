@@ -1,6 +1,6 @@
 import React from 'react';
 import { getUnapprovedPubs, updatePub } from '../../services/pintsinthesun';
-import Map from '../../components/admin/map';
+import Map from '../../components/Map/Map';
 import AngleMarker from '../../components/admin/anglemarker';
 import ApprovePub from '../../components/admin/approve_pub';
 

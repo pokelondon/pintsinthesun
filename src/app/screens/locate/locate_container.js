@@ -9,7 +9,7 @@ import Locate from './locate_component';
 import GA from 'react-ga';
 
 const mapStateToProps = (state, ownProps) => {
-    const { centre, sun, items, filteredPubs, date, isLocating } = state.position;
+    const { centre, sun, items, filteredPubs, date, isLocating, filteredIndex, pub } = state.position;
     const { angle } = state.locate;
     return {
         date,
@@ -18,7 +18,8 @@ const mapStateToProps = (state, ownProps) => {
         angle,
         items,
         filteredPubs,
-        isLocating
+        isLocating,
+        pub
     }
 }
 
@@ -35,6 +36,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 category: 'Location',
                 action: 'Locate Me'
             });
+        },
+        updateTime: (date) => {
+            boundPositionActions.updateTime(date)
+        },
+        setCurrentPub: (index) => {
+            boundPositionActions.setCurrentPub(index);
         }
     }
 }

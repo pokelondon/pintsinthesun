@@ -1,24 +1,34 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { geocode, reverseGeocode } from '../../services/googlemaps.js';
+// import { geocode, reverseGeocode } from '../../services/googlemaps.js';
 import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
+import Map from '../../components/Map/Map';
+import LocationSearch from '../../components/LocationSearch/LocationSearch';
+import PubDetail from '../../components/PubDetail/PubDetail';
 
 import GA from 'react-ga';
 
 import config from '../../config';
 
+const MARKER_IMG = {
+    url: "/img/pint.png",
+    scaledSize: new google.maps.Size(50, 50),
+    origin: new google.maps.Point(0,0),
+    anchor: new google.maps.Point(25, 50)
+};
+
+const MARKER_IMG_GREY = {
+    url: "/img/pint-grey.png",
+    scaledSize: new google.maps.Size(50, 50),
+    origin: new google.maps.Point(0,0),
+    anchor: new google.maps.Point(25, 50)
+};
 
 class Locate extends React.Component {
 
     constructor(props) {
         super(props);
-        this.props = props;
-
-        this.state = {
-            searchTerm: ''
-        };
-
-
+        this.onMarkerClick = this.onMarkerClick.bind(this);
     }
 
     onDragEnd() {
@@ -26,70 +36,52 @@ class Locate extends React.Component {
         this.props.onCenterChanged({lat: centre.lat(), lng: centre.lng()});
     }
 
-    onSearchChange(e) {
-        this.setState({searchTerm: e.target.value})
+    onMarkerClick(idx) {
+        this.props.setCurrentPub(idx);
     }
 
-    doSearch(e) {
-        e.preventDefault();
-        this.setState({errorMsg: null});
+    getMarkers(locations) {
 
-        geocode(this.state.searchTerm, this.map.props.map.getBounds(), (result) => {
-            if(result.status === 'OK'){
-                this.props.onCenterChanged(result.centre);
-            } else
-            if(result.status == 'ZERO_RESULTS')
-                this.setState({errorMsg: 'No results :('});
-            else {
-                this.setState({errorMsg: 'Oops - Something went wrong. Please try again.'});
+        if(!locations) {
+            return;
+        }
+
+        const markers = locations.map((locationObj, idx) => {
+
+            let latLng = {lat: locationObj.location.coordinates[1], lng: locationObj.location.coordinates[0]};
+            let markerImg = MARKER_IMG_GREY;
+            if(locationObj.known){
+                markerImg = MARKER_IMG;
             }
+            return (
+                <Marker key={idx}
+                    position={latLng}
+                    onClick={() => {this.onMarkerClick(idx)}}
+                    icon={markerImg}
+                />
+            )
         });
 
-        GA.event({
-            category: 'Filter',
-            action: 'Search'
-        });
-        GA.pageview(`/search?q=${this.state.searchTerm}`);
+        return markers;
     }
 
     render() {
-
-        var btnCopy;
-        if(this.props.filteredPubs.length){
-            btnCopy = `Find somewhere near here (${this.props.filteredPubs.length} found)`;
-        } else {
-            btnCopy = 'No pubs found near here :(';
-        }
-
-        var errorMsg;
-        if(this.state.errorMsg){
-            errorMsg = <div className="Box Box-row">
-                <div className="Box-item">{this.state.errorMsg}</div>
-            </div>
-        }
 
         let { lat, lng } = this.props.centre;
         return (
             <div className="Screen Locate">
                 <header className="Screen-header">
-                    <div className="max-width">
-                        <p className="Para--large">Search for your location, or drag the map</p>
-                        <form className="Box Box-row" onSubmit={this.doSearch.bind(this)}>
-                                <button type="button" onClick={this.props.fetchPosition} className="Button--secondary Button--locateMe flex-none"></button>
-                                <input className="Input--search Box-item flex-2" onChange={this.onSearchChange.bind(this)} type="search" value={this.state.searchTerm} placeholder="e.g E1 6LG" />
-                                <div className="Box-item Box-item--noPadding flex-1">
-                                    <button type="submit" className="Button--secondary" onClick={this.doSearch.bind(this)}>Search</button>
-                                </div>
-                        </form>
-                        {errorMsg}
-                    </div>
+                    <LocationSearch
+                        getMapBounds={() => {return this.map.props.map.getBounds()}}
+                        onCenterChanged={this.props.onCenterChanged}
+                        fetchPosition={this.props.fetchPosition}
+                    />
                 </header>
 
                 <div className="Screen-main">
                     <div className="max-width">
                         <div className="Box Box-row">
                             <div className="Box-item Box-item--noPadding">
-
                                 <div className="Map">
                                     <GoogleMapLoader
                                         containerElement={(
@@ -113,29 +105,25 @@ class Locate extends React.Component {
                                                     styles: config.MAP_CONFIG
                                                 }}
                                                 >
+                                                {this.getMarkers(this.props.filteredPubs)}
                                             </GoogleMap>
                                         }
                                     />
-                                    <div className="LocationMarker"></div>
+
                                 </div>
                             </div>
                         </div>
-                        <div className="Box Box-row">
-                            <div className="Box-item Box-item--noPadding">
-                                <Link
-                                   onClick={this.props.onClose}
-                                   to='/pubs'
-                                   className="Button Button--primary"
-                                   >
-                                   {btnCopy}
-                               </Link>
-                            </div>
-                        </div>
+
+                        {this.props.pub &&
+                            <PubDetail
+                                pub={this.props.pub}
+                                date={this.props.date}
+                                updateTime={this.props.updateTime}
+                            />
+                        }
+
                     </div>
                 </div>
-
-
-
             </div>
         )
     }

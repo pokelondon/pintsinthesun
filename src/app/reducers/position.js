@@ -9,12 +9,11 @@ import {
     RESPONSE_PUBS,
     REQUEST_PUB_DETAIL,
     RESPONSE_PUB_DETAIL,
-    INCREMENT_CURRENT_PUB,
-    DECREMENT_CURRENT_PUB,
     RESPONSE_ADDRESS,
     REQUEST_ADDRESS,
     ADD_PUB,
     SET_POSITION,
+    SET_CURRENT_PUB,
 } from '../actions/position';
 
 const date = new Date();
@@ -28,7 +27,6 @@ function getAngleRange(position) {
 
 function filterForAngle(sun, items) {
     //TODO - clean this up - no longer filtering for time
-    console.log('items', items);
     return items;
     // let [ min, max ] = getAngleRange(sun);
     // const res = items.filter(item => (item.outdoor_angle >= min && item.outdoor_angle <= max));
@@ -44,7 +42,6 @@ const INITIAL_STATE = {
     filteredPubs : [],
     isFetching: false,
     currentPub: 0,
-    filteredIndex: 0,
     modal: null,
     timeRange: 'now',
     locationHasBeenRequested: false
@@ -74,7 +71,6 @@ export default function position(state=INITIAL_STATE, action) {
                 date: action.date,
                 timeRange: action.timeRange,
                 filteredPubs: filterForAngle(sun, state.items),
-                filteredIndex: 0,
                 sun
             }
         case RESPONSE_POSITION:
@@ -85,7 +81,6 @@ export default function position(state=INITIAL_STATE, action) {
                 centre: action.centre,
                 isLocating: false,
                 filteredPubs: filterForAngle(sun, state.items),
-                filteredIndex: 0,
                 isRealPosition: action.isRealPosition,
                 isGPSPosition: action.isGPSPosition,
                 address: action.address,
@@ -113,7 +108,6 @@ export default function position(state=INITIAL_STATE, action) {
                 isFetching: false,
                 items: action.items,
                 filteredPubs: filterForAngle(state.sun, action.items),
-                filteredIndex: 0,
                 currentPub: 0
             }
         case RESPONSE_PUB_DETAIL:
@@ -122,31 +116,11 @@ export default function position(state=INITIAL_STATE, action) {
                 isFetching: false,
                 pub: action.pub
             }
-        case INCREMENT_CURRENT_PUB:
-            let filteredIndex = state.filteredIndex + 1;
-            if(filteredIndex >= state.filteredPubs.length) {
-                filteredIndex = 0;
-            }
-            let currentPub = state.items.indexOf(state.filteredPubs[filteredIndex]);
+        //take a deep copy of the selecteded pub by index from the current list of pubs
+        case SET_CURRENT_PUB:
             return {
                 ...state,
-                currentPub,
-                filteredIndex,
-                renderTransitionDirection: 'left-out'
-            }
-        case DECREMENT_CURRENT_PUB:
-            {
-                let filteredIndex = state.filteredIndex - 1;
-                if(filteredIndex < 0) {
-                    filteredIndex = state.filteredPubs.length -1;
-                }
-                let currentPub = state.items.indexOf(state.filteredPubs[filteredIndex]);
-                return {
-                    ...state,
-                    currentPub,
-                    filteredIndex,
-                    renderTransitionDirection: 'right-out'
-                }
+                pub: {...state.filteredPubs[action.index]}
             }
         case SET_POSITION:
             return {

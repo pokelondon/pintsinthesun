@@ -2,7 +2,7 @@ import React from 'react';
 import AngleMarker from './anglemarker';
 import LocationDetails from './LocationDetails';
 import { updatePub } from '../../services/pintsinthesun';
-import Map from './map';
+import Map from '../Map/Map';
 
 export default class ApprovePub extends React.Component {
 

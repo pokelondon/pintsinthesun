@@ -17,8 +17,7 @@ export const RESPONSE_PUBS = 'response_pubs';
 export const REQUEST_PUB_DETAIL = 'request_pub_detail';
 export const RESPONSE_PUB_DETAIL = 'response_pub_detail';
 
-export const INCREMENT_CURRENT_PUB = 'increment_current_pub';
-export const DECREMENT_CURRENT_PUB = 'decrement_current_pub';
+export const SET_CURRENT_PUB = 'SET_CURRENT_PUB';
 
 export const REQUEST_ADDRESS = 'request_address';
 export const RESPONSE_ADDRESS = 'response_address';
@@ -205,15 +204,10 @@ export function responsePubDetail(data) {
     }
 }
 
-export function incrementCurrentPub() {
+export function setCurrentPub(index) {
     return {
-        type: INCREMENT_CURRENT_PUB
-    }
-}
-
-export function decrementCurrentPub() {
-    return {
-        type: DECREMENT_CURRENT_PUB
+        type: SET_CURRENT_PUB,
+        index
     }
 }
 

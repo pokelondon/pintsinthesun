@@ -41,10 +41,9 @@ class Citymapper extends React.Component {
 const mapStateToProps = (state, ownProps) => {
     const {
         date,
-        filteredPubs,
-        filteredIndex,
         centre,
-        isRealPosition
+        isRealPosition,
+        pub
     } = state.position;
 
 
@@ -52,7 +51,7 @@ const mapStateToProps = (state, ownProps) => {
         date,
         centre,
         isRealPosition,
-        pub: filteredPubs[filteredIndex]
+        pub
     }
 }
 
