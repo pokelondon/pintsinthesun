@@ -6,9 +6,10 @@ import classnames from 'classnames';
 import ThreeD from '../../components/threed';
 import WeatherIcon from '../../components/weathericon';
 import Suggestion from '../../components/suggestion';
-import Rational from '../../components/rational';
+import Rational from '../../components/Rational';
 import StaticMap from '../../components/static-map';
 import LocationStatus from '../../components/location-status';
+import RecommendationContainer from '../../components/Recommendation/RecommendationContainer';
 import GA from 'react-ga';
 
 class PubDetail extends React.Component {
@@ -151,7 +152,10 @@ class PubDetail extends React.Component {
 
                     </div>
 
-                    <Rational isRealPosition={this.props.isRealPosition} arrivalTime={this.state.localDate} centre={{lat, lng}} pub={this.props.pub} />
+                    {this.props.pub.known
+                        ? <Rational isRealPosition={this.props.isRealPosition} arrivalTime={this.state.localDate} centre={{lat, lng}} pub={this.props.pub} />
+                        : <RecommendationContainer pub={this.props.pub} />
+                    }
 
                 </div>
 

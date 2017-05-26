@@ -9,7 +9,7 @@ import Locate from './locate_component';
 import GA from 'react-ga';
 
 const mapStateToProps = (state, ownProps) => {
-    const { centre, sun, items, filteredPubs, date, isLocating, filteredIndex, pub } = state.position;
+    const { centre, sun, items, filteredPubs, date, isLocating, locationHasBeenRequested, pub } = state.position;
     const { angle } = state.locate;
     return {
         date,
@@ -19,6 +19,7 @@ const mapStateToProps = (state, ownProps) => {
         items,
         filteredPubs,
         isLocating,
+        locationHasBeenRequested,
         pub
     }
 }

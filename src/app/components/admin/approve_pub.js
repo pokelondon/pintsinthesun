@@ -1,8 +1,8 @@
 import React from 'react';
 import AngleMarker from './anglemarker';
-import LocationDetails from './LocationDetails';
+import LocationAttributes from '../LocationAttributes';
 import { updatePub } from '../../services/pintsinthesun';
-import Map from '../Map/Map';
+import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 
 export default class ApprovePub extends React.Component {
 
@@ -54,9 +54,10 @@ export default class ApprovePub extends React.Component {
     }
 
     render() {
+        console.log('render approve_pub, props', this.props);
         return (
             <div>
-                <LocationDetails
+                <LocationAttributes
                     name={this.props.pub.name}
                     hasOutsideSpace={this.state.hasOutsideSpace}
                     hasGarden={this.state.hasGarden}
@@ -64,12 +65,33 @@ export default class ApprovePub extends React.Component {
                 />
                 <div className="Box Box-row">
                     <div className="Box Map Box-item Box-item--noPadding">
-                        <Map
-                            centre={{
-                                lat: this.props.pub.location.coordinates[1],
-                                lng: this.props.pub.location.coordinates[0]
-                            }}
-                            ref="Map"
+
+                        <GoogleMapLoader
+                            containerElement={
+                                <div style={{height: "100%"}} />
+                            }
+
+                            googleMapElement={
+                                <GoogleMap
+                                    ref={(map) => {
+                                        this.map = map;
+                                        if(this.props.setMapRef)this.props.setMapRef(map);
+                                    }}
+                                    defaultCenter={{
+                                        lat: this.props.pub.location.coordinates[1],
+                                        lng: this.props.pub.location.coordinates[0]
+                                    }}
+                                    defaultZoom={19}
+                                    mapTypeId={google.maps.MapTypeId.HYBRID}
+                                    options={{
+                                        mapTypeControl: false,
+                                        streetViewControl: false,
+                                        zoomControl: true,
+                                        draggable: false
+                                    }}
+                                    >
+                                </GoogleMap>
+                            }
                         />
                         <AngleMarker
                             angle={this.state.outdoorAngle}

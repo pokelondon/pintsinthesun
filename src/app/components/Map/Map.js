@@ -78,7 +78,7 @@ export default class Map extends Component {
 
             let latLng = {lat: locationObj.location.lat, lng: locationObj.location.lng};
             let markerImg = MARKER_IMG_GREY;
-            if(locationObj.exists){
+            if(locationObj.known){
                 markerImg = MARKER_IMG;
             }
             return (

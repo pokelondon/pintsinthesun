@@ -56,7 +56,6 @@ class Rational extends React.Component {
                     <p className="Para--large" dangerouslySetInnerHTML={{__html: rational}}></p>
                     <p className="Para--large" dangerouslySetInnerHTML={{__html: weatherStatement}}></p>
                 </div>
-                <CitymapperLink pub={this.props.pub} />
             </div>
         )
     }

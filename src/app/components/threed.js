@@ -78,7 +78,7 @@ class ThreeD extends React.Component {
 
         this.camera.position.z = CAMERA_DISTANCE;
         this.camera.position.x = 1;
-        this.camera.position.y = 100;
+        this.camera.position.y = 1;
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
         this.camera.rotation.z = Math.PI;
 

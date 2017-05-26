@@ -17,10 +17,11 @@ export default class Admin extends React.Component {
         getUnapprovedPubs().then((results) => {
             return results.json();
         })
-        .then( (pubs) => {
+        .then((pubs) => {
             this.setState({pubs: pubs});
         })
-        .catch( (err) => {
+        .catch((err) => {
+            console.error(err);
             this.props.showDialog('Something went wrong :(');
         });
     }
@@ -35,7 +36,7 @@ export default class Admin extends React.Component {
             return(
                 <ApprovePub
                     pub={pub}
-                    key={pub._id}
+                    key={pub.foursquareID}
                     onApproved={this.refreshPubList.bind(this)}
                 /> )
         });

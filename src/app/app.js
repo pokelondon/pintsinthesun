@@ -15,7 +15,7 @@ import PubDetail from './screens/pubdetail/pubdetail_container';
 import Locate from './screens/locate/locate_container';
 import Base from './screens/base/base_container';
 import Add from './screens/addpub/addpub_container';
-import Admin from './screens/admin/admin_component';
+import Admin from './screens/admin/admin_container';
 import NoMatch from './screens/nomatch';
 import FatalError from './screens/error';
 

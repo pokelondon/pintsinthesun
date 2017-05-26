@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router';
-// import { geocode, reverseGeocode } from '../../services/googlemaps.js';
 import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 import Map from '../../components/Map/Map';
 import LocationSearch from '../../components/LocationSearch/LocationSearch';
@@ -28,6 +27,11 @@ class Locate extends React.Component {
 
     constructor(props) {
         super(props);
+
+        if(!this.props.locationHasBeenRequested) {
+            this.props.fetchPosition();
+        }
+
         this.onMarkerClick = this.onMarkerClick.bind(this);
     }
 
@@ -94,7 +98,7 @@ class Locate extends React.Component {
                                         googleMapElement={
                                             <GoogleMap
                                                 ref={(map) => this.map = map}
-                                                defaultZoom={15}
+                                                defaultZoom={17}
                                                 defaultCenter={this.props.centre}
                                                 onDragend={this.onDragEnd.bind(this)}
                                                 center={this.props.centre}

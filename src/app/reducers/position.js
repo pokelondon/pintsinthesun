@@ -16,6 +16,8 @@ import {
     SET_CURRENT_PUB,
 } from '../actions/position';
 
+import { RECOMMEND_PUB_SUCCESS } from '../actions/recommend';
+
 const date = new Date();
 const ANGLE_RANGE = 90;
 const centre = {lat: 51.54, lng: -0.04};
@@ -127,7 +129,14 @@ export default function position(state=INITIAL_STATE, action) {
                 ...state,
                 centre: action.centre
             }
-
+        //Set pub to be recommended: true in the items list
+        case RECOMMEND_PUB_SUCCESS:
+            return {
+                ...state,
+                items: state.items.map((pub) => {
+                    return (pub.foursquareID === action.foursquareID) ? {...pub, recommended: true} : {...pub};
+                })
+            }
         default:
             return state;
     }

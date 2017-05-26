@@ -96,7 +96,10 @@ app.get('/near/:lat/:lng', function(req, res) {
             //get pubs from the db that match the foursquare IDs we've just obtained
             var foursquareIDs = foursquarePubs.map( pub => pub.id);
 
-            var cursor = pubs.find({"foursquare.id": { $in: foursquareIDs} } );
+            var cursor = pubs.find({
+                "foursquare.id": { $in: foursquareIDs},
+                approved: true
+            });
 
             var knownPubs = {};
             cursor.each(function(err, dbPub){
@@ -108,23 +111,8 @@ app.get('/near/:lat/:lng', function(req, res) {
                     //we have the full list of matching pubs
                     //merge the 2 data sets and return a custom data data structure
                     var results = foursquarePubs.map((foursquarePub) => {
-                        var pubApiResult = {
-                            foursquareID: foursquarePub.id,
-                            name: foursquarePub.name,
-                            location: {type: "Point", "coordinates": [ foursquarePub.location.lng, foursquarePub.location.lat ] },
-                            distance: foursquarePub.location.distance
-                        }
-
-                        //if there is a known pub, cherry pick some data from it and merge
                         var knownPub = knownPubs[foursquarePub.id] || null;
-                        if(knownPub) {
-                            pubApiResult.has_garden = knownPub.has_garden;
-                            pubApiResult.has_outside_space = knownPub.has_outside_space;
-                            pubApiResult.approved = knownPub.approved;
-                            pubApiResult.rejected = knownPub.rejected;
-                            pubApiResult.known = true;
-                        }
-                        return pubApiResult;
+                        return createPubResponseObject(foursquarePub, knownPub)
                     });
 
                     res.json({status: 'ok', items: results});
@@ -137,6 +125,42 @@ app.get('/near/:lat/:lng', function(req, res) {
         });
 });
 
+/**
+* Convenience method to prepare a pub response object.
+* Merges a response from foursquare with a pub for the database
+* @param {object} foursquarePub - reponse object from foursquare API
+* @param {object} knownPub - pub object from the database
+*/
+function createPubResponseObject(foursquarePub, knownPub) {
+
+    var responseObject = {}
+
+    if(foursquarePub) {
+        responseObject.foursquareID = foursquarePub.id;
+        responseObject.name = foursquarePub.name;
+        responseObject.location = {type: "Point", "coordinates": [ foursquarePub.location.lng, foursquarePub.location.lat ] };
+        responseObject.distance = foursquarePub.location.distance;
+    }
+
+    if(knownPub) {
+        responseObject.foursquareID = knownPub.foursquare.id;
+        responseObject.name = knownPub.name;
+        responseObject.location = {type: "Point", "coordinates": [ knownPub.location.coordinates[0], knownPub.location.coordinates[1] ] };
+        responseObject.distance = 0;
+    }
+
+    //if there is a known pub, cherry pick some data from it and merge
+    if(knownPub) {
+        responseObject._id = knownPub._id;
+        responseObject.has_garden = knownPub.has_garden;
+        responseObject.has_outside_space = knownPub.has_outside_space;
+        responseObject.approved = knownPub.approved;
+        responseObject.rejected = knownPub.rejected;
+        responseObject.outdoor_angle = knownPub.outdoor_angle;
+        responseObject.known = true;
+    }
+    return responseObject;
+}
 
 
 /**
@@ -163,7 +187,7 @@ app.get('/pubs', function (req, res) {
     }).limit(10)
     .toArray(function(err, results){
         if(!err){
-            res.send(results);
+            res.send(results.map(result => createPubResponseObject(null, result)));
         }
     });
 });
@@ -197,34 +221,54 @@ app.post('/pub/exists', function(req, res) {
 */
 app.post('/pub/:id', function(req, res) {
     var submittedData = req.body;
-    var googlePlaceID = req.params.id;
-    var pub = {}
+    var foursquareID = req.params.id;
 
-    fetch(config.GOOGLE_PLACES_API + '&placeid=' + googlePlaceID)
+    //check if it exists already
+    pubs.findOne({"foursquare.id": foursquareID}, function(err, foundPub){
+        if(!foundPub) {
+            insertPub(foursquareID, submittedData, function(err, result){
+                if(!err) {
+                    res.json(result);
+                } else {
+                    res.json({status: 'error'});
+                }
+            });
+        } else {
+            //increase number of reccomendations
+            foundPub.votes ++;
+            pubs.save(foundPub);
+            res.json({status: 'ok'});
+        }
+    })
+
+});
+
+function insertPub(foursquareID, submittedData, callback) {
+    fetch(config.FOURSQUARE_VENUE_URL + foursquareID + config.FOURSQUARE_CREDS)
         .then(function(response) {
             return response.json();
         }).then(function(data) {
             pubs.update({
-                "googleplaces.id": req.params.id},
+                "foursquare.id": foursquareID},
                 {
                     $set: {
-                        googleplaces: {
-                            id: googlePlaceID,
-                            url: data.result.url
+                        foursquare: {
+                            id: foursquareID
                         },
                         has_outside_space: submittedData.has_outside_space,
                         has_garden: submittedData.has_garden,
                         outdoor_angle: submittedData.outdoor_angle,
-                        name: data.result.name,
+                        name: data.response.venue.name,
                         location: {
                             type: 'Point',
                             coordinates: [
-                                data.result.geometry.location.lng,
-                                data.result.geometry.location.lat,
+                                data.response.venue.location.lng,
+                                data.response.venue.location.lat
                             ]
                         },
                         approved: false,
                         rejected: false,
+                        votes: 0,
                     },
                     $currentDate: {
                         lastModified: true
@@ -232,14 +276,17 @@ app.post('/pub/:id', function(req, res) {
                 },
                 {upsert: true},
                 function(err, num, obj) {
-                    assert.equal(null, err);
-                    res.json({pub: pub, res: num});
+                    if(err) {
+                        callback(err);
+                    } else {
+                        callback(null, {pub: obj, res: num});
+                    }
                 }
             );
         }).catch(function(err) {
-            console.error(err);
+            callback(err);
         });
-});
+}
 
 
 /**
