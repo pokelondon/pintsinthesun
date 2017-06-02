@@ -16,6 +16,8 @@ import {
     SET_CURRENT_PUB,
 } from '../actions/position';
 
+import { GEOCODE_SUCCESS } from '../actions/geocode';
+
 import { RECOMMEND_PUB_SUCCESS } from '../actions/recommend';
 
 const date = new Date();
@@ -51,6 +53,11 @@ const INITIAL_STATE = {
 
 export default function position(state=INITIAL_STATE, action) {
     switch (action.type) {
+        case GEOCODE_SUCCESS:
+            return {
+                ...state,
+                centre: action.payload
+            }
         case ADD_PUB:
             return {
                 ...state,

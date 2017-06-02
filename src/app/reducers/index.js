@@ -6,6 +6,7 @@ import weather from './weather';
 import addPub from './addPub';
 import ui from './ui';
 import recommend from './recommend';
+import geocode from './geocode'; 
 
 
 export default combineReducers({
@@ -14,5 +15,6 @@ export default combineReducers({
     locate,
     addPub,
     ui,
-    recommend
+    recommend,
+    geocode
 });

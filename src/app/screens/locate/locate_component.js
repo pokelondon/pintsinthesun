@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 import Map from '../../components/Map/Map';
-import LocationSearch from '../../components/LocationSearch/LocationSearch';
+import LocationSearchContainer from '../../components/LocationSearch/LocationSearchContainer';
 import PubDetail from '../../components/PubDetail/PubDetail';
 
 import GA from 'react-ga';
@@ -75,7 +75,7 @@ class Locate extends React.Component {
         return (
             <div className="Screen Locate">
                 <header className="Screen-header">
-                    <LocationSearch
+                    <LocationSearchContainer
                         getMapBounds={() => {return this.map.props.map.getBounds()}}
                         onCenterChanged={this.props.onCenterChanged}
                         fetchPosition={this.props.fetchPosition}
@@ -97,7 +97,7 @@ class Locate extends React.Component {
                                         )}
                                         googleMapElement={
                                             <GoogleMap
-                                                ref={(map) => this.map = map}
+                                                ref={map => this.map = map}
                                                 defaultZoom={17}
                                                 defaultCenter={this.props.centre}
                                                 onDragend={this.onDragEnd.bind(this)}
