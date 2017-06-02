@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { geocode } from '../../services/googlemaps.js';
 import GA from 'react-ga';
 
 class LocationSearch extends Component {
