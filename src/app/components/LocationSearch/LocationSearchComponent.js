@@ -43,6 +43,7 @@ LocationSearch.propTypes = {
     getMapBounds: PropTypes.func.isRequired,
     onCenterChanged: PropTypes.func.isRequired,
     fetchPosition: PropTypes.func.isRequired,
+    doSearch: PropTypes.func
 };
 
 export default LocationSearch;
