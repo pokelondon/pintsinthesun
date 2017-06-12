@@ -1,4 +1,5 @@
 import SunCalc from '../lib/suncalc';
+import _ from 'lodash';
 
 import {
     UPDATE_TIME,
@@ -14,6 +15,8 @@ import {
     ADD_PUB,
     SET_POSITION,
     SET_CURRENT_PUB,
+    SHOULD_SUGGEST,
+    SUGGEST_PUB,
 } from '../actions/position';
 
 import { GEOCODE_SUCCESS } from '../actions/geocode';
@@ -37,6 +40,15 @@ function filterForAngle(sun, items) {
     // return res;
 }
 
+/**
+* Convert Mongo style lat/lng format (backwards array) to a more useful {lat, lng} format
+* @param {array} arr - the mongo style location array
+* @return {object} - the position in the form {lat, lng}
+*/
+function normaliseLatLng(arr) {
+    return {lat: arr[1], lng: arr[0]};
+}
+
 const INITIAL_STATE = {
     isLocating: false,
     sun: getAngleRange(SunCalc.getPosition(date, centre.lat, centre.lng)),
@@ -48,11 +60,17 @@ const INITIAL_STATE = {
     currentPub: 0,
     modal: null,
     timeRange: 'now',
-    locationHasBeenRequested: false
+    locationHasBeenRequested: false,
+    shouldSuggest: false,
 }
 
 export default function position(state=INITIAL_STATE, action) {
     switch (action.type) {
+        case SHOULD_SUGGEST:
+            return {
+                ...state,
+                shouldSuggest: action.payload
+            }
         case GEOCODE_SUCCESS:
             return {
                 ...state,
@@ -116,7 +134,10 @@ export default function position(state=INITIAL_STATE, action) {
                 ...state,
                 isFetching: false,
                 items: action.items,
-                filteredPubs: filterForAngle(state.sun, action.items),
+                //order filtered pubs by distance
+                filteredPubs: filterForAngle(state.sun, action.items).sort((a, b) => {
+                    return a.distance > b.distance ? 1 : -1;
+                }),
                 currentPub: 0
             }
         case RESPONSE_PUB_DETAIL:
@@ -125,12 +146,37 @@ export default function position(state=INITIAL_STATE, action) {
                 isFetching: false,
                 pub: action.pub
             }
-        //take a deep copy of the selecteded pub by index from the current list of pubs
-        case SET_CURRENT_PUB:
+        case SHOULD_SUGGEST:
             return {
                 ...state,
-                pub: {...state.filteredPubs[action.index]}
+                shouldSuggest: action.payload
             }
+        case SUGGEST_PUB: {
+            //pick first pub that is recommended
+            const suggestedPub = _.find(state.filteredPubs, pub => pub.known);
+            if(suggestedPub){
+                return {
+                    ...state,
+                    shouldSuggest: false,
+                    centre: normaliseLatLng(suggestedPub.location.coordinates),
+                    pub: {...suggestedPub}
+                }
+            } else {
+                return {
+                    ...state,
+                    shouldSuggest: false
+                }
+            }
+        }
+        //take a deep copy of the selecteded pub by index from the current list of pubs
+        case SET_CURRENT_PUB: {
+            const selectedPub = state.filteredPubs[action.index];
+            return {
+                ...state,
+                pub: {...selectedPub},
+                centre: normaliseLatLng(selectedPub.location.coordinates)
+            }
+        }
         case SET_POSITION:
             return {
                 ...state,

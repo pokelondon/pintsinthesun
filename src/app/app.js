@@ -51,8 +51,7 @@ ReactDOM.render((
             <Router onUpdate={logPageView} className="AppContainer" history={hashHistory}>
                 <Route path="/" component={Base}>
                     <IndexRoute component={Start} />
-                    <Route path="/locate" component={Locate} />
-                    <Route path="/pubs" component={PubDetail} />
+                    <Route path="/pubs(/:suggest)" component={Locate} />
                     <Route path="/add" component={Add} />
                     <Route path="/error" component={FatalError} />
                     <Route path="/admin" component={Admin} />

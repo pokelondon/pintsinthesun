@@ -29,6 +29,10 @@ class Locate extends React.Component {
     constructor(props) {
         super(props);
 
+        if(this.props.params.suggest === 'suggest') {
+            this.props.shouldSuggest(true);
+        }
+
         if(!this.props.locationHasBeenRequested) {
             this.props.fetchPosition();
         }
@@ -90,6 +94,13 @@ class Locate extends React.Component {
 
                 <div className="Screen-main">
                     <div className="max-width">
+                        {this.props.isLocating &&
+                            <div className="Box Box-row">
+                                <div className="Box Box-item">
+                                    <p>Finding your location...</p>
+                                </div>
+                            </div>
+                        }
                         <div className="Box Box-row">
                             <div className="Box-item Box-item--noPadding">
                                 <div className="Map">

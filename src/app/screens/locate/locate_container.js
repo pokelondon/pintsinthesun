@@ -43,6 +43,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         setCurrentPub: (index) => {
             boundPositionActions.setCurrentPub(index);
+        },
+        shouldSuggest: (bool) => {
+            boundPositionActions.shouldSuggest(bool);
         }
     }
 }

@@ -23,7 +23,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         setNow: () => {
             let date = new Date();
             boundPositionActions.updateTime(date);
-            dispatch(push('/pubs'));
+            dispatch(push('/pubs/suggest'));
 
             GA.event({
                 category: 'Filter',

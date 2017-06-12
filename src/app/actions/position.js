@@ -24,6 +24,9 @@ export const RESPONSE_ADDRESS = 'response_address';
 
 export const ADD_PUB = 'add_pub';
 
+export const SHOULD_SUGGEST = 'SHOULD_SUGGEST';
+export const SUGGEST_PUB = 'SUGGEST_PUB';
+
 import { hashHistory } from 'react-router'
 
 
@@ -141,11 +144,16 @@ export function requestPubDetail() {
 }
 
 export function responsePubs(data) {
-    return {
-        type: RESPONSE_PUBS,
-        items: data.items,
-        receivedAt: new Date(),
-        isLoading: false
+    return (dispatch, getState) => {
+        dispatch({
+            type: RESPONSE_PUBS,
+            items: data.items,
+            receivedAt: new Date(),
+            isLoading: false
+        });
+        if(getState().position.shouldSuggest) {
+            dispatch(suggestPub());
+        }
     }
 }
 
@@ -208,6 +216,19 @@ export function setCurrentPub(index) {
     return {
         type: SET_CURRENT_PUB,
         index
+    }
+}
+
+export function shouldSuggest(bool) {
+    return {
+        type: SHOULD_SUGGEST,
+        payload: bool
+    }
+}
+
+export function suggestPub() {
+    return {
+        type: SUGGEST_PUB
     }
 }
 
