@@ -1,5 +1,7 @@
 import { geocode as geocodeApi } from '../services/googlemaps.js';
 import { showDialog } from './ui';
+import { fetchPubs } from './position';
+import { fetchWeather } from './weather'
 
 export const GEOCODE_START = 'GEOCODE_START';
 export const GEOCODE_SUCCESS = 'GEOCODE_SUCCESS';
@@ -23,9 +25,13 @@ export const geocodeSearch = (searchTerm, mapBounds) => {
 }
 
 export const geocodeSuccess = (centre) => {
-    return {
-        type: GEOCODE_SUCCESS,
-        payload: centre
+    return (dispatch) => {
+        dispatch({
+            type: GEOCODE_SUCCESS,
+            payload: centre
+        });
+        dispatch(fetchPubs(centre));
+        dispatch(fetchWeather(centre));
     }
 }
 

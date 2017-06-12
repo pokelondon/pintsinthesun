@@ -96,8 +96,6 @@ class PubDetail extends React.Component {
         return (
             <div className="Pub-detail">
 
-                <h2 className="Heading--2 DetailsHeading">{this.props.pub.name}</h2>
-
                 <div className="Box Box-row flex-wrap">
                     <div className="Box-item Box-item--noPadding Box-item--halfCol Box-item--responsiveBorders">
 
