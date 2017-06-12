@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
-import CitymapperLink from './citymapper';
 
 class Rational extends React.Component {
 
@@ -9,7 +8,7 @@ class Rational extends React.Component {
         super(props);
         this.state = {
             rational: this.getRationalText(),
-            intro: this.getIntroText()
+            intro: this.getIntroText(this.props.pub.name)
         }
     }
 
@@ -17,14 +16,14 @@ class Rational extends React.Component {
         if(nextProps.pub.name !== this.props.pub.name) {
             this.setState({
                 rational: this.getRationalText(),
-                intro: this.getIntroText()
+                intro: this.getIntroText(nextProps.pub.name)
             });
         }
     }
 
-    getIntroText() {
+    getIntroText(pubName) {
         const suggestion = Rational.SUGGESTIONS[parseInt(Rational.SUGGESTIONS.length * Math.random(), 10)];
-        return `${suggestion} <em>${this.props.pub.name.toUpperCase()}?</em> It's been recommended before&hellip;`;
+        return `${suggestion} <em>${pubName.toUpperCase()}?</em> It's been recommended before&hellip;`;
     }
 
     getRationalText() {
