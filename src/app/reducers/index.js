@@ -6,7 +6,8 @@ import weather from './weather';
 import addPub from './addPub';
 import ui from './ui';
 import recommend from './recommend';
-import geocode from './geocode'; 
+import geocode from './geocode';
+import pubNameSearch from './pubNameSearch';
 
 
 export default combineReducers({
@@ -16,5 +17,6 @@ export default combineReducers({
     addPub,
     ui,
     recommend,
-    geocode
+    geocode,
+    pubNameSearch
 });

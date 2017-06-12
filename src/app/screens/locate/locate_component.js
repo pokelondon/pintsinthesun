@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 import Map from '../../components/Map/Map';
 import LocationSearchContainer from '../../components/LocationSearch/LocationSearchContainer';
+import PubNameSearchContainer from '../../components/PubNameSearch/PubNameSearchContainer';
 import PubDetail from '../../components/PubDetail/PubDetail';
 
 import GA from 'react-ga';
@@ -80,6 +81,11 @@ class Locate extends React.Component {
                         onCenterChanged={this.props.onCenterChanged}
                         fetchPosition={this.props.fetchPosition}
                     />
+                    {/*
+                    <PubNameSearchContainer
+                        getMapBounds={() => {return this.map.props.map.getBounds()}}
+                        onCenterChanged={this.props.onCenterChanged}
+                    />*/}
                 </header>
 
                 <div className="Screen-main">
