@@ -1,6 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import CitymapperLink from './citymapper';
@@ -10,30 +8,42 @@ class Rational extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            rational: this.getRationalText()
+            rational: this.getRationalText(),
+            intro: this.getIntroText()
         }
     }
 
     componentWillReceiveProps(nextProps) {
         if(nextProps.pub.name !== this.props.pub.name) {
-            this.setState({rational: this.getRationalText()});
+            this.setState({
+                rational: this.getRationalText(),
+                intro: this.getIntroText()
+            });
         }
+    }
+
+    getIntroText() {
+        const suggestion = Rational.SUGGESTIONS[parseInt(Rational.SUGGESTIONS.length * Math.random(), 10)];
+        return `${suggestion} <em>${this.props.pub.name.toUpperCase()}?</em> It's been recommended before&hellip;`;
     }
 
     getRationalText() {
         var response = [];
 
-        response.push('This place looks like it could be good,');
-
         if(this.props.pub) {
 
-            if(this.props.pub.has_terrace) {
-                response.push(Rational.TERRACE_SENTENCES[parseInt(Rational.TERRACE_SENTENCES.length * Math.random(), 10)]);
+            if(this.props.pub.has_outside_space) {
+                response.push(Rational.OUTSIDE_SPACE_SENTENCES[parseInt(Rational.OUTSIDE_SPACE_SENTENCES.length * Math.random(), 10)]);
             }
 
-            let building_to_the_west_sentences = Rational.BUILDING_TO_THE_WEST_SENTENCES[this.props.pub.building_to_the_west ? 1 : 0];
-            if(building_to_the_west_sentences) {
-                response.push(building_to_the_west_sentences[parseInt(building_to_the_west_sentences.length * Math.random(), 10)]);
+            if(this.props.pub.has_garden) {
+                let gardenSentence = Rational.GARDEN_SENTENCES[parseInt(Rational.GARDEN_SENTENCES.length * Math.random(), 10)];
+                if(this.props.pub.has_outside_space) {
+                    //replace the trailing ! with a comma, to allow more to be added...
+                    response[response.length-1] = response[response.length-1].slice(0, -1) + ', and ';
+                    gardenSentence = gardenSentence[0].toLowerCase() + gardenSentence.substring(1);
+                }
+                response.push(gardenSentence);
             }
         }
 
@@ -48,11 +58,12 @@ class Rational extends React.Component {
     }
 
     render() {
-        let rational = this.state.rational.join(' ');
-        let weatherStatement = this.getWeatherStatement();
+        const rational = this.state.rational.join(' ');
+        const weatherStatement = this.getWeatherStatement();
         return (
             <div className="Rational Box Box-item Box-item--noPadding Box-item--halfCol Box-item--responsiveBorders">
                 <div className="box-child-margin">
+                    <p className="Para--large" dangerouslySetInnerHTML={{__html: this.state.intro}}></p>
                     <p className="Para--large" dangerouslySetInnerHTML={{__html: rational}}></p>
                     <p className="Para--large" dangerouslySetInnerHTML={{__html: weatherStatement}}></p>
                 </div>
@@ -94,18 +105,26 @@ Rational.WEATHER_SENTENCES = {
     'SNOW': ['But, it\'s <em>snowing.</em> You crazy?!'],
     'WIND': ['Watch out for the <em>wind!</em>'],
     'FOG': ['But it\'s <em>foggy.</em>']
-}
+};
 
-Rational.BUILDING_TO_THE_WEST_SENTENCES = [
-    ['there\'s nothing much blocking the sun <em>to the west</em>.', 'no buildings <em>west of here.</em> to get in the way', 'not much <em>over the street</em> to block the sun.'],
-    ['but there is a building next door, it might block the sun.', 'Look out for <em>shadows from over the road</em>.']
-]
+Rational.GARDEN_SENTENCES = [
+    'It\'s got a <em>garden!</em>',
+    'Checkout the <em>garden!</em>',
+    'There\'s a <em>garden!</em>'
+];
 
-Rational.TERRACE_SENTENCES = [
-    'It has a <em>terrace!</em>',
-    'Checkout the <em>terrace!</em>',
-    'Jackpot! There\'s a <em>terrace</em> here!'
-]
+Rational.OUTSIDE_SPACE_SENTENCES = [
+    'There\'s some <em>space outside</em> here!',
+    'It\'s got an area <em>outside!</em>',
+    'Jackpot! There\'s some <em>outside space</em> here!'
+];
+
+Rational.SUGGESTIONS = [
+    ['Why don\'t you head down to '],
+    ['How about '],
+    ['What about '],
+    ['How about going to '],
+];
 
 const mapStateToProps = (state, ownProps) => {
     const { weatherNow, isFetching } = state.weather;

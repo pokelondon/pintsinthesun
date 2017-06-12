@@ -153,7 +153,7 @@ class PubDetail extends React.Component {
                     </div>
 
                     {this.props.pub.known
-                        ? <Rational isRealPosition={this.props.isRealPosition} arrivalTime={this.state.localDate} centre={{lat, lng}} pub={this.props.pub} />
+                        ? <Rational isRealPosition={this.props.isRealPosition} centre={{lat, lng}} pub={this.props.pub} />
                         : <RecommendationContainer pub={this.props.pub} />
                     }
 
