@@ -9,7 +9,7 @@ import Locate from './locate_component';
 import GA from 'react-ga';
 
 const mapStateToProps = (state, ownProps) => {
-    const { centre, sun, items, filteredPubs, date, isLocating, locationHasBeenRequested, pub } = state.position;
+    const { centre, sun, items, filteredPubs, date, isLocating, locationHasBeenRequested, pub, mapZoomLevel } = state.position;
     const { angle } = state.locate;
     return {
         date,
@@ -20,7 +20,8 @@ const mapStateToProps = (state, ownProps) => {
         filteredPubs,
         isLocating,
         locationHasBeenRequested,
-        pub
+        pub,
+        mapZoomLevel,
     }
 }
 
@@ -46,6 +47,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         shouldSuggest: (bool) => {
             boundPositionActions.shouldSuggest(bool);
+        },
+        mapZoomFocus: () => {
+            boundPositionActions.mapZoomFocus();
+        },
+        onZoomChanged: (zoomLevel) => {
+            boundPositionActions.changeZoom(zoomLevel)
         }
     }
 }

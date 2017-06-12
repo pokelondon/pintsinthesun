@@ -27,6 +27,9 @@ export const ADD_PUB = 'add_pub';
 export const SHOULD_SUGGEST = 'SHOULD_SUGGEST';
 export const SUGGEST_PUB = 'SUGGEST_PUB';
 
+export const MAP_ZOOM_FOCUS = 'MAP_ZOOM_FOCUS';
+export const MAP_ZOOM_CHANGE = 'MAP_ZOOM_CHANGE';
+
 import { hashHistory } from 'react-router'
 
 
@@ -213,9 +216,12 @@ export function responsePubDetail(data) {
 }
 
 export function setCurrentPub(index) {
-    return {
-        type: SET_CURRENT_PUB,
-        index
+    return (dispatch) => {
+        dispatch({
+            type: SET_CURRENT_PUB,
+            index
+        });
+        dispatch(mapZoomFocus());
     }
 }
 
@@ -227,8 +233,22 @@ export function shouldSuggest(bool) {
 }
 
 export function suggestPub() {
+    return (dispatch) => {
+        dispatch({type: SUGGEST_PUB});
+        dispatch(mapZoomFocus());
+    }
+}
+
+export function mapZoomFocus() {
     return {
-        type: SUGGEST_PUB
+        type: MAP_ZOOM_FOCUS
+    }
+}
+
+export function changeZoom(zoomLevel) {
+    return {
+        type: MAP_ZOOM_CHANGE,
+        payload: zoomLevel
     }
 }
 

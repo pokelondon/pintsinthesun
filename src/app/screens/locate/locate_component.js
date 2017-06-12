@@ -38,11 +38,17 @@ class Locate extends React.Component {
         }
 
         this.onMarkerClick = this.onMarkerClick.bind(this);
+        this.onZoomChanged = this.onZoomChanged.bind(this);
     }
 
     onDragEnd() {
-        let centre = this.map.props.map.getCenter();
+        const centre = this.map.props.map.getCenter();
         this.props.onCenterChanged({lat: centre.lat(), lng: centre.lng()});
+    }
+
+    onZoomChanged() {
+        const zoom = this.map.props.map.getZoom();
+        this.props.onZoomChanged(zoom);
     }
 
     onMarkerClick(idx) {
@@ -115,9 +121,11 @@ class Locate extends React.Component {
                                         googleMapElement={
                                             <GoogleMap
                                                 ref={map => this.map = map}
-                                                defaultZoom={17}
+                                                defaultZoom={this.props.mapZoomLevel}
+                                                zoom={this.props.mapZoomLevel}
                                                 defaultCenter={this.props.centre}
                                                 onDragend={this.onDragEnd.bind(this)}
+                                                onZoomChanged={this.onZoomChanged}
                                                 center={this.props.centre}
                                                 options={{
                                                     mapTypeControl: false,
