@@ -24,6 +24,13 @@ const MARKER_IMG_GREY = {
     anchor: new google.maps.Point(25, 50)
 };
 
+const MARKER_IMG_UNKNOWN = {
+    url: "/img/unknown-marker.png",
+    scaledSize: new google.maps.Size(20, 20),
+    origin: new google.maps.Point(0,0),
+    anchor: new google.maps.Point(10, 10)
+};
+
 class Locate extends React.Component {
 
     constructor(props) {
@@ -66,7 +73,7 @@ class Locate extends React.Component {
         const markers = locations.map((locationObj, idx) => {
 
             let latLng = {lat: locationObj.location.coordinates[1], lng: locationObj.location.coordinates[0]};
-            let markerImg = MARKER_IMG_GREY;
+            let markerImg = MARKER_IMG_UNKNOWN;
             if(locationObj.known){
                 markerImg = MARKER_IMG;
             }
