@@ -22,7 +22,7 @@ class Rational extends React.Component {
     }
 
     getIntroText(pubName) {
-        return `${this.getRandomString('SUGGESTIONS')} <em>${pubName.toUpperCase()}?</em> It's been recommended before&hellip;`;
+        return `${this.getRandomString('SUGGESTIONS')} <em>${pubName.toUpperCase()}?</em> ${this.getRandomString('VERIFICATION')}`;
     }
 
     getRationalText() {
@@ -98,16 +98,16 @@ Rational.propTypes = {
 };
 
 Rational.WEATHER_SENTENCES = {
-    'CLEAR_DAY': ['The <em>sun\'s</em> out! woop!', 'What a lovely day'],
-    'CLEAR_NIGHT': ['It\'s pretty <em>clear!</em>', 'What a lovely day'],
+    'CLEAR_DAY': ['The <em>sun\'s</em> out! woop!', 'It\'s a lovely day'],
+    'CLEAR_NIGHT': ['It\'s pretty <em>clear!</em>', 'It\'s a lovely day'],
     'PARTLY_CLOUDY_DAY': ['Might be a bit <em>cloudy</em> mind!', 'Too bad it\'s a bit <em>cloudy.</em>'],
     'PARTLY_CLOUDY_NIGHT': ['It\'ll be <em>cloudy</em> this evening.'],
-    'CLOUDY': ['Doh! it\'s pretty <em>cloudy.</em>', 'It\'s quite <em>cloudy</em> :(', 'It\'s <em>cloudy</em> right now.'],
-    'RAIN': ['Shame it\'s <em>raining!</em>', 'It\'s <em>raining.</em> Dammit.', 'Urgh, it\'s <em>rainy</em> :('],
-    'SLEET': ['But, it\'s <em>sleeting!</em>', 'it\'s <em>wet</em> out.'],
-    'SNOW': ['But, it\'s <em>snowing.</em> You crazy?!'],
-    'WIND': ['Watch out for the <em>wind!</em>'],
-    'FOG': ['But it\'s <em>foggy.</em>']
+    'CLOUDY': ['Doh! It\'s pretty <em>cloudy.</em>', 'Shame it\'s quite <em>cloudy</em> :(', 'Oh, it\'s <em>cloudy</em> though.'],
+    'RAIN': ['Shame it\'s <em>raining!</em> though&hellip;', 'It\'s <em>raining.</em> Dammit!', 'Urgh, it\'s <em>rainy</em> though :('],
+    'SLEET': ['But it\'s <em>sleeting!</em>', 'Oh - It\'s <em>wet</em> out.'],
+    'SNOW': ['But it\'s <em>snowing!</em> You crazy?!'],
+    'WIND': ['Watch out for the <em>wind</em> though!'],
+    'FOG': ['But it\'s <em>foggy though&hellip;</em>']
 };
 
 Rational.GARDEN_SENTENCES = [
@@ -123,10 +123,18 @@ Rational.OUTSIDE_SPACE_SENTENCES = [
 ];
 
 Rational.SUGGESTIONS_SENTENCES = [
-    ['Why don\'t you head down to '],
-    ['How about '],
-    ['What about '],
-    ['How about going to '],
+    'Why don\'t you head down to',
+    'How about heading to',
+    'What about heading to',
+    'How about going to',
+    'You could try heading to',
+];
+
+Rational.VERIFICATION_SENTENCES = [
+    'Apparently it\'s good...',
+    'It\'s been recommended before!',
+    'We heard it\'s good for al fresco drinking.',
+    'A great spot for a sunny pint.',
 ];
 
 const mapStateToProps = (state, ownProps) => {
