@@ -1,5 +1,6 @@
 import SunCalc from '../lib/suncalc';
 import _ from 'lodash';
+import { getSuggestedPub } from '../utils/pintsUtils';
 
 import {
     UPDATE_TIME,
@@ -58,6 +59,7 @@ const INITIAL_STATE = {
     date,
     items: [],
     filteredPubs : [],
+    suggestedPubIDs: [],
     isFetching: false,
     currentPub: 0,
     modal: null,
@@ -132,17 +134,18 @@ export default function position(state=INITIAL_STATE, action) {
                 ...state,
                 isFetching: true
             }
-        case RESPONSE_PUBS:
+        case RESPONSE_PUBS: {
+            const mergedItems = _.unionWith(state.items, action.items, (pubA, pubB) => {
+                return pubA.foursquareID === pubB.foursquareID;
+            });
             return {
                 ...state,
                 isFetching: false,
-                items: action.items,
-                //order filtered pubs by distance
-                filteredPubs: filterForAngle(state.sun, action.items).sort((a, b) => {
-                    return a.distance > b.distance ? 1 : -1;
-                }),
+                items: [...mergedItems],
+                filteredPubs: [...mergedItems],
                 currentPub: 0
             }
+        }
         case RESPONSE_PUB_DETAIL:
             return {
                 ...state,
@@ -155,8 +158,7 @@ export default function position(state=INITIAL_STATE, action) {
                 shouldSuggest: action.payload
             }
         case SUGGEST_PUB: {
-            //pick first pub that is recommended
-            const suggestedPub = _.find(state.filteredPubs, pub => pub.known);
+            const suggestedPub = getSuggestedPub(state.filteredPubs, state.centre);
             if(suggestedPub){
                 return {
                     ...state,
