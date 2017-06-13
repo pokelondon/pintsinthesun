@@ -255,9 +255,9 @@ function insertPub(foursquareID, submittedData, callback) {
                         foursquare: {
                             id: foursquareID
                         },
-                        has_outside_space: submittedData.has_outside_space,
-                        has_garden: submittedData.has_garden,
-                        outdoor_angle: submittedData.outdoor_angle,
+                        has_outside_space: Boolean(submittedData.has_outside_space),
+                        has_garden: Boolean(submittedData.has_garden),
+                        outdoor_angle: parseInt(submittedData.outdoor_angle, 10),
                         name: data.response.venue.name,
                         location: {
                             type: 'Point',
