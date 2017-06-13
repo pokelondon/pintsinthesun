@@ -29,6 +29,11 @@ class Locate extends React.Component {
     constructor(props) {
         super(props);
 
+        this.onMarkerClick = this.onMarkerClick.bind(this);
+        this.onZoomChanged = this.onZoomChanged.bind(this);
+    }
+
+    componentWillMount() {
         if(this.props.params.suggest === 'suggest') {
             this.props.shouldSuggest(true);
         }
@@ -36,9 +41,6 @@ class Locate extends React.Component {
         if(!this.props.locationHasBeenRequested) {
             this.props.fetchPosition();
         }
-
-        this.onMarkerClick = this.onMarkerClick.bind(this);
-        this.onZoomChanged = this.onZoomChanged.bind(this);
     }
 
     onDragEnd() {
