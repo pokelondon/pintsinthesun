@@ -114,7 +114,7 @@ Rational.GARDEN_SENTENCES = [
 
 Rational.OUTSIDE_SPACE_SENTENCES = [
     'There\'s some <em>space outside</em> here!',
-    'It\'s got an area <em>outside!</em>',
+    'It\'s got an area <em>outside</em>!',
     'Jackpot! There\'s some <em>outside space</em> here!'
 ];
 
