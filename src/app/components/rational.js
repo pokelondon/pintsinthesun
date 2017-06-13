@@ -22,7 +22,6 @@ class Rational extends React.Component {
     }
 
     getIntroText(pubName) {
-        //const suggestion = Rational.SUGGESTIONS[parseInt(Rational.SUGGESTIONS.length * Math.random(), 10)];
         return `${this.getRandomString('SUGGESTIONS')} <em>${pubName.toUpperCase()}?</em> It's been recommended before&hellip;`;
     }
 
@@ -32,12 +31,10 @@ class Rational extends React.Component {
         if(this.props.pub) {
 
             if(this.props.pub.has_outside_space) {
-                //response.push(Rational.OUTSIDE_SPACE_SENTENCES[parseInt(Rational.OUTSIDE_SPACE_SENTENCES.length * Math.random(), 10)]);
                 response.push(this.getRandomString('OUTSIDE_SPACE'));
             }
 
             if(this.props.pub.has_garden) {
-                //let gardenSentence = Rational.GARDEN_SENTENCES[parseInt(Rational.GARDEN_SENTENCES.length * Math.random(), 10)];
                 let gardenSentence = this.getRandomString('GARDEN');
                 if(this.props.pub.has_outside_space) {
                     //replace the trailing ! with a comma, to allow more to be added...
