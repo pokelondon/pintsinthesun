@@ -1,17 +1,19 @@
 import React from 'react';
 import LocationAttributes from '../LocationAttributes';
 
-const INTRO_SENTENCES = [
+const sentences = {};
+
+sentences.INTRO = [
     ['Hmm, we dont know much about', '...'],
     ['No-one has recommended', 'yet...'],
-    ['Hmm, we arent sure if', 'is any good yet...']
-]
+    ['Hmm, we arent sure if', 'is any good yet...'],
+];
 
-const RECOMMEND_SENTENCES = [
-    'Can you recommend it as a good place for sunny pint?',
-    'Have you been? Would you recommend it for al fresco drinking?',
-    'Been here before? Let us know if its any good for a sunny drink!'
-]
+sentences.RECOMMEND = [
+    ['Can you recommend it as a good place for sunny pint?'],
+    ['Have you been? Would you recommend it for al fresco drinking?'],
+    ['Been here before? Let us know if its any good for a sunny drink!'],
+];
 
 class RecommendationComponent extends React.Component {
 
@@ -20,9 +22,20 @@ class RecommendationComponent extends React.Component {
         this.state = {
             hasOutsideSpace: false,
             hasGarden: false,
+            introSentences: this.getRandomSentences('INTRO'),
+            recommendSentences: this.getRandomSentences('RECOMMEND'),
         }
         this.onAttributeChange = this.onAttributeChange.bind(this);
         this.recommendPub = this.recommendPub.bind(this);
+    }
+
+    componentwillReceiveProps(nextProps) {
+        if(this.props.pub.name !== nextProps.pub.name) {
+            this.setState({
+                introSentences: this.getRandomSentences('INTRO'),
+                recommendSentences: this.getRandomSentences('RECOMMEND'),
+            });
+        }
     }
 
     onAttributeChange(e) {
@@ -40,6 +53,11 @@ class RecommendationComponent extends React.Component {
         this.props.recommendPub(attributes);
     }
 
+    getRandomSentences(key) {
+        const randomSentences = sentences[key];
+        return randomSentences[Math.floor(Math.random() * randomSentences.length)];
+    }
+
     getContent() {
         //check if this pub is in the list of recommended pubs already
         const hasBeenRecommended = this.props.alreadyRecommended.find((recommendation) => {
@@ -52,13 +70,13 @@ class RecommendationComponent extends React.Component {
             )
         }
 
-        const introSentences = INTRO_SENTENCES[Math.floor(Math.random() * INTRO_SENTENCES.length)];
-        const recommendSentence = RECOMMEND_SENTENCES[Math.floor(Math.random() * RECOMMEND_SENTENCES.length)];
+        //const introSentences = INTRO_SENTENCES[Math.floor(Math.random() * INTRO_SENTENCES.length)];
+        //const recommendSentence = RECOMMEND_SENTENCES[Math.floor(Math.random() * RECOMMEND_SENTENCES.length)];
 
         return (
             <div>
-                <p className="Para--large">{introSentences[0]} <em>{this.props.pub.name}</em> {introSentences[1]}</p>
-                <p className="Para--large">{recommendSentence}</p>
+                <p className="Para--large">{this.state.introSentences[0]} <em>{this.props.pub.name}</em> {this.state.introSentences[1]}</p>
+                <p className="Para--large">{this.state.recommendSentences[0]}</p>
                 <p>Just tick all that apply, and let us know!</p>
 
                 <LocationAttributes
