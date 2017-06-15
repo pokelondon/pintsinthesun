@@ -35,7 +35,7 @@ const createStoreWithMiddleware = applyMiddleware(
     loggerMiddleware,
     routerMiddleware(hashHistory),
 )(createStore);
-const store = createStoreWithMiddleware(reducers);
+const store = createStoreWithMiddleware(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 if(window.location.hostname.indexOf('pintsinthesun.co.uk') != -1){
     GA.initialize('UA-15712565-30');
