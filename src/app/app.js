@@ -5,7 +5,6 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import { routerMiddleware } from 'react-router-redux'
-import createLogger from 'redux-logger';
 import createDebounce from 'redux-debounced'
 
 import reducers from './reducers';
@@ -27,12 +26,10 @@ import promise from 'es6-promise';
 import 'isomorphic-fetch';
 promise.polyfill();
 
-const loggerMiddleware = createLogger();
 
 const createStoreWithMiddleware = applyMiddleware(
     createDebounce(),
     thunkMiddleware,
-    loggerMiddleware,
     routerMiddleware(hashHistory),
 )(createStore);
 const store = createStoreWithMiddleware(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
