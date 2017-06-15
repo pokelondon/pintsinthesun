@@ -7,7 +7,7 @@ class Rational extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            rational: this.getRationalText(),
+            rational: this.getRationalText(this.props.pub),
             intro: this.getIntroText(this.props.pub.name)
         }
     }
@@ -15,7 +15,7 @@ class Rational extends React.Component {
     componentWillReceiveProps(nextProps) {
         if(nextProps.pub.name !== this.props.pub.name) {
             this.setState({
-                rational: this.getRationalText(),
+                rational: this.getRationalText(nextProps.pub),
                 intro: this.getIntroText(nextProps.pub.name)
             });
         }
@@ -25,24 +25,21 @@ class Rational extends React.Component {
         return `${this.getRandomString('SUGGESTIONS')} <em>${pubName.toUpperCase()}?</em> ${this.getRandomString('VERIFICATION')}`;
     }
 
-    getRationalText() {
+    getRationalText(pub) {
         var response = [];
 
-        if(this.props.pub) {
+        if(pub.has_outside_space) {
+            response.push(this.getRandomString('OUTSIDE_SPACE'));
+        }
 
-            if(this.props.pub.has_outside_space) {
-                response.push(this.getRandomString('OUTSIDE_SPACE'));
+        if(pub.has_garden) {
+            let gardenSentence = this.getRandomString('GARDEN');
+            if(pub.has_outside_space) {
+                //replace the trailing ! with a comma, to allow more to be added...
+                response[response.length-1] = response[response.length-1].slice(0, -1) + ', and ';
+                gardenSentence = gardenSentence[0].toLowerCase() + gardenSentence.substring(1);
             }
-
-            if(this.props.pub.has_garden) {
-                let gardenSentence = this.getRandomString('GARDEN');
-                if(this.props.pub.has_outside_space) {
-                    //replace the trailing ! with a comma, to allow more to be added...
-                    response[response.length-1] = response[response.length-1].slice(0, -1) + ', and ';
-                    gardenSentence = gardenSentence[0].toLowerCase() + gardenSentence.substring(1);
-                }
-                response.push(gardenSentence);
-            }
+            response.push(gardenSentence);
         }
 
         return response;
