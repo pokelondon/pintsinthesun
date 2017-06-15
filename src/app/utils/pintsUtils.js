@@ -37,3 +37,12 @@ export const getSuggestedPub = (pubsList, centre) => {
     });
     return _.find(sortedPubs, pub => pub.known);
 }
+
+/**
+* Convert Mongo style lat/lng format (backwards array) to a more useful {lat, lng} format
+* @param {array} arr - the mongo style location array
+* @return {object} - the position in the form {lat, lng}
+*/
+export const normaliseLatLng = (arr) => {
+    return {lat: arr[1], lng: arr[0]};
+}

@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
+import { GoogleMapLoader, GoogleMap, Marker, Circle } from "react-google-maps";
 import Map from '../../components/Map/Map';
 import LocationSearchContainer from '../../components/LocationSearch/LocationSearchContainer';
 import PubNameSearchContainer from '../../components/PubNameSearch/PubNameSearchContainer';
 import PubDetail from '../../components/PubDetail/PubDetail';
+import { normaliseLatLng } from '../../utils/pintsUtils';
 
 import GA from 'react-ga';
 
@@ -89,6 +90,24 @@ class Locate extends React.Component {
         return markers;
     }
 
+    getFocusCircle() {
+        if(this.props.pub) {
+            const pubCentre = normaliseLatLng(this.props.pub.location.coordinates);
+            return (<Circle
+                radius={50}
+                center={pubCentre}
+                options={{
+                    strokeColor: '#000000',
+                    strokeOpacity: 1,
+                    strokeWeight: 2,
+                    fillColor: '#ffffff',
+                    fillOpacity: 0.1,
+                }}
+            />);
+        }
+        return null;
+    }
+
     render() {
 
         let { lat, lng } = this.props.centre;
@@ -140,10 +159,12 @@ class Locate extends React.Component {
                                                     mapTypeControl: false,
                                                     streetViewControl: false,
                                                     zoomControl: true,
-                                                    styles: config.MAP_CONFIG
+                                                    styles: config.MAP_CONFIG,
+                                                    gestureHandling: 'greedy'
                                                 }}
                                                 >
                                                 {this.getMarkers(this.props.filteredPubs)}
+                                                {this.getFocusCircle()}
                                             </GoogleMap>
                                         }
                                     />

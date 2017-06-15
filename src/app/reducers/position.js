@@ -1,6 +1,6 @@
 import SunCalc from '../lib/suncalc';
 import _ from 'lodash';
-import { getSuggestedPub } from '../utils/pintsUtils';
+import { getSuggestedPub, normaliseLatLng } from '../utils/pintsUtils';
 
 import {
     UPDATE_TIME,
@@ -43,14 +43,6 @@ function filterForAngle(sun, items) {
     // return res;
 }
 
-/**
-* Convert Mongo style lat/lng format (backwards array) to a more useful {lat, lng} format
-* @param {array} arr - the mongo style location array
-* @return {object} - the position in the form {lat, lng}
-*/
-function normaliseLatLng(arr) {
-    return {lat: arr[1], lng: arr[0]};
-}
 
 const INITIAL_STATE = {
     isLocating: false,
