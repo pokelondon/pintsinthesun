@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import * as positionActions from '../../actions/position';
 import * as locateActions from '../../actions/locate';
+import * as uiActions from '../../actions/ui';
 
 import { getSelectedPubObj } from '../../reducers/position';
 
@@ -25,6 +26,7 @@ const mapStateToProps = (state, ownProps) => {
         locationHasBeenRequested,
         pub: getSelectedPubObj(state.position),
         mapZoomLevel,
+        isSliderTipVisible: state.ui.isSliderTipVisible,
     }
 }
 
@@ -56,6 +58,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         onZoomChanged: (zoomLevel) => {
             boundPositionActions.changeZoom(zoomLevel)
+        },
+        hideSliderTip: () => {
+            dispatch(uiActions.hideSliderTip());
         }
     }
 }

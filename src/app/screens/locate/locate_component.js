@@ -190,6 +190,8 @@ class Locate extends React.Component {
                                 pub={this.props.pub}
                                 date={this.props.date}
                                 updateTime={this.props.updateTime}
+                                isSliderTipVisible={this.props.isSliderTipVisible}
+                                hideSliderTip={this.props.hideSliderTip}
                             />
                         }
 

@@ -358,3 +358,50 @@
     };
 
 }
+
+.SliderTip {
+    @extend .border-defaults;
+    position: absolute;
+    border-style: solid;
+    padding: 4px 9px;
+    transform: translate(-50%, -100%);
+    background: white;
+    width: 60%;
+    left: 50%;
+    top: -15px;
+    animation: SliderTipBounce;
+    animation-duration: 1100ms;
+    animation-iteration-count: infinite;
+
+    &-copy {
+        z-index: 1;
+        position: relative;
+    }
+
+    &-pointer {
+        content: '';
+        display: block;
+        position: absolute;
+        bottom: -13px;
+        //right: 15px;
+        transform: rotate(45deg);
+        background: white;
+        width: 20px;
+        height: 20px;
+        border: inherit;
+        border-top-style: none;
+        border-left-style: none;
+    }
+}
+
+@keyframes SliderTipBounce {
+    0% {
+        transform: translate(-50%, -100%);
+    }
+    50% {
+        transform: translate(-50%, -110%);
+    }
+    100% {
+        transform: translate(-50%, -100%);
+    }
+}

@@ -9,6 +9,7 @@ import Suggestion from '../../components/suggestion';
 import Rational from '../../components/Rational';
 import StaticMap from '../../components/static-map';
 import LocationStatus from '../../components/location-status';
+import SliderTip from '../../components/SliderTip';
 import RecommendationContainer from '../../components/Recommendation/RecommendationContainer';
 import GA from 'react-ga';
 
@@ -33,6 +34,7 @@ class PubDetail extends React.Component {
         //dont modify globlly on change anymore. Do it on its own event instead.
         //this.props.updateTime(new Date(current.setHours(value)));
         this.setState({localDate: new Date(current.setHours(value)) });
+        this.props.hideSliderTip();
     }
 
     applyLocalTimeToGlobal(){
@@ -110,6 +112,9 @@ class PubDetail extends React.Component {
                                 />
 
                                 <div className="SliderContainer">
+                                    {this.props.isSliderTipVisible &&
+                                        <SliderTip date={this.props.date} />
+                                    }
                                     <Slider
                                         min={7}
                                         max={21}
@@ -163,7 +168,8 @@ PubDetail.propTypes = {
             React.PropTypes.number, React.PropTypes.number
         ]).isRequired,
         distance: React.PropTypes.number,
-    })
+    }),
+    hideSliderTip: React.PropTypes.func,
 
 }
 

@@ -67,9 +67,10 @@
 }
 
 .SliderContainer {
+    position: relative;
     width: 100%;
     max-width: 100%;
-    overflow: hidden;
+    //overflow: hidden;
     padding: 20px 30px 40px;
     box-sizing: border-box;
 }

@@ -3,12 +3,14 @@ import {
     CLOSE_DIALOG,
     LAUNCH_INFO_MODAL,
     CLOSE_MODAL,
+    HIDE_SLIDER_TIP,
 } from '../actions/ui';
 
 
 const INITIAL_STATE = {
     dialogVisible: false,
-    modal: null
+    modal: null,
+    isSliderTipVisible: true
 }
 
 export default function ui(state = INITIAL_STATE, action) {
@@ -37,7 +39,11 @@ export default function ui(state = INITIAL_STATE, action) {
                 ...state,
                 modal: null
             }
-
+        case HIDE_SLIDER_TIP:
+            return {
+                ...state,
+                isSliderTipVisible: false
+            }
         default:
             return state;
     }
