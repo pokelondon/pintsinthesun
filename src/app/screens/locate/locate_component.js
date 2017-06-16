@@ -66,8 +66,8 @@ class Locate extends React.Component {
         this.props.onZoomChanged(zoom);
     }
 
-    onMarkerClick(idx) {
-        this.props.setCurrentPub(idx);
+    onMarkerClick(foursquareID) {
+        this.props.setCurrentPub(foursquareID);
     }
 
     getMarkers(locations) {
@@ -76,21 +76,22 @@ class Locate extends React.Component {
             return;
         }
 
-        const markers = locations.map((locationObj, idx) => {
-
-            let latLng = {lat: locationObj.location.coordinates[1], lng: locationObj.location.coordinates[0]};
+        let markers = [];
+        for(var prop in locations) {
+            const pub = locations[prop];
+            let latLng = {lat: pub.location.coordinates[1], lng: pub.location.coordinates[0]};
             let markerImg = MARKER_IMG_UNKNOWN;
-            if(locationObj.known){
+            if(pub.known){
                 markerImg = MARKER_IMG;
             }
-            return (
-                <Marker key={idx}
+            markers.push(
+                <Marker key={pub.foursquareID}
                     position={latLng}
-                    onClick={() => {this.onMarkerClick(idx)}}
+                    onClick={() => {this.onMarkerClick(pub.foursquareID)}}
                     icon={markerImg}
                 />
-            )
-        });
+            );
+        }
 
         return markers;
     }
@@ -207,8 +208,7 @@ Locate.propTypes = {
         lng: React.PropTypes.number
     }),
     onCenterChanged: React.PropTypes.func,
-    filteredPubs: React.PropTypes.array,
-    items: React.PropTypes.array,
+    filteredPubs: React.PropTypes.object
 }
 
 export default Locate;

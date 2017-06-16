@@ -20,12 +20,13 @@ export const testIsPub = (typeArray) => {
 * Return a suggested pub from a list.
 * Filters list for only 'known' pubs, then orders by distance and returns the
 * closest
-* @param {array} pubsList - array of pub objects
+* @param {object} pubsList - object of pubs, keyed by ID
 * @param {object} centre - the current location in the format {lat, lng}
 * @return {object} the suggest pub
 */
-export const getSuggestedPub = (pubsList, centre) => {
-    const sortedPubs = pubsList.filter((pub) => {
+export const getSuggestedPub = (pubs, centre) => {
+    const pubsArray = _.values(pubs);
+    const sortedPubs = pubsArray.filter((pub) => {
         return pub.known;
     }).sort((a, b) => {
         const centreFormatted = {latitude: centre.lat, longitude: centre.lng};

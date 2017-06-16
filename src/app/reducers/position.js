@@ -50,7 +50,7 @@ const INITIAL_STATE = {
     centre,
     date,
     items: [],
-    filteredPubs : [],
+    filteredPubs : {},
     suggestedPubIDs: [],
     isFetching: false,
     currentPub: 0,
@@ -94,7 +94,6 @@ export default function position(state=INITIAL_STATE, action) {
                 ...state,
                 date: action.date,
                 timeRange: action.timeRange,
-                filteredPubs: filterForAngle(sun, state.items),
                 sun
             }
         case RESPONSE_POSITION:
@@ -104,7 +103,7 @@ export default function position(state=INITIAL_STATE, action) {
                 ...state,
                 centre: action.centre,
                 isLocating: false,
-                filteredPubs: filterForAngle(sun, state.items),
+                //filteredPubs: filterForAngle(sun, state.items),
                 isRealPosition: action.isRealPosition,
                 isGPSPosition: action.isGPSPosition,
                 address: action.address,
@@ -127,15 +126,11 @@ export default function position(state=INITIAL_STATE, action) {
                 isFetching: true
             }
         case RESPONSE_PUBS: {
-            const mergedItems = _.unionWith(state.items, action.items, (pubA, pubB) => {
-                return pubA.foursquareID === pubB.foursquareID;
-            });
+            const fetchedPubsAsKeyedObj = _.keyBy(action.items, pub => pub.foursquareID);
             return {
                 ...state,
                 isFetching: false,
-                items: [...mergedItems],
-                filteredPubs: [...mergedItems],
-                currentPub: 0
+                filteredPubs: {...state.filteredPubs, ...fetchedPubsAsKeyedObj}
             }
         }
         case RESPONSE_PUB_DETAIL:
@@ -156,7 +151,7 @@ export default function position(state=INITIAL_STATE, action) {
                     ...state,
                     shouldSuggest: false,
                     centre: normaliseLatLng(suggestedPub.location.coordinates),
-                    pub: {...suggestedPub}
+                    currentPub: suggestedPub.foursquareID
                 }
             } else {
                 return {
@@ -167,10 +162,10 @@ export default function position(state=INITIAL_STATE, action) {
         }
         //take a deep copy of the selecteded pub by index from the current list of pubs
         case SET_CURRENT_PUB: {
-            const selectedPub = state.filteredPubs[action.index];
+            const selectedPub = state.filteredPubs[action.payload];
             return {
                 ...state,
-                pub: {...selectedPub},
+                currentPub: action.payload,
                 centre: normaliseLatLng(selectedPub.location.coordinates)
             }
         }
@@ -200,4 +195,8 @@ export default function position(state=INITIAL_STATE, action) {
         default:
             return state;
     }
+}
+
+export const getSelectedPubObj = (state) => {
+    return state.filteredPubs[state.currentPub];
 }

@@ -2,6 +2,7 @@ import { getLocation } from '../services/location';
 import { floorLatLng } from '../services/location';
 import { reverseGeocode } from '../services/googlemaps';
 import { fetchWeather, filterWeather } from './weather';
+import { showDialog } from './ui';
 
 import config from '../config';
 
@@ -215,11 +216,11 @@ export function responsePubDetail(data) {
     }
 }
 
-export function setCurrentPub(index) {
+export function setCurrentPub(foursquareID) {
     return (dispatch) => {
         dispatch({
             type: SET_CURRENT_PUB,
-            index
+            payload: foursquareID
         });
         dispatch(mapZoomFocus());
     }
@@ -253,5 +254,8 @@ export function changeZoom(zoomLevel) {
 }
 
 function handleError(err) {
-    hashHistory.push('/error');
+    //hashHistory.push('/error');
+    return (dispatch) => {
+        dispatch(showDialog('Oops - something went wrong :('));
+    }
 }
