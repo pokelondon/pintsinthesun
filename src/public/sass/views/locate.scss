@@ -10,4 +10,11 @@
         border-radius: 0;
         -webkit-appearance: none;
     }
+
+    .PubNameOverlay{
+        @extend .border-defaults;
+        padding: 5px 10px;
+        transform: translate(-50%, 60px);
+        text-transform: uppercase;
+    }
 }

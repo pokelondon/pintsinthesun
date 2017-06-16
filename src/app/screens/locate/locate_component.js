@@ -1,6 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { GoogleMapLoader, GoogleMap, Marker, Circle } from "react-google-maps";
+import {
+    GoogleMapLoader,
+    GoogleMap,
+    Marker,
+    Circle
+} from "react-google-maps";
 import Map from '../../components/Map/Map';
 import LocationSearchContainer from '../../components/LocationSearch/LocationSearchContainer';
 import PubNameSearchContainer from '../../components/PubNameSearch/PubNameSearchContainer';
@@ -168,10 +173,16 @@ class Locate extends React.Component {
                                             </GoogleMap>
                                         }
                                     />
-
                                 </div>
                             </div>
                         </div>
+                        {this.props.pub &&
+                            <div className="Box Box-row">
+                                <div className="Box Box-item">
+                                    <p>{this.props.pub.name.toUpperCase()}</p>
+                                </div>
+                            </div>
+                        }
 
                         {this.props.pub &&
                             <PubDetail
