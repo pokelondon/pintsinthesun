@@ -99,55 +99,31 @@ class PubDetail extends React.Component {
                 <div className="Box Box-row flex-wrap">
                     <div className="Box-item Box-item--noPadding Box-item--halfCol Box-item--responsiveBorders">
 
-                        {this.props.showMap &&
-                            <div className="MapTabs">
-                                <button className={(this.state.visibleTab === 'sun') ? 'Button Button--tab Button--tab--active' : 'Button Button--tab'} onClick={this.showTab.bind(this, 'sun')}>Sun position</button>
-                                <button className={(this.state.visibleTab === 'map') ? 'Button Button--tab Button--tab--active' : 'Button Button--tab'} onClick={this.showTab.bind(this, 'map')}>Map</button>
-                            </div>
-                        }
-
                         <div className="PubTabContent">
+                            <div>
+                                <ThreeD
+                                    centre={{lat, lng}}
+                                    date={this.state.localDate}
+                                    renderTransitionDirection={this.props.renderTransitionDirection}
+                                    incrementCurrentPub={this.props.incrementCurrentPub}
+                                    decrementCurrentPub={this.props.decrementCurrentPub}
+                                />
 
-                            { ( () => {
-                                if(this.state.visibleTab === 'sun'){
-                                    return (
-                                        <div>
-                                            <ThreeD
-                                                centre={{lat, lng}}
-                                                date={this.state.localDate}
-                                                renderTransitionDirection={this.props.renderTransitionDirection}
-                                                incrementCurrentPub={this.props.incrementCurrentPub}
-                                                decrementCurrentPub={this.props.decrementCurrentPub}
-                                            />
-
-                                            <div className="SliderContainer">
-                                                <Slider
-                                                    min={7}
-                                                    max={21}
-                                                    step={1}
-                                                    included={false}
-                                                    defaultValue={this.state.localDate.getHours()}
-                                                    className='Slider'
-                                                    onChange={this.onSliderChange.bind(this)}
-                                                    tipFormatter={this.sliderTipFormatter.bind(this)}
-                                                    marks={ {7: '7:00', 14: '14:00', 21: '21:00'} }
-                                                />
-                                            </div>
-                                        </div>
-                                    );
-                                }
-                            })()}
-
-                            { ( () => {
-                                if(this.state.visibleTab === 'map') {
-                                    return (
-                                        <StaticMap centre={{lat, lng}} />
-                                    )
-                                }
-                            })()}
-
+                                <div className="SliderContainer">
+                                    <Slider
+                                        min={7}
+                                        max={21}
+                                        step={1}
+                                        included={false}
+                                        defaultValue={this.state.localDate.getHours()}
+                                        className='Slider'
+                                        onChange={this.onSliderChange.bind(this)}
+                                        tipFormatter={this.sliderTipFormatter.bind(this)}
+                                        marks={ {7: '7:00', 14: '14:00', 21: '21:00'} }
+                                    />
+                                </div>
+                            </div>
                         </div>
-
                     </div>
 
                     {this.props.pub.known
@@ -187,13 +163,11 @@ PubDetail.propTypes = {
             React.PropTypes.number, React.PropTypes.number
         ]).isRequired,
         distance: React.PropTypes.number,
-    }),
-    showMap: React.PropTypes.bool,
+    })
+
 }
 
-PubDetail.defaultProps = {
-    showMap: false
-}
+PubDetail.defaultProps = {}
 
 
 
