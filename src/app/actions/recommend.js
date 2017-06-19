@@ -8,8 +8,13 @@ export const RECOMMEND_PUB_FAILURE = 'RECOMMEND_PUB_FAILURE';
 export const recommendPub = (foursquareID, attributes) => {
     return (dispatch) => {
         dispatch({type: RECOMMEND_PUB_START});
-        savePub(foursquareID, attributes).then((result) => {
-            dispatch(recommendPubSuccess(foursquareID));
+        savePub(foursquareID, attributes).then((response) => {
+            if(response.status === 429) {
+                dispatch(showDialog('Whoa there - bit too quick with the ol recommendations...'));
+                dispatch({type: RECOMMEND_PUB_FAILURE});
+            } else {
+                dispatch(recommendPubSuccess(foursquareID));
+            }
         }).catch((err) => {
             dispatch(recommendPubFailure());
         })

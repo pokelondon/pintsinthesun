@@ -14,6 +14,7 @@ var assert = require('assert');
 var bodyParser = require('body-parser');
 var apicache = require('apicache').options({ debug: true });
 var apimiddleware = apicache.middleware;
+var RateLimit = require('express-rate-limit');
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
 
@@ -215,11 +216,18 @@ app.post('/pub/exists', function(req, res) {
 
 
 
+//Rate limit recommendations
+var apiLimiter = new RateLimit({
+    windowMs: 5 * 60 * 1000, // 5 minutes
+    max: 10,
+    delayMs: 0
+});
+app.use('/pub/recommend/', apiLimiter);
 
 /**
 * Save a pub
 */
-app.post('/pub/:id', function(req, res) {
+app.post('/pub/recommend/:id', function(req, res) {
     var submittedData = req.body;
     var foursquareID = req.params.id;
 

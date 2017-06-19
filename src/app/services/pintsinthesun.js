@@ -11,7 +11,7 @@ export function savePub(placeID, pubDetails) {
 
     const data = JSON.stringify(payload);
 
-    return fetch(`${config.API}pub/${placeID}`, {
+    return fetch(`${config.API}pub/recommend/${placeID}`, {
         method: 'post',
         headers: {
             "Content-Type": "application/json"
