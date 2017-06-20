@@ -29,9 +29,12 @@ class RecommendationComponent extends React.Component {
         this.recommendPub = this.recommendPub.bind(this);
     }
 
-    componentwillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps) {
+        console.log('componentwillReceiveProps',nextProps, this.props);
         if(this.props.pub.name !== nextProps.pub.name) {
             this.setState({
+                hasOutsideSpace: false,
+                hasGarden: false,
                 introSentences: this.getRandomSentences('INTRO'),
                 recommendSentences: this.getRandomSentences('RECOMMEND'),
             });
