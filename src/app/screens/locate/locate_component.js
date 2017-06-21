@@ -59,10 +59,11 @@ class Locate extends React.Component {
     }
 
     onMarkerClick(foursquareID) {
+        this.props.onZoomChanged(17);
         this.props.setCurrentPub(foursquareID);
     }
 
-    getMarkers(locations) {
+    getMarkers(locations, type) {
 
         if(!locations) {
             return;
@@ -71,21 +72,25 @@ class Locate extends React.Component {
         let markers = [];
         for(var prop in locations) {
             const pub = locations[prop];
-            let markerImg = MARKER_IMG_UNKNOWN.url;
-            if(pub.known){
-                markerImg = MARKER_IMG.url;
+            if(type === 'known' && pub.known || !type) {
+                markers.push(
+                    <Feature
+                        coordinates={pub.location.coordinates}
+                        anchor="center"
+                        onClick={() => {this.onMarkerClick(pub.foursquareID)}}
+                    />
+                )
             }
-            markers.push(
-                <Marker
-                    coordinates={[pub.location.coordinates[0], pub.location.coordinates[1]]}
-                    anchor="center"
-                    onClick={() => {this.props.setCurrentPub(pub.foursquareID)}}
-                >
-                    <img src={markerImg}/>
-                </Marker>
-            );
         }
-        return markers;
+
+        return (<Layer
+                id={`pub-circle-${type}`}
+                type="circle"
+                paint={this.getPointPaint(type)}
+            >
+                {markers}
+            </Layer>);
+
     }
 
     getCirclePaint() {
@@ -101,7 +106,24 @@ class Locate extends React.Component {
         }
     }
 
-
+    getPointPaint(type) {
+        if(type === 'known') {
+            return {
+                'circle-radius': 13,
+                'circle-color': '#f28925',
+                'circle-opacity': 1,
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#000000'
+            }
+        }
+        return {
+            'circle-radius': 10,
+            'circle-color': '#f3bc26',
+            'circle-opacity': 1,
+            'circle-stroke-width': 2,
+            'circle-stroke-color': '#000000'
+        }
+    }
 
     getFocusCircle() {
         if(this.props.pub) {
@@ -112,7 +134,7 @@ class Locate extends React.Component {
                   type="circle"
                   paint={this.getCirclePaint()}
                 >
-                    <Feature onClick={() => {console.log('clickkkkkky');}} coordinates={this.props.pub.location.coordinates} />
+                    <Feature coordinates={this.props.pub.location.coordinates} />
                 </Layer>
             )
         }
@@ -154,11 +176,12 @@ class Locate extends React.Component {
                                         zoom={[this.props.mapZoomLevel]}
                                         onDragEnd={this.onMapDragEnd}
                                         onZoomEnd={this.onZoomChanged}
-                                        movingMethod="flyTo"
+                                        movingMethod="jumpTo"
                                         dragRotate={false}
                                     >
                                         <ZoomControl />
                                         {this.getMarkers(this.props.filteredPubs)}
+                                        {this.getMarkers(this.props.filteredPubs, 'known')}
                                         {this.getFocusCircle()}
                                     </MapBox>
 

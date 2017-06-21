@@ -28,7 +28,6 @@ export const ADD_PUB = 'add_pub';
 export const SHOULD_SUGGEST = 'SHOULD_SUGGEST';
 export const SUGGEST_PUB = 'SUGGEST_PUB';
 
-export const MAP_ZOOM_FOCUS = 'MAP_ZOOM_FOCUS';
 export const MAP_ZOOM_CHANGE = 'MAP_ZOOM_CHANGE';
 
 import { hashHistory } from 'react-router'
@@ -222,7 +221,7 @@ export function setCurrentPub(foursquareID) {
             type: SET_CURRENT_PUB,
             payload: foursquareID
         });
-        dispatch(mapZoomFocus());
+
     }
 }
 
@@ -236,13 +235,6 @@ export function shouldSuggest(bool) {
 export function suggestPub() {
     return (dispatch) => {
         dispatch({type: SUGGEST_PUB});
-        dispatch(mapZoomFocus());
-    }
-}
-
-export function mapZoomFocus() {
-    return {
-        type: MAP_ZOOM_FOCUS
     }
 }
 

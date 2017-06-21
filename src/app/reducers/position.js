@@ -18,7 +18,6 @@ import {
     SET_CURRENT_PUB,
     SHOULD_SUGGEST,
     SUGGEST_PUB,
-    MAP_ZOOM_FOCUS,
     MAP_ZOOM_CHANGE,
 } from '../actions/position';
 
@@ -126,13 +125,11 @@ export default function position(state=INITIAL_STATE, action) {
                 isFetching: true
             }
         case RESPONSE_PUBS: {
-            //const fetchedPubsAsKeyedObj = _.keyBy(action.items, pub => pub.foursquareID);
+            const fetchedPubsAsKeyedObj = _.keyBy(action.items, pub => pub.foursquareID);
             return {
                 ...state,
                 isFetching: false,
-                //only displaying fetched pubs at the mo because perf is bad :(
-                //filteredPubs: {...state.filteredPubs, ...fetchedPubsAsKeyedObj}
-                filteredPubs: _.keyBy(action.items, pub => pub.foursquareID)
+                filteredPubs: {...state.filteredPubs, ...fetchedPubsAsKeyedObj}
             }
         }
         case RESPONSE_PUB_DETAIL:
@@ -183,11 +180,6 @@ export default function position(state=INITIAL_STATE, action) {
                 items: state.items.map((pub) => {
                     return (pub.foursquareID === action.foursquareID) ? {...pub, recommended: true} : {...pub};
                 })
-            }
-        case MAP_ZOOM_FOCUS:
-            return {
-                ...state,
-                mapZoomLevel: 17
             }
         case MAP_ZOOM_CHANGE:
             return {
