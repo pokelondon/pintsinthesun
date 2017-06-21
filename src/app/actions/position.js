@@ -2,7 +2,7 @@ import { getLocation } from '../services/location';
 import { floorLatLng } from '../services/location';
 import { reverseGeocode } from '../services/googlemaps';
 import { fetchWeather, filterWeather } from './weather';
-import { showDialog } from './ui';
+import { showDialog, closeDialog } from './ui';
 
 import config from '../config';
 
@@ -45,8 +45,8 @@ export function addPub(pubDetails) {
 }
 
 export function requestPosition() {
-    return {
-        type: REQUEST_POSITION
+    return (dispatch) => {
+        //
     }
 }
 

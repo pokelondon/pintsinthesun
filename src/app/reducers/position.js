@@ -126,11 +126,13 @@ export default function position(state=INITIAL_STATE, action) {
                 isFetching: true
             }
         case RESPONSE_PUBS: {
-            const fetchedPubsAsKeyedObj = _.keyBy(action.items, pub => pub.foursquareID);
+            //const fetchedPubsAsKeyedObj = _.keyBy(action.items, pub => pub.foursquareID);
             return {
                 ...state,
                 isFetching: false,
-                filteredPubs: {...state.filteredPubs, ...fetchedPubsAsKeyedObj}
+                //only displaying fetched pubs at the mo because perf is bad :(
+                //filteredPubs: {...state.filteredPubs, ...fetchedPubsAsKeyedObj}
+                filteredPubs: _.keyBy(action.items, pub => pub.foursquareID)
             }
         }
         case RESPONSE_PUB_DETAIL:
@@ -185,7 +187,7 @@ export default function position(state=INITIAL_STATE, action) {
         case MAP_ZOOM_FOCUS:
             return {
                 ...state,
-                mapZoomLevel: 18
+                mapZoomLevel: 17
             }
         case MAP_ZOOM_CHANGE:
             return {

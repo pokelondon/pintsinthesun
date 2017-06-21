@@ -1,40 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router';
-import {
-    GoogleMapLoader,
-    GoogleMap,
-    Marker,
-    Circle
-} from "react-google-maps";
-import Map from '../../components/Map/Map';
 import LocationSearchContainer from '../../components/LocationSearch/LocationSearchContainer';
 import PubNameSearchContainer from '../../components/PubNameSearch/PubNameSearchContainer';
 import PubDetail from '../../components/PubDetail/PubDetail';
 import { normaliseLatLng } from '../../utils/pintsUtils';
 
+import ReactMapboxGl, {
+    Layer,
+    Feature,
+    ZoomControl,
+    Marker,
+    Circle
+} from "react-mapbox-gl";
+
+
 import GA from 'react-ga';
 
 import config from '../../config';
 
-const MARKER_IMG = {
-    url: "/img/pint.png",
-    scaledSize: new google.maps.Size(50, 50),
-    origin: new google.maps.Point(0,0),
-    anchor: new google.maps.Point(25, 50)
-};
+const MapBox = ReactMapboxGl({
+  accessToken: "pk.eyJ1IjoicmljaHBva2UiLCJhIjoiY2ozNDc2aWR3MDAxZjMycWtxcmh2MXh3ayJ9.osNPIJFwKW6lo-vQ216qwg"
+});
 
-const MARKER_IMG_GREY = {
-    url: "/img/pint-grey.png",
-    scaledSize: new google.maps.Size(50, 50),
-    origin: new google.maps.Point(0,0),
-    anchor: new google.maps.Point(25, 50)
+const MARKER_IMG = {
+    url: "/img/pint.png"
 };
 
 const MARKER_IMG_UNKNOWN = {
-    url: "/img/unknown-marker.png",
-    scaledSize: new google.maps.Size(20, 20),
-    origin: new google.maps.Point(0,0),
-    anchor: new google.maps.Point(10, 10)
+    url: "/img/unknown-marker.png"
 };
 
 class Locate extends React.Component {
@@ -44,6 +37,7 @@ class Locate extends React.Component {
 
         this.onMarkerClick = this.onMarkerClick.bind(this);
         this.onZoomChanged = this.onZoomChanged.bind(this);
+        this.onMapDragEnd = this.onMapDragEnd.bind(this);
     }
 
     componentWillMount() {
@@ -56,14 +50,12 @@ class Locate extends React.Component {
         }
     }
 
-    onDragEnd() {
-        const centre = this.map.props.map.getCenter();
-        this.props.onCenterChanged({lat: centre.lat(), lng: centre.lng()});
+    onMapDragEnd(ev) {
+        this.props.onCenterChanged(ev.getCenter());
     }
 
-    onZoomChanged() {
-        const zoom = this.map.props.map.getZoom();
-        this.props.onZoomChanged(zoom);
+    onZoomChanged(ev) {
+        this.props.onZoomChanged(ev.getZoom());
     }
 
     onMarkerClick(foursquareID) {
@@ -79,37 +71,50 @@ class Locate extends React.Component {
         let markers = [];
         for(var prop in locations) {
             const pub = locations[prop];
-            let latLng = {lat: pub.location.coordinates[1], lng: pub.location.coordinates[0]};
-            let markerImg = MARKER_IMG_UNKNOWN;
+            let markerImg = MARKER_IMG_UNKNOWN.url;
             if(pub.known){
-                markerImg = MARKER_IMG;
+                markerImg = MARKER_IMG.url;
             }
             markers.push(
-                <Marker key={pub.foursquareID}
-                    position={latLng}
-                    onClick={() => {this.onMarkerClick(pub.foursquareID)}}
-                    icon={markerImg}
-                />
+                <Marker
+                    coordinates={[pub.location.coordinates[0], pub.location.coordinates[1]]}
+                    anchor="center"
+                    onClick={() => {this.props.setCurrentPub(pub.foursquareID)}}
+                >
+                    <img src={markerImg}/>
+                </Marker>
             );
         }
-
         return markers;
     }
 
+    getCirclePaint() {
+        return {
+            'circle-radius': {
+                'base': 1.75,
+                'stops': [[15, 28], [19, 490]]
+            },
+            'circle-color': '#FFFFFF',
+            'circle-opacity': 0.1,
+            'circle-stroke-width': 2,
+            'circle-stroke-color': '#000000'
+        }
+    }
+
+
+
     getFocusCircle() {
         if(this.props.pub) {
-            const pubCentre = normaliseLatLng(this.props.pub.location.coordinates);
-            return (<Circle
-                radius={50}
-                center={pubCentre}
-                options={{
-                    strokeColor: '#000000',
-                    strokeOpacity: 1,
-                    strokeWeight: 2,
-                    fillColor: '#ffffff',
-                    fillOpacity: 0.1,
-                }}
-            />);
+            const location = this.props.pub.location;
+            return (
+                <Layer
+                  id="focus-circle"
+                  type="circle"
+                  paint={this.getCirclePaint()}
+                >
+                    <Feature onClick={() => {console.log('clickkkkkky');}} coordinates={this.props.pub.location.coordinates} />
+                </Layer>
+            )
         }
         return null;
     }
@@ -125,11 +130,6 @@ class Locate extends React.Component {
                         onCenterChanged={this.props.onCenterChanged}
                         fetchPosition={this.props.fetchPosition}
                     />
-                    {/*
-                    <PubNameSearchContainer
-                        getMapBounds={() => {return this.map.props.map.getBounds()}}
-                        onCenterChanged={this.props.onCenterChanged}
-                    />*/}
                 </header>
 
                 <div className="Screen-main">
@@ -144,36 +144,24 @@ class Locate extends React.Component {
                         <div className="Box Box-row">
                             <div className="Box-item Box-item--noPadding">
                                 <div className="Map">
-                                    <GoogleMapLoader
-                                        containerElement={(
-                                            <div
-                                                style={{
-                                                    height: "100%",
-                                                }}
-                                            />
-                                        )}
-                                        googleMapElement={
-                                            <GoogleMap
-                                                ref={map => this.map = map}
-                                                defaultZoom={this.props.mapZoomLevel}
-                                                zoom={this.props.mapZoomLevel}
-                                                defaultCenter={this.props.centre}
-                                                onDragend={this.onDragEnd.bind(this)}
-                                                onZoomChanged={this.onZoomChanged}
-                                                center={this.props.centre}
-                                                options={{
-                                                    mapTypeControl: false,
-                                                    streetViewControl: false,
-                                                    zoomControl: true,
-                                                    styles: config.MAP_CONFIG,
-                                                    gestureHandling: 'greedy'
-                                                }}
-                                                >
-                                                {this.getMarkers(this.props.filteredPubs)}
-                                                {this.getFocusCircle()}
-                                            </GoogleMap>
-                                        }
-                                    />
+                                    <MapBox
+                                        style="mapbox://styles/richpoke/cj3478cqk002g2sqecso4xnz9"
+                                        containerStyle={{
+                                            height: "100%",
+                                            width: "100%"
+                                        }}
+                                        center={[this.props.centre.lng, this.props.centre.lat]}
+                                        zoom={[this.props.mapZoomLevel]}
+                                        onDragEnd={this.onMapDragEnd}
+                                        onZoomEnd={this.onZoomChanged}
+                                        movingMethod="flyTo"
+                                        dragRotate={false}
+                                    >
+                                        <ZoomControl />
+                                        {this.getMarkers(this.props.filteredPubs)}
+                                        {this.getFocusCircle()}
+                                    </MapBox>
+
                                 </div>
                             </div>
                         </div>
@@ -214,3 +202,34 @@ Locate.propTypes = {
 }
 
 export default Locate;
+
+/*}<GoogleMapLoader
+    containerElement={(
+        <div
+            style={{
+                height: "100%",
+            }}
+        />
+    )}
+    googleMapElement={
+        <GoogleMap
+            ref={map => this.map = map}
+            defaultZoom={this.props.mapZoomLevel}
+            zoom={this.props.mapZoomLevel}
+            defaultCenter={this.props.centre}
+            onDragend={this.onDragEnd.bind(this)}
+            onZoomChanged={this.onZoomChanged}
+            center={this.props.centre}
+            options={{
+                mapTypeControl: false,
+                streetViewControl: false,
+                zoomControl: true,
+                styles: config.MAP_CONFIG,
+                gestureHandling: 'greedy'
+            }}
+            >
+            {this.getMarkers(this.props.filteredPubs)}
+            {this.getFocusCircle()}
+        </GoogleMap>
+    }
+/>*/

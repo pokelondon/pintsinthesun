@@ -28,7 +28,8 @@ var cssmin = require('gulp-cssmin');
 var dependencies = [
     'D3',
     'React',
-    'THREE'
+    'THREE',
+    'gsap'
 ];
 // keep a count of the times a task refires
 var scriptsCount = 0;
