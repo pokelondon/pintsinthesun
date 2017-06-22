@@ -29,7 +29,6 @@ const loggerMiddleware = createLogger();
 const createStoreWithMiddleware = applyMiddleware(
     createDebounce(),
     thunkMiddleware,
-    
     routerMiddleware(hashHistory),
 )(createStore);
 

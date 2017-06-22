@@ -1,7 +1,8 @@
-import { geocode as geocodeApi } from '../services/googlemaps.js';
+import { geocode as geocodeApi } from '../services/mapbox';
 import { showDialog } from './ui';
 import { fetchPubs } from './position';
-import { fetchWeather } from './weather'
+import { fetchWeather } from './weather';
+import { normaliseLatLng } from '../utils/pintsUtils';
 
 export const GEOCODE_START = 'GEOCODE_START';
 export const GEOCODE_SUCCESS = 'GEOCODE_SUCCESS';
@@ -11,15 +12,20 @@ export const GEOCODE_ZERO_RESULTS = 'GEOCODE_ZERO_RESULTS';
 export const geocodeSearch = (searchTerm, mapBounds) => {
     return (dispatch) => {
         dispatch({type: GEOCODE_START});
-        geocodeApi(searchTerm, mapBounds, (result) => {
-            if(result.status === 'OK'){
-                dispatch(geocodeSuccess(result.centre));
-            } else
-            if(result.status == 'ZERO_RESULTS')
+        geocodeApi(searchTerm).then((response) => {
+            return response.json();
+        })
+        .then((results) => {
+            if(results.features.length === 0) {
                 dispatch(geocodeZeroResults());
-            else {
-                dispatch(geocodeFailure());
+            } else {
+                const centre = normaliseLatLng(results.features[0].geometry.coordinates);
+                dispatch(geocodeSuccess(centre));
             }
+
+        })
+        .catch((err) => {
+            dispatch(geocodeFailure(err));
         });
     }
 }
@@ -35,9 +41,9 @@ export const geocodeSuccess = (centre) => {
     }
 }
 
-export const geocodeFailure = () => {
+export const geocodeFailure = (err) => {
     return (dispatch) => {
-        dispatch(showDialog('Oops, something went wrong :( Please try again in a bit.'));
+        dispatch(showDialog('Oops, something went wrong :( Please try again in a bit.', String(err)));
         dispatch({type: GEOCODE_FAILURE});
     }
 }

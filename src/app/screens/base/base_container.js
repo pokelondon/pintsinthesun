@@ -9,7 +9,7 @@ import Base from './base_component';
 
 const mapStateToProps = (state, ownProps) => {
     const { date, isLocating, centre } = state.position;
-    const { dialogVisible, dialogMessage, modal } = state.ui;
+    const { dialogVisible, dialogMessage, dialogMoreInfo, modal } = state.ui;
 
     return {
         isLocating,
@@ -18,6 +18,7 @@ const mapStateToProps = (state, ownProps) => {
         modal,
         dialogVisible,
         dialogMessage,
+        dialogMoreInfo,
     }
 }
 

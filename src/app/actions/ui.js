@@ -4,10 +4,10 @@ export const LAUNCH_INFO_MODAL = 'launch_info_modal';
 export const CLOSE_MODAL = 'close_modal';
 export const HIDE_SLIDER_TIP = 'HIDE_SLIDER_TIP';
 
-export function showDialog(message){
+export function showDialog(message, moreInfo){
     return {
         type: SHOW_DIALOG,
-        message
+        payload: {message, moreInfo}
     }
 }
 

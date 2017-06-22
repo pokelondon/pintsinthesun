@@ -10,7 +10,9 @@ import {
 const INITIAL_STATE = {
     dialogVisible: false,
     modal: null,
-    isSliderTipVisible: true
+    isSliderTipVisible: true,
+    dialogMessage: '',
+    dialogMoreInfo: ''
 }
 
 export default function ui(state = INITIAL_STATE, action) {
@@ -19,7 +21,8 @@ export default function ui(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 dialogVisible: true,
-                dialogMessage: action.message
+                dialogMessage: action.payload.message,
+                dialogMoreInfo: action.payload.moreInfo,
             }
 
         case CLOSE_DIALOG :

@@ -58,7 +58,7 @@ const INITIAL_STATE = {
     timeRange: 'now',
     locationHasBeenRequested: false,
     shouldSuggest: false,
-    mapZoomLevel: 17
+    mapZoomLevel: 15
 }
 
 export default function position(state=INITIAL_STATE, action) {
@@ -71,6 +71,7 @@ export default function position(state=INITIAL_STATE, action) {
         case GEOCODE_SUCCESS:
             return {
                 ...state,
+                mapZoomLevel: 15,
                 centre: action.payload
             }
         case ADD_PUB:

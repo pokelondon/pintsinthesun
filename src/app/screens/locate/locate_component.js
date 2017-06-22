@@ -4,22 +4,18 @@ import LocationSearchContainer from '../../components/LocationSearch/LocationSea
 import PubNameSearchContainer from '../../components/PubNameSearch/PubNameSearchContainer';
 import PubDetail from '../../components/PubDetail/PubDetail';
 import { normaliseLatLng } from '../../utils/pintsUtils';
-
+import config from '../../config';
 import ReactMapboxGl, {
     Layer,
     Feature,
     ZoomControl,
     Marker,
     Circle
-} from "react-mapbox-gl";
-
-
+} from 'react-mapbox-gl';
 import GA from 'react-ga';
 
-import config from '../../config';
-
 const MapBox = ReactMapboxGl({
-  accessToken: "pk.eyJ1IjoicmljaHBva2UiLCJhIjoiY2ozNDc2aWR3MDAxZjMycWtxcmh2MXh3ayJ9.osNPIJFwKW6lo-vQ216qwg"
+  accessToken: config.MAPBOX_API_KEY
 });
 
 const MARKER_IMG = {

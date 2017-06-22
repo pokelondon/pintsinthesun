@@ -1,11 +1,14 @@
 import React from 'react';
 
-const Dialog = ({message, buttonText, onButtonClick}) => {
+const Dialog = ({message, moreInfo, buttonText, onButtonClick}) => {
     return (
         <div className="Dialog">
             <div className="Dialog-inner Box Box-row">
                 <div className="Box Box-item">
                     <p>{message}</p>
+                    {moreInfo &&
+                        <p className="Para--tiny">{moreInfo}</p>
+                    }
                     <button className="Button--anchor" onClick={onButtonClick}>{buttonText}</button>
                 </div>
             </div>
@@ -15,6 +18,7 @@ const Dialog = ({message, buttonText, onButtonClick}) => {
 
 Dialog.propTypes = {
     message: React.PropTypes.string,
+    moreInfo: React.PropTypes.string,
     buttonText: React.PropTypes.string,
     onButtonClick: React.PropTypes.func
 }

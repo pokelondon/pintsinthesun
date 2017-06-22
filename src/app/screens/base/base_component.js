@@ -24,6 +24,7 @@ class Base extends React.Component {
             return (
                 <Dialog
                     message={this.props.dialogMessage}
+                    moreInfo={this.props.dialogMoreInfo}
                     buttonText="Ok"
                     onButtonClick={this.props.closeDialog}
                 />

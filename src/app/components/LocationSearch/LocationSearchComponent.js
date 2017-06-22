@@ -32,7 +32,11 @@ class LocationSearch extends Component {
                         </div>
                 </form>
                 {this.props.hasZeroResults &&
-                    <div>No results :(</div>
+                    <div className="Box Box-row">
+                        <div className="Box Box-item">
+                            <div>No results :(</div>
+                        </div>
+                    </div>
                 }
             </div>
         );

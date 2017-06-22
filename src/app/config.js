@@ -5,6 +5,8 @@ const ROADS = false;
 const FS_PRECISION = 1000;
 const API = '/';
 const ACCEPTED_PLACE_TYPES = ['establishment', 'art_gallery', 'bar', 'cafe', 'casino', 'liquor_store', 'movie_theater', 'night_club', 'restaurant', 'stadium', 'food', 'premise'];
+const MAPBOX_API_KEY = 'pk.eyJ1IjoicmljaHBva2UiLCJhIjoiY2ozNDc2aWR3MDAxZjMycWtxcmh2MXh3ayJ9.osNPIJFwKW6lo-vQ216qwg';
+const MAPBOX_GEOCODING_API = `http://api.mapbox.com/geocoding/v5/mapbox.places/{term}.json?access_token=${MAPBOX_API_KEY}`
 const MAP_CONFIG = [
     {
         "featureType": "administrative.land_parcel",
@@ -153,7 +155,9 @@ const config = {
     FS_PRECISION,
     API,
     MAP_CONFIG,
-    ACCEPTED_PLACE_TYPES
+    ACCEPTED_PLACE_TYPES,
+    MAPBOX_API_KEY,
+    MAPBOX_GEOCODING_API
 }
 
 export default config;

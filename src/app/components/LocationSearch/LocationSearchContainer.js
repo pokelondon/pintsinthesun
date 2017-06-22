@@ -15,7 +15,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         doSearch: (term) => {
-            dispatch(geocodeActions.geocodeSearch(term, ownProps.getMapBounds()));
+            dispatch(geocodeActions.geocodeSearch(term));
         }
     }
 }
