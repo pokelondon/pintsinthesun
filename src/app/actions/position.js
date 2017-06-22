@@ -3,6 +3,7 @@ import { floorLatLng } from '../services/location';
 import { reverseGeocode } from '../services/googlemaps';
 import { fetchWeather, filterWeather } from './weather';
 import { showDialog, closeDialog } from './ui';
+import { normaliseLatLng } from '../utils/pintsUtils';
 
 import config from '../config';
 
@@ -19,6 +20,7 @@ export const REQUEST_PUB_DETAIL = 'request_pub_detail';
 export const RESPONSE_PUB_DETAIL = 'response_pub_detail';
 
 export const SET_CURRENT_PUB = 'SET_CURRENT_PUB';
+export const FOCUS_ON_PUB_LOCATION = 'FOCUS_ON_PUB_LOCATION';
 
 export const REQUEST_ADDRESS = 'request_address';
 export const RESPONSE_ADDRESS = 'response_address';
@@ -44,8 +46,8 @@ export function addPub(pubDetails) {
 }
 
 export function requestPosition() {
-    return (dispatch) => {
-        //
+    return {
+        type: REQUEST_POSITION
     }
 }
 
@@ -215,13 +217,30 @@ export function responsePubDetail(data) {
     }
 }
 
-export function setCurrentPub(foursquareID) {
-    return (dispatch) => {
+export function setCurrentPub(foursquareID, history) {
+
+    return (dispatch, getState) => {
         dispatch({
             type: SET_CURRENT_PUB,
             payload: foursquareID
         });
 
+        const state = getState();
+        if(state.position.filteredPubs) {
+            const pubObject = state.position.filteredPubs[foursquareID];
+
+            if(pubObject && history) {
+                const pubLocation = normaliseLatLng(pubObject.location.coordinates);
+                history.push(`/pubs/${pubLocation.lat}/${pubLocation.lng}/${foursquareID}`);
+                dispatch({type: FOCUS_ON_PUB_LOCATION});
+            }
+        }
+    }
+}
+
+export function focusOnPubLocation() {
+    return {
+        type: FOCUS_ON_PUB_LOCATION
     }
 }
 
@@ -235,6 +254,7 @@ export function shouldSuggest(bool) {
 export function suggestPub() {
     return (dispatch) => {
         dispatch({type: SUGGEST_PUB});
+        dispatch(focusOnPubLocation());
     }
 }
 

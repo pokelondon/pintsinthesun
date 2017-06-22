@@ -11,13 +11,10 @@ import { saveState, loadState} from './services/localStorage';
 import reducers from './reducers';
 
 import Start from './screens/start/start_container';
-import PubDetail from './screens/pubdetail/pubdetail_container';
 import Locate from './screens/locate/locate_container';
 import Base from './screens/base/base_container';
-import Add from './screens/addpub/addpub_container';
 import Admin from './screens/admin/admin_container';
 import NoMatch from './screens/nomatch';
-import FatalError from './screens/error';
 
 
 import GA from 'react-ga';
@@ -27,9 +24,12 @@ import promise from 'es6-promise';
 import 'isomorphic-fetch';
 promise.polyfill();
 
+import createLogger from "redux-logger";
+const loggerMiddleware = createLogger();
 const createStoreWithMiddleware = applyMiddleware(
     createDebounce(),
     thunkMiddleware,
+    
     routerMiddleware(hashHistory),
 )(createStore);
 
@@ -61,9 +61,9 @@ ReactDOM.render((
             <Router onUpdate={logPageView} className="AppContainer" history={hashHistory}>
                 <Route path="/" component={Base}>
                     <IndexRoute component={Start} />
-                    <Route path="/pubs(/:suggest)" component={Locate} />
-                    <Route path="/add" component={Add} />
-                    <Route path="/error" component={FatalError} />
+                    <Route path="/pubs/(:suggest)" component={Locate} />
+                    <Route path="/pubs/:lat/:lng" component={Locate} />
+                    <Route path="/pubs/:lat/:lng/:foursquareID" component={Locate} />
                     <Route path="/admin" component={Admin} />
                     <Route path="*" component={NoMatch}/>
                 </Route>

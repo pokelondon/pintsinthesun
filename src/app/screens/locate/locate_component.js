@@ -38,20 +38,70 @@ class Locate extends React.Component {
         this.onMarkerClick = this.onMarkerClick.bind(this);
         this.onZoomChanged = this.onZoomChanged.bind(this);
         this.onMapDragEnd = this.onMapDragEnd.bind(this);
+
+        /* TODO - this is really dirty, but for some reason when receiving new props
+        and compaing them to the values in redux (then updating the store with the new props)
+        the store wouldnt update quick enough, and the code would run again when more
+        props were received. By keeping a local copy we can be sure that the values had
+        changed. These are just throwaway vars in order to know whether props had actually
+        updated
+         */
+        this.previousLat = 0;
+        this.previousLng = 0;
+        this.previousFoursquareID = 0;
     }
 
     componentWillMount() {
-        if(this.props.params.suggest === 'suggest') {
+        if(this.props.params.suggest) {
             this.props.shouldSuggest(true);
-        }
-
-        if(!this.props.locationHasBeenRequested) {
             this.props.fetchPosition();
         }
+
+        if(this.props.params && this.props.params.foursquareID) {
+            this.props.setCurrentPub(this.props.params.foursquareID);
+            this.props.setCurrentPub(this.props.params.foursquareID);
+        }
+
+        if(this.props.params && this.props.params.lat && this.props.params.lng) {
+            const center = {
+                lat: parseFloat(this.props.params.lat),
+                lng: parseFloat(this.props.params.lng),
+            };
+            this.props.onCenterChanged(center);
+        } else {
+            if(!this.props.locationHasBeenRequested) {
+                this.props.fetchPosition();
+            }
+        }
+
+    }
+
+    componentWillReceiveProps(nextProps) {
+
+        if(nextProps.params.lat && nextProps.params.lng){
+            if(nextProps.params.lat !== this.previousLat || nextProps.params.lng !== this.previousLng) {
+                this.previousLat = nextProps.params.lat;
+                this.previousLng = nextProps.params.lng;
+
+                this.props.onCenterChanged({
+                    lat: parseFloat(nextProps.params.lat),
+                    lng: parseFloat(nextProps.params.lng),
+                });
+            }
+        }
+
+        if(nextProps.params.foursquareID) {
+            if(this.previousFoursquareID !== nextProps.params.foursquareID) {
+                this.previousFoursquareID = nextProps.params.foursquareID;
+                this.props.setCurrentPub(nextProps.params.foursquareID);
+            }
+        }
+
     }
 
     onMapDragEnd(ev) {
-        this.props.onCenterChanged(ev.getCenter());
+        const centre = ev.getCenter();
+        this.props.history.push(`/pubs/${centre.lat}/${centre.lng}/${this.props.currentFoursquareID}`);
     }
 
     onZoomChanged(ev) {
@@ -59,7 +109,6 @@ class Locate extends React.Component {
     }
 
     onMarkerClick(foursquareID) {
-        this.props.onZoomChanged(17);
         this.props.setCurrentPub(foursquareID);
     }
 
@@ -142,7 +191,6 @@ class Locate extends React.Component {
     }
 
     render() {
-
         let { lat, lng } = this.props.centre;
         return (
             <div className="Screen Locate">
@@ -226,33 +274,4 @@ Locate.propTypes = {
 
 export default Locate;
 
-/*}<GoogleMapLoader
-    containerElement={(
-        <div
-            style={{
-                height: "100%",
-            }}
-        />
-    )}
-    googleMapElement={
-        <GoogleMap
-            ref={map => this.map = map}
-            defaultZoom={this.props.mapZoomLevel}
-            zoom={this.props.mapZoomLevel}
-            defaultCenter={this.props.centre}
-            onDragend={this.onDragEnd.bind(this)}
-            onZoomChanged={this.onZoomChanged}
-            center={this.props.centre}
-            options={{
-                mapTypeControl: false,
-                streetViewControl: false,
-                zoomControl: true,
-                styles: config.MAP_CONFIG,
-                gestureHandling: 'greedy'
-            }}
-            >
-            {this.getMarkers(this.props.filteredPubs)}
-            {this.getFocusCircle()}
-        </GoogleMap>
-    }
-/>*/
+

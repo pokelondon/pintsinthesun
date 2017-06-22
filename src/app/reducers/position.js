@@ -19,6 +19,7 @@ import {
     SHOULD_SUGGEST,
     SUGGEST_PUB,
     MAP_ZOOM_CHANGE,
+    FOCUS_ON_PUB_LOCATION,
 } from '../actions/position';
 
 import { GEOCODE_SUCCESS } from '../actions/geocode';
@@ -159,14 +160,23 @@ export default function position(state=INITIAL_STATE, action) {
                 }
             }
         }
-        //take a deep copy of the selecteded pub by index from the current list of pubs
         case SET_CURRENT_PUB: {
-            const selectedPub = state.filteredPubs[action.payload];
             return {
                 ...state,
-                currentPub: action.payload,
-                centre: normaliseLatLng(selectedPub.location.coordinates)
+                currentPub: action.payload
             }
+        }
+        //move the map to point to the current selected pub
+        case FOCUS_ON_PUB_LOCATION: {
+            const selectedPub = state.filteredPubs[state.currentPub];
+            if(selectedPub){
+                return {
+                    ...state,
+                    centre: normaliseLatLng(selectedPub.location.coordinates),
+                    mapZoomLevel: 17
+                }
+            }
+            return state;
         }
         case SET_POSITION:
             return {

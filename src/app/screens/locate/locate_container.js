@@ -12,7 +12,7 @@ import Locate from './locate_component';
 import GA from 'react-ga';
 
 const mapStateToProps = (state, ownProps) => {
-    const { centre, sun, items, filteredPubs, date, isLocating, locationHasBeenRequested, pub, mapZoomLevel } = state.position;
+    const { centre, sun, items, filteredPubs, date, isLocating, locationHasBeenRequested, pub, mapZoomLevel, currentPub } = state.position;
     const { angle } = state.locate;
 
     return {
@@ -25,6 +25,7 @@ const mapStateToProps = (state, ownProps) => {
         isLocating,
         locationHasBeenRequested,
         pub: getSelectedPubObj(state.position),
+        currentFoursquareID: currentPub,
         mapZoomLevel,
         isSliderTipVisible: state.ui.isSliderTipVisible,
     }
@@ -34,7 +35,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     const boundPositionActions = bindActionCreators(positionActions, dispatch);
 
     return {
-        onCenterChanged: (centre) => {
+        onCenterChanged: (centre) => {            
             boundPositionActions.responsePosition(centre);
         },
         fetchPosition: () => {
@@ -48,7 +49,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             boundPositionActions.updateTime(date)
         },
         setCurrentPub: (foursquareID) => {
-            boundPositionActions.setCurrentPub(foursquareID);
+            boundPositionActions.setCurrentPub(foursquareID, ownProps.history);
+        },
+        focusOnPubLocation: () => {
+            boundPositionActions.focusOnPubLocation();
         },
         shouldSuggest: (bool) => {
             boundPositionActions.shouldSuggest(bool);

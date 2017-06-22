@@ -29,7 +29,9 @@ var dependencies = [
     'D3',
     'React',
     'THREE',
-    'gsap'
+    'gsap',
+    'mapbox-gl',
+    'react-mapbox-gl'
 ];
 // keep a count of the times a task refires
 var scriptsCount = 0;
