@@ -12,12 +12,14 @@ class LocationSearch extends Component {
     }
 
     onSearchChange(e) {
-        this.setState({searchTerm: e.target.value})
+        this.setState({searchTerm: e.target.value});
     }
 
     doSearch(e) {
         e.preventDefault();
-        this.props.doSearch(this.state.searchTerm);
+        if(this.state.searchTerm){
+            this.props.doSearch(this.state.searchTerm);
+        }
     }
 
     render() {
