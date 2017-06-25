@@ -134,33 +134,18 @@ export default function position(state=INITIAL_STATE, action) {
                 filteredPubs: {...state.filteredPubs, ...fetchedPubsAsKeyedObj}
             }
         }
-        case RESPONSE_PUB_DETAIL:
+        case RESPONSE_PUB_DETAIL: {
+            const newPubObj = {[action.pub.foursquareID]: action.pub};
             return {
                 ...state,
-                isFetching: false,
-                pub: action.pub
-            }
-        case SHOULD_SUGGEST:
-            return {
-                ...state,
-                shouldSuggest: action.payload
-            }
-        case SUGGEST_PUB: {
-            const suggestedPub = getSuggestedPub(state.filteredPubs, state.centre);
-            if(suggestedPub){
-                return {
-                    ...state,
-                    shouldSuggest: false,
-                    centre: normaliseLatLng(suggestedPub.location.coordinates),
-                    currentPub: suggestedPub.foursquareID
-                }
-            } else {
-                return {
-                    ...state,
-                    shouldSuggest: false
-                }
+                filteredPubs: {...state.filteredPubs, ...newPubObj}
             }
         }
+        case SUGGEST_PUB:
+            return {
+                ...state,
+                shouldSuggest: false
+            }
         case SET_CURRENT_PUB: {
             return {
                 ...state,

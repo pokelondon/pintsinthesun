@@ -30,7 +30,6 @@ class RecommendationComponent extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('componentwillReceiveProps',nextProps, this.props);
         if(this.props.pub.name !== nextProps.pub.name) {
             this.setState({
                 hasOutsideSpace: false,

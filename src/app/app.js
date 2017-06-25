@@ -61,8 +61,7 @@ ReactDOM.render((
                 <Route path="/" component={Base}>
                     <IndexRoute component={Start} />
                     <Route path="/pubs/(:suggest)" component={Locate} />
-                    <Route path="/pubs/:lat/:lng" component={Locate} />
-                    <Route path="/pubs/:lat/:lng/:foursquareID" component={Locate} />
+                    <Route path="/pub/:foursquareID" component={Locate} />
                     <Route path="/admin" component={Admin} />
                     <Route path="*" component={NoMatch}/>
                 </Route>

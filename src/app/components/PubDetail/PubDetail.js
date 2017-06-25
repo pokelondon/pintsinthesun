@@ -138,12 +138,13 @@ class PubDetail extends React.Component {
 
                 </div>
 
+                {/*
                 <div className="Box Box-row">
                     <div className="Box-item">
                         <span>{distance.toFixed(1)}{distanceUnit} away</span>
                     </div>
                 </div>
-
+                */}
                 <div className="Box Box-row flex-wrap">
                     <div className="Box-item Box-item--halfCol--fixed">
                         Best for sun: 13:32-17:23

@@ -4,6 +4,7 @@ import { reverseGeocode } from '../services/googlemaps';
 import { fetchWeather, filterWeather } from './weather';
 import { showDialog, closeDialog } from './ui';
 import { normaliseLatLng } from '../utils/pintsUtils';
+import { getSuggestedPub } from '../utils/pintsUtils';
 
 import config from '../config';
 
@@ -156,8 +157,11 @@ export function responsePubs(data) {
             receivedAt: new Date(),
             isLoading: false
         });
+        const state = getState().position;
         if(getState().position.shouldSuggest) {
             dispatch(suggestPub());
+            const suggestedPub = getSuggestedPub(state.filteredPubs, state.centre);
+            hashHistory.push(`/pub/${suggestedPub.foursquareID}`);
         }
     }
 }
@@ -184,20 +188,22 @@ export function fetchPubs(centre) {
             .then(data => data.json())
             .then(data => {
                 dispatch(responsePubs(data));
-            }).catch( handleError );
+            }).catch(handleError);
 
     };
 }
 
 export function fetchPubDetail(id) {
-    return function(dispatch) {
+    return function(dispatch, getState) {
         dispatch(requestPubDetail());
         const url = config.API + `pub/${id}`;
         return fetch(url)
             .then(data => data.json())
             .then(data => {
-                dispatch(responsePubDetail(data));
-            }).catch( handleError );
+                dispatch(responsePubDetail(data.pub));
+                dispatch(focusOnPubLocation());
+                dispatch(fetchPubs(getState().position.centre));
+            }).catch(handleError);
     };
 }
 
@@ -208,16 +214,14 @@ export function responseAddress(address) {
     }
 }
 
-export function responsePubDetail(data) {
+export function responsePubDetail(pub) {
     return {
         type: RESPONSE_PUB_DETAIL,
-        pub: data.pub,
-        receivedAt: new Date(),
-        isLoading: false
+        pub
     }
 }
 
-export function setCurrentPub(foursquareID, history) {
+export function setCurrentPub(foursquareID) {
 
     return (dispatch, getState) => {
         dispatch({
@@ -225,16 +229,7 @@ export function setCurrentPub(foursquareID, history) {
             payload: foursquareID
         });
 
-        const state = getState();
-        if(state.position.filteredPubs) {
-            const pubObject = state.position.filteredPubs[foursquareID];
-
-            if(pubObject && history) {
-                const pubLocation = normaliseLatLng(pubObject.location.coordinates);
-                history.push(`/pubs/${pubLocation.lat}/${pubLocation.lng}/${foursquareID}`);
-                dispatch({type: FOCUS_ON_PUB_LOCATION});
-            }
-        }
+        dispatch(focusOnPubLocation());
     }
 }
 
@@ -254,7 +249,6 @@ export function shouldSuggest(bool) {
 export function suggestPub() {
     return (dispatch) => {
         dispatch({type: SUGGEST_PUB});
-        dispatch(focusOnPubLocation());
     }
 }
 
@@ -266,7 +260,6 @@ export function changeZoom(zoomLevel) {
 }
 
 function handleError(err) {
-    //hashHistory.push('/error');
     return (dispatch) => {
         dispatch(showDialog('Oops - something went wrong :('));
     }

@@ -121,7 +121,7 @@ app.get('/near/:lat/:lng', function(req, res) {
                 }
             });
         })
-        .catch( (err) => {
+        .catch((err) => {
             res.json({status: 'error'});
         });
 });
@@ -165,13 +165,27 @@ function createPubResponseObject(foursquarePub, knownPub) {
 
 
 /**
-* Return one pub by its google ID
+* Return one pub
 */
 app.get('/pub/:id', function(req, res) {
-    pubs.findOne({"googleplaces.id": req.params.id}, function(err, pub) {
-        assert.equal(null, err);
-        res.json({pub: pub});
-    })
+    var id = req.params.id;
+    var url = config.FOURSQUARE_VENUE_URL + id + config.FOURSQUARE_CREDS;
+    var pubsResult = fetch(url)
+        .then(data => data.json())
+        .then(data => data.response.venue)
+        .then(foursquarePub => {
+            pubs.findOne({"foursquare.id": req.params.id}, function(err, knownPub){
+                if(!err) {
+                    var mergedData = createPubResponseObject(foursquarePub, knownPub)
+                    res.json({status: 'ok', pub: mergedData});
+                } else {
+                    res.json({status: 'error'});
+                }
+            });
+        })
+        .catch((err) => {
+            res.json({status: 'error'});
+        })
 });
 
 
