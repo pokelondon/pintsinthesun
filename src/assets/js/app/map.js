@@ -4,9 +4,9 @@ define([
         'mediator'
     ], function($, _, Mediator) {
 
-        var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/1a1b06b230af4efdbb989ea99e9841af/997/256/{z}/{x}/{y}.png';
-        var osmUrl = 'http://a.tile.openstreetmap.org/{z}/{x}/{y}.png';
-        var tileProvider = 'http://a.tiles.mapbox.com/v3/poke.ifimp0gk/{z}/{x}/{y}.png';
+        var cloudmadeUrl = 'https://{s}.tile.cloudmade.com/1a1b06b230af4efdbb989ea99e9841af/997/256/{z}/{x}/{y}.png';
+        var osmUrl = 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        var tileProvider = 'https://a.tiles.mapbox.com/v3/poke.ifimp0gk/{z}/{x}/{y}.png';
         var defaultCentre = {lat: 51.524312, lng: -0.076432};
 
         var Map = function() {
