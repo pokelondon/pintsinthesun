@@ -5,18 +5,22 @@ define([
     ], function($, _, Mediator) {
 
         var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/1a1b06b230af4efdbb989ea99e9841af/997/256/{z}/{x}/{y}.png';
-        var osmUrl = 'http://a.tile.openstreetmap.org/{z}/{x}/{y}.png';
         var tileProvider = 'http://a.tiles.mapbox.com/v3/poke.ifimp0gk/{z}/{x}/{y}.png';
+        var osmTilesURL = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
         var defaultCentre = {lat: 51.524312, lng: -0.076432};
+        var defaultZoom = 12;;
 
         var Map = function() {
             _.extend(this, Mediator);
 
             // Init stuff
-            this.map = new L.Map('map');
+            this.map = L.map("map").setView(defaultCentre, defaultZoom);
 
             // Raster base layer
-            this.baseLayer = L.tileLayer(tileProvider).addTo(this.map);
+            L.tileLayer(osmTilesURL, {
+                attribution:
+                'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            }).addTo(this.map);
 
             // Elements
             var $btnLocate = $('.js-locate-me');
@@ -41,8 +45,8 @@ define([
          * Used to update the hash
          */
         Map.prototype.updatedCentre = function() {
-            var data = this.map.getCenter();
-            this.publish('map:update_centre', {lat: data.lat, lng: data.lng});
+            var mapCentre = this.map.getCenter();
+            this.publish('map:update_centre', mapCentre);
         };
 
         /**
